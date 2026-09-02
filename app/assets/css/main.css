@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/**
+ * Tokens de marca — principio 8 de la constitución.
+ * Los 9 colores marcados como «manual» son literales del manual de marca v1.0 y no se tocan.
+ * Los pasos restantes de cada escala son tintes derivados que Tailwind y @nuxt/ui necesitan
+ * para estados (hover, foco, bordes); no agregan color nuevo a la identidad.
+ */
+@theme static {
+  /* Oro Arena — color primario */
+  --color-arena-50: #FBF6EC;
+  --color-arena-100: #F4E9D2;
+  --color-arena-200: #EBD8AE;
+  --color-arena-300: #E0BD76; /* manual · Oro claro */
+  --color-arena-400: #D5AC5F;
+  --color-arena-500: #CB9E4E; /* manual · Oro Arena */
+  --color-arena-600: #B08540;
+  --color-arena-700: #8C6832;
+  --color-arena-800: #6E5029;
+  --color-arena-900: #593824; /* manual · Café Arena */
+  --color-arena-950: #3A2517;
+
+  /* Tinta — escala neutra */
+  --color-ink-50: #F7F2E4; /* manual · Arena */
+  --color-ink-100: #E8E3D6;
+  --color-ink-200: #CFCAC0;
+  --color-ink-300: #A9A49B;
+  --color-ink-400: #77736C;
+  --color-ink-500: #4A4A45; /* manual · Tinta media */
+  --color-ink-600: #3A3A36;
+  --color-ink-700: #2B2B28;
+  --color-ink-800: #1C1C1A; /* manual · Tinta */
+  --color-ink-900: #141412;
+  --color-ink-950: #0D0D0B; /* manual · Carbón */
+
+  /* Semánticos del manual: verde solo confirmado/positivo, rojo solo alerta o dato sin confirmar */
+  --color-confirmed-50: #ECF5F0;
+  --color-confirmed-100: #D2E7DC;
+  --color-confirmed-200: #A6CFBA;
+  --color-confirmed-300: #79B698;
+  --color-confirmed-400: #4D9E76;
+  --color-confirmed-500: #2D6A4F; /* manual · Verde */
+  --color-confirmed-600: #275C45;
+  --color-confirmed-700: #204A38;
+  --color-confirmed-800: #19392B;
+  --color-confirmed-900: #12281E;
+  --color-confirmed-950: #0A1712;
+
+  --color-unconfirmed-50: #FBEDEB;
+  --color-unconfirmed-100: #F5D5D1;
+  --color-unconfirmed-200: #EBABA3;
+  --color-unconfirmed-300: #E08175;
+  --color-unconfirmed-400: #D65747;
+  --color-unconfirmed-500: #C0392B; /* manual · Rojo */
+  --color-unconfirmed-600: #A63125;
+  --color-unconfirmed-700: #85271E;
+  --color-unconfirmed-800: #631D16;
+  --color-unconfirmed-900: #42130F;
+  --color-unconfirmed-950: #210A07;
+
+  /* Tipografías del manual */
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* El cuerpo usa DM Sans y las cifras IBM Plex Mono por token, nunca por declaración suelta. */
+:root {
+  --ui-font-body: var(--font-sans);
+  --ui-font-heading: var(--font-display);
+  --ui-font-numeric: var(--font-mono);
+}
+
+body {
+  font-family: var(--ui-font-body);
+}

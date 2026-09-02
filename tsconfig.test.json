@@ -1,0 +1,12 @@
+{
+  // Los niveles N1 y N4 no importan `.vue`, así que se pueden comprobar con `tsc`
+  // sin `vue-tsc` (fuera de docs/stack.md). Esto hace que un `@ts-expect-error`
+  // de una prueba sea una comprobación real de la compuerta de tipos.
+  "extends": "./.nuxt/tsconfig.shared.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "types": ["node"]
+  },
+  "include": ["tests/unit/**/*.ts", "tests/contract/**/*.ts", "tests/db/**/*.ts", "scripts/**/*.ts", "shared/**/*.ts"]
+}

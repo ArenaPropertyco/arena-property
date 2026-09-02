@@ -1,0 +1,51 @@
+# Compuertas del plan §5: nada se fusiona sin pasar por aquí.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  compuertas:
+    name: Lint, tipos, pruebas y trazabilidad
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      # Principio 1 · nada fuera de docs/stack.md.
+      - name: Lint
+        run: pnpm lint
+
+      # RT-01 · TypeScript strict sobre los proyectos de Nuxt y sobre la suite.
+      - name: Tipos
+        run: pnpm typecheck
+
+      # RT-03 · niveles N1, N3 y N4. N2 necesita Supabase levantado y corre aparte.
+      - name: Pruebas
+        run: pnpm test
+
+      # RT-04 · nivel N2: RLS, restricciones y disparadores contra Supabase local.
+      - name: Base de datos
+        run: |
+          pnpm exec supabase start
+          pnpm test:db:sql
+          pnpm test:db
+
+      # Principio 4 · ningún CA prometido por una tarea hecha queda sin test.
+      - name: Trazabilidad CA → test
+        run: pnpm trace
+
+      - name: Construcción de producción
+        run: pnpm build

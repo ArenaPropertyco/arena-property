@@ -16,49 +16,49 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 0 · Cimientos del repositorio
 
-- [ ] **T-001 · Inicializar Nuxt 4 con TypeScript `strict`** — `RT-01`
+- [x] **T-001 · Inicializar Nuxt 4 con TypeScript `strict`** — `RT-01`
   Hecho cuando: `pnpm dev` levanta y `tsc --noEmit` pasa sin errores con `strict` activo.
-- [ ] **T-002 · Instalar y configurar los 13 módulos base** — `RT-01` · stack.md
+- [x] **T-002 · Instalar y configurar los 13 módulos base** — `RT-01` · stack.md
   Hecho cuando: `package.json` no contiene nada fuera de `stack.md` y `pnpm build` pasa.
-- [ ] **T-003 · Configurar `@nuxtjs/i18n` con `en.json` y `es.json`** — `RT-05`
+- [x] **T-003 · Configurar `@nuxtjs/i18n` con `en.json` y `es.json`** — `RT-05`
   Hecho cuando: existe el test de paridad de claves y pasa con ambos locales.
-- [ ] **T-004 · Definir los tokens de marca en `@nuxt/ui`** — `RT-07` · principio 8
+- [x] **T-004 · Definir los tokens de marca en `@nuxt/ui`** — `RT-07` · principio 8
   Hecho cuando: los 9 colores y las 3 familias tipográficas resuelven desde tokens y no hay ningún hex suelto en el código.
-- [ ] **T-005 · Layouts público y de dashboard, responsive y bitema** — `RT-06`
+- [x] **T-005 · Layouts público y de dashboard, responsive y bitema** — `RT-06`
   Hecho cuando: ambos se ven correctos en 320/768/1280 px y en tema claro y oscuro.
-- [ ] **T-006 · Levantar Supabase local y generar tipos** — `RT-04`
+- [x] **T-006 · Levantar Supabase local y generar tipos** — `RT-04`
   Hecho cuando: `supabase start` levanta y los tipos generados quedan en `shared/types`.
-- [ ] **T-007 · Montar la suite de pruebas en 4 niveles** — `RT-03`
+- [x] **T-007 · Montar la suite de pruebas en 4 niveles** — `RT-03`
   Hecho cuando: `pnpm test` corre en verde con un test trivial en `unit`, `db`, `integration` y `contract`.
-- [ ] **T-008 · Informe de trazabilidad CA → test** — principio 4 · plan §5.1
+- [x] **T-008 · Informe de trazabilidad CA → test** — principio 4 · plan §5.1
   Hecho cuando: el informe lista los CA declarados en las specs y falla si alguno no tiene test que lo cite.
-- [ ] **T-009 · ESLint y compuertas de integración continua** — `RT-01`
+- [x] **T-009 · ESLint y compuertas de integración continua** — `RT-01`
   Hecho cuando: `pnpm lint` y `pnpm test` corren en CI y bloquean la fusión si fallan.
 
 ## Paso 1 · TR-02 — Dinero y formatos
 
-- [ ] **T-010 · Tipo nominal `CopAmount` y utilidades de entero** — `TR-02 · RF-D.1`
+- [x] **T-010 · Tipo nominal `CopAmount` y utilidades de entero** — `TR-02 · RF-D.1`
   Hecho cuando: el tipo rechaza en compilación un `number` sin marcar y no existe punto flotante en el módulo.
-- [ ] **T-011 · Función canónica de prorrateo con reparto de residuo** — `TR-02 · RF-D.2, RF-D.3`
+- [x] **T-011 · Función canónica de prorrateo con reparto de residuo** — `TR-02 · RF-D.2, RF-D.3`
   Hecho cuando: pasan `CA-D.1`, `CA-D.2`, `CA-D.3` y `CA-D.4`.
-- [ ] **T-012 · Cálculo de comisión porcentual en puntos básicos** — `TR-02 · RF-D.4`
+- [x] **T-012 · Cálculo de comisión porcentual en puntos básicos** — `TR-02 · RF-D.4`
   Hecho cuando: pasa `CA-D.5`.
-- [ ] **T-013 · Formateo de importes y porcentajes `es-CO` / `en-CO`** — `TR-02 · RF-D.5`
+- [x] **T-013 · Formateo de importes y porcentajes `es-CO` / `en-US`** — `TR-02 · RF-D.5`
   Hecho cuando: pasa `CA-D.6`.
-- [ ] **T-014 · Presentación con condición `confirmado` / `estimado`** — `TR-02 · RF-D.6, RF-D.7`
+- [x] **T-014 · Presentación con condición `confirmado` / `estimado`** — `TR-02 · RF-D.6, RF-D.7`
   Hecho cuando: pasa `CA-D.7` y ninguna vista replica aritmética monetaria.
 
 ## Paso 2 · TR-01 — Auditoría
 
-- [ ] **T-015 · Migración de `audit_log`** — `TR-01 · RF-A.1`
+- [x] **T-015 · Migración de `audit_log`** — `TR-01 · RF-A.1`
   Hecho cuando: la tabla existe con todos los campos de RF-A.1 y con RLS habilitada.
-- [ ] **T-016 · Políticas append-only** — `TR-01 · RF-A.2`
+- [x] **T-016 · Políticas append-only** — `TR-01 · RF-A.2`
   Hecho cuando: pasa `CA-A.2` para todos los roles.
-- [ ] **T-017 · Función de diferencia de estados** — `TR-01 · RF-A.7`
+- [x] **T-017 · Función de diferencia de estados** — `TR-01 · RF-A.7`
   Hecho cuando: pasa `CA-A.6`.
-- [ ] **T-018 · Disparador genérico en la misma transacción** — `TR-01 · RF-A.5`
+- [x] **T-018 · Disparador genérico en la misma transacción** — `TR-01 · RF-A.5`
   Hecho cuando: pasa `CA-A.4` con fallo forzado de auditoría.
-- [ ] **T-019 · Exigencia de motivo donde la spec lo pide** — `TR-01 · RF-A.4`
+- [x] **T-019 · Exigencia de motivo donde la spec lo pide** — `TR-01 · RF-A.4`
   Hecho cuando: pasa `CA-A.3`.
 - [ ] **T-020 · Políticas de lectura del registro por rol** — `TR-01 · RF-A.6`
   Hecho cuando: pasa `CA-A.5`.
