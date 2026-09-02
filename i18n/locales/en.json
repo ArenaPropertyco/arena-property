@@ -1,0 +1,40 @@
+{
+  "app": {
+    "name": "Arena Property",
+    "tagline": "Fractional co-ownership of vacation properties"
+  },
+  "nav": {
+    "home": "Home",
+    "model": "Business model",
+    "benefits": "Benefits",
+    "scheduling": "Scheduling system",
+    "about": "About us",
+    "contact": "Contact",
+    "properties": "Properties",
+    "calendar": "Calendar",
+    "finance": "Finance",
+    "notifications": "Updates",
+    "dashboard": "Dashboard"
+  },
+  "actions": {
+    "login": "Log in",
+    "logout": "Log out",
+    "register": "Create account",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "theme": {
+    "toggle": "Switch theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "locale": {
+    "switch": "Switch language",
+    "es": "Español",
+    "en": "English"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}

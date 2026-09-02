@@ -12,7 +12,7 @@ Da cumplimiento al principio 9 de [la constitución](../../docs/constitution.md)
 - **RF-D.2** — **Regla de prorrateo (canónica):** dado un monto `M` entre 8 fracciones, `q = M div 8` y `r = M mod 8`; las primeras `r` fracciones por número ascendente (1/8, 2/8, …) reciben `q + 1` y el resto `q`. La suma de las 8 cuotas es siempre exactamente `M`.
 - **RF-D.3** — La cuota que recibió residuo se marca con una bandera en el dato, para que HU-24 pueda hacerlo explícito.
 - **RF-D.4** — **Comisión porcentual (HU-52):** `comisión = truncar(precio_fracción × porcentaje ÷ 100)` hacia abajo, al peso; el porcentaje se guarda como entero de puntos básicos (10 % = 1000 pb) para evitar decimales flotantes.
-- **RF-D.5** — **Formato de presentación:** los importes se formatean con `Intl.NumberFormat` en `es-CO` / `en-CO` sin decimales, con tipografía IBM Plex Mono. Los porcentajes se muestran con **un decimal** (`37,5 %` en español, `37.5%` en inglés).
+- **RF-D.5** — **Formato de presentación:** los importes se formatean con `Intl.NumberFormat` en `es-CO` / `en-US` sin decimales, con tipografía IBM Plex Mono. Los porcentajes se muestran con **un decimal** (`37,5 %` en español, `37.5%` en inglés).
 - **RF-D.6** — La distinción entre valor confirmado y estimado es un campo del dato, no una decisión de la vista: la función de presentación devuelve el valor junto con su condición (`confirmado` | `estimado`), y la UI la traduce a la semántica de color de marca (verde solo confirmado, rojo solo alerta o sin confirmar).
 - **RF-D.7** — Todas las funciones de esta spec son puras y viven en `shared/`; ninguna vista replica aritmética monetaria.
 

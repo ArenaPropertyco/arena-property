@@ -1,0 +1,24 @@
+allowBuilds:
+  esbuild: true
+  maplibre-gl: true
+  unrs-resolver: true
+  vue-demi: true
+
+minimumReleaseAgeExclude:
+  - happy-dom@20.12.2
+
+# `tailwindcss` viene dentro de @nuxt/ui (módulo base). Se expone en la raíz para que
+# `@import "tailwindcss"` resuelva; no es una dependencia nueva de docs/stack.md.
+publicHoistPattern:
+  - tailwindcss
+  # `vue-i18n` viene dentro de @nuxtjs/i18n (módulo base). Se expone para que la suite
+  # de pruebas pueda instalarlo en el componente bajo prueba; tampoco es dependencia nueva.
+  - vue-i18n
+  # `@types/node` viene con vitest y nuxt. Se expone para tipar las pruebas de los
+  # niveles N1/N4 y los scripts, que corren en Node; tampoco es dependencia nueva.
+  - '@types/node'
+  # `@supabase/supabase-js` viene dentro de @nuxtjs/supabase (módulo base). Se expone
+  # para que las pruebas del nivel N2 hablen con el motor como lo hace la aplicación.
+  - '@supabase/supabase-js'
+
+confirmModulesPurge: false

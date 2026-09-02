@@ -1,0 +1,40 @@
+{
+  "app": {
+    "name": "Arena Property",
+    "tagline": "Copropiedad fraccionada de propiedades vacacionales"
+  },
+  "nav": {
+    "home": "Inicio",
+    "model": "Modelo de negocio",
+    "benefits": "Beneficios",
+    "scheduling": "Sistema de agendamiento",
+    "about": "Sobre nosotros",
+    "contact": "Contacto",
+    "properties": "Propiedades",
+    "calendar": "Calendario",
+    "finance": "Finanzas",
+    "notifications": "Novedades",
+    "dashboard": "Panel"
+  },
+  "actions": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "register": "Crear cuenta",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "locale": {
+    "switch": "Cambiar idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados."
+  }
+}
