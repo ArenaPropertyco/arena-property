@@ -1,0 +1,8 @@
+# Netlify marca como "secreto" cualquier valor de build que coincida con una
+# variable de entorno, sin distinguir las que existen justo para ir al cliente.
+# NUXT_PUBLIC_SUPABASE_URL y NUXT_PUBLIC_SUPABASE_KEY son la URL y la clave
+# publicable/anon de Supabase: públicas por diseño, protegidas por RLS y no por
+# ocultarlas. Se eximen del escaneo por nombre; el escaneo sigue activo para todo
+# lo demás, y nunca debe agregarse aquí una clave de servicio (`service_role`).
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "NUXT_PUBLIC_SUPABASE_URL,NUXT_PUBLIC_SUPABASE_KEY"
