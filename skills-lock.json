@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": {
+    "nuxt": {
+      "source": "nuxt-skill.onmax.me",
+      "sourceUrl": "https://nuxt-skill.onmax.me/",
+      "sourceType": "well-known",
+      "computedHash": "ddb1dc20f01ec76fb8033c41193e6ccd083210749cda3e83979b43fdc9ed267d",
+      "wellKnownDigest": "sha256:2afba9fad5a63bd05afad286dac35f44b1f3434d0640f893a79802b967698322"
+    },
+    "nuxt-ui": {
+      "source": "nuxt/ui",
+      "sourceType": "github",
+      "skillPath": "skills/nuxt-ui/SKILL.md",
+      "computedHash": "f6235ff66b930f4fe3809a55167096c9626ebb806f767fe363f19384e0d84c87"
+    },
+    "supabase": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/supabase/SKILL.md",
+      "computedHash": "583344c20e90f3654dbb0632f088d89fd9f1dde8ac85e8a644dd12eee59b1380"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
+      "computedHash": "e14e276241805c97dbcfe40dcbea1a3035269cc7293cac4b1832dda41a835e60"
+    }
+  }
+}
