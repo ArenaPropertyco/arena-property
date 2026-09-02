@@ -25,7 +25,8 @@ A esto se suma un **canal de crecimiento propio: el Programa de Referidos**. Cua
 - Todo comentario y toda documentación en español, con buena ortografía.
 - Diseño luxury minimalista, muy atractivo y moderno: la UI no es negociable.
 - Diseño responsive y bitema siempre.
-- Animaciones: `nuxt-aos` para entradas del sitio institucional, `@formkit/auto-animate` para listas, `motion-v` para movimiento de alto impacto y `@tresjs/nuxt` para el plano elevado 3D. **No se usa `framer-motion`: es una librería de React y no aplica a este proyecto.**
+- Interfaz por componentes (principio 10): las páginas orquestan y los layouts estructuran; todo formulario, tabla, alerta o bloque repetible es un componente de `app/components/` con props y eventos tipados, construido con `@nuxt/ui`.
+- Animaciones: `nuxt-aos` para entradas del sitio institucional, `@formkit/auto-animate` para listas, `motion-v` para movimiento de alto impacto y `@treejs/nuxt` para el plano elevado 3D. **No se usa `framer-motion`: es una librería de React y no aplica a este proyecto.**
 - Colores de la marca (manual de marca v1.0):
   - Oro Arena: `#CB9E4E`
   - Oro claro: `#E0BD76`
@@ -46,6 +47,7 @@ A esto se suma un **canal de crecimiento propio: el Programa de Referidos**. Cua
 - No modifiques archivos dentro de `specs/` salvo petición explícita.
 - El dinero es entero en COP y se prorratea según `TR02-dinero-formatos-spec.md`; nunca en punto flotante.
 - Toda operación auditable se registra según `TR01-auditoria-spec.md`.
+- Antes de crear un componente, revisa si `@nuxt/ui` ya lo trae (`UHeader`, `UNavigationMenu`, `UDashboard*`, `UPageCard`, `UTable`…); no se reimplementa con HTML y clases sueltas.
 - Usa todos los recursos de Nuxt 4 y sus módulos oficiales, y las mejores prácticas de Nuxt 4, TypeScript, Supabase y Netlify.
 
 ## Al terminar cualquier tarea

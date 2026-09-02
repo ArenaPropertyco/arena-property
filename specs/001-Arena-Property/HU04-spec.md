@@ -7,7 +7,7 @@ Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 Como Visitante, quiero registrarme y crear una cuenta, para poder iniciar el proceso de compra de una fracción.
 
 ## Requisitos funcionales
-- **RF-04.1** — Registro por email/contraseña con Supabase Auth (`@nuxtjs/supabase`); validación de email y de fortaleza mínima de contraseña en esquema tipado.
+- **RF-04.1** — Registro por email/contraseña con Supabase Auth (`@nuxtjs/supabase`); validación de email y de fortaleza mínima de contraseña en esquema tipado. El alta con Google es una vía alternativa, especificada en [HU-61](./HU61-spec.md); ambas producen el mismo perfil.
 - **RF-04.2** — El registro exige verificación de correo; hasta verificar, la cuenta no accede a rutas privadas.
 - **RF-04.3** — Al completar el registro, la cuenta obtiene el rol `Usuario` (perfil en tabla propia con rol, creado por trigger/función de base de datos).
 - **RF-04.4** — El formulario incluye campo opcional "Código de referido", prellenado si la sesión trae atribución; al registrarse, la atribución se persiste según las reglas de HU-51.
@@ -20,4 +20,4 @@ Como Visitante, quiero registrarme y crear una cuenta, para poder iniciar el pro
 - **CA-04.4** — Dada una cuenta sin verificar, cuando accede a una ruta privada, entonces el middleware la redirige.
 
 ## Dependencias
-- HU-51 (reglas de atribución) · base de HU-05/HU-06/HU-07 (roles).
+- HU-51 (reglas de atribución) · HU-61 (alta con Google, misma spec de perfil y verificación) · base de HU-05/HU-06/HU-07 (roles).

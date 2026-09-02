@@ -40,7 +40,8 @@ function archivos(directorio: string, extensiones: string[]): string[] {
 function clavesUsadas(): { clave: string, archivo: string }[] {
   return archivos('app', ['.vue', '.ts']).flatMap((archivo) => {
     const contenido = readFileSync(resolve(raiz, archivo), 'utf8')
-    return [...contenido.matchAll(/\$?t\(\s*['"]([\w.]+)['"]/g)]
+    // Solo `t(` o `$t(` como identificador entero: `select('user_id')` también termina en `t(`.
+    return [...contenido.matchAll(/(?<![\w$.])\$?t\(\s*['"]([\w.]+)['"]/g)]
       .map(coincidencia => ({ clave: coincidencia[1]!, archivo }))
   })
 }
