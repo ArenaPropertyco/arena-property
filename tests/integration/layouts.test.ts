@@ -17,6 +17,10 @@ import LocaleSwitcher from '~/components/LocaleSwitcher.vue'
 mockNuxtImport('useLocalePath', () => () => (ruta: string) => ruta)
 mockNuxtImport('useSwitchLocalePath', () => () => (codigo: string) => `/${codigo}`)
 mockNuxtImport('useColorMode', () => () => reactive({ value: 'light', preference: 'system' }))
+// El layout del panel consulta la cuenta para decidir qué entradas mostrar; sin sesión no hay roles.
+mockNuxtImport('useSupabaseUser', () => () => ref(null))
+mockNuxtImport('useSupabaseSession', () => () => ref(null))
+mockNuxtImport('useSupabaseClient', () => () => ({}))
 
 describe('RT-06 · layout público', () => {
   it('renderiza el contenido de la página que envuelve', async () => {
@@ -52,11 +56,10 @@ describe('RT-06 · layout de panel', () => {
     expect(envoltorio.text()).toContain('contenido del panel')
   })
 
-  it('trae navegación lateral y contenido principal', async () => {
+  it('trae la navegación lateral; el contenido principal lo aporta cada página con su panel', async () => {
     const envoltorio = await mountSuspended(LayoutPanel)
 
     expect(envoltorio.find('nav').exists()).toBe(true)
-    expect(envoltorio.find('main').exists()).toBe(true)
   })
 
   it('expone los controles de idioma y de tema', async () => {

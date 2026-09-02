@@ -5,7 +5,7 @@ de esta carpeta y debe cumplir [docs/constitution.md](../../docs/constitution.md
 [.claude/AGENTS.md](../../.claude/AGENTS.md). Fuente de negocio:
 [docs/arena-property-VSM-Historias-Usuario-Specs.md](../../docs/arena-property-VSM-Historias-Usuario-Specs.md).
 
-**Alcance:** 55 historias de usuario (52 del VSM + HU-58, HU-59 y HU-60) · 3 requisitos transversales habilitadores · 11 épicas · 4 sprints · **326 SP** · sin backlog post-MVP.
+**Alcance:** 56 historias de usuario (52 del VSM + HU-58, HU-59, HU-60 y HU-61) · 3 requisitos transversales habilitadores · 11 épicas · 4 sprints · **331 SP** · sin backlog post-MVP.
 
 Las reglas de negocio que el VSM dejaba abiertas están resueltas en [docs/decisions.md](../../docs/decisions.md) (D-01…D-30); cada spec referencia las decisiones que implementa.
 
@@ -53,7 +53,7 @@ Aplican a **todas** las specs; cada `HUXX-spec.md` los referencia y no los repit
 | Épica | Historias |
 |---|---|
 | E1 Catálogo y Descubrimiento | [HU00](./HU00-spec.md) · [HU01](./HU01-spec.md) · [HU02](./HU02-spec.md) · [HU03](./HU03-spec.md) · [HU41](./HU41-spec.md) · [HU42](./HU42-spec.md) · [HU43](./HU43-spec.md) · [HU44](./HU44-spec.md) · [HU46](./HU46-spec.md) · [HU47](./HU47-spec.md) · [HU48](./HU48-spec.md) |
-| E2 Onboarding y Roles | [HU04](./HU04-spec.md) · [HU05](./HU05-spec.md) · [HU06](./HU06-spec.md) · [HU07](./HU07-spec.md) · [HU32](./HU32-spec.md) · [HU58 🆕](./HU58-spec.md) |
+| E2 Onboarding y Roles | [HU04](./HU04-spec.md) · [HU05](./HU05-spec.md) · [HU06](./HU06-spec.md) · [HU07](./HU07-spec.md) · [HU32](./HU32-spec.md) · [HU58 🆕](./HU58-spec.md) · [HU61 🆕](./HU61-spec.md) |
 | E3 Gestión de Propiedades | [HU08](./HU08-spec.md) · [HU09](./HU09-spec.md) · [HU10](./HU10-spec.md) · [HU11](./HU11-spec.md) |
 | E4 Calendario y Agendamiento | [HU12](./HU12-spec.md) · [HU13](./HU13-spec.md) · [HU14](./HU14-spec.md) · [HU15](./HU15-spec.md) · [HU16](./HU16-spec.md) · [HU17](./HU17-spec.md) · [HU39](./HU39-spec.md) · [HU59 🆕](./HU59-spec.md) · [HU60 🆕](./HU60-spec.md) |
 | E5 Dashboard del Propietario | [HU18](./HU18-spec.md) · [HU19](./HU19-spec.md) · [HU20](./HU20-spec.md) |
@@ -67,16 +67,16 @@ Aplican a **todas** las specs; cada `HUXX-spec.md` los referencia y no los repit
 
 ## Plan de sprints (replanificado, D-26)
 
-Reordenado para que ningún sprint dependa de piezas de sprints posteriores. Total 326 SP (87 + 89 + 84 + 66).
+Reordenado para que ningún sprint dependa de piezas de sprints posteriores. Total 331 SP (92 + 89 + 84 + 66).
 
 | Sprint | Contenido | SP |
 |---|---|---|
-| **1 — Fundación** | TR-01, TR-02, HU-58, HU-00, HU-01, HU-02, HU-03, HU-46, HU-04, HU-05, HU-06, HU-07, HU-08, HU-09, HU-10, HU-11 | 87 |
+| **1 — Fundación** | TR-01, TR-02, HU-58, HU-00, HU-01, HU-02, HU-03, HU-46, HU-04, **HU-61**, HU-05, HU-06, HU-07, HU-08, HU-09, HU-10, HU-11 | 92 |
 | **2 — Contenido, calendario y alta de Embajadores** | TR-03, HU-41, HU-42, HU-43, HU-44, HU-47, HU-48, HU-49, HU-50, HU-51, HU-52, HU-12, HU-13, HU-14, HU-15, **HU-59** | 89 |
 | **3 — Operación, dashboards, finanzas y comisiones** | HU-16, HU-17, HU-39, **HU-60**, HU-18, HU-19, HU-20, HU-21, HU-23, HU-24, HU-40, HU-53, HU-54 | 84 |
 | **4 — Inventario, comunicación, panel y billetera** | HU-22, HU-25, HU-26, HU-27, HU-28, HU-29, HU-30, HU-31, HU-32, HU-33, HU-55, HU-56, HU-57 | 66 |
 
-Cambios respecto al VSM: entran TR-01, TR-02, TR-03 y HU-58 (+23 SP); HU-52 y la bandeja suben al Sprint 2 para no bloquear a HU-48 y HU-16; las cuatro subpáginas institucionales (HU-41…HU-44), HU-47 y HU-48 bajan al Sprint 2, conservando en el Sprint 1 el embudo completo (home, catálogo, ficha y contacto).
+Cambios respecto al VSM: entran TR-01, TR-02, TR-03 y HU-58 (+23 SP); HU-52 y la bandeja suben al Sprint 2 para no bloquear a HU-48 y HU-16; las cuatro subpáginas institucionales (HU-41…HU-44), HU-47 y HU-48 bajan al Sprint 2, conservando en el Sprint 1 el embudo completo (home, catálogo, ficha y contacto); entra HU-61 junto a HU-04, porque una vía de alta nueva sin la otra dejaría el registro a medias (+5 SP).
 
 ## Dependencias y riesgos clave (del VSM)
 

@@ -39,6 +39,7 @@ Nuxt 4 · TypeScript `strict` · Supabase (Postgres, Auth, Storage, RLS) · desp
 | Exportación CSV | Serialización en función pura de `shared/` servida por una ruta Nitro | HU-25 RF-25.2 |
 | Correo transaccional | API REST del proveedor (**Resend** por defecto) invocada con `$fetch` desde Nitro, credenciales en runtime config; sin SDK | HU-03, HU-04, HU-06, HU-29, HU-46, HU-47, HU-54, HU-57 |
 | Correo de verificación de cuenta | SMTP configurado en Supabase Auth | HU-04 RF-04.2 |
+| Ingreso con Google | `signInWithOAuth` de `@nuxtjs/supabase`; el proveedor se configura en Supabase Auth y su secreto vive solo en runtime config de servidor. **Sin paquete nuevo** | HU-61 RF-61.1 |
 | Fechas y formatos | `Intl` nativo + funciones puras (TR-02) | Transversal |
 
 ## Diferido — requiere decisión antes de aprobar

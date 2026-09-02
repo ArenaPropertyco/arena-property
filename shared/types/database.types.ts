@@ -34,16 +34,215 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          actor_role: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          next_state: Json | null
+          occurred_at: string
+          previous_state: Json | null
+          property_id: string | null
+          reason: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          actor_role: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          next_state?: Json | null
+          occurred_at?: string
+          previous_state?: Json | null
+          property_id?: string | null
+          reason?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          actor_role?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          next_state?: Json | null
+          occurred_at?: string
+          previous_state?: Json | null
+          property_id?: string | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      audit_reason_required: {
+        Row: {
+          action: string
+          created_at: string
+          source: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          source: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          source?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          email_verified: boolean
+          full_name: string | null
+          id: string
+          locale: string
+          phone: string | null
+          referred_by_code: string | null
+          status: Database["public"]["Enums"]["account_status"]
+          suspended_at: string | null
+          suspension_kind: Database["public"]["Enums"]["suspension_kind"] | null
+          suspension_reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          email_verified?: boolean
+          full_name?: string | null
+          id: string
+          locale?: string
+          phone?: string | null
+          referred_by_code?: string | null
+          status?: Database["public"]["Enums"]["account_status"]
+          suspended_at?: string | null
+          suspension_kind?:
+            | Database["public"]["Enums"]["suspension_kind"]
+            | null
+          suspension_reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          email_verified?: boolean
+          full_name?: string | null
+          id?: string
+          locale?: string
+          phone?: string | null
+          referred_by_code?: string | null
+          status?: Database["public"]["Enums"]["account_status"]
+          suspended_at?: string | null
+          suspension_kind?:
+            | Database["public"]["Enums"]["suspension_kind"]
+            | null
+          suspension_reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      property_admins: {
+        Row: {
+          admin_id: string
+          assigned_at: string
+          assigned_by: string | null
+          id: string
+          property_id: string
+          revoked_at: string | null
+          revoked_by: string | null
+        }
+        Insert: {
+          admin_id: string
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          property_id: string
+          revoked_at?: string | null
+          revoked_by?: string | null
+        }
+        Update: {
+          admin_id?: string
+          assigned_at?: string
+          assigned_by?: string | null
+          id?: string
+          property_id?: string
+          revoked_at?: string | null
+          revoked_by?: string | null
+        }
+        Relationships: []
+      }
+      role_capabilities: {
+        Row: {
+          capability: string
+          role: string
+          scope: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          capability: string
+          role: string
+          scope: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          capability?: string
+          role?: string
+          scope?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          granted_at: string
+          granted_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      aplicar_atribucion_referido: {
+        Args: { codigo: string }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      account_status: "active" | "suspended"
+      app_role:
+        | "superadmin"
+        | "property_admin"
+        | "owner"
+        | "ambassador"
+        | "user"
+      suspension_kind: "administrative" | "breach_or_fraud"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -173,7 +372,11 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      account_status: ["active", "suspended"],
+      app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
+      suspension_kind: ["administrative", "breach_or_fraud"],
+    },
   },
 } as const
 

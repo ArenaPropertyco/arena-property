@@ -59,6 +59,13 @@ Cada una es la fuente de verdad de las specs que la implementan; cambiarlas exig
 - **D-19 · Bandeja de notificaciones transversal.** El canal de notificaciones (in-app + correo) y la bandeja dejan de vivir dentro de HU-30 y pasan a la spec transversal **TR-03**, que usan propietarios, administradores y embajadores por igual. → TR-03, HU-16, HU-29, HU-30, HU-31, HU-57.
 - **D-20 · El Superadmin ve los saldos de los Embajadores.** Corrige la matriz de permisos del VSM, que se lo negaba pese a exigirle aprobar los retiros. → HU-07, HU-53, HU-55, HU-56.
 
+## Identidad y acceso
+
+- **D-32 · La atribución de referido sobrevive al viaje a Google.** El código vigente se guarda en cookie antes de redirigir al proveedor y se aplica al perfil al volver, de modo que entrar por Google no le cueste la comisión a ningún Embajador. La aplica una función privada, **una sola vez y solo si el perfil no tenía atribución**: el cliente nunca escribe su propio `referred_by_code`, porque nadie se auto-refiere (D-03). → HU-61, HU-04, HU-51.
+- **D-33 · Una persona, una cuenta.** Si el correo que devuelve Google ya tiene cuenta, la identidad del proveedor se **vincula** a ella en lugar de crear una segunda. La vinculación exige que el proveedor entregue el correo verificado —sin esa condición sería un vector de apropiación de cuenta— y queda auditada (TR-01). → HU-61, HU-04, HU-07.
+- **D-34 · La verificación de Google vale como la nuestra.** Google entrega el correo ya verificado, Supabase fija `email_confirmed_at` y el perfil nace verificado: la cuenta accede a rutas privadas sin un segundo correo de confirmación. No se le pide al usuario repetir un paso que ya hizo. → HU-61, HU-04 RF-04.2.
+- **D-35 · Nombre y avatar del proveedor son presentación, no identidad.** El perfil guarda `full_name` y `avatar_url` de Google y los refresca en cada ingreso, para que el panel salude por su nombre. Vienen de `raw_user_meta_data`, que el **propio usuario puede editar**: sirven para mostrar, nunca para autorizar ni para acreditar identidad ante un Administrador. → HU-61, HU-07, HU-33.
+
 ## Plataforma
 
 - **D-21 · Correo transaccional por Resend vía REST**, sin SDK; verificación de cuenta por el SMTP de Supabase Auth. → [stack.md](./stack.md).

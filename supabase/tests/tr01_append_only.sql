@@ -66,7 +66,8 @@ select lives_ok(
   'insertar una entrada nueva sí está permitido');
 
 select is(
-  (select count(*) from public.audit_log),
+  (select count(*) from public.audit_log
+    where action in ('prueba.append_only', 'prueba.insercion')),
   2::bigint,
   'quedan las dos entradas insertadas');
 

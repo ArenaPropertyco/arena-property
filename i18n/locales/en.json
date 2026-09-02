@@ -14,7 +14,9 @@
     "calendar": "Calendar",
     "finance": "Finance",
     "notifications": "Updates",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "roles": "Roles",
+    "admins": "Administrators"
   },
   "actions": {
     "login": "Log in",
@@ -36,5 +38,138 @@
   },
   "footer": {
     "rights": "All rights reserved."
+  },
+  "auth": {
+    "register": {
+      "title": "Create account",
+      "subtitle": "Start the process to acquire a fraction.",
+      "email": "Email",
+      "password": "Password",
+      "passwordHint": "At least 8 characters, with letters and numbers",
+      "passwordConfirm": "Confirm password",
+      "referralCode": "Referral code",
+      "referralCodeHint": "Optional",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "login": "Log in",
+      "referralApplied": "Referral code {code} will be recorded.",
+      "referralIgnored": "The referral code format is not valid; you can continue without it."
+    },
+    "login": {
+      "title": "Log in",
+      "subtitle": "Access your Arena Property dashboard.",
+      "submit": "Log in",
+      "noAccount": "Don't have an account?",
+      "register": "Create account"
+    },
+    "verify": {
+      "title": "Check your email",
+      "body": "We sent a verification link to {email}. Until you open it, your account cannot access the dashboard.",
+      "bodyGeneric": "We sent a verification link to your email. Until you open it, your account cannot access the dashboard.",
+      "resend": "Resend link",
+      "resent": "Link resent.",
+      "logout": "Log out"
+    },
+    "suspended": {
+      "title": "Account suspended",
+      "body": "Your account is suspended and cannot access the dashboard. If you think this is a mistake, contact us."
+    },
+    "validation": {
+      "email_invalid": "Enter a valid email.",
+      "password_too_short": "Password must be at least 8 characters.",
+      "password_needs_letter_and_digit": "Password must combine letters and numbers.",
+      "password_mismatch": "Passwords do not match.",
+      "referral_code_format": "The referral code format is not valid."
+    },
+    "errors": {
+      "email_in_use": "An account with that email already exists.",
+      "invalid_credentials": "The email or password is incorrect.",
+      "email_not_verified": "Your email is not verified yet. Check your inbox.",
+      "too_many_attempts": "Too many attempts. Wait a few minutes and try again.",
+      "weak_password": "The password is too weak.",
+      "unknown": "We could not complete the operation. Please try again.",
+      "oauth_cancelled": "You cancelled the Google permission. You can try again whenever you like."
+    },
+    "google": {
+      "divider": "or continue with",
+      "continue": "Continue with Google",
+      "completing": "Completing sign-in…"
+    }
+  },
+  "roles": {
+    "title": "Roles and permissions",
+    "subtitle": "What each role can do and which roles each account holds.",
+    "matrix": "Permissions by module",
+    "accounts": "Accounts",
+    "capability": "Capability",
+    "email": "Email",
+    "currentRoles": "Roles",
+    "assign": "Grant role",
+    "revoke": "Remove",
+    "selectRole": "Role to grant",
+    "assigned": "Role granted.",
+    "revoked": "Role removed.",
+    "invalidCombination": "That combination of roles is not allowed.",
+    "empty": "No registered accounts.",
+    "names": {
+      "superadmin": "Superadmin",
+      "property_admin": "Property administrator",
+      "owner": "Owner",
+      "ambassador": "Ambassador",
+      "user": "User",
+      "visitante": "Visitor"
+    },
+    "scope": {
+      "todas": "All",
+      "propias": "Own",
+      "lectura": "Read only",
+      "si": "Yes",
+      "no": "No",
+      "no_aplica": "N/A"
+    },
+    "capabilities": {
+      "ver_sitio_publico": "View public site and catalog",
+      "gestionar_propiedades": "Create and edit properties",
+      "eliminar_propiedades": "Delete properties",
+      "gestionar_calendario": "Manage calendar (incl. third-party rentals)",
+      "reservar_en_su_fraccion": "Book within own fraction",
+      "ver_finanzas": "View prorated income and expenses",
+      "gestionar_inventario": "Manage inventory",
+      "registrar_gastos": "Record maintenance expenses",
+      "enviar_novedades": "Send updates to owners",
+      "administrar_usuarios_y_roles": "Manage users and roles",
+      "registrarse": "Sign up",
+      "contactar_o_lista_de_espera": "Contact, join waitlist or start a purchase",
+      "inscribirse_como_embajador": "Join the Referral Program",
+      "generar_codigo_referido": "Generate and share referral code",
+      "ver_referidos": "View referrals",
+      "ver_saldo_y_retirar": "View balance and request withdrawal",
+      "definir_comision": "Set referral commission",
+      "aprobar_pagos_comision": "Approve commission payouts"
+    },
+    "editHint": "You are editing the permissions matrix.",
+    "enforcedByDatabaseHint": "These adjustments govern the interface and route access. Capabilities marked “Also in the database” are additionally enforced by the database: widening them here grants no data access until their policy changes in a migration.",
+    "enforcedByDatabase": "Also in the database",
+    "adjusted": "Permission updated.",
+    "adjustFailed": "The permission could not be updated.",
+    "readOnlyMatrix": "Only the Superadmin can edit permissions."
+  },
+  "admins": {
+    "title": "Property administrators",
+    "subtitle": "Accounts with the Administrator role, their assigned properties and account status.",
+    "invite": "Invite administrator",
+    "inviteEmail": "New administrator's email",
+    "inviteSubmit": "Send invitation",
+    "invited": "Invitation sent to {email}.",
+    "properties": "Assigned properties",
+    "noProperties": "No properties assigned",
+    "status": "Status",
+    "active": "Active",
+    "suspended": "Suspended",
+    "empty": "No administrators yet.",
+    "propertiesPending": "Property assignment becomes available once the catalog exists (HU-08)."
+  },
+  "account": {
+    "menu": "Account menu"
   }
 }

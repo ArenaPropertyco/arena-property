@@ -14,7 +14,9 @@
     "calendar": "Calendario",
     "finance": "Finanzas",
     "notifications": "Novedades",
-    "dashboard": "Panel"
+    "dashboard": "Panel",
+    "roles": "Roles",
+    "admins": "Administradores"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -36,5 +38,138 @@
   },
   "footer": {
     "rights": "Todos los derechos reservados."
+  },
+  "auth": {
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Empieza el proceso para adquirir una fracción.",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "passwordHint": "Mínimo 8 caracteres, con letras y números",
+      "passwordConfirm": "Confirmar contraseña",
+      "referralCode": "Código de referido",
+      "referralCodeHint": "Opcional",
+      "submit": "Crear cuenta",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "login": "Iniciar sesión",
+      "referralApplied": "Se registrará el código de referido {code}.",
+      "referralIgnored": "El código de referido no tiene un formato válido; puedes continuar sin él."
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "subtitle": "Entra a tu panel de Arena Property.",
+      "submit": "Entrar",
+      "noAccount": "¿No tienes cuenta?",
+      "register": "Crear cuenta"
+    },
+    "verify": {
+      "title": "Revisa tu correo",
+      "body": "Te enviamos un enlace de verificación a {email}. Hasta que lo abras, tu cuenta no puede entrar al panel.",
+      "bodyGeneric": "Te enviamos un enlace de verificación a tu correo. Hasta que lo abras, tu cuenta no puede entrar al panel.",
+      "resend": "Reenviar enlace",
+      "resent": "Enlace reenviado.",
+      "logout": "Cerrar sesión"
+    },
+    "suspended": {
+      "title": "Cuenta suspendida",
+      "body": "Tu cuenta está suspendida y no puede acceder al panel. Si crees que es un error, escríbenos."
+    },
+    "validation": {
+      "email_invalid": "Escribe un correo válido.",
+      "password_too_short": "La contraseña debe tener al menos 8 caracteres.",
+      "password_needs_letter_and_digit": "La contraseña debe combinar letras y números.",
+      "password_mismatch": "Las contraseñas no coinciden.",
+      "referral_code_format": "El código de referido no tiene un formato válido."
+    },
+    "errors": {
+      "email_in_use": "Ya existe una cuenta con ese correo.",
+      "invalid_credentials": "El correo o la contraseña no son correctos.",
+      "email_not_verified": "Tu correo aún no está verificado. Revisa tu bandeja de entrada.",
+      "too_many_attempts": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+      "weak_password": "La contraseña es demasiado débil.",
+      "unknown": "No pudimos completar la operación. Inténtalo de nuevo.",
+      "oauth_cancelled": "Cancelaste el permiso en Google. Puedes intentarlo de nuevo cuando quieras."
+    },
+    "google": {
+      "divider": "o continúa con",
+      "continue": "Continuar con Google",
+      "completing": "Completando el ingreso…"
+    }
+  },
+  "roles": {
+    "title": "Roles y permisos",
+    "subtitle": "Qué puede hacer cada rol y qué roles tiene cada cuenta.",
+    "matrix": "Permisos por módulo",
+    "accounts": "Cuentas",
+    "capability": "Capacidad",
+    "email": "Correo",
+    "currentRoles": "Roles",
+    "assign": "Otorgar rol",
+    "revoke": "Retirar",
+    "selectRole": "Rol a otorgar",
+    "assigned": "Rol otorgado.",
+    "revoked": "Rol retirado.",
+    "invalidCombination": "Esa combinación de roles no está permitida.",
+    "empty": "No hay cuentas registradas.",
+    "names": {
+      "superadmin": "Superadmin",
+      "property_admin": "Administrador de propiedad",
+      "owner": "Propietario",
+      "ambassador": "Embajador",
+      "user": "Usuario",
+      "visitante": "Visitante"
+    },
+    "scope": {
+      "todas": "Todas",
+      "propias": "Las suyas",
+      "lectura": "Solo lectura",
+      "si": "Sí",
+      "no": "No",
+      "no_aplica": "No aplica"
+    },
+    "capabilities": {
+      "ver_sitio_publico": "Ver sitio institucional y catálogo",
+      "gestionar_propiedades": "Crear y editar propiedades",
+      "eliminar_propiedades": "Eliminar propiedades",
+      "gestionar_calendario": "Gestionar calendario (incluye renta a terceros)",
+      "reservar_en_su_fraccion": "Reservar dentro de su fracción",
+      "ver_finanzas": "Ver utilidades, gastos e ingresos prorrateados",
+      "gestionar_inventario": "Gestionar inventario",
+      "registrar_gastos": "Registrar gastos de mantenimiento",
+      "enviar_novedades": "Enviar novedades a propietarios",
+      "administrar_usuarios_y_roles": "Administrar usuarios y roles",
+      "registrarse": "Registrarse",
+      "contactar_o_lista_de_espera": "Contactar, lista de espera o iniciar compra",
+      "inscribirse_como_embajador": "Inscribirse en el Programa de Referidos",
+      "generar_codigo_referido": "Generar y compartir código de referido",
+      "ver_referidos": "Ver listado de referidos",
+      "ver_saldo_y_retirar": "Ver saldo a favor y solicitar retiro",
+      "definir_comision": "Definir la comisión por referido",
+      "aprobar_pagos_comision": "Aprobar pagos de comisión"
+    },
+    "editHint": "Estás editando la matriz de permisos.",
+    "enforcedByDatabaseHint": "Estos ajustes gobiernan la interfaz y el acceso a las rutas. Las capacidades marcadas con «También en la base» las hace cumplir además la base de datos: ampliarlas aquí no concede acceso a los datos hasta cambiar su política en una migración.",
+    "enforcedByDatabase": "También en la base",
+    "adjusted": "Permiso actualizado.",
+    "adjustFailed": "No se pudo actualizar el permiso.",
+    "readOnlyMatrix": "Solo el Superadmin puede editar los permisos."
+  },
+  "admins": {
+    "title": "Administradores de propiedad",
+    "subtitle": "Cuentas con rol Administrador, sus propiedades asignadas y el estado de su cuenta.",
+    "invite": "Invitar administrador",
+    "inviteEmail": "Correo del nuevo administrador",
+    "inviteSubmit": "Enviar invitación",
+    "invited": "Invitación enviada a {email}.",
+    "properties": "Propiedades asignadas",
+    "noProperties": "Sin propiedades asignadas",
+    "status": "Estado",
+    "active": "Activa",
+    "suspended": "Suspendida",
+    "empty": "Aún no hay administradores.",
+    "propertiesPending": "La asignación de propiedades se habilita cuando exista el catálogo (HU-08)."
+  },
+  "account": {
+    "menu": "Menú de cuenta"
   }
 }
