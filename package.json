@@ -2,6 +2,7 @@
   "name": "arena-property",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.3.0",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
