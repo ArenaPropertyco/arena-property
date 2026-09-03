@@ -63,7 +63,7 @@ function enviar(evento: FormSubmitEvent<typeof estado>) {
 
     <template #footer>
       <p class="text-sm text-muted">
-        {{ t('admins.propertiesPending') }}
+        {{ t('admins.propertiesHint') }}
       </p>
     </template>
   </UPageCard>

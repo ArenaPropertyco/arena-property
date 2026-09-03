@@ -27,9 +27,10 @@ const { t } = useI18n()
     :ui="{ footer: 'border-t border-default' }"
   >
     <template #header="{ collapsed }">
+      <!-- Plegada cabe el isotipo, así que la marca no desaparece del panel. -->
       <AppBrand
-        v-if="!collapsed"
         :to="inicio"
+        :solo-icono="collapsed"
       />
     </template>
 

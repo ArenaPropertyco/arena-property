@@ -63,6 +63,30 @@ describe('RT-07 · tokens de marca', () => {
     expect(faltantes).toEqual([])
   })
 
+  /**
+   * El kit de marca son diez archivos que comparten un lienzo con todas las
+   * variantes: cada uno pesa 319 K para enseñar una. Aquí solo entran los
+   * recortados. El tope corta por lo sano si alguien vuelve a copiar el original.
+   */
+  it('los recursos de marca están y ninguno arrastra el lienzo completo', () => {
+    const TOPE_KB = 60
+    const recursos = [
+      'app/assets/brand/icono-color.svg',
+      'app/assets/brand/icono-blanco.svg',
+      'app/assets/brand/logotipo-color.svg',
+      'app/assets/brand/logotipo-blanco.svg',
+      'public/favicon.svg',
+      'public/favicon.ico',
+      'public/apple-touch-icon.png',
+    ]
+
+    const pesados = recursos
+      .map(ruta => ({ ruta, kb: statSync(resolve(raiz, ruta)).size / 1024 }))
+      .filter(recurso => recurso.kb > TOPE_KB)
+
+    expect(pesados).toEqual([])
+  })
+
   it('no hay ningún color hexadecimal suelto fuera del archivo de tokens', () => {
     const fuentes = [
       ...archivosDeCodigo('app', ['.vue', '.ts', '.css']),

@@ -22,17 +22,14 @@ insert into public.user_roles (user_id, role) values
   ('b0000000-0000-4000-8000-00000000000a', 'superadmin'),
   ('b0000000-0000-4000-8000-000000000001', 'property_admin');
 
--- Propiedades A, B y C de mentira, con la política que HU-08 aplicará a la tabla real.
-create table public.prueba_propiedades (id uuid primary key, nombre text);
-insert into public.prueba_propiedades values
-  ('c0000000-0000-4000-8000-00000000000a', 'A'),
-  ('c0000000-0000-4000-8000-00000000000b', 'B'),
-  ('c0000000-0000-4000-8000-00000000000c', 'C');
-alter table public.prueba_propiedades enable row level security;
-grant select on public.prueba_propiedades to authenticated;
-create policy prueba_admin_lee_las_suyas on public.prueba_propiedades
-  for select to authenticated
-  using (private.es_superadmin() or private.administra_propiedad(id));
+-- Propiedades A, B y C reales (HU-08). Se quedan en borrador a propósito: así la
+-- única vía de verlas es la asignación, que es justo lo que esta prueba mide.
+-- Las aserciones se acotan a este prefijo porque la base puede tener propiedades
+-- reales, y una publicada la ve cualquiera: contarlas todas mediría otra cosa.
+insert into public.properties (id, name, description, area_m2, country, region, city) values
+  ('c0000000-0000-4000-8000-00000000000a', 'A', 'Propiedad A de prueba.', 100, 'CO', 'La Guajira', 'Palomino'),
+  ('c0000000-0000-4000-8000-00000000000b', 'B', 'Propiedad B de prueba.', 100, 'CO', 'La Guajira', 'Palomino'),
+  ('c0000000-0000-4000-8000-00000000000c', 'C', 'Propiedad C de prueba.', 100, 'CO', 'Magdalena', 'Santa Marta');
 
 -- ── CA-05.1 · solo el Superadmin asigna ─────────────────────────────────────
 set local role authenticated;
@@ -81,7 +78,7 @@ select is(
   'CA-05.2 · propiedades_administradas() devuelve exactamente A y B');
 
 select is(
-  (select array_agg(nombre order by nombre) from public.prueba_propiedades),
+  (select array_agg(name order by name) from public.properties where id::text like 'c0000000-%'),
   array['A', 'B'],
   'CA-05.2 · RF-05.3 · al consultar propiedades obtiene exactamente A y B, no C');
 
@@ -110,7 +107,7 @@ select lives_ok(
 set local request.jwt.claim.sub = 'b0000000-0000-4000-8000-000000000001';
 
 select is(
-  (select array_agg(nombre order by nombre) from public.prueba_propiedades),
+  (select array_agg(name order by name) from public.properties where id::text like 'c0000000-%'),
   array['A'],
   'CA-05.3 · el Administrador deja de ver B');
 

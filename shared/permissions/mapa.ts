@@ -109,6 +109,11 @@ export const COLUMNAS: readonly Columna[] = ['superadmin', 'property_admin', 'ow
  */
 export const CAPACIDADES_EN_BASE_DE_DATOS: readonly Capacidad[] = [
   'administrar_usuarios_y_roles',
+  // HU-08…HU-11 · las políticas de `properties`, `property_media` y `fractions`
+  // acotan por asignación (RF-05.3, RF-11.1) y reservan el borrado al Superadmin
+  // (RF-11.2): ampliarlas en esta pantalla no da acceso a los datos.
+  'gestionar_propiedades',
+  'eliminar_propiedades',
 ]
 
 /** Estados que condicionan una capacidad además del rol (RF-07.2b, D-31). */

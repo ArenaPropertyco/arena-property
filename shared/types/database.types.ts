@@ -94,6 +94,57 @@ export type Database = {
         }
         Relationships: []
       }
+      fractions: {
+        Row: {
+          calendar_active: boolean
+          created_at: string
+          id: string
+          list_price: number
+          number: number
+          owner_id: string | null
+          property_id: string
+          status: Database["public"]["Enums"]["fraction_status"]
+          updated_at: string
+        }
+        Insert: {
+          calendar_active?: boolean
+          created_at?: string
+          id?: string
+          list_price: number
+          number: number
+          owner_id?: string | null
+          property_id: string
+          status?: Database["public"]["Enums"]["fraction_status"]
+          updated_at?: string
+        }
+        Update: {
+          calendar_active?: boolean
+          created_at?: string
+          id?: string
+          list_price?: number
+          number?: number
+          owner_id?: string | null
+          property_id?: string
+          status?: Database["public"]["Enums"]["fraction_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fractions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fractions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -146,6 +197,69 @@ export type Database = {
         }
         Relationships: []
       }
+      properties: {
+        Row: {
+          address: string | null
+          amenities: string[]
+          area_m2: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          coming_soon: boolean
+          country: string
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          name: string
+          parking_spots: number
+          region: string
+          updated_at: string
+          video_url: string | null
+          visibility: Database["public"]["Enums"]["property_visibility"]
+        }
+        Insert: {
+          address?: string | null
+          amenities?: string[]
+          area_m2: number
+          bathrooms?: number
+          bedrooms?: number
+          city: string
+          coming_soon?: boolean
+          country: string
+          created_at?: string
+          created_by?: string | null
+          description: string
+          id?: string
+          name: string
+          parking_spots?: number
+          region: string
+          updated_at?: string
+          video_url?: string | null
+          visibility?: Database["public"]["Enums"]["property_visibility"]
+        }
+        Update: {
+          address?: string | null
+          amenities?: string[]
+          area_m2?: number
+          bathrooms?: number
+          bedrooms?: number
+          city?: string
+          coming_soon?: boolean
+          country?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          name?: string
+          parking_spots?: number
+          region?: string
+          updated_at?: string
+          video_url?: string | null
+          visibility?: Database["public"]["Enums"]["property_visibility"]
+        }
+        Relationships: []
+      }
       property_admins: {
         Row: {
           admin_id: string
@@ -174,7 +288,64 @@ export type Database = {
           revoked_at?: string | null
           revoked_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "property_admins_property_fk"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_admins_property_fk"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_media: {
+        Row: {
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["property_media_kind"]
+          path: string
+          property_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["property_media_kind"]
+          path: string
+          property_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["property_media_kind"]
+          path?: string
+          property_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_media_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_media_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_capabilities: {
         Row: {
@@ -226,12 +397,77 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      property_overview: {
+        Row: {
+          available_fractions: number | null
+          city: string | null
+          coming_soon: boolean | null
+          commercial_status: string | null
+          country: string | null
+          created_at: string | null
+          created_by: string | null
+          fraction_count: number | null
+          id: string | null
+          lowest_available_price: number | null
+          name: string | null
+          region: string | null
+          sold_fractions: number | null
+          visibility: Database["public"]["Enums"]["property_visibility"] | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       aplicar_atribucion_referido: {
         Args: { codigo: string }
         Returns: undefined
+      }
+      estado_comercial: { Args: { propiedad: string }; Returns: string }
+      fraccionar_propiedad: {
+        Args: { precios: number[]; propiedad: string }
+        Returns: {
+          calendar_active: boolean
+          created_at: string
+          id: string
+          list_price: number
+          number: number
+          owner_id: string | null
+          property_id: string
+          status: Database["public"]["Enums"]["fraction_status"]
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "fractions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      traspasar_fraccion: {
+        Args: {
+          destino_cuotas: string
+          destino_reservas: string
+          fraccion: string
+          motivo: string
+          nuevo_titular: string
+        }
+        Returns: {
+          calendar_active: boolean
+          created_at: string
+          id: string
+          list_price: number
+          number: number
+          owner_id: string | null
+          property_id: string
+          status: Database["public"]["Enums"]["fraction_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "fractions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
     }
     Enums: {
@@ -242,6 +478,9 @@ export type Database = {
         | "owner"
         | "ambassador"
         | "user"
+      fraction_status: "available" | "reserved" | "sold"
+      property_media_kind: "photo" | "video" | "floor_plan"
+      property_visibility: "draft" | "published" | "inactive"
       suspension_kind: "administrative" | "breach_or_fraud"
     }
     CompositeTypes: {
@@ -375,6 +614,9 @@ export const Constants = {
     Enums: {
       account_status: ["active", "suspended"],
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
+      fraction_status: ["available", "reserved", "sold"],
+      property_media_kind: ["photo", "video", "floor_plan"],
+      property_visibility: ["draft", "published", "inactive"],
       suspension_kind: ["administrative", "breach_or_fraud"],
     },
   },

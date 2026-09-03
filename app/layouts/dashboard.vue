@@ -35,7 +35,11 @@ const inicio = computed(() => localePath('/panel'))
 
 const secciones = computed<NavigationMenuItem[]>(() => [
   { label: t('nav.dashboard'), icon: 'i-lucide-layout-dashboard', to: localePath('/panel') },
-  { label: t('nav.properties'), icon: 'i-lucide-building-2', to: localePath('/panel/propiedades') },
+  // La pantalla de propiedades exige `gestionar_propiedades` (HU-08…HU-11): ofrecerla
+  // a quien no la tiene solo produce un rebote al panel.
+  ...(puede(roles.value, 'gestionar_propiedades')
+    ? [{ label: t('nav.properties'), icon: 'i-lucide-building-2', to: localePath('/panel/propiedades') }]
+    : []),
   { label: t('nav.calendar'), icon: 'i-lucide-calendar-days', to: localePath('/panel/calendario') },
   { label: t('nav.finance'), icon: 'i-lucide-wallet', to: localePath('/panel/finanzas') },
   { label: t('nav.notifications'), icon: 'i-lucide-bell', to: localePath('/panel/novedades') },
