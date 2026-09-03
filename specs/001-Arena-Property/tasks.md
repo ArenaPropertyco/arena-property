@@ -108,37 +108,37 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 4 · Propiedades y fracciones
 
-- [ ] **T-041 · Migración de `properties` y `property_media`** — `HU-08 · RF-08.1, RF-08.5`
+- [x] **T-041 · Migración de `properties` y `property_media`** — `HU-08 · RF-08.1, RF-08.5`
   Hecho cuando: existen con RLS y el bucket de Storage tiene políticas por rol.
-- [ ] **T-042 · Máquina de estados de visibilidad** — `HU-08 · RF-08.2, RF-08.4`
+- [x] **T-042 · Máquina de estados de visibilidad** — `HU-08 · RF-08.2, RF-08.4`
   Hecho cuando: pasa la parte de visibilidad de `CA-08.1`.
-- [ ] **T-043 · Estado comercial derivado** — `HU-08 · RF-08.3` · D-18
+- [x] **T-043 · Estado comercial derivado** — `HU-08 · RF-08.3` · D-18
   Hecho cuando: pasan `CA-08.2` y la parte comercial de `CA-08.1`.
-- [ ] **T-044 · Formulario de ficha técnica con validaciones** — `HU-08 · RF-08.1`
+- [x] **T-044 · Formulario de ficha técnica con validaciones** — `HU-08 · RF-08.1`
   Hecho cuando: pasa `CA-08.3`.
-- [ ] **T-045 · Carga múltiple de fotos, video y plano** — `HU-08 · RF-08.5` · `RT-12`
+- [x] **T-045 · Carga múltiple de fotos, video y plano** — `HU-08 · RF-08.5` · `RT-12`
   Hecho cuando: los archivos se suben a Storage y se sirven con `@nuxt/image`.
-- [ ] **T-046 · Vínculo de la propiedad con su administrador creador** — `HU-08 · RF-08.6`
+- [x] **T-046 · Vínculo de la propiedad con su administrador creador** — `HU-08 · RF-08.6`
   Hecho cuando: la propiedad creada queda asignada al administrador que la creó.
-- [ ] **T-047 · Exclusión de borradores del catálogo** — `HU-08 · RF-08.2`
+- [x] **T-047 · Exclusión de borradores del catálogo** — `HU-08 · RF-08.2`
   Hecho cuando: pasa `CA-08.4`.
-- [ ] **T-048 · Migración de `fractions` con `calendar_active`** — `HU-09 · RF-09.1, RF-09.2` · D-31
+- [x] **T-048 · Migración de `fractions` con `calendar_active`** — `HU-09 · RF-09.1, RF-09.2` · D-31
   Hecho cuando: existe con RLS, numeración única 1..8 y precio mayor que cero.
-- [ ] **T-049 · Fraccionamiento atómico en 8** — `HU-09 · RF-09.3`
+- [x] **T-049 · Fraccionamiento atómico en 8** — `HU-09 · RF-09.3`
   Hecho cuando: pasa `CA-09.1`.
-- [ ] **T-050 · Máquina de estados de fracción** — `HU-09 · RF-09.2`
+- [x] **T-050 · Máquina de estados de fracción** — `HU-09 · RF-09.2`
   Hecho cuando: pasan `CA-09.2` y `CA-09.3`.
-- [ ] **T-051 · Recálculo del estado comercial al cambiar una fracción** — `HU-09 · RF-09.4`
+- [x] **T-051 · Recálculo del estado comercial al cambiar una fracción** — `HU-09 · RF-09.4`
   Hecho cuando: pasa `CA-09.4`.
-- [ ] **T-052 · Traspaso de titular por el Superadmin** — `HU-09 · RF-09.5` · D-17
+- [x] **T-052 · Traspaso de titular por el Superadmin** — `HU-09 · RF-09.5` · D-17
   Hecho cuando: pasa `CA-09.5`.
-- [ ] **T-053 · Vista global de propiedades del Superadmin** — `HU-10 · RF-10.1, RF-10.3`
+- [x] **T-053 · Vista global de propiedades del Superadmin** — `HU-10 · RF-10.1, RF-10.3`
   Hecho cuando: pasan `CA-10.1` y `CA-10.3`.
-- [ ] **T-054 · Composable de filtros reutilizable** — `HU-10 · RF-10.2`
+- [x] **T-054 · Composable de filtros reutilizable** — `HU-10 · RF-10.2`
   Hecho cuando: pasa `CA-10.2`.
-- [ ] **T-055 · Ausencia de borrado físico en RLS y API** — `HU-11 · RF-11.2`
+- [x] **T-055 · Ausencia de borrado físico en RLS y API** — `HU-11 · RF-11.2`
   Hecho cuando: pasa `CA-11.1`.
-- [ ] **T-056 · Edición e inactivación conservando histórico** — `HU-11 · RF-11.1, RF-11.3, RF-11.4`
+- [x] **T-056 · Edición e inactivación conservando histórico** — `HU-11 · RF-11.1, RF-11.3, RF-11.4`
   Hecho cuando: pasan `CA-11.2` y `CA-11.3`.
 
 ## Paso 5 · Venta y plan de pagos

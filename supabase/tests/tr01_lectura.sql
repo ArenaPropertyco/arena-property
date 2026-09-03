@@ -14,6 +14,11 @@ insert into public.user_roles (user_id, role) values
   ('d0000000-0000-4000-8000-00000000000a', 'superadmin'),
   ('d0000000-0000-4000-8000-000000000001', 'property_admin'),
   ('d0000000-0000-4000-8000-000000000002', 'owner');
+-- La asignación referencia una propiedad real desde HU-08; la segunda propiedad
+-- solo aparece en el registro de auditoría, que no lleva clave foránea (RF-A.2).
+insert into public.properties (id, name, description, area_m2, country, region, city) values
+  ('11111111-1111-4111-8111-111111111111', 'A', 'Propiedad A de prueba.', 100, 'CO', 'La Guajira', 'Palomino');
+
 insert into public.property_admins (admin_id, property_id, assigned_by) values
   ('d0000000-0000-4000-8000-000000000001', '11111111-1111-4111-8111-111111111111',
    'd0000000-0000-4000-8000-00000000000a');

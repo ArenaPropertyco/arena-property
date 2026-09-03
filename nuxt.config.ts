@@ -17,6 +17,19 @@ export default defineNuxtConfig({
     '@nuxt/test-utils/module',
   ],
 
+  // RT-07 · el icono de marca en la pestaña y en la pantalla de inicio del móvil.
+  // El `.ico` lleva 16, 32 y 48 px para los navegadores que aún lo piden; el `.svg`
+  // es el que usan los modernos y no pixela en ninguna densidad de pantalla.
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' },
+      ],
+    },
+  },
+
   css: ['~/assets/css/main.css'],
 
   site: {

@@ -4,6 +4,7 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import RegistroForm from '~/components/RegistroForm.vue'
 import IngresoForm from '~/components/IngresoForm.vue'
 import AuthGoogleButton from '~/components/AuthGoogleButton.vue'
+import AppBrand from '~/components/AppBrand.vue'
 import UserMenu from '~/components/UserMenu.vue'
 import AccountsRolesTable from '~/components/AccountsRolesTable.vue'
 import AdminInviteForm from '~/components/AdminInviteForm.vue'
@@ -66,6 +67,52 @@ describe('RegistroForm', () => {
 
     expect(formulario.emitted('google')).toHaveLength(1)
     expect(formulario.emitted('submit')).toBeUndefined()
+  })
+})
+
+/**
+ * RT-07 · la marca es el logotipo del manual, no texto imitándolo. Se pinta la
+ * variante a color en los dos temas: en oscuro no se cambia por la blanca.
+ */
+describe('AppBrand', () => {
+  it('muestra el logotipo a color en todo tema, nunca la variante blanca', async () => {
+    const marca = await mountSuspended(AppBrand, { props: { to: '/' } })
+    const fuentes = marca.findAll('img').map(img => img.attributes('src') ?? '')
+
+    expect(fuentes).toHaveLength(1)
+    expect(fuentes[0]).toContain('logotipo-color')
+    expect(fuentes.some(src => src.includes('blanco'))).toBe(false)
+  })
+
+  /**
+   * La barra lateral del panel es redimensionable: si el logotipo llevara su
+   * ancho puesto, al estrecharla desbordaría el hueco en vez de encogerse.
+   */
+  it('RT-07 · el logotipo se ajusta al hueco en lugar de imponer su ancho', async () => {
+    const marca = await mountSuspended(AppBrand, { props: { to: '/' } })
+    const clases = marca.find('img').classes()
+
+    expect(clases).toContain('w-full')
+    expect(clases).toContain('object-contain')
+    expect(clases.some(clase => /^w-\d/.test(clase))).toBe(false)
+  })
+
+  it('en modo solo icono cambia el logotipo por el isotipo', async () => {
+    const marca = await mountSuspended(AppBrand, { props: { to: '/', soloIcono: true } })
+    const fuentes = marca.findAll('img').map(img => img.attributes('src') ?? '')
+
+    expect(fuentes.every(src => src.includes('icono-'))).toBe(true)
+    expect(fuentes.some(src => src.includes('logotipo-'))).toBe(false)
+  })
+
+  it('el enlace nombra a la marca y las imágenes no repiten ese nombre', async () => {
+    const marca = await mountSuspended(AppBrand, { props: { to: '/' } })
+
+    expect(marca.find('[data-test="marca"]').attributes('aria-label')).toBe('Arena Property')
+    for (const img of marca.findAll('img')) {
+      expect(img.attributes('alt')).toBe('')
+      expect(img.attributes('aria-hidden')).toBe('true')
+    }
   })
 })
 
