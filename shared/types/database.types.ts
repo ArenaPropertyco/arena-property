@@ -145,6 +145,219 @@ export type Database = {
           },
         ]
       }
+      payment_events: {
+        Row: {
+          emitted_at: string
+          id: string
+          kind: Database["public"]["Enums"]["payment_event_kind"]
+          payload: Json
+          plan_id: string
+          property_id: string
+        }
+        Insert: {
+          emitted_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["payment_event_kind"]
+          payload?: Json
+          plan_id: string
+          property_id: string
+        }
+        Update: {
+          emitted_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["payment_event_kind"]
+          payload?: Json
+          plan_id?: string
+          property_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_events_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plan_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_events_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_plans: {
+        Row: {
+          agreed_price: number
+          closed_at: string
+          closed_by: string | null
+          created_at: string
+          fraction_id: string
+          id: string
+          invitation_id: string
+          owner_id: string
+          property_id: string
+          referral_code: string | null
+          updated_at: string
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        Insert: {
+          agreed_price: number
+          closed_at?: string
+          closed_by?: string | null
+          created_at?: string
+          fraction_id: string
+          id?: string
+          invitation_id: string
+          owner_id: string
+          property_id: string
+          referral_code?: string | null
+          updated_at?: string
+          void_reason?: string | null
+          voided_at?: string | null
+          voided_by?: string | null
+        }
+        Update: {
+          agreed_price?: number
+          closed_at?: string
+          closed_by?: string | null
+          created_at?: string
+          fraction_id?: string
+          id?: string
+          invitation_id?: string
+          owner_id?: string
+          property_id?: string
+          referral_code?: string | null
+          updated_at?: string
+          void_reason?: string | null
+          voided_at?: string | null
+          voided_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_plans_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_plans_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: true
+            referencedRelation: "purchase_invitations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_plans_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_plans_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          note: string | null
+          paid_on: string
+          payment_method: string
+          plan_id: string
+          property_id: string
+          receipt_path: string
+          registered_by: string | null
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          paid_on: string
+          payment_method: string
+          plan_id: string
+          property_id: string
+          receipt_path: string
+          registered_by?: string | null
+          void_reason?: string | null
+          voided_at?: string | null
+          voided_by?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          paid_on?: string
+          payment_method?: string
+          plan_id?: string
+          property_id?: string
+          receipt_path?: string
+          registered_by?: string | null
+          void_reason?: string | null
+          voided_at?: string | null
+          voided_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plan_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -347,6 +560,82 @@ export type Database = {
           },
         ]
       }
+      purchase_invitations: {
+        Row: {
+          accepted_at: string | null
+          agreed_price: number
+          cancel_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          fraction_id: string
+          id: string
+          invited_by: string | null
+          invitee_email: string
+          invitee_id: string | null
+          property_id: string
+          referral_code: string | null
+          status: Database["public"]["Enums"]["purchase_invitation_status"]
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          agreed_price: number
+          cancel_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          created_at?: string
+          fraction_id: string
+          id?: string
+          invited_by?: string | null
+          invitee_email: string
+          invitee_id?: string | null
+          property_id: string
+          referral_code?: string | null
+          status?: Database["public"]["Enums"]["purchase_invitation_status"]
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          agreed_price?: number
+          cancel_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          created_at?: string
+          fraction_id?: string
+          id?: string
+          invited_by?: string | null
+          invitee_email?: string
+          invitee_id?: string | null
+          property_id?: string
+          referral_code?: string | null
+          status?: Database["public"]["Enums"]["purchase_invitation_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_invitations_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_invitations_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_invitations_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       role_capabilities: {
         Row: {
           capability: string
@@ -397,6 +686,59 @@ export type Database = {
       }
     }
     Views: {
+      payment_plan_overview: {
+        Row: {
+          agreed_price: number | null
+          balance: number | null
+          calendar_active: boolean | null
+          closed_at: string | null
+          closed_by: string | null
+          fraction_id: string | null
+          fraction_number: number | null
+          id: string | null
+          invitation_id: string | null
+          owner_id: string | null
+          paid_total: number | null
+          payment_count: number | null
+          property_id: string | null
+          property_name: string | null
+          referral_code: string | null
+          status: string | null
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_plans_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_plans_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: true
+            referencedRelation: "purchase_invitations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_plans_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_plans_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_overview: {
         Row: {
           available_fractions: number | null
@@ -418,11 +760,90 @@ export type Database = {
       }
     }
     Functions: {
+      anular_abono: {
+        Args: { abono: string; motivo: string }
+        Returns: {
+          amount: number
+          created_at: string
+          id: string
+          note: string | null
+          paid_on: string
+          payment_method: string
+          plan_id: string
+          property_id: string
+          receipt_path: string
+          registered_by: string | null
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      anular_compra: {
+        Args: { motivo: string; plan: string }
+        Returns: {
+          agreed_price: number
+          closed_at: string
+          closed_by: string | null
+          created_at: string
+          fraction_id: string
+          id: string
+          invitation_id: string
+          owner_id: string
+          property_id: string
+          referral_code: string | null
+          updated_at: string
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "payment_plans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       aplicar_atribucion_referido: {
         Args: { codigo: string }
         Returns: undefined
       }
+      cerrar_compra: {
+        Args: { invitacion: string; precio_pactado?: number }
+        Returns: {
+          agreed_price: number
+          closed_at: string
+          closed_by: string | null
+          created_at: string
+          fraction_id: string
+          id: string
+          invitation_id: string
+          owner_id: string
+          property_id: string
+          referral_code: string | null
+          updated_at: string
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "payment_plans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      derivar_estado_del_plan: {
+        Args: { abonado: number; anulado: boolean; precio: number }
+        Returns: string
+      }
       estado_comercial: { Args: { propiedad: string }; Returns: string }
+      estado_del_plan: { Args: { plan: string }; Returns: string }
       fraccionar_propiedad: {
         Args: { precios: number[]; propiedad: string }
         Returns: {
@@ -479,8 +900,10 @@ export type Database = {
         | "ambassador"
         | "user"
       fraction_status: "available" | "reserved" | "sold"
+      payment_event_kind: "payment_completed" | "purchase_voided"
       property_media_kind: "photo" | "video" | "floor_plan"
       property_visibility: "draft" | "published" | "inactive"
+      purchase_invitation_status: "pending" | "accepted" | "cancelled"
       suspension_kind: "administrative" | "breach_or_fraud"
     }
     CompositeTypes: {
@@ -615,8 +1038,10 @@ export const Constants = {
       account_status: ["active", "suspended"],
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
       fraction_status: ["available", "reserved", "sold"],
+      payment_event_kind: ["payment_completed", "purchase_voided"],
       property_media_kind: ["photo", "video", "floor_plan"],
       property_visibility: ["draft", "published", "inactive"],
+      purchase_invitation_status: ["pending", "accepted", "cancelled"],
       suspension_kind: ["administrative", "breach_or_fraud"],
     },
   },

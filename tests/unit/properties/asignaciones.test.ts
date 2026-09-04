@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   CLAVES_DE_VALIDACION_DE_ASIGNACION,
   cambiosDeAsignacion,
+  cuentasPromovibles,
+  filtrarCuentas,
   hayCambios,
   validarAsignacion,
 } from '#shared/properties/asignaciones'
@@ -98,5 +100,30 @@ describe('CA-05.1 · validación de la asignación', () => {
     const claves = validarAsignacion([SOFIA], candidatos, { esSuperadmin: false }).map(e => e.message)
 
     expect(claves.every(clave => CLAVES_DE_VALIDACION_DE_ASIGNACION.includes(clave))).toBe(true)
+  })
+})
+
+describe('RF-05.1 · alta de Administrador desde una cuenta existente', () => {
+  const cuentas = [
+    { id: 'u1', email: 'ana@ejemplo.com', fullName: 'Ana Pérez', status: 'active' as const, roles: ['user' as const] },
+    { id: 'u2', email: 'luis@ejemplo.com', fullName: null, status: 'active' as const, roles: ['user' as const, 'property_admin' as const] },
+    { id: 'u3', email: 'sofia@ejemplo.com', fullName: 'Sofía', status: 'active' as const, roles: ['ambassador' as const] },
+    { id: 'u4', email: 'raul@ejemplo.com', fullName: 'Raúl', status: 'suspended' as const, roles: ['user' as const] },
+    { id: 'u5', email: 'super@arena.co', fullName: 'Super', status: 'active' as const, roles: ['superadmin' as const] },
+  ]
+
+  it('CA-05.1 · solo son promovibles las cuentas activas que aún no son Administrador', () => {
+    expect(cuentasPromovibles(cuentas).map(c => c.id)).toEqual(['u1', 'u5'])
+  })
+
+  it('RF-07.1 · un Embajador no se convierte en Administrador: la combinación no está permitida', () => {
+    expect(cuentasPromovibles(cuentas).some(c => c.id === 'u3')).toBe(false)
+  })
+
+  it('busca por nombre o correo, sin acentos ni mayúsculas', () => {
+    expect(filtrarCuentas(cuentas, 'PEREZ').map(c => c.id)).toEqual(['u1'])
+    expect(filtrarCuentas(cuentas, 'ejemplo').map(c => c.id)).toEqual(['u1', 'u2', 'u3', 'u4'])
+    expect(filtrarCuentas(cuentas, 'sofia').map(c => c.id)).toEqual(['u3'])
+    expect(filtrarCuentas(cuentas, '   ').length).toBe(5)
   })
 })

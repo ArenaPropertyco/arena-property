@@ -6,6 +6,7 @@ import { pesos } from '#shared/money/importe'
 import type { EstadoDeFraccion } from '#shared/properties/fracciones'
 import { TRANSICIONES_DE_FRACCION, TRANSICIONES_DE_SUPERADMIN } from '#shared/properties/fracciones'
 import type { FraccionListada } from '#shared/properties/vistas'
+import { puedeInvitarse } from '#shared/purchases/invitaciones'
 
 /**
  * HU-09 · RF-09.1, RF-09.2, RF-09.5 — las 8 fracciones de una propiedad.
@@ -26,6 +27,10 @@ const props = defineProps<{
 defineEmits<{
   transicion: [{ id: string, estado: EstadoDeFraccion }]
   traspasar: [string]
+  /** HU-06 · RF-06.1 · invitar a un comprador a esta fracción. */
+  invitar: [string]
+  /** HU-58 · abrir el plan de pagos de la fracción vendida. */
+  abrirPlan: [string]
 }>()
 
 const { t, locale } = useI18n()
@@ -46,6 +51,11 @@ function destinosDe(fraccion: FraccionListada): EstadoDeFraccion[] {
   const extra = props.esSuperadmin ? (TRANSICIONES_DE_SUPERADMIN[fraccion.status] ?? []) : []
 
   return [...normales, ...extra]
+}
+
+/** RF-06.1 · RF-06.5 · se invita sobre disponible o reservada; sobre vendida, nunca. */
+function puedeInvitar(fraccion: FraccionListada): boolean {
+  return props.puedeGestionar && puedeInvitarse(fraccion.status)
 }
 
 /** D-17 · el traspaso solo existe sobre una fracción vendida y solo para el Superadmin. */
@@ -138,6 +148,26 @@ const columnas = computed<TableColumn<FraccionListada>[]>(() => [
               ? 'properties.fractions.returnToAvailable'
               : ETIQUETA_DE_ACCION[destino])"
             @click="$emit('transicion', { id: row.original.id, estado: destino })"
+          />
+
+          <UButton
+            v-if="puedeInvitar(row.original)"
+            variant="ghost"
+            size="xs"
+            icon="i-lucide-mail-plus"
+            :data-test="`fraccion-${row.original.number}-invitar`"
+            :label="t('properties.fractions.invite')"
+            @click="$emit('invitar', row.original.id)"
+          />
+
+          <UButton
+            v-if="row.original.planId"
+            variant="ghost"
+            size="xs"
+            icon="i-lucide-receipt"
+            :data-test="`fraccion-${row.original.number}-plan`"
+            :label="t('properties.fractions.plan')"
+            @click="$emit('abrirPlan', row.original.planId)"
           />
 
           <UButton

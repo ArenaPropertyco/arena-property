@@ -51,6 +51,43 @@ describe('RF-04.4 · código de referido', () => {
   })
 })
 
+describe('CA-04.3 · la atribución viaja al proveedor según el código', () => {
+  async function registrar(pagina: Awaited<ReturnType<typeof mountSuspended>>, codigo: string) {
+    await pagina.find('[data-test="campo-email"] input, input[type="email"]').setValue('ana@ejemplo.com')
+    const contrasenas = pagina.findAll('input[autocomplete="new-password"]')
+    await contrasenas[0]!.setValue('Arena2026')
+    await contrasenas[1]!.setValue('Arena2026')
+    await pagina.find('[data-test="campo-referido"] input, input[autocomplete="off"]').setValue(codigo)
+    await pagina.find('form').trigger('submit')
+    await flushPromises()
+  }
+
+  it('CA-04.3 · con código válido, el registro lleva el código normalizado para que la base lo persista', async () => {
+    signUp.mockResolvedValueOnce({ data: {}, error: null })
+    const pagina = await mountSuspended(Registro)
+
+    await registrar(pagina, 'arena-7k2q')
+
+    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({
+      email: 'ana@ejemplo.com',
+      options: expect.objectContaining({ data: expect.objectContaining({ referral_code: 'ARENA-7K2Q' }) }),
+    }))
+  })
+
+  it('CA-04.3 · con código inválido, el registro procede sin atribución', async () => {
+    signUp.mockClear()
+    signUp.mockResolvedValueOnce({ data: {}, error: null })
+    const pagina = await mountSuspended(Registro)
+
+    await registrar(pagina, '!!')
+
+    expect(signUp).toHaveBeenCalledTimes(1)
+    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({
+      options: expect.objectContaining({ data: expect.objectContaining({ referral_code: null }) }),
+    }))
+  })
+})
+
 describe('RF-04.5 · errores de autenticación traducidos', () => {
   it('al ingresar con credenciales inválidas muestra el mensaje traducido, no el del proveedor', async () => {
     signInWithPassword.mockResolvedValueOnce({

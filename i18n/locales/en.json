@@ -167,7 +167,23 @@
     "active": "Active",
     "suspended": "Suspended",
     "empty": "No administrators yet.",
-    "propertiesHint": "Properties are assigned from each property sheet, and only the Superadmin can do it."
+    "propertiesHint": "Properties are assigned here or from each property sheet; only the Superadmin can do it.",
+    "promote": "Grant the role to an existing account",
+    "promoteHint": "Search registered accounts by name or email and grant them the Administrator role.",
+    "search": "Search account",
+    "candidates": "Account",
+    "noCandidates": "No accounts can receive the role.",
+    "noMatches": "No account matches the search.",
+    "promoteSubmit": "Grant Administrator role",
+    "promoted": "Administrator role granted to {email}.",
+    "promoteFailed": "We could not grant the role.",
+    "manageProperties": "Assign properties",
+    "propertiesFor": "Properties of {email}",
+    "propertiesFormHint": "Check the properties they manage. Removing one keeps the history.",
+    "noPropertiesAvailable": "No properties yet.",
+    "saveProperties": "Save assignments",
+    "propertiesUpdated": "Administrator's properties updated.",
+    "propertiesFailed": "We could not update the properties."
   },
   "account": {
     "menu": "Account menu"
@@ -274,7 +290,9 @@
       "release": "Release reservation",
       "sell": "Mark as sold",
       "returnToAvailable": "Return to available",
-      "transfer": "Transfer owner"
+      "transfer": "Transfer owner",
+      "invite": "Link owner",
+      "plan": "Payment plan"
     },
     "transfer": {
       "title": "Owner transfer",
@@ -330,6 +348,132 @@
       "fractioned": "The 8 fractions were created.",
       "fractionUpdated": "Fraction updated.",
       "adminsUpdated": "Property administrators updated."
+    }
+  },
+  "purchases": {
+    "title": "Invited buyers",
+    "subtitle": "Invitations to buy a fraction and their status.",
+    "invite": "Link owner",
+    "inviteTitle": "Link an owner to fraction {number}/8",
+    "inviteHint": "Enter the buyer's email or pick an existing account. Without an account, one is created and they get an email to sign in. With \"Record the sale now\" they become the owner immediately and their payment plan is created.",
+    "existingAccounts": "Existing accounts",
+    "knownAccount": "Existing account: {name}. It will be linked without creating another.",
+    "newAccount": "No account yet: one will be created with this email.",
+    "closeNow": "Record the sale now",
+    "closeNowHint": "Grants ownership immediately and creates the payment plan. Unchecked, it stays as a pending invitation.",
+    "linkSubmit": "Link as owner",
+    "email": "Buyer's email",
+    "agreedPrice": "Agreed price",
+    "agreedPriceHint": "Frozen in the payment plan, even if the list price changes.",
+    "referralCode": "Ambassador referral code",
+    "referralCodeHint": "Optional. Stays on the buyer's account and carries over to the purchase.",
+    "referredBy": "Referred by {code}",
+    "send": "Send invitation",
+    "empty": "No invitations yet.",
+    "fraction": "Fraction",
+    "invitee": "Invitee",
+    "status": "Status",
+    "noAccount": "No account yet",
+    "close": "Record sale",
+    "closeHint": "Grants ownership and creates the payment plan. The calendar activates only once the payment is complete.",
+    "cancel": "Cancel invitation",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "cancelled": "Cancelled",
+    "validation": {
+      "not_property_admin": "Only the assigned Administrator can invite for this property.",
+      "fraction_not_invitable": "That fraction no longer accepts invitations.",
+      "email_invalid": "Enter a valid email.",
+      "price_not_positive": "The agreed price must be greater than zero.",
+      "referral_code_format": "The referral code format is not valid."
+    },
+    "errors": {
+      "invite_failed": "We could not send the invitation.",
+      "already_pending": "That fraction already has a pending invitation.",
+      "close_failed": "We could not record the sale. Check that the invitee already has an account.",
+      "cancel_failed": "We could not cancel the invitation."
+    },
+    "messages": {
+      "invited": "Invitation sent to {email}.",
+      "closed": "Sale recorded: the fraction now has an owner and a payment plan.",
+      "cancelled": "Invitation cancelled.",
+      "linked": "{email} now owns fraction {number}/8 and has a payment plan."
+    }
+  },
+  "payments": {
+    "title": "Payment plan",
+    "subtitle": "Payments recorded against the fraction's agreed price.",
+    "open": "Payment plan",
+    "notFound": "We could not find that payment plan, or you do not have access to it.",
+    "fractionOf": "Fraction {number}/8 · {property}",
+    "owner": "Owner",
+    "agreedPrice": "Agreed price",
+    "paidTotal": "Paid",
+    "balance": "Outstanding balance",
+    "status": {
+      "label": "Plan status",
+      "reserved": "Reserved",
+      "in_progress": "Payment in progress",
+      "completed": "Payment completed",
+      "voided": "Voided"
+    },
+    "calendar": {
+      "label": "Calendar",
+      "active": "Active",
+      "inactive": "Inactive",
+      "missing": "{amount} left to activate the calendar.",
+      "ready": "Payment complete: the right of use is active."
+    },
+    "register": "Record payment",
+    "amount": "Amount",
+    "paidOn": "Payment date",
+    "method": "Payment method",
+    "methods": {
+      "transfer": "Bank transfer",
+      "cash": "Cash",
+      "card": "Card",
+      "check": "Check",
+      "other": "Other"
+    },
+    "receipt": "Receipt",
+    "receiptHint": "Image or PDF, up to 10 MB. Required.",
+    "note": "Note",
+    "noteHint": "Optional",
+    "submit": "Save payment",
+    "empty": "No payments yet.",
+    "openReceipt": "View receipt",
+    "void": "Void",
+    "voided": "Voided",
+    "voidTitle": "Void payment",
+    "voidHint": "The payment is not deleted: it is voided with this reason and the plan status is recalculated.",
+    "reason": "Reason",
+    "reasonHint": "Kept in the audit log.",
+    "confirmVoid": "Void with this reason",
+    "voidPurchase": "Void purchase",
+    "voidPurchaseTitle": "Void the purchase",
+    "voidPurchaseHint": "Superadmin operation. The calendar is deactivated, ownership is reverted and the fraction becomes available again.",
+    "voidedPurchase": "Purchase voided on {date}: {reason}",
+    "validation": {
+      "amount_not_positive": "The amount must be a whole number of pesos greater than zero.",
+      "overpayment": "That payment would exceed the agreed price. Fix the amount.",
+      "date_invalid": "Enter the payment date.",
+      "method_required": "Choose the payment method.",
+      "receipt_required": "Attach the receipt.",
+      "receipt_format": "The receipt must be an image or a PDF.",
+      "receipt_too_large": "The receipt is larger than 10 MB.",
+      "receipt_empty": "The file is empty.",
+      "plan_not_open": "This plan no longer accepts payments.",
+      "reason_required": "Write the reason."
+    },
+    "errors": {
+      "save_failed": "We could not save the payment.",
+      "void_failed": "We could not void the payment.",
+      "void_purchase_failed": "We could not void the purchase."
+    },
+    "messages": {
+      "registered": "Payment recorded.",
+      "voided": "Payment voided; the plan status was recalculated.",
+      "purchaseVoided": "Purchase voided."
     }
   }
 }

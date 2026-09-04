@@ -36,12 +36,14 @@ export function usePropiedad(id: Ref<string>) {
         return null
       }
 
-      const [propiedad, fracciones, medios, asignaciones] = await Promise.all([
+      const [propiedad, fracciones, medios, asignaciones, planes] = await Promise.all([
         client.from('properties').select('*').eq('id', id.value).maybeSingle(),
         client.from('fractions').select('*').eq('property_id', id.value).order('number'),
         client.from('property_media').select('*').eq('property_id', id.value).order('sort_order'),
         // HU-05 · RF-05.4 · quién la administra hoy; el formulario las trae marcadas.
         client.from('property_admins').select('admin_id').eq('property_id', id.value).is('revoked_at', null),
+        // HU-58 · el plan de pagos vigente de cada fracción vendida.
+        client.from('payment_plans').select('id, fraction_id').eq('property_id', id.value).is('voided_at', null),
       ])
 
       if (!propiedad.data) {
@@ -51,6 +53,7 @@ export function usePropiedad(id: Ref<string>) {
       const derivado = await client.rpc('estado_comercial', { propiedad: id.value })
 
       const administradores = (asignaciones.data ?? []).map(fila => fila.admin_id)
+      const planPorFraccion = new Map((planes.data ?? []).map(plan => [plan.fraction_id, plan.id]))
 
       // Titulares de fracción y administradores asignados se resuelven de una vez:
       // los dos necesitan el mismo nombre visible y son la misma tabla.
@@ -114,6 +117,7 @@ export function usePropiedad(id: Ref<string>) {
           ownerId: fraccion.owner_id,
           ownerLabel: fraccion.owner_id ? etiquetaPorCuenta.get(fraccion.owner_id) ?? null : null,
           calendarActive: fraccion.calendar_active,
+          planId: planPorFraccion.get(fraccion.id) ?? null,
         })),
         medios: (medios.data ?? []).map<MedioConUrl>(medio => ({
           id: medio.id,

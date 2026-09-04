@@ -71,7 +71,7 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
   Hecho cuando: pasa `CA-04.1`.
 - [x] **T-023 · Verificación de correo y guarda de rutas privadas** — `HU-04 · RF-04.2`
   Hecho cuando: pasa `CA-04.4`.
-- [ ] **T-024 · Página de registro con código de referido** — `HU-04 · RF-04.4`
+- [x] **T-024 · Página de registro con código de referido** — `HU-04 · RF-04.4`
   Hecho cuando: pasa `CA-04.3` con código válido e inválido.
 - [x] **T-025 · Traducción de errores de autenticación** — `HU-04 · RF-04.5`
   Hecho cuando: ningún mensaje expone detalle técnico y las claves están en ambos locales.
@@ -143,31 +143,31 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 5 · Venta y plan de pagos
 
-- [ ] **T-057 · Migración de `purchase_invitations`** — `HU-06 · RF-06.1`
+- [x] **T-057 · Migración de `purchase_invitations`** — `HU-06 · RF-06.1`
   Hecho cuando: existe con RLS y valida el estado de la fracción invitada.
-- [ ] **T-058 · Invitación por correo del administrador asignado** — `HU-06 · RF-06.1`
+- [x] **T-058 · Invitación por correo del administrador asignado** — `HU-06 · RF-06.1`
   Hecho cuando: pasa `CA-06.1`.
-- [ ] **T-059 · Titularidad al cerrar la compra** — `HU-06 · RF-06.2` · D-31
+- [x] **T-059 · Titularidad al cerrar la compra** — `HU-06 · RF-06.2` · D-31
   Hecho cuando: pasa `CA-06.2` (rol Propietario, fracción vendida y calendario inactivo).
-- [ ] **T-060 · Arrastre de la atribución de referido a la compra** — `HU-06 · RF-06.4`
+- [x] **T-060 · Arrastre de la atribución de referido a la compra** — `HU-06 · RF-06.4`
   Hecho cuando: la atribución del prospecto queda vinculada a la compra creada.
-- [ ] **T-061 · Bloqueo de reinvitación sobre fracción vendida** — `HU-06 · RF-06.5`
+- [x] **T-061 · Bloqueo de reinvitación sobre fracción vendida** — `HU-06 · RF-06.5`
   Hecho cuando: pasa `CA-06.4`.
-- [ ] **T-062 · Migración de `payment_plans` con precio congelado** — `HU-58 · RF-58.1`
+- [x] **T-062 · Migración de `payment_plans` con precio congelado** — `HU-58 · RF-58.1`
   Hecho cuando: existe con RLS y pasa `CA-58.5`.
-- [ ] **T-063 · Migración de `payments` con comprobante obligatorio** — `HU-58 · RF-58.2`
+- [x] **T-063 · Migración de `payments` con comprobante obligatorio** — `HU-58 · RF-58.2`
   Hecho cuando: pasa `CA-58.6`.
-- [ ] **T-064 · Derivación de los estados del plan** — `HU-58 · RF-58.3`
+- [x] **T-064 · Derivación de los estados del plan** — `HU-58 · RF-58.3`
   Hecho cuando: pasa `CA-58.1`.
-- [ ] **T-065 · Rechazo de sobrepago** — `HU-58 · RF-58.4`
+- [x] **T-065 · Rechazo de sobrepago** — `HU-58 · RF-58.4`
   Hecho cuando: pasa `CA-58.2`.
-- [ ] **T-066 · Anulación de abono con recálculo de estado** — `HU-58 · RF-58.5`
+- [x] **T-066 · Anulación de abono con recálculo de estado** — `HU-58 · RF-58.5`
   Hecho cuando: pasa `CA-58.3`.
-- [ ] **T-067 · Evento idempotente de pago completado** — `HU-58 · RF-58.6`
+- [x] **T-067 · Evento idempotente de pago completado** — `HU-58 · RF-58.6`
   Hecho cuando: pasa `CA-58.4`.
-- [ ] **T-068 · Interruptor de calendario derivado del plan** — `HU-58 · RF-58.7` · D-31
+- [x] **T-068 · Interruptor de calendario derivado del plan** — `HU-58 · RF-58.7` · D-31
   Hecho cuando: pasan `CA-58.8` y `CA-58.9`.
-- [ ] **T-069 · Anulación de compra con todos sus efectos** — `HU-58 · RF-58.8`
+- [x] **T-069 · Anulación de compra con todos sus efectos** — `HU-58 · RF-58.8`
   Hecho cuando: pasa `CA-58.7`.
 - [ ] **T-070 · Vista de lectura del plan para el Propietario** — `HU-58 · RF-58.9`
   Hecho cuando: muestra el saldo pendiente y qué falta para activar el calendario.

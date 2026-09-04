@@ -2,7 +2,7 @@
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import type { DatosDeRegistro } from '#shared/identity/registro'
 import {
-  esCodigoReferidoValido,
+  atribucionDeRegistro,
   normalizarCodigoReferido,
   normalizarEmail,
   validarRegistro,
@@ -42,17 +42,24 @@ const estado = reactive<DatosDeRegistro>({
   referralCode: normalizarCodigoReferido(props.prellenado) ?? '',
 })
 
+/**
+ * CA-04.3 · un código de referido con formato inválido no bloquea el registro: se
+ * descarta, el aviso lo dice y la cuenta se crea sin atribución. Por eso ese error
+ * del esquema no se pinta como error de campo.
+ */
 function validar(datos: Partial<DatosDeRegistro>): FormError[] {
   return validarRegistro({
     email: datos.email ?? '',
     password: datos.password ?? '',
     passwordConfirm: datos.passwordConfirm ?? '',
     referralCode: datos.referralCode ?? '',
-  }).map(error => ({ name: error.name, message: t(error.message) }))
+  })
+    .filter(error => error.name !== 'referralCode')
+    .map(error => ({ name: error.name, message: t(error.message) }))
 }
 
 const codigo = computed(() => normalizarCodigoReferido(estado.referralCode))
-const codigoValido = computed(() => esCodigoReferidoValido(codigo.value))
+const atribucion = computed(() => atribucionDeRegistro(estado.referralCode))
 
 function enviar(evento: FormSubmitEvent<DatosDeRegistro>) {
   if (props.enviando) {
@@ -61,7 +68,7 @@ function enviar(evento: FormSubmitEvent<DatosDeRegistro>) {
   emit('submit', {
     email: normalizarEmail(evento.data.email),
     password: evento.data.password,
-    referralCode: codigoValido.value ? codigo.value : null,
+    referralCode: atribucion.value.referralCode,
   })
 }
 </script>
@@ -132,7 +139,7 @@ function enviar(evento: FormSubmitEvent<DatosDeRegistro>) {
 
     <ReferralCodeNotice
       :codigo="codigo"
-      :valido="codigoValido"
+      :valido="atribucion.referralCode !== null"
     />
 
     <AuthErrorAlert :mensaje="error" />

@@ -79,3 +79,29 @@ export function validarRegistro(datos: DatosDeRegistro): ErrorDeCampo[] {
 
   return errores
 }
+
+/** Aviso que la interfaz muestra sobre el código escrito (CA-04.3: «se informa»). */
+export type AvisoDeReferido = 'auth.register.referralApplied' | 'auth.register.referralIgnored'
+
+export interface AtribucionDeRegistro {
+  /** Lo que se persiste al registrarse; `null` cuando no hay código o no sirve. */
+  referralCode: string | null
+  aviso: AvisoDeReferido | null
+}
+
+/**
+ * CA-04.3 · qué atribución deja un registro según el código escrito. Un código
+ * válido se persiste normalizado; uno con formato inválido no bloquea el registro:
+ * se descarta y se avisa. Sin código no hay atribución ni aviso. La base aplica
+ * la misma regla en `private.normalizar_codigo_referido()`.
+ */
+export function atribucionDeRegistro(codigo: string | null | undefined): AtribucionDeRegistro {
+  const normalizado = normalizarCodigoReferido(codigo)
+  if (normalizado === null) {
+    return { referralCode: null, aviso: null }
+  }
+  if (!CODIGO_DE_REFERIDO.test(normalizado)) {
+    return { referralCode: null, aviso: 'auth.register.referralIgnored' }
+  }
+  return { referralCode: normalizado, aviso: 'auth.register.referralApplied' }
+}

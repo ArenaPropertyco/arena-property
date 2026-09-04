@@ -2,6 +2,12 @@ import type { H3Event } from 'h3'
 import { serverSupabaseClient, serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 import type { Database } from '#shared/types/database.types'
 
+/** Identificador de la cuenta a partir de los claims (`sub`), o `null` si no hay sesión. */
+export function idDeCuenta(claims: { sub?: string, id?: string } | null | undefined): string | null {
+  const id = claims?.sub ?? claims?.id ?? null
+  return typeof id === 'string' && id !== '' ? id : null
+}
+
 /**
  * HU-05 · RF-05.1 y HU-07 · RF-07.3 — guarda de servidor para acciones de Superadmin.
  *
@@ -13,7 +19,10 @@ import type { Database } from '#shared/types/database.types'
  */
 export async function exigirSuperadmin(event: H3Event) {
   const user = await serverSupabaseUser(event)
-  if (!user) {
+  // `serverSupabaseUser` devuelve los claims del JWT verificado: la cuenta es `sub`,
+  // no `id`. Buscar el rol por `id` no encontraba nada y rechazaba a todo el mundo.
+  const userId = idDeCuenta(user)
+  if (!user || !userId) {
     throw createError({ statusCode: 401, statusMessage: 'auth.errors.unknown' })
   }
 
@@ -21,7 +30,7 @@ export async function exigirSuperadmin(event: H3Event) {
   const { data } = await comoSuperadmin
     .from('user_roles')
     .select('role')
-    .eq('user_id', user.id)
+    .eq('user_id', userId)
     .eq('role', 'superadmin')
     .maybeSingle()
 
@@ -31,6 +40,7 @@ export async function exigirSuperadmin(event: H3Event) {
 
   return {
     user,
+    userId,
     comoSuperadmin,
     conPrivilegio: serverSupabaseServiceRole<Database>(event),
   }
