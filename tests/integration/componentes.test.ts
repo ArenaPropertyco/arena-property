@@ -54,6 +54,41 @@ describe('RegistroForm', () => {
     expect(formulario.find('[data-test="aviso-referido"]').text()).toContain('ARENA-7K2Q')
   })
 
+  it('CA-04.3 · con código de referido válido emite la atribución normalizada', async () => {
+    const formulario = await mountSuspended(RegistroForm)
+
+    await formulario.find('input[type="email"]').setValue('ana@ejemplo.com')
+    const contrasenas = formulario.findAll('input[autocomplete="new-password"]')
+    await contrasenas[0]!.setValue('Arena2026')
+    await contrasenas[1]!.setValue('Arena2026')
+    await formulario.find('[data-test="campo-referido"] input, input[autocomplete="off"]').setValue(' arena-7k2q ')
+    await formulario.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(formulario.find('[data-test="aviso-referido"]').text()).toContain('Se registrará el código de referido ARENA-7K2Q.')
+    expect(formulario.emitted('submit')?.[0]?.[0]).toMatchObject({ referralCode: 'ARENA-7K2Q' })
+  })
+
+  it('CA-04.3 · con código inválido informa, no bloquea y emite el registro sin atribución', async () => {
+    const formulario = await mountSuspended(RegistroForm)
+
+    await formulario.find('input[type="email"]').setValue('ana@ejemplo.com')
+    const contrasenas = formulario.findAll('input[autocomplete="new-password"]')
+    await contrasenas[0]!.setValue('Arena2026')
+    await contrasenas[1]!.setValue('Arena2026')
+    await formulario.find('[data-test="campo-referido"] input, input[autocomplete="off"]').setValue('!!')
+    await formulario.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(formulario.find('[data-test="aviso-referido"]').text())
+      .toContain('El código de referido no tiene un formato válido; puedes continuar sin él.')
+    expect(formulario.emitted('submit')).toEqual([[{
+      email: 'ana@ejemplo.com',
+      password: 'Arena2026',
+      referralCode: null,
+    }]])
+  })
+
   it('RF-04.5 · muestra el error de autenticación que le pasan, sin decidir nada', async () => {
     const formulario = await mountSuspended(RegistroForm, { props: { error: 'Ya existe una cuenta con ese correo.' } })
 

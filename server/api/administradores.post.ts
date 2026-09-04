@@ -21,7 +21,7 @@ interface Cuerpo {
 }
 
 export default defineEventHandler(async (event) => {
-  const { user, comoSuperadmin, conPrivilegio } = await exigirSuperadmin(event)
+  const { userId, comoSuperadmin, conPrivilegio } = await exigirSuperadmin(event)
   const cuerpo = await readBody<Cuerpo>(event)
 
   const email = normalizarEmail(cuerpo?.email ?? '')
@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
   // 2 · El rol, bajo RLS y auditado con el Superadmin como autor.
   const rol = await comoSuperadmin
     .from('user_roles')
-    .insert({ user_id: adminId, role: 'property_admin', granted_by: user.id })
+    .insert({ user_id: adminId, role: 'property_admin', granted_by: userId })
 
   if (rol.error) {
     throw createError({ statusCode: 500, statusMessage: 'auth.errors.unknown' })
@@ -64,7 +64,7 @@ export default defineEventHandler(async (event) => {
       .insert(propiedades.map(propertyId => ({
         admin_id: adminId,
         property_id: propertyId,
-        assigned_by: user.id,
+        assigned_by: userId,
       })))
 
     if (asignacion.error) {

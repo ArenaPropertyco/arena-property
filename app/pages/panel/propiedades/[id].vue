@@ -5,26 +5,31 @@ import type { FichaTecnica } from '#shared/properties/ficha'
 import type { EstadoDeFraccion } from '#shared/properties/fracciones'
 import type { TipoDeMedio } from '#shared/properties/medios'
 import type { SolicitudDeTraspaso } from '#shared/properties/traspaso'
+import type { SolicitudDeInvitacion } from '#shared/purchases/invitaciones'
 import { puede } from '#shared/permissions/mapa'
 
 /**
  * HU-08, HU-09, HU-11 — la ficha de una propiedad: datos, estados, medios y las 8
- * fracciones. La página orquesta y no decide nada: qué acciones caben lo dicen las
- * tablas de transición de `shared/`, y quién puede ejecutarlas, la RLS.
+ * fracciones. HU-06 añade las invitaciones de compra y su cierre. La página orquesta
+ * y no decide nada: qué acciones caben lo dicen las tablas de transición de
+ * `shared/`, y quién puede ejecutarlas, la RLS.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_propiedades' } })
 
 const { t } = useI18n()
 const toast = useToast()
 const ruta = useRoute()
+const localePath = useLocalePath()
 const { roles } = useCuenta()
 
 const id = computed(() => String(ruta.params.id ?? ''))
 
 const {
-  ficha, fracciones, medios, pendiente,
+  ficha, fracciones, medios, pendiente, recargar,
   fraccionar, cambiarEstadoDeFraccion, traspasar, subirMedios, quitarMedio,
 } = usePropiedad(id)
+const { invitaciones, vincular, cancelar, cerrarCompra } = useInvitaciones(id)
+const { cuentas } = useCuentas()
 const { actualizar, cambiarVisibilidad, ponerALaVenta } = usePropiedades()
 // RF-05.1 · las cuentas con rol Administrador entre las que puede elegir.
 // El nombre es explícito: `candidatos`, más abajo, son los del traspaso de fracción.
@@ -36,7 +41,11 @@ const puedeGestionar = computed(() => puede(roles.value, 'gestionar_propiedades'
 const editando = ref(false)
 const fraccionando = ref(false)
 const traspasando = ref<string | null>(null)
+const invitando = ref<string | null>(null)
 const ocupado = ref(false)
+
+const fraccionAinvitar = computed(() =>
+  fracciones.value.find(fraccion => fraccion.id === invitando.value) ?? null)
 
 const fraccionAtraspasar = computed(() =>
   fracciones.value.find(fraccion => fraccion.id === traspasando.value) ?? null)
@@ -112,6 +121,53 @@ async function cargarMedios(peticion: { tipo: TipoDeMedio, archivos: File[] }) {
 
 async function retirarMedio(medio: string) {
   await ejecutar(() => quitarMedio(medio), 'properties.media.removed')
+}
+
+// ── HU-06 · vincular propietario: invitación y, si se pide, cierre en el acto ─
+async function vincularPropietario(solicitud: SolicitudDeInvitacion, opciones: { cerrarAhora: boolean }) {
+  const numero = fraccionAinvitar.value?.number ?? 0
+  ocupado.value = true
+  const resultado = await vincular(solicitud, opciones)
+  ocupado.value = false
+
+  toast.add(resultado.ok
+    ? {
+        title: resultado.planId
+          ? t('purchases.messages.linked', { email: solicitud.email, number: numero })
+          : t('purchases.messages.invited', { email: solicitud.email }),
+        color: 'success',
+      }
+    : { title: t(resultado.clave), color: 'error' })
+
+  if (resultado.ok) {
+    invitando.value = null
+  }
+  if (resultado.ok && resultado.planId) {
+    await recargar()
+  }
+}
+
+/** RF-06.2 · RF-06.3 · la base cierra en una transacción; aquí solo se refleja. */
+async function registrarVenta(invitacion: string) {
+  ocupado.value = true
+  const resultado = await cerrarCompra(invitacion)
+  ocupado.value = false
+
+  toast.add(resultado.ok
+    ? { title: t('purchases.messages.closed'), color: 'success' }
+    : { title: t(resultado.clave), color: 'error' })
+
+  if (resultado.ok) {
+    await recargar()
+  }
+}
+
+async function cancelarInvitacion(invitacion: string) {
+  await ejecutar(() => cancelar(invitacion), 'purchases.messages.cancelled')
+}
+
+function abrirPlan(plan: string) {
+  return navigateTo(localePath(`/panel/planes/${plan}`))
 }
 </script>
 
@@ -196,6 +252,26 @@ async function retirarMedio(medio: string) {
           :es-superadmin="esSuperadmin"
           @transicion="moverFraccion"
           @traspasar="traspasando = $event"
+          @invitar="invitando = $event"
+          @abrir-plan="abrirPlan"
+        />
+      </section>
+
+      <section
+        v-if="puedeGestionar && fracciones.length > 0"
+        class="space-y-4"
+      >
+        <SectionHeading :titulo="t('purchases.title')" />
+        <p class="text-sm text-muted">
+          {{ t('purchases.subtitle') }}
+        </p>
+
+        <PurchaseInvitationsTable
+          :invitaciones="invitaciones"
+          :puede-gestionar="puedeGestionar"
+          :ocupado="ocupado"
+          @cerrar="registrarVenta"
+          @cancelar="cancelarInvitacion"
         />
       </section>
     </div>
@@ -242,6 +318,22 @@ async function retirarMedio(medio: string) {
         <FractionSplitForm
           :enviando="ocupado"
           @submit="dividir"
+        />
+      </template>
+    </UModal>
+
+    <UModal
+      :open="fraccionAinvitar !== null"
+      :title="fraccionAinvitar ? t('purchases.inviteTitle', { number: fraccionAinvitar.number }) : ''"
+      @update:open="invitando = null"
+    >
+      <template #body>
+        <PurchaseInviteForm
+          v-if="fraccionAinvitar"
+          :fraccion="fraccionAinvitar"
+          :cuentas="cuentas"
+          :enviando="ocupado"
+          @submit="vincularPropietario"
         />
       </template>
     </UModal>

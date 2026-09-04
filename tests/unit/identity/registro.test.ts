@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizarCodigoReferido, validarRegistro } from '#shared/identity/registro'
+import { atribucionDeRegistro, normalizarCodigoReferido, validarRegistro } from '#shared/identity/registro'
 
 /**
  * HU-04 · RF-04.1 y RF-04.4 — validación del registro en esquema tipado.
@@ -76,5 +76,31 @@ describe('RF-04.4 · código de referido opcional', () => {
 
   it('un código con formato plausible pasa la validación de formulario', () => {
     expect(validarRegistro({ ...valido, referralCode: 'ARENA-7K2Q' })).toEqual([])
+  })
+})
+
+describe('CA-04.3 · atribución al registrarse según el código de referido', () => {
+  it('CA-04.3 · con código válido, la atribución se persiste normalizada y se avisa que se registrará', () => {
+    expect(atribucionDeRegistro(' arena-7k2q ')).toEqual({
+      referralCode: 'ARENA-7K2Q',
+      aviso: 'auth.register.referralApplied',
+    })
+  })
+
+  it('CA-04.3 · con código inválido, el registro procede sin atribución y se informa', () => {
+    expect(atribucionDeRegistro('!!')).toEqual({
+      referralCode: null,
+      aviso: 'auth.register.referralIgnored',
+    })
+    expect(atribucionDeRegistro('ab')).toEqual({
+      referralCode: null,
+      aviso: 'auth.register.referralIgnored',
+    })
+  })
+
+  it('sin código no hay atribución ni aviso', () => {
+    expect(atribucionDeRegistro('')).toEqual({ referralCode: null, aviso: null })
+    expect(atribucionDeRegistro(null)).toEqual({ referralCode: null, aviso: null })
+    expect(atribucionDeRegistro(undefined)).toEqual({ referralCode: null, aviso: null })
   })
 })

@@ -69,7 +69,7 @@ export function validarArchivo(archivo: ArchivoACargar): ClaveDeValidacionDeMedi
  * Nombre seguro: sin acentos, en minúsculas y solo con lo que sobrevive a una URL.
  * Se toma el último segmento para que un `../../otro/archivo` no salga de su carpeta.
  */
-function sanearNombre(nombre: string): string {
+export function sanearNombreDeArchivo(nombre: string): string {
   const base = nombre.split(/[/\\]/).pop() ?? ''
 
   return base
@@ -91,7 +91,7 @@ export function rutaDeMedio(
   nombre: string,
   identificador: string,
 ): string {
-  const saneado = sanearNombre(nombre)
+  const saneado = sanearNombreDeArchivo(nombre)
   const archivo = saneado === '' ? identificador : `${identificador}-${saneado}`
 
   return `${propertyId}/${tipo}/${archivo}`

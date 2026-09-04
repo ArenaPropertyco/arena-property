@@ -167,7 +167,23 @@
     "active": "Activa",
     "suspended": "Suspendida",
     "empty": "Aún no hay administradores.",
-    "propertiesHint": "Las propiedades se asignan desde la ficha de cada propiedad, y solo el Superadmin puede hacerlo."
+    "propertiesHint": "Las propiedades se asignan desde aquí o desde la ficha de cada propiedad; solo el Superadmin puede hacerlo.",
+    "promote": "Dar el rol a una cuenta existente",
+    "promoteHint": "Busca por nombre o correo entre las cuentas registradas y otórgale el rol Administrador.",
+    "search": "Buscar cuenta",
+    "candidates": "Cuenta",
+    "noCandidates": "No hay cuentas que puedan recibir el rol.",
+    "noMatches": "Ninguna cuenta coincide con la búsqueda.",
+    "promoteSubmit": "Otorgar rol Administrador",
+    "promoted": "Rol Administrador otorgado a {email}.",
+    "promoteFailed": "No pudimos otorgar el rol.",
+    "manageProperties": "Asignar propiedades",
+    "propertiesFor": "Propiedades de {email}",
+    "propertiesFormHint": "Marca las propiedades que administra. Retirar una no borra el histórico.",
+    "noPropertiesAvailable": "Todavía no hay propiedades.",
+    "saveProperties": "Guardar asignaciones",
+    "propertiesUpdated": "Propiedades del administrador actualizadas.",
+    "propertiesFailed": "No pudimos actualizar las propiedades."
   },
   "account": {
     "menu": "Menú de cuenta"
@@ -274,7 +290,9 @@
       "release": "Liberar reserva",
       "sell": "Marcar vendida",
       "returnToAvailable": "Devolver a disponible",
-      "transfer": "Traspasar titular"
+      "transfer": "Traspasar titular",
+      "invite": "Vincular propietario",
+      "plan": "Plan de pagos"
     },
     "transfer": {
       "title": "Traspaso de titular",
@@ -330,6 +348,132 @@
       "fractioned": "Las 8 fracciones quedaron creadas.",
       "fractionUpdated": "Fracción actualizada.",
       "adminsUpdated": "Administradores de la propiedad actualizados."
+    }
+  },
+  "purchases": {
+    "title": "Compradores invitados",
+    "subtitle": "Invitaciones a comprar una fracción y su estado.",
+    "invite": "Vincular propietario",
+    "inviteTitle": "Vincular propietario a la fracción {number}/8",
+    "inviteHint": "Escribe el correo del comprador o elige una cuenta existente. Si no tiene cuenta, se crea y recibe un correo para entrar. Con «Registrar la venta ahora» queda como propietario de inmediato y nace su plan de pagos.",
+    "existingAccounts": "Cuentas existentes",
+    "knownAccount": "Cuenta existente: {name}. Se vincula sin crear otra.",
+    "newAccount": "Todavía no tiene cuenta: se creará con este correo.",
+    "closeNow": "Registrar la venta ahora",
+    "closeNowHint": "Da la titularidad de inmediato y crea el plan de pagos. Sin marcarlo, queda como invitación pendiente.",
+    "linkSubmit": "Vincular como propietario",
+    "email": "Correo del comprador",
+    "agreedPrice": "Precio pactado",
+    "agreedPriceHint": "Queda congelado en el plan de pagos, aunque cambie el precio de lista.",
+    "referralCode": "Código de referido del embajador",
+    "referralCodeHint": "Opcional. Queda en la cuenta del comprador y se arrastra a la compra.",
+    "referredBy": "Referido por {code}",
+    "send": "Enviar invitación",
+    "empty": "Todavía no hay invitaciones.",
+    "fraction": "Fracción",
+    "invitee": "Invitado",
+    "status": "Estado",
+    "noAccount": "Sin cuenta todavía",
+    "close": "Registrar venta",
+    "closeHint": "Da la titularidad y crea el plan de pagos. El calendario se activa solo con el pago completo.",
+    "cancel": "Cancelar invitación",
+    "pending": "Pendiente",
+    "accepted": "Aceptada",
+    "cancelled": "Cancelada",
+    "validation": {
+      "not_property_admin": "Solo el Administrador asignado invita sobre esta propiedad.",
+      "fraction_not_invitable": "Esa fracción ya no admite invitaciones.",
+      "email_invalid": "Escribe un correo válido.",
+      "price_not_positive": "El precio pactado debe ser mayor que cero.",
+      "referral_code_format": "El código de referido no tiene un formato válido."
+    },
+    "errors": {
+      "invite_failed": "No pudimos enviar la invitación.",
+      "already_pending": "Esa fracción ya tiene una invitación pendiente.",
+      "close_failed": "No pudimos registrar la venta. Revisa que el invitado ya tenga cuenta.",
+      "cancel_failed": "No pudimos cancelar la invitación."
+    },
+    "messages": {
+      "invited": "Invitación enviada a {email}.",
+      "closed": "Venta registrada: la fracción ya tiene titular y plan de pagos.",
+      "cancelled": "Invitación cancelada.",
+      "linked": "{email} ya es propietario de la fracción {number}/8 y tiene su plan de pagos."
+    }
+  },
+  "payments": {
+    "title": "Plan de pagos",
+    "subtitle": "Abonos registrados contra el precio pactado de la fracción.",
+    "open": "Plan de pagos",
+    "notFound": "No encontramos ese plan de pagos, o no tienes acceso a él.",
+    "fractionOf": "Fracción {number}/8 · {property}",
+    "owner": "Titular",
+    "agreedPrice": "Precio pactado",
+    "paidTotal": "Abonado",
+    "balance": "Saldo pendiente",
+    "status": {
+      "label": "Estado del plan",
+      "reserved": "Reservada",
+      "in_progress": "En proceso de pago",
+      "completed": "Pago completado",
+      "voided": "Anulado"
+    },
+    "calendar": {
+      "label": "Calendario",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "missing": "Faltan {amount} para activar el calendario.",
+      "ready": "Pago completo: el derecho de uso está activo."
+    },
+    "register": "Registrar abono",
+    "amount": "Monto",
+    "paidOn": "Fecha del abono",
+    "method": "Medio de pago",
+    "methods": {
+      "transfer": "Transferencia",
+      "cash": "Efectivo",
+      "card": "Tarjeta",
+      "check": "Cheque",
+      "other": "Otro"
+    },
+    "receipt": "Comprobante",
+    "receiptHint": "Imagen o PDF, máximo 10 MB. Obligatorio.",
+    "note": "Nota",
+    "noteHint": "Opcional",
+    "submit": "Guardar abono",
+    "empty": "Todavía no hay abonos.",
+    "openReceipt": "Ver comprobante",
+    "void": "Anular",
+    "voided": "Anulado",
+    "voidTitle": "Anular abono",
+    "voidHint": "El abono no se borra: queda anulado con este motivo y el estado del plan se recalcula.",
+    "reason": "Motivo",
+    "reasonHint": "Queda en el registro de auditoría.",
+    "confirmVoid": "Anular con este motivo",
+    "voidPurchase": "Anular compra",
+    "voidPurchaseTitle": "Anular la compra",
+    "voidPurchaseHint": "Operación del Superadmin. El calendario se desactiva, la titularidad se revierte y la fracción vuelve a disponible.",
+    "voidedPurchase": "Compra anulada el {date}: {reason}",
+    "validation": {
+      "amount_not_positive": "El monto debe ser un entero de pesos mayor que cero.",
+      "overpayment": "Ese abono superaría el precio pactado. Corrige el monto.",
+      "date_invalid": "Indica la fecha del abono.",
+      "method_required": "Elige el medio de pago.",
+      "receipt_required": "Adjunta el comprobante.",
+      "receipt_format": "El comprobante debe ser imagen o PDF.",
+      "receipt_too_large": "El comprobante pesa más de 10 MB.",
+      "receipt_empty": "El archivo está vacío.",
+      "plan_not_open": "Este plan ya no admite abonos.",
+      "reason_required": "Escribe el motivo."
+    },
+    "errors": {
+      "save_failed": "No pudimos guardar el abono.",
+      "void_failed": "No pudimos anular el abono.",
+      "void_purchase_failed": "No pudimos anular la compra."
+    },
+    "messages": {
+      "registered": "Abono registrado.",
+      "voided": "Abono anulado; el estado del plan se recalculó.",
+      "purchaseVoided": "Compra anulada."
     }
   }
 }

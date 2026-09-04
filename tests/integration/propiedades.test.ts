@@ -29,6 +29,7 @@ function fraccion(cambios: Partial<FraccionListada> & { number: number }): Fracc
     ownerId: null,
     ownerLabel: null,
     calendarActive: false,
+    planId: null,
     ...cambios,
   }
 }

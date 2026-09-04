@@ -14,6 +14,10 @@
  * y da el mensaje; no sustituye a la política.
  */
 
+import type { EstadoCuenta } from '../permissions/acceso'
+import type { Rol } from '../permissions/roles'
+import { esCombinacionValida } from '../permissions/roles'
+
 export const CLAVES_DE_VALIDACION_DE_ASIGNACION = [
   'properties.validation.assign_requires_superadmin',
   'properties.validation.assign_not_an_admin',
@@ -82,4 +86,46 @@ export function validarAsignacion(
   }
 
   return errores
+}
+
+// ── RF-05.1 · alta de Administrador desde una cuenta existente ──────────────
+
+/** Lo mínimo de una cuenta para decidir si puede recibir el rol Administrador. */
+export interface CuentaPromovible {
+  id: string
+  email: string | null
+  fullName: string | null
+  status: EstadoCuenta
+  roles: readonly Rol[]
+}
+
+/**
+ * Cuentas a las que el Superadmin puede dar el rol Administrador: activas, que no
+ * lo tengan ya y cuya combinación de roles lo admita (RF-07.1: Embajador no se
+ * acumula con Administrador). La misma regla que el disparador de la base.
+ */
+export function cuentasPromovibles<T extends CuentaPromovible>(cuentas: readonly T[]): T[] {
+  return cuentas.filter(cuenta =>
+    cuenta.status === 'active'
+    && !cuenta.roles.includes('property_admin')
+    && esCombinacionValida([...cuenta.roles, 'property_admin']))
+}
+
+function normalizarTexto(texto: string): string {
+  return texto.normalize('NFD').replace(/[\u0300-\u036F]/g, '').toLowerCase().trim()
+}
+
+/** Filtra cuentas por nombre o correo, sin distinguir mayúsculas ni acentos. */
+export function filtrarCuentas<T extends Pick<CuentaPromovible, 'email' | 'fullName'>>(
+  cuentas: readonly T[],
+  texto: string,
+): T[] {
+  const criterio = normalizarTexto(texto)
+  if (criterio === '') {
+    return [...cuentas]
+  }
+
+  return cuentas.filter(cuenta =>
+    normalizarTexto(cuenta.fullName ?? '').includes(criterio)
+    || normalizarTexto(cuenta.email ?? '').includes(criterio))
 }

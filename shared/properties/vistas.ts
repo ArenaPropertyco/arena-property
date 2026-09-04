@@ -50,6 +50,8 @@ export interface FraccionListada {
   /** Nombre o correo del titular (D-16); `null` si la fracción no está vendida. */
   ownerLabel: string | null
   calendarActive: boolean
+  /** HU-58 · plan de pagos vigente de la fracción vendida; `null` si no lo hay. */
+  planId: string | null
 }
 
 /** Un medio con la URL con la que la galería lo pinta. */
