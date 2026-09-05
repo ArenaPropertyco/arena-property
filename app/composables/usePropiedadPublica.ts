@@ -3,7 +3,7 @@ import { puede } from '#shared/permissions/mapa'
 import type { EstadoComercial, Visibilidad } from '#shared/properties/estados'
 import { resolverDetalle } from '#shared/properties/detalle'
 import type { PropiedadPublicada, ResolucionDeDetalle } from '#shared/properties/detalle'
-import { BUCKET_DE_PROPIEDADES } from '#shared/properties/medios'
+import { BUCKET_DE_PROPIEDADES, esModelo3D } from '#shared/properties/medios'
 import type { MedioConUrl } from '#shared/properties/vistas'
 import type { Database } from '#shared/types/database.types'
 
@@ -81,7 +81,8 @@ export function usePropiedadPublica(slug: Ref<string>) {
         address: ficha.data?.address ?? null,
         videoUrl: ficha.data?.video_url ?? null,
         fotos,
-        plano: conUrl.find(medio => medio.kind === 'floor_plan') ?? null,
+        plano: conUrl.find(medio => medio.kind === 'floor_plan' && !esModelo3D(medio.path)) ?? null,
+        modelo: conUrl.find(medio => medio.kind === 'floor_plan' && esModelo3D(medio.path)) ?? null,
         video: conUrl.find(medio => medio.kind === 'video') ?? null,
       }
     },

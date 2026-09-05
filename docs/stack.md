@@ -31,6 +31,7 @@ Nuxt 4 · TypeScript `strict` · Supabase (Postgres, Auth, Storage, RLS) · desp
 |---|---|---|
 | `@unovis/vue` + `@unovis/ts` | `@nuxt/ui` no incluye componente de gráfico; Unovis se estiliza con variables CSS, así que respeta los tokens de marca sin paleta propia | HU-32 RF-32.2 |
 | `motion-v` | Animaciones de alto impacto en Vue. Sustituye la mención histórica a `framer-motion`, que es una librería de React y **no** es utilizable en este proyecto | E1 (uso puntual) |
+| `three` | Motor sobre el que corre `@tresjs/nuxt`. Se declara como dependencia directa para poder importar sus cargadores (`GLTFLoader`) y abrir el plano elevado como modelo `.glb`; sin esta entrada pnpm no lo resuelve desde el proyecto. Versión fijada para que TresJS y la app compartan una sola copia | HU-02 RF-02.5 |
 
 ## Necesidades resueltas sin dependencia nueva
 
@@ -50,4 +51,4 @@ Nuxt 4 · TypeScript `strict` · Supabase (Postgres, Auth, Storage, RLS) · desp
 
 ## Dependencias de desarrollo permitidas
 
-`vitest`, `@vue/test-utils`, `happy-dom` (vía `@nuxt/test-utils`), `typescript`, `eslint` (vía `@nuxt/eslint`) y la CLI `supabase`.
+`vitest`, `@vue/test-utils`, `happy-dom` (vía `@nuxt/test-utils`), `typescript`, `eslint` (vía `@nuxt/eslint`), `@types/three` (tipos del motor 3D, solo en compilación) y la CLI `supabase`.

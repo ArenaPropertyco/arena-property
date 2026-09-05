@@ -15,7 +15,10 @@ export interface PropiedadPublicada extends PropiedadPublica {
   videoUrl: string | null
   soldFractions: number
   fotos: MedioConUrl[]
+  /** Imagen del plano elevado: respaldo estático y textura del visor (RF-02.5). */
   plano: MedioConUrl | null
+  /** Modelo `.glb` del plano elevado, si la propiedad lo publicó. */
+  modelo: MedioConUrl | null
   video: MedioConUrl | null
 }
 
@@ -23,7 +26,7 @@ export interface PropiedadPublicada extends PropiedadPublica {
 export const CAMPOS_DEL_DETALLE = [
   'id', 'slug', 'name', 'region', 'city', 'country', 'commercial', 'lowestPrice', 'availableFractions',
   'areaM2', 'bedrooms', 'bathrooms', 'parkingSpots', 'description', 'amenities', 'address', 'videoUrl',
-  'fotos', 'plano', 'video',
+  'fotos', 'plano', 'modelo', 'video',
 ] as const satisfies readonly (keyof PropiedadPublicada)[]
 
 export type ResolucionDeDetalle

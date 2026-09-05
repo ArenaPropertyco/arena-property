@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ClaveDeValidacionDeMedio, TipoDeMedio } from '#shared/properties/medios'
-import { MIMES_PERMITIDOS, TIPOS_DE_MEDIO, ordenarMedios, validarArchivo } from '#shared/properties/medios'
+import { aceptaDe, esModelo3D, mimeDeArchivo, TIPOS_DE_MEDIO, ordenarMedios, validarArchivo } from '#shared/properties/medios'
 import type { MedioConUrl } from '#shared/properties/vistas'
 
 /**
@@ -31,7 +31,8 @@ const error = ref<ClaveDeValidacionDeMedio | null>(null)
 const porTipo = computed(() => TIPOS_DE_MEDIO.map(tipo => ({
   tipo,
   medios: ordenarMedios(props.medios, tipo) as MedioConUrl[],
-  acepta: MIMES_PERMITIDOS[tipo].join(','),
+  // MIME y extensiones: el diálogo del sistema filtra por ambos, y `.glb` no tiene MIME registrado.
+  acepta: aceptaDe(tipo),
 })))
 
 const vacia = computed(() => props.medios.length === 0)
@@ -48,7 +49,7 @@ function elegir(tipo: TipoDeMedio, evento: Event) {
   // Basta con que uno no pase: subir «los que sí» dejaría al administrador sin
   // saber cuál faltó y con la galería a medias.
   for (const archivo of archivos) {
-    const problema = validarArchivo({ tipo, mime: archivo.type, size: archivo.size })
+    const problema = validarArchivo({ tipo, mime: mimeDeArchivo(archivo.name, archivo.type), size: archivo.size })
     if (problema) {
       error.value = problema
       entrada.value = ''
@@ -116,8 +117,19 @@ function elegir(tipo: TipoDeMedio, evento: Event) {
           :key="medio.id"
           class="group relative overflow-hidden rounded-lg border border-default"
         >
+          <div
+            v-if="esModelo3D(medio.path)"
+            class="flex aspect-4/3 w-full flex-col items-center justify-center gap-1 bg-elevated text-muted"
+            :data-test="`modelo-3d-${medio.id}`"
+          >
+            <UIcon
+              name="i-lucide-box"
+              class="size-8"
+            />
+            <span class="text-xs">{{ t('properties.media.model3d') }}</span>
+          </div>
           <NuxtImg
-            v-if="grupo.tipo !== 'video'"
+            v-else-if="grupo.tipo !== 'video'"
             :src="medio.url"
             :alt="''"
             loading="lazy"

@@ -8,6 +8,8 @@ import {
   rutaDeMedio,
   siguienteOrden,
   validarArchivo,
+  esModelo3D,
+  mimeDeArchivo,
 } from '#shared/properties/medios'
 import type { Medio } from '#shared/properties/medios'
 
@@ -67,6 +69,29 @@ describe('RF-08.5 · validación del archivo antes de subirlo', () => {
   it('el plano elevado admite imagen, PDF y el modelo 3D que consume HU-02', () => {
     expect(validarArchivo({ tipo: 'floor_plan', mime: 'application/pdf', size: 1000 })).toBeNull()
     expect(validarArchivo({ tipo: 'floor_plan', mime: 'model/gltf-binary', size: 1000 })).toBeNull()
+  })
+})
+
+describe('HU-02 · RF-02.5 · el plano elevado como modelo 3D', () => {
+  it('el MIME de un .glb se infiere por extensión cuando el navegador no lo reporta', () => {
+    expect(mimeDeArchivo('plano.glb', '')).toBe('model/gltf-binary')
+    expect(mimeDeArchivo('PLANO.GLB', '')).toBe('model/gltf-binary')
+  })
+
+  it('si el navegador reporta un MIME, ese manda', () => {
+    expect(mimeDeArchivo('foto.jpg', 'image/jpeg')).toBe('image/jpeg')
+  })
+
+  it('una extensión desconocida sin MIME sigue vacía y la validación la rechaza', () => {
+    expect(mimeDeArchivo('archivo.xyz', '')).toBe('')
+    expect(validarArchivo({ tipo: 'floor_plan', mime: mimeDeArchivo('archivo.xyz', ''), size: 10 }))
+      .toBe('properties.validation.media_format')
+  })
+
+  it('CA-02.4 · un plano en .glb pasa la validación y se reconoce como modelo 3D por su ruta', () => {
+    expect(validarArchivo({ tipo: 'floor_plan', mime: mimeDeArchivo('apartamento.glb', ''), size: 70_000 })).toBeNull()
+    expect(esModelo3D('p1/floor_plan/abc-apartamento.glb')).toBe(true)
+    expect(esModelo3D('p1/floor_plan/abc-plano.png')).toBe(false)
   })
 })
 

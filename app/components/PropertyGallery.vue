@@ -4,6 +4,10 @@ import type { MedioConUrl } from '#shared/properties/vistas'
 /**
  * HU-02 · RF-02.2, RF-02.6 — galería de fotos con `UCarousel` y `@nuxt/image`
  * (RT-12). Funciona a dedo en móvil; sin fotos, lo dice.
+ *
+ * El recorte redondeado va en el `viewport`, nunca en el `container`: el
+ * contenedor es la pista que Embla desplaza con `transform`, y un `overflow-hidden`
+ * ahí recorta todas las diapositivas salvo la primera.
  */
 defineProps<{
   fotos: MedioConUrl[]
@@ -22,7 +26,7 @@ const { t } = useI18n()
       arrows
       dots
       loop
-      :ui="{ item: 'basis-full', container: 'rounded-2xl overflow-hidden' }"
+      :ui="{ viewport: 'rounded-2xl', item: 'basis-full' }"
       class="w-full"
     >
       <NuxtImg

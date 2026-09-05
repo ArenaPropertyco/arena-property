@@ -270,7 +270,8 @@
       "empty": "No files yet.",
       "uploading": "Uploading…",
       "uploaded": "File uploaded.",
-      "removed": "File removed."
+      "removed": "File removed.",
+      "model3d": "3D model (.glb)"
     },
     "fractions": {
       "title": "Fractions",
@@ -627,7 +628,8 @@
     "availableOf": "{count} of {total}",
     "contactUs": "Contact us",
     "contactTitle": "Want to know more about {name}?",
-    "contactSubtitle": "Leave your details and we'll tell you how to get a fraction."
+    "contactSubtitle": "Leave your details and we'll tell you how to get a fraction.",
+    "floorPlanOnly3d": "This property's 3D plan needs a device with WebGL; it can't be shown here."
   },
   "contact": {
     "title": "Contact",

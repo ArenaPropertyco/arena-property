@@ -3,8 +3,12 @@
  * HU-02 · RF-02.5 · RT-12 — lienzo de `@tresjs/nuxt` para el plano elevado. Solo
  * se monta en el cliente y cuando `modoDelPlano` dio `visor3d`; la escena vive en
  * `FloorPlanScene`, que necesita el contexto del lienzo para animar y cargar.
+ * Con `esModelo` la fuente es un `.glb`; si no, una imagen que se pinta como textura.
  */
-defineProps<{ url: string }>()
+withDefaults(defineProps<{
+  url: string
+  esModelo?: boolean
+}>(), { esModelo: false })
 
 /** Ángulo de giro que el visitante controla arrastrando; la escena lo lee. */
 const giro = ref(0)
@@ -41,17 +45,18 @@ function soltar() {
       :antialias="true"
     >
       <TresPerspectiveCamera
-        :position="[0, 3.2, 4.2]"
+        :position="[0, 3.4, 4.6]"
         :look-at="[0, 0, 0]"
-        :fov="40"
+        :fov="38"
       />
-      <TresAmbientLight :intensity="1.4" />
+      <TresAmbientLight :intensity="1.3" />
       <TresDirectionalLight
-        :position="[2, 4, 3]"
-        :intensity="1.2"
+        :position="[2, 5, 3]"
+        :intensity="1.4"
       />
       <FloorPlanScene
         :url="url"
+        :es-modelo="esModelo"
         :giro="giro"
       />
     </TresCanvas>
