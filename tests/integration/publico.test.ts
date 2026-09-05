@@ -186,9 +186,35 @@ describe('HU-02 · plano elevado', () => {
   })
 
   it('sin plano cargado se dice, no se inventa', async () => {
-    const visor = await mountSuspended(FloorPlanViewer, { props: { plano: null, modo: 'visor3d' } })
+    const visor = await mountSuspended(FloorPlanViewer, { props: { plano: null, modelo: null, modo: 'visor3d' } })
 
     expect(visor.find('[data-test="sin-plano"]').exists()).toBe(true)
+  })
+
+  it('CA-02.4 · con modelo .glb pero en modo imagen se muestra la imagen de respaldo, no el lienzo', async () => {
+    const visor = await mountSuspended(FloorPlanViewer, {
+      props: {
+        plano: { id: 'm1', kind: 'floor_plan', path: 'p1/floor_plan/plano.png', position: 0, url: 'https://firmada/plano.png' },
+        modelo: { id: 'm2', kind: 'floor_plan', path: 'p1/floor_plan/apartamento.glb', position: 1, url: 'https://firmada/apartamento.glb' },
+        modo: 'imagen',
+      },
+    })
+
+    expect(visor.find('[data-test="plano-imagen"]').attributes('src')).toContain('plano.png')
+    expect(visor.find('canvas').exists()).toBe(false)
+  })
+
+  it('RF-02.5 · un modelo sin imagen de respaldo lo dice cuando no hay WebGL', async () => {
+    const visor = await mountSuspended(FloorPlanViewer, {
+      props: {
+        plano: null,
+        modelo: { id: 'm2', kind: 'floor_plan', path: 'p1/floor_plan/apartamento.glb', position: 1, url: 'https://firmada/apartamento.glb' },
+        modo: 'imagen',
+      },
+    })
+
+    expect(visor.find('[data-test="sin-respaldo"]').exists()).toBe(true)
+    expect(visor.find('canvas').exists()).toBe(false)
   })
 })
 

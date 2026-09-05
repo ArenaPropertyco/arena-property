@@ -270,7 +270,8 @@
       "empty": "Todavía no hay archivos.",
       "uploading": "Subiendo…",
       "uploaded": "Archivo subido.",
-      "removed": "Archivo retirado."
+      "removed": "Archivo retirado.",
+      "model3d": "Modelo 3D (.glb)"
     },
     "fractions": {
       "title": "Fracciones",
@@ -627,7 +628,8 @@
     "availableOf": "{count} de {total}",
     "contactUs": "Contáctanos",
     "contactTitle": "¿Quieres saber más de {name}?",
-    "contactSubtitle": "Déjanos tus datos y te contamos cómo hacerte con una fracción."
+    "contactSubtitle": "Déjanos tus datos y te contamos cómo hacerte con una fracción.",
+    "floorPlanOnly3d": "El plano 3D de esta propiedad necesita un dispositivo con WebGL; aquí no puede mostrarse."
   },
   "contact": {
     "title": "Contacto",

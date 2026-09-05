@@ -30,6 +30,46 @@ export const TAMANO_MAXIMO: Record<TipoDeMedio, number> = {
   floor_plan: 20 * MiB,
 }
 
+/**
+ * MIME por extensión, para cuando el navegador no lo reporta. Pasa con `.glb` en
+ * Linux y Windows: el sistema no tiene registrado `model/gltf-binary` y `File.type`
+ * llega vacío, con lo que el formulario rechazaría un archivo válido.
+ */
+const MIME_POR_EXTENSION: Record<string, string> = {
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+  avif: 'image/avif',
+  mp4: 'video/mp4',
+  webm: 'video/webm',
+  pdf: 'application/pdf',
+  glb: 'model/gltf-binary',
+}
+
+function extensionDe(nombre: string): string {
+  const punto = nombre.lastIndexOf('.')
+  return punto === -1 ? '' : nombre.slice(punto + 1).toLowerCase()
+}
+
+/** El MIME que reporta el navegador manda; si viene vacío, se infiere por extensión. */
+export function mimeDeArchivo(nombre: string, reportado: string): string {
+  return reportado || MIME_POR_EXTENSION[extensionDe(nombre)] || ''
+}
+
+/** Lo que el selector de archivos acepta: MIME y extensiones, porque el diálogo filtra por ambos. */
+export function aceptaDe(tipo: TipoDeMedio): string {
+  const extensiones = Object.entries(MIME_POR_EXTENSION)
+    .filter(([, mime]) => MIMES_PERMITIDOS[tipo].includes(mime))
+    .map(([extension]) => `.${extension}`)
+  return [...MIMES_PERMITIDOS[tipo], ...extensiones].join(',')
+}
+
+/** HU-02 · RF-02.5 · el plano elevado en modelo 3D se reconoce por su ruta en Storage. */
+export function esModelo3D(ruta: string): boolean {
+  return extensionDe(ruta) === 'glb'
+}
+
 export const CLAVES_DE_VALIDACION_DE_MEDIO = [
   'properties.validation.media_format',
   'properties.validation.media_too_large',

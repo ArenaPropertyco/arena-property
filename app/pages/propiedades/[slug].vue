@@ -108,6 +108,7 @@ async function enviarContacto(solicitud: SolicitudDeContacto) {
             <SectionHeading :titulo="t('property.floorPlan')" />
             <FloorPlanViewer
               :plano="propiedad.plano"
+              :modelo="propiedad.modelo"
               :modo="modo"
             />
           </section>

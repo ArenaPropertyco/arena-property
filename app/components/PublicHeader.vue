@@ -14,7 +14,12 @@ defineProps<{
 
 <template>
   <UHeader>
-    <template #title>
+    <!--
+      Va en `#left` y no en `#title`: el título de UHeader ya es un enlace, y la
+      marca trae el suyo. Un `<a>` dentro de otro es HTML inválido: el navegador
+      lo parte al parsear y la hidratación deja de coincidir con el servidor.
+    -->
+    <template #left>
       <AppBrand :to="inicio" />
     </template>
 
