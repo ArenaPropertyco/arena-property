@@ -16,7 +16,8 @@
     "notifications": "Updates",
     "dashboard": "Dashboard",
     "roles": "Roles",
-    "admins": "Administrators"
+    "admins": "Administrators",
+    "catalog": "Properties"
   },
   "actions": {
     "login": "Log in",
@@ -37,7 +38,12 @@
     "en": "English"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "city": "Cartagena de Indias, Colombia",
+    "whatsapp": "WhatsApp",
+    "tagline": "Fractional co-ownership of vacation properties on the Colombian Caribbean."
   },
   "auth": {
     "register": {
@@ -475,5 +481,231 @@
       "voided": "Payment voided; the plan status was recalculated.",
       "purchaseVoided": "Purchase voided."
     }
+  },
+  "home": {
+    "sections": {
+      "navbar": "Main navigation",
+      "footer": "Footer"
+    },
+    "hero": {
+      "headline": "Real estate co-investment in the Caribbean",
+      "title": "Own Bocagrande from COP $173M.",
+      "description": "1/8 of an apartment in Invictvs, the most iconic tower in Bocagrande, Cartagena. Atlantic Ocean views, Sky Club, restaurant and helipad.",
+      "cta": "View properties",
+      "secondary": "How it works",
+      "videoLabel": "Invictvs video on the Bocagrande beachfront",
+      "facts": {
+        "floors": {
+          "value": "53",
+          "label": "Floors"
+        },
+        "height": {
+          "value": "188 m",
+          "label": "Above the sea"
+        },
+        "delivery": {
+          "value": "2029",
+          "label": "Estimated delivery"
+        }
+      }
+    },
+    "model": {
+      "headline": "What is Arena Property?",
+      "title": "The smart way to own the Caribbean",
+      "description": "You buy 1/8 of a premium vacation property, registered in your name through a trust, and a single operator takes care of everything else.",
+      "cta": "Learn about the model",
+      "pillars": {
+        "owner": {
+          "title": "You are a real owner",
+          "description": "Your 1/8 is registered in the project's trust. Real ownership of a beachfront asset."
+        },
+        "price": {
+          "title": "From COP $173M",
+          "description": "In installments and with no additional mortgage. Access the most premium asset in Bocagrande with a fraction of the total capital."
+        },
+        "carefree": {
+          "title": "Worry-free",
+          "description": "A single tourism operator manages rentals, guests and monthly reporting. Distributions proportional to your 1/8."
+        }
+      }
+    },
+    "benefits": {
+      "headline": "Benefits",
+      "title": "Eight owners, zero worries",
+      "description": "Compared with buying a whole property, a fraction gives you the best of the Caribbean for part of the cost and none of the operational burden.",
+      "cta": "Compare with a whole property",
+      "items": {
+        "capital": {
+          "title": "A fraction of the capital",
+          "description": "From COP $173M in 30 installments, instead of more than COP $1,384M for the whole apartment."
+        },
+        "weeks": {
+          "title": "42 nights a year",
+          "description": "Weeks spread across the four seasons, with fair rotation among the eight co-owners."
+        },
+        "income": {
+          "title": "Income when you're not there",
+          "description": "Free nights are rented to third parties and the income is shared with your fraction."
+        },
+        "management": {
+          "title": "Centralized operation",
+          "description": "Scheduling, common expenses, maintenance and communication all live on the platform."
+        },
+        "ownership": {
+          "title": "Your fraction is yours",
+          "description": "Registered in a trust and traceable; transfer it whenever you decide."
+        },
+        "transparency": {
+          "title": "Clear accounts",
+          "description": "Monthly reports and every peso on record. Nothing estimated is shown as confirmed."
+        }
+      }
+    },
+    "cta": {
+      "title": "Reserve your spot in Invictvs",
+      "description": "Bocagrande beachfront, 53 floors and estimated delivery in 2029. Create your account and we'll walk with you from the first call to your registered fraction.",
+      "cta": "Create my account",
+      "secondary": "Message us on WhatsApp"
+    },
+    "properties": {
+      "headline": "Active properties",
+      "title": "What's on sale today",
+      "description": "Published projects with available fractions. Each listing shows photos, location, price per fraction and how many are left.",
+      "cta": "See the full catalog",
+      "empty": "We'll publish the next properties soon."
+    }
+  },
+  "catalog": {
+    "title": "Properties",
+    "subtitle": "Fractions for sale on the Colombian Caribbean. Pick your region, your budget and each project's status.",
+    "seoDescription": "Catalog of vacation properties under fractional co-ownership: photos, location and price per fraction.",
+    "empty": "No properties match your search.",
+    "count": "{shown} of {total} properties",
+    "from": "From",
+    "perFraction": "per fraction",
+    "noPrice": "Price to be confirmed",
+    "waitlist": "Waitlist",
+    "available": "{count} of 8 fractions available",
+    "view": "View property",
+    "filters": {
+      "title": "Filter",
+      "region": "Region",
+      "allRegions": "All regions",
+      "priceMin": "Minimum price",
+      "priceMax": "Maximum price",
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "waitlist": "Waitlist only",
+      "clear": "Clear filters"
+    },
+    "specs": {
+      "area": "m²",
+      "bedrooms": "bd.",
+      "bathrooms": "baths",
+      "parking": "parking"
+    }
+  },
+  "property": {
+    "notFound": "We couldn't find that property.",
+    "notFoundHint": "It may no longer be published. Explore the rest of the catalog.",
+    "preview": "Draft preview",
+    "previewHint": "Only property managers can see this. Visitors get a 404 until it's published.",
+    "backToCatalog": "Back to catalog",
+    "gallery": "Gallery",
+    "video": "Video",
+    "floorPlan": "Elevated floor plan",
+    "floorPlan3dHint": "Drag to rotate the plan.",
+    "floorPlanStatic": "Elevated floor plan image",
+    "noFloorPlan": "This property has no published floor plan yet.",
+    "description": "The property",
+    "amenities": "Amenities",
+    "location": "Location",
+    "sheet": "Technical sheet",
+    "priceFrom": "Price per fraction",
+    "status": "Status",
+    "available": "Available fractions",
+    "availableOf": "{count} of {total}",
+    "contactUs": "Contact us",
+    "contactTitle": "Want to know more about {name}?",
+    "contactSubtitle": "Leave your details and we'll tell you how to get a fraction."
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Tell us what you're looking for and we'll call you. No commitment.",
+    "seoDescription": "Write to us to learn about Arena Property's fractional co-ownership model.",
+    "whatsapp": "Message us on WhatsApp",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "intent": "Purchase intent",
+      "propertyType": "What type of property are you looking to buy?",
+      "incomeRange": "Average monthly household income",
+      "referralCode": "Referral code",
+      "referralHint": "Optional. If you arrived through an ambassador's link, it's already filled in."
+    },
+    "intents": {
+      "second_home": "I'm actively looking to buy a second home",
+      "truly_mine": "I have a family or shared house but want something that's truly mine",
+      "same_place_every_summer": "Every summer I rent in the same place but dream of owning something",
+      "investment": "I'm watching for real estate investment opportunities"
+    },
+    "propertyTypes": {
+      "vacation": "Vacation Home",
+      "residential": "Residential Home",
+      "land": "Land"
+    },
+    "incomeRanges": {
+      "under_4m": "Less than $4,000,000",
+      "between_4m_7m": "Between $4,000,000 and $7,000,000",
+      "over_7m": "More than $7,000,000"
+    },
+    "submit": "Send",
+    "submitProperty": "I want to know more",
+    "sent": "We got your message. We'll be in touch soon.",
+    "sentNoEmail": "We got your message and saved it; we'll be in touch soon.",
+    "validation": {
+      "first_name_required": "Enter your first name.",
+      "last_name_required": "Enter your last name.",
+      "email_invalid": "Enter a valid email.",
+      "phone_required": "Enter a contact phone.",
+      "message_required": "Tell us how we can help.",
+      "intent_required": "Choose your purchase intent.",
+      "property_type_required": "Choose the type of property you're looking for.",
+      "income_range_required": "Choose your household income range.",
+      "referral_code_format": "The referral code format is not valid."
+    },
+    "errors": {
+      "rate_limited": "You've sent several messages in a row. Wait a few minutes and try again.",
+      "send_failed": "We couldn't send your message. Reach us on WhatsApp."
+    }
+  },
+  "placeholder": {
+    "model": {
+      "title": "Business model",
+      "description": "Coming soon: how you become the owner of a fraction, step by step."
+    },
+    "benefits": {
+      "title": "Benefits of the fractional system",
+      "description": "Coming soon: the comparison between traditional renting and fractional co-ownership."
+    },
+    "scheduling": {
+      "title": "Scheduling system",
+      "description": "Coming soon: the four seasons and your 42 nights a year."
+    },
+    "about": {
+      "title": "About us",
+      "description": "Coming soon: who we are and frequently asked questions."
+    },
+    "cta": "Create my account"
+  },
+  "owner": {
+    "title": "My fractions",
+    "subtitle": "Your payment plans and what's left to activate each calendar.",
+    "empty": "You don't have fractions with a payment plan yet.",
+    "fraction": "Fraction {number}/8",
+    "open": "View payment plan"
   }
 }

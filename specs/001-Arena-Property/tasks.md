@@ -169,52 +169,52 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
   Hecho cuando: pasan `CA-58.8` y `CA-58.9`.
 - [x] **T-069 · Anulación de compra con todos sus efectos** — `HU-58 · RF-58.8`
   Hecho cuando: pasa `CA-58.7`.
-- [ ] **T-070 · Vista de lectura del plan para el Propietario** — `HU-58 · RF-58.9`
+- [x] **T-070 · Vista de lectura del plan para el Propietario** — `HU-58 · RF-58.9`
   Hecho cuando: muestra el saldo pendiente y qué falta para activar el calendario.
 
 ## Paso 6 · Sitio público del embudo
 
-- [ ] **T-071 · Manifiesto tipado de secciones de la home** — `HU-00 · RF-00.2`
+- [x] **T-071 · Manifiesto tipado de secciones de la home** — `HU-00 · RF-00.2`
   Hecho cuando: pasa `CA-00.1`.
-- [ ] **T-072 · Navbar y Footer compartidos con selector de idioma y tema** — `HU-00 · RF-00.6`
+- [x] **T-072 · Navbar y Footer compartidos con selector de idioma y tema** — `HU-00 · RF-00.6`
   Hecho cuando: ambos se reutilizan en todas las páginas públicas y conmutan idioma y tema.
-- [ ] **T-073 · Hero con video de fondo y slogan** — `HU-00 · RF-00.1`
+- [x] **T-073 · Hero con video de fondo y slogan** — `HU-00 · RF-00.1`
   Hecho cuando: la sección se renderiza desde el manifiesto y es correcta en 320 px.
-- [ ] **T-074 · Secciones Modelo de negocio y Beneficios con sus CTA** — `HU-00 · RF-00.3, RF-00.4, RF-00.5`
+- [x] **T-074 · Secciones Modelo de negocio y Beneficios con sus CTA** — `HU-00 · RF-00.3, RF-00.4, RF-00.5`
   Hecho cuando: pasa `CA-00.2`.
-- [ ] **T-075 · Animación de entrada con `nuxt-aos`** — `HU-00 · RF-00.7` · `RT-12`
+- [x] **T-075 · Animación de entrada con `nuxt-aos`** — `HU-00 · RF-00.7` · `RT-12`
   Hecho cuando: pasa `CA-00.4`.
-- [ ] **T-076 · Analítica de CTA con `nuxt-gtag`** — `HU-00 · RF-00.8` · `RT-12`
+- [x] **T-076 · Analítica de CTA con `nuxt-gtag`** — `HU-00 · RF-00.8` · `RT-12`
   Hecho cuando: pasa `CA-00.5`.
-- [ ] **T-077 · Claves i18n de la home en paridad** — `HU-00 · RF-00.2` · `RT-05`
+- [x] **T-077 · Claves i18n de la home en paridad** — `HU-00 · RF-00.2` · `RT-05`
   Hecho cuando: pasa `CA-00.3`.
-- [ ] **T-078 · Consulta pública del catálogo con RLS anónima** — `HU-01 · RF-01.1, RF-01.5`
+- [x] **T-078 · Consulta pública del catálogo con RLS anónima** — `HU-01 · RF-01.1, RF-01.5`
   Hecho cuando: pasa `CA-01.1`.
-- [ ] **T-079 · Composable de filtros del catálogo** — `HU-01 · RF-01.3` · D-18
+- [x] **T-079 · Composable de filtros del catálogo** — `HU-01 · RF-01.3` · D-18
   Hecho cuando: pasan `CA-01.2` y `CA-01.3`.
-- [ ] **T-080 · Tarjeta de propiedad con imagen optimizada y metadatos** — `HU-01 · RF-01.2, RF-01.4` · `RT-12`
+- [x] **T-080 · Tarjeta de propiedad con imagen optimizada y metadatos** — `HU-01 · RF-01.2, RF-01.4` · `RT-12`
   Hecho cuando: muestra foto, nombre, ubicación, precio y estado, y la ruta expone metadatos de `@nuxtjs/seo`.
-- [ ] **T-081 · Detalle por slug con 404 y vista previa de borrador** — `HU-02 · RF-02.1`
+- [x] **T-081 · Detalle por slug con 404 y vista previa de borrador** — `HU-02 · RF-02.1`
   Hecho cuando: pasan `CA-02.1` y `CA-02.2`.
-- [ ] **T-082 · Galería, descripción larga y equipamiento** — `HU-02 · RF-02.2, RF-02.6`
+- [x] **T-082 · Galería, descripción larga y equipamiento** — `HU-02 · RF-02.2, RF-02.6`
   Hecho cuando: las imágenes se sirven con `@nuxt/image` y la galería funciona en móvil.
-- [ ] **T-083 · Ficha técnica y conteo de fracciones disponibles** — `HU-02 · RF-02.3`
+- [x] **T-083 · Ficha técnica y conteo de fracciones disponibles** — `HU-02 · RF-02.3`
   Hecho cuando: pasa `CA-02.3`.
-- [ ] **T-084 · Visor 3D del plano elevado con respaldo estático** — `HU-02 · RF-02.5` · `RT-12`
+- [x] **T-084 · Visor 3D del plano elevado con respaldo estático** — `HU-02 · RF-02.5` · `RT-12`
   Hecho cuando: pasa `CA-02.4`.
-- [ ] **T-085 · Ancla al formulario de contacto de la ficha** — `HU-02 · RF-02.4` · `HU-03 · RF-03.1`
+- [x] **T-085 · Ancla al formulario de contacto de la ficha** — `HU-02 · RF-02.4` · `HU-03 · RF-03.1`
   Hecho cuando: el botón enfoca el formulario dentro de la misma página.
-- [ ] **T-086 · Esquema compartido de validación de contacto** — `HU-46 · RF-46.1` · `HU-03 · RF-03.3`
+- [x] **T-086 · Esquema compartido de validación de contacto** — `HU-46 · RF-46.1` · `HU-03 · RF-03.3`
   Hecho cuando: pasan `CA-46.1` y `CA-03.1`.
-- [ ] **T-087 · Migración de `contact_requests`** — `HU-46 · RF-46.5` · `HU-03 · RF-03.4`
+- [x] **T-087 · Migración de `contact_requests`** — `HU-46 · RF-46.5` · `HU-03 · RF-03.4`
   Hecho cuando: existe con RLS y guarda la propiedad asociada cuando viene de una ficha.
-- [ ] **T-088 · Envío de correo interno por Nitro con límite de tasa** — `HU-46 · RF-46.5` · `HU-03 · RF-03.4` · D-24
+- [x] **T-088 · Envío de correo interno por Nitro con límite de tasa** — `HU-46 · RF-46.5` · `HU-03 · RF-03.4` · D-24
   Hecho cuando: pasa `CA-46.2` y el límite de tasa rechaza envíos repetidos.
-- [ ] **T-089 · Selecciones del formulario general con opciones exactas** — `HU-46 · RF-46.2, RF-46.3, RF-46.4`
+- [x] **T-089 · Selecciones del formulario general con opciones exactas** — `HU-46 · RF-46.2, RF-46.3, RF-46.4`
   Hecho cuando: pasa `CA-46.3`.
-- [ ] **T-090 · Formulario de contacto de la ficha con intención de compra** — `HU-03 · RF-03.2`
+- [x] **T-090 · Formulario de contacto de la ficha con intención de compra** — `HU-03 · RF-03.2`
   Hecho cuando: pasan `CA-03.2` y `CA-03.3`.
-- [ ] **T-091 · Campo de código de referido prellenado** — `HU-46 · RF-46.6` · `HU-03 · RF-03.5`
+- [x] **T-091 · Campo de código de referido prellenado** — `HU-46 · RF-46.6` · `HU-03 · RF-03.5`
   Hecho cuando: el campo se prellena desde la sesión cuando el visitante llegó por un enlace de referido.
 
 ---

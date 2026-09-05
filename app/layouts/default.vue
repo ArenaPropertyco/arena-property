@@ -13,6 +13,7 @@ const inicio = computed(() => localePath('/'))
 
 const enlaces = computed<NavigationMenuItem[]>(() => [
   { label: t('nav.home'), to: localePath('/') },
+  { label: t('nav.catalog'), to: localePath('/propiedades') },
   { label: t('nav.model'), to: localePath('/modelo') },
   { label: t('nav.benefits'), to: localePath('/beneficios') },
   { label: t('nav.scheduling'), to: localePath('/agendamiento') },
@@ -32,6 +33,9 @@ const enlaces = computed<NavigationMenuItem[]>(() => [
       <slot />
     </UMain>
 
-    <PublicFooter :inicio="inicio" />
+    <PublicFooter
+      :inicio="inicio"
+      :items="enlaces"
+    />
   </div>
 </template>
