@@ -94,6 +94,75 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_requests: {
+        Row: {
+          created_at: string
+          email: string
+          email_sent_at: string | null
+          first_name: string
+          id: string
+          income_range: string | null
+          intent: string
+          ip_hash: string | null
+          last_name: string
+          locale: string
+          message: string
+          phone: string
+          property_id: string | null
+          property_type: string | null
+          referral_code: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          email_sent_at?: string | null
+          first_name: string
+          id?: string
+          income_range?: string | null
+          intent: string
+          ip_hash?: string | null
+          last_name: string
+          locale?: string
+          message: string
+          phone: string
+          property_id?: string | null
+          property_type?: string | null
+          referral_code?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          email_sent_at?: string | null
+          first_name?: string
+          id?: string
+          income_range?: string | null
+          intent?: string
+          ip_hash?: string | null
+          last_name?: string
+          locale?: string
+          message?: string
+          phone?: string
+          property_id?: string | null
+          property_type?: string | null
+          referral_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contact_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fractions: {
         Row: {
           calendar_active: boolean
@@ -427,6 +496,7 @@ export type Database = {
           name: string
           parking_spots: number
           region: string
+          slug: string
           updated_at: string
           video_url: string | null
           visibility: Database["public"]["Enums"]["property_visibility"]
@@ -447,6 +517,7 @@ export type Database = {
           name: string
           parking_spots?: number
           region: string
+          slug?: string
           updated_at?: string
           video_url?: string | null
           visibility?: Database["public"]["Enums"]["property_visibility"]
@@ -467,6 +538,7 @@ export type Database = {
           name?: string
           parking_spots?: number
           region?: string
+          slug?: string
           updated_at?: string
           video_url?: string | null
           visibility?: Database["public"]["Enums"]["property_visibility"]
@@ -741,7 +813,10 @@ export type Database = {
       }
       property_overview: {
         Row: {
+          area_m2: number | null
           available_fractions: number | null
+          bathrooms: number | null
+          bedrooms: number | null
           city: string | null
           coming_soon: boolean | null
           commercial_status: string | null
@@ -752,7 +827,9 @@ export type Database = {
           id: string | null
           lowest_available_price: number | null
           name: string | null
+          parking_spots: number | null
           region: string | null
+          slug: string | null
           sold_fractions: number | null
           visibility: Database["public"]["Enums"]["property_visibility"] | null
         }

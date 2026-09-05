@@ -16,7 +16,8 @@
     "notifications": "Novedades",
     "dashboard": "Panel",
     "roles": "Roles",
-    "admins": "Administradores"
+    "admins": "Administradores",
+    "catalog": "Propiedades"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -37,7 +38,12 @@
     "en": "English"
   },
   "footer": {
-    "rights": "Todos los derechos reservados."
+    "rights": "Todos los derechos reservados.",
+    "explore": "Explorar",
+    "contact": "Contacto",
+    "city": "Cartagena de Indias, Colombia",
+    "whatsapp": "WhatsApp",
+    "tagline": "Copropiedad fraccionada de propiedades vacacionales en el Caribe colombiano."
   },
   "auth": {
     "register": {
@@ -475,5 +481,231 @@
       "voided": "Abono anulado; el estado del plan se recalculó.",
       "purchaseVoided": "Compra anulada."
     }
+  },
+  "home": {
+    "sections": {
+      "navbar": "Navegación principal",
+      "footer": "Pie de página"
+    },
+    "hero": {
+      "headline": "Co-inversión inmobiliaria en el Caribe",
+      "title": "Sé dueño de Bocagrande desde COP $173M.",
+      "description": "1/8 de un apartamento en Invictvs, el rascacielos más icónico de Bocagrande, Cartagena. Vista al Mar Atlántico, Sky Club, restaurante y helipuerto.",
+      "cta": "Ver propiedades",
+      "secondary": "Cómo funciona",
+      "videoLabel": "Video de Invictvs en primera línea de Bocagrande",
+      "facts": {
+        "floors": {
+          "value": "53",
+          "label": "Pisos"
+        },
+        "height": {
+          "value": "188 m",
+          "label": "Altura sobre el mar"
+        },
+        "delivery": {
+          "value": "2029",
+          "label": "Entrega estimada"
+        }
+      }
+    },
+    "model": {
+      "headline": "¿Qué es Arena Property?",
+      "title": "La forma inteligente de poseer el Caribe",
+      "description": "Compras 1/8 de una propiedad vacacional premium, registrada a tu nombre en fiducia, y un operador único se encarga de todo lo demás.",
+      "cta": "Conoce el modelo",
+      "pillars": {
+        "owner": {
+          "title": "Eres propietario real",
+          "description": "Tu 1/8 queda registrado en la fiducia del proyecto. Propiedad real sobre un activo en primera línea de playa."
+        },
+        "price": {
+          "title": "Desde COP $173M",
+          "description": "En cuotas y sin hipoteca adicional. Accedes al activo más premium de Bocagrande con una fracción del capital total."
+        },
+        "carefree": {
+          "title": "Sin preocupaciones",
+          "description": "Un operador turístico único gestiona arrendamiento, huéspedes y reportería mensual. Distribuciones proporcionales a tu 1/8."
+        }
+      }
+    },
+    "benefits": {
+      "headline": "Beneficios",
+      "title": "Ocho dueños, cero preocupaciones",
+      "description": "Frente a comprar una propiedad completa, la fracción te da lo mejor del Caribe por una parte del costo y sin cargar con la operación.",
+      "cta": "Compara con una propiedad completa",
+      "items": {
+        "capital": {
+          "title": "Una fracción del capital",
+          "description": "Desde COP $173M en 30 cuotas, en lugar de más de COP $1.384M por el apartamento completo."
+        },
+        "weeks": {
+          "title": "42 noches al año",
+          "description": "Semanas repartidas en las cuatro temporadas, con rotación justa entre los ocho copropietarios."
+        },
+        "income": {
+          "title": "Ingresos cuando no la usas",
+          "description": "Las noches libres se rentan a terceros y el ingreso se reparte a tu fracción."
+        },
+        "management": {
+          "title": "Operación centralizada",
+          "description": "Agendamiento, gastos comunes, mantenimiento y comunicación viven en la plataforma."
+        },
+        "ownership": {
+          "title": "Tu fracción es tuya",
+          "description": "Registrada en fiducia y trazable; puedes traspasarla cuando lo decidas."
+        },
+        "transparency": {
+          "title": "Cuentas claras",
+          "description": "Reportes mensuales y cada peso con su registro. Nada estimado se presenta como confirmado."
+        }
+      }
+    },
+    "cta": {
+      "title": "Reserva tu cupo en Invictvs",
+      "description": "Primera línea de Bocagrande, 53 pisos y entrega estimada en 2029. Crea tu cuenta y te acompañamos desde la primera llamada hasta tu fracción registrada.",
+      "cta": "Crear mi cuenta",
+      "secondary": "Escríbenos por WhatsApp"
+    },
+    "properties": {
+      "headline": "Propiedades activas",
+      "title": "Lo que está a la venta hoy",
+      "description": "Proyectos publicados con fracciones disponibles. Cada ficha trae fotos, ubicación, precio por fracción y cuántas quedan.",
+      "cta": "Ver todo el catálogo",
+      "empty": "Pronto publicaremos las próximas propiedades."
+    }
+  },
+  "catalog": {
+    "title": "Propiedades",
+    "subtitle": "Fracciones a la venta en el Caribe colombiano. Elige tu región, tu presupuesto y el estado de cada proyecto.",
+    "seoDescription": "Catálogo de propiedades vacacionales en copropiedad fraccionada: fotos, ubicación y precio por fracción.",
+    "empty": "No hay propiedades que coincidan con tu búsqueda.",
+    "count": "{shown} de {total} propiedades",
+    "from": "Desde",
+    "perFraction": "por fracción",
+    "noPrice": "Precio por confirmar",
+    "waitlist": "Lista de espera",
+    "available": "{count} de 8 fracciones disponibles",
+    "view": "Ver propiedad",
+    "filters": {
+      "title": "Filtrar",
+      "region": "Región",
+      "allRegions": "Todas las regiones",
+      "priceMin": "Precio mínimo",
+      "priceMax": "Precio máximo",
+      "status": "Estado",
+      "allStatuses": "Todos los estados",
+      "waitlist": "Solo con lista de espera",
+      "clear": "Limpiar filtros"
+    },
+    "specs": {
+      "area": "m²",
+      "bedrooms": "hab.",
+      "bathrooms": "baños",
+      "parking": "parqueaderos"
+    }
+  },
+  "property": {
+    "notFound": "No encontramos esa propiedad.",
+    "notFoundHint": "Puede que ya no esté publicada. Explora el resto del catálogo.",
+    "preview": "Vista previa de borrador",
+    "previewHint": "Solo la ven quienes administran la propiedad. Los visitantes reciben un 404 hasta que se publique.",
+    "backToCatalog": "Volver al catálogo",
+    "gallery": "Galería",
+    "video": "Video",
+    "floorPlan": "Plano elevado",
+    "floorPlan3dHint": "Arrastra para girar el plano.",
+    "floorPlanStatic": "Imagen del plano elevado",
+    "noFloorPlan": "Esta propiedad aún no tiene plano publicado.",
+    "description": "La propiedad",
+    "amenities": "Equipamiento",
+    "location": "Ubicación",
+    "sheet": "Ficha técnica",
+    "priceFrom": "Precio por fracción",
+    "status": "Estado",
+    "available": "Fracciones disponibles",
+    "availableOf": "{count} de {total}",
+    "contactUs": "Contáctanos",
+    "contactTitle": "¿Quieres saber más de {name}?",
+    "contactSubtitle": "Déjanos tus datos y te contamos cómo hacerte con una fracción."
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "Cuéntanos qué buscas y te llamamos. Sin compromiso.",
+    "seoDescription": "Escríbenos para conocer el modelo de copropiedad fraccionada de Arena Property.",
+    "whatsapp": "Escríbenos por WhatsApp",
+    "fields": {
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "message": "Mensaje",
+      "intent": "Intención de compra",
+      "propertyType": "¿Qué tipo de propiedad estás buscando comprar?",
+      "incomeRange": "Renta familiar mensual promedio",
+      "referralCode": "Código de referido",
+      "referralHint": "Opcional. Si llegaste por el enlace de un embajador, ya viene puesto."
+    },
+    "intents": {
+      "second_home": "Estoy activamente buscando comprar una segunda vivienda",
+      "truly_mine": "Tengo una casa familiar o compartida pero quiero algo que sea realmente mío",
+      "same_place_every_summer": "Cada verano arriendo en el mismo lugar pero sueño con tener algo mío",
+      "investment": "Estoy atento a oportunidades de inversión inmobiliaria"
+    },
+    "propertyTypes": {
+      "vacation": "Vivienda Vacacional",
+      "residential": "Vivienda Residencial",
+      "land": "Terreno"
+    },
+    "incomeRanges": {
+      "under_4m": "Menos de $4.000.000",
+      "between_4m_7m": "Entre $4.000.000 y $7.000.000",
+      "over_7m": "Más de $7.000.000"
+    },
+    "submit": "Enviar",
+    "submitProperty": "Quiero saber más",
+    "sent": "Recibimos tu mensaje. Te contactaremos pronto.",
+    "sentNoEmail": "Recibimos tu mensaje y lo tenemos guardado; te contactaremos pronto.",
+    "validation": {
+      "first_name_required": "Escribe tu nombre.",
+      "last_name_required": "Escribe tus apellidos.",
+      "email_invalid": "Escribe un correo válido.",
+      "phone_required": "Escribe un teléfono de contacto.",
+      "message_required": "Cuéntanos en qué podemos ayudarte.",
+      "intent_required": "Elige tu intención de compra.",
+      "property_type_required": "Elige el tipo de propiedad que buscas.",
+      "income_range_required": "Elige tu rango de renta familiar.",
+      "referral_code_format": "El código de referido no tiene un formato válido."
+    },
+    "errors": {
+      "rate_limited": "Has enviado varios mensajes seguidos. Espera unos minutos e inténtalo de nuevo.",
+      "send_failed": "No pudimos enviar tu mensaje. Escríbenos por WhatsApp."
+    }
+  },
+  "placeholder": {
+    "model": {
+      "title": "Modelo de negocio",
+      "description": "Muy pronto: cómo te haces dueño de una fracción, paso a paso."
+    },
+    "benefits": {
+      "title": "Beneficios del sistema fraccionado",
+      "description": "Muy pronto: el comparativo entre la renta tradicional y la copropiedad fraccionada."
+    },
+    "scheduling": {
+      "title": "Sistema de agendamiento",
+      "description": "Muy pronto: las cuatro temporadas y tus 42 noches al año."
+    },
+    "about": {
+      "title": "Sobre nosotros",
+      "description": "Muy pronto: quiénes somos y las preguntas frecuentes."
+    },
+    "cta": "Crear mi cuenta"
+  },
+  "owner": {
+    "title": "Mis fracciones",
+    "subtitle": "Tus planes de pago y lo que falta para activar cada calendario.",
+    "empty": "Todavía no tienes fracciones con plan de pagos.",
+    "fraction": "Fracción {number}/8",
+    "open": "Ver plan de pagos"
   }
 }

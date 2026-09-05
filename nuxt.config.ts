@@ -42,6 +42,13 @@ export default defineNuxtConfig({
     preference: 'system',
     fallback: 'light',
   },
+  // DT-08 · correo interno por la API REST de Resend, solo en servidor.
+  runtimeConfig: {
+    resendApiKey: '',
+    contactInbox: '',
+    mailFrom: 'Arena Property <no-reply@arena-property.com>',
+  },
+
   future: {
     compatibilityVersion: 4,
   },
@@ -49,6 +56,16 @@ export default defineNuxtConfig({
 
   typescript: {
     strict: true,
+  },
+
+  // RF-00.7 · RT-12 · entrada de las secciones institucionales. Una sola vez y
+  // corta: el lujo no se anima de más. Con `prefers-reduced-motion` la página no
+  // pone los atributos y AOS no interviene (CA-00.4).
+  aos: {
+    once: true,
+    duration: 700,
+    easing: 'ease-out-cubic',
+    offset: 60,
   },
 
   // Un solo estilo para todo el repositorio; el formateo no se discute en revisión.
@@ -71,6 +88,12 @@ export default defineNuxtConfig({
       { code: 'es', language: 'es-CO', name: 'Español', file: 'es.json' },
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
     ],
+  },
+
+  // RF-02.6 · RT-12 · las fotos vienen firmadas desde Supabase Storage; el
+  // proveedor de imagen necesita conocer el dominio para optimizarlas.
+  image: {
+    domains: [process.env.NUXT_PUBLIC_SUPABASE_URL ?? 'http://127.0.0.1:54321'].map(url => new URL(url).host),
   },
 
   // Ninguna HU pide imágenes OG generadas y el renderizador exige una dependencia

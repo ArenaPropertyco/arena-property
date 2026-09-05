@@ -7,10 +7,11 @@ import type { AbonoConArchivo } from '~/composables/usePlanDePagos'
  *
  * La página orquesta: carga el plan ya derivado por la base, monta los componentes
  * y traduce cada resultado en un aviso. Registrar un abono es del Administrador de
- * la propiedad; anular la compra, del Superadmin (RF-58.8). La lectura del
- * Propietario (RF-58.9) llega con su panel en HU-18.
+ * la propiedad; anular la compra, del Superadmin (RF-58.8). El Propietario entra
+ * en lectura (RF-58.9): la RLS solo le entrega su propio plan y la página no le
+ * ofrece acciones.
  */
-definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_propiedades' } })
+definePageMeta({ layout: 'dashboard', acceso: { privada: true } })
 
 const { t } = useI18n()
 const toast = useToast()
@@ -91,12 +92,22 @@ async function confirmarAnulacionDeCompra(motivo: string) {
     >
       <div class="flex flex-wrap items-center justify-between gap-3">
         <UButton
+          v-if="puedeGestionar"
           variant="link"
           size="sm"
           icon="i-lucide-arrow-left"
           :to="localePath(`/panel/propiedades/${plan.propertyId}`)"
           :label="plan.propertyName"
           data-test="volver-a-propiedad"
+        />
+        <UButton
+          v-else
+          variant="link"
+          size="sm"
+          icon="i-lucide-arrow-left"
+          :to="localePath('/panel')"
+          :label="t('owner.title')"
+          data-test="volver-al-panel"
         />
 
         <div class="flex flex-wrap items-center gap-2">
