@@ -774,5 +774,68 @@
         "body": "The {amount} withdrawal was paid to your account."
       }
     }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Classify the year's weeks, mark the peak blocks and publish the allocation for the 8 fractions.",
+    "property": "Property",
+    "year": "Year",
+    "previousYear": "Previous year",
+    "nextYear": "Next year",
+    "noProperties": "You don't manage any fractioned property yet.",
+    "grid": "{year} grid",
+    "gridHint": "{weeks} full Saturday-to-Saturday weeks; {special} Special Dates nights fall outside the grid.",
+    "week": "Week {n}",
+    "weekRange": "{from} – {to}",
+    "seasons": {
+      "alta": "High",
+      "media_alta": "Mid-high",
+      "media": "Mid",
+      "baja": "Low"
+    },
+    "peaks": {
+      "christmas": "Christmas",
+      "new_year": "New Year",
+      "holy_week": "Holy Week"
+    },
+    "suggestPeaks": "Suggest peak blocks",
+    "summary": "{available} of {required} weeks",
+    "preview": "Planned allocation",
+    "previewHint": "Computed by the engine with base year {base}; each fraction gets 1 high, 1 mid-high, 1 mid and 3 low weeks.",
+    "fraction": "Fraction",
+    "position": "Position",
+    "weeks": "Weeks",
+    "quota": "Quota (high · mid-high · mid · low)",
+    "peak": "Peak block",
+    "pool": "Administrator's pool",
+    "poolHint": "{count} weeks left unallocated; they behave as blocks.",
+    "impossible": "The allocation is not possible with this grid.",
+    "save": "Save classification",
+    "saved": "Classification saved.",
+    "publish": "Publish allocation",
+    "republish": "Publish again",
+    "published": "Allocation published.",
+    "publishedAt": "Published on {date}",
+    "draft": "Unpublished",
+    "confirmTitle": "Reconfigure with existing stays",
+    "confirmHint": "This calendar has {count} declared stays. Reconfiguring does not delete them: any left outside its fraction is listed here and in the Administrator's inbox.",
+    "conflicts": "Expected conflicts",
+    "noConflicts": "No stay falls outside the new allocation.",
+    "conflict": "Stay of fraction {fraction} on {nights}, now belonging to fraction {now}",
+    "conflictPool": "Stay of fraction {fraction} on {nights}, now in the pool",
+    "confirm": "Confirm and publish",
+    "validation": {
+      "week_unclassified": "Some weeks are unclassified.",
+      "week_unknown": "Some weeks don't belong to the grid.",
+      "peak_not_high": "A peak block only fits a high-season week.",
+      "peak_duplicated": "A peak block is marked twice."
+    },
+    "errors": {
+      "impossible_grid": "The grid can't meet the criteria: {season} weeks are missing ({available} of {required}).",
+      "invalid_classification": "The grid classification is not valid.",
+      "save_failed": "We could not save the calendar.",
+      "publish_failed": "We could not publish the allocation."
+    },
+    "fractionLabel": "{n}/8"
   }
 }

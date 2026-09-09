@@ -238,29 +238,29 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 2 · HU-12 — Motor de calendario
 
-- [ ] **T-098 · Spike del motor de reparto** — `HU-12`
+- [x] **T-098 · Spike del motor de reparto** — `HU-12`
   Hecho cuando: existe un prototipo desechable que demuestra la rotación de 8 años y su costo de cómputo.
-- [ ] **T-099 · Función pura de rejilla anual sábado a sábado** — `HU-12 · RF-12.1` · schedule.md P-01, P-02, P-03
+- [x] **T-099 · Función pura de rejilla anual sábado a sábado** — `HU-12 · RF-12.1` · schedule.md P-01, P-02, P-03
   Hecho cuando: pasa `CA-12.1`.
-- [ ] **T-100 · Separación de rejilla y noches fuera de rejilla** — `HU-12 · RF-12.1` · D-30
+- [x] **T-100 · Separación de rejilla y noches fuera de rejilla** — `HU-12 · RF-12.1` · D-30
   Hecho cuando: pasa `CA-12.9`.
-- [ ] **T-101 · Migración de `season_calendars` y `calendar_weeks`** — `HU-12 · RF-12.2`
+- [x] **T-101 · Migración de `season_calendars` y `calendar_weeks`** — `HU-12 · RF-12.2`
   Hecho cuando: existen con RLS y guardan temporada y marca de bloque pico por semana.
-- [ ] **T-102 · Pantalla de clasificación de temporadas y bloques pico** — `HU-12 · RF-12.2` · schedule.md P-05, P-06
+- [x] **T-102 · Pantalla de clasificación de temporadas y bloques pico** — `HU-12 · RF-12.2` · schedule.md P-05, P-06
   Hecho cuando: el administrador clasifica las semanas del año y marca los tres bloques pico.
-- [ ] **T-103 · Motor de reparto de cupo por fracción** — `HU-12 · RF-12.3, RF-12.6` · schedule.md P-04
+- [x] **T-103 · Motor de reparto de cupo por fracción** — `HU-12 · RF-12.3, RF-12.6` · schedule.md P-04
   Hecho cuando: pasan `CA-12.2` y `CA-12.3`.
-- [ ] **T-104 · Rotación anual de posiciones** — `HU-12 · RF-12.4` · schedule.md P-07, I-05
+- [x] **T-104 · Rotación anual de posiciones** — `HU-12 · RF-12.4` · schedule.md P-07, I-05
   Hecho cuando: pasan `CA-12.4` y `CA-12.6`.
-- [ ] **T-105 · Rotación estricta de bloques pico** — `HU-12 · RF-12.5` · D-27
+- [x] **T-105 · Rotación estricta de bloques pico** — `HU-12 · RF-12.5` · D-27
   Hecho cuando: pasa `CA-12.5` sobre 8 años consecutivos.
-- [ ] **T-106 · Rechazo de rejilla imposible** — `HU-12 · RF-12.7`
+- [x] **T-106 · Rechazo de rejilla imposible** — `HU-12 · RF-12.7`
   Hecho cuando: pasan `CA-12.7` y `CA-12.8`.
-- [ ] **T-107 · Migración de `allocations` y publicación del calendario** — `HU-12 · RF-12.3`
+- [x] **T-107 · Migración de `allocations` y publicación del calendario** — `HU-12 · RF-12.3`
   Hecho cuando: el resultado del motor se persiste por propiedad y año, y queda auditado.
-- [ ] **T-108 · Liberación automática a 60 días con `pg_cron`** — `HU-12 · RF-12.8` · D-15 · DT-09
+- [x] **T-108 · Liberación automática a 60 días con `pg_cron`** — `HU-12 · RF-12.8` · D-15 · DT-09
   Hecho cuando: la tarea es idempotente y mueve a la bolsa de renta las noches sin estadía, avisando al Propietario.
-- [ ] **T-109 · Reconfiguración con estadías existentes** — `HU-12 · RF-12.9`
+- [x] **T-109 · Reconfiguración con estadías existentes** — `HU-12 · RF-12.9`
   Hecho cuando: la reconfiguración exige confirmación, no borra estadías y lista los conflictos.
 
 ## Paso 3 · HU-13, HU-14, HU-15 — Vista, estadías y bloqueos
