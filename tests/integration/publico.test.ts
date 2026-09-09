@@ -191,6 +191,20 @@ describe('HU-02 · plano elevado', () => {
     expect(visor.find('canvas').exists()).toBe(false)
   })
 
+  it('RF-08.5 · con plano 2D publicado la ficha ofrece su descarga', async () => {
+    const visor = await mountSuspended(FloorPlanViewer, {
+      props: {
+        plano: null,
+        modelo: null,
+        plano2d: { id: 'm2', kind: 'floor_plan_2d', path: 'p1/floor_plan_2d/abc-plano.pdf', position: 0, url: 'https://firmada/plano.pdf' },
+        modo: 'imagen',
+      },
+    })
+
+    expect(visor.find('[data-test="plano-2d"]').text()).toContain('plano.pdf')
+    expect(visor.find('[data-test="descargar-plano-2d"]').attributes('href')).toBe('https://firmada/plano.pdf?download=plano.pdf')
+  })
+
   it('sin plano cargado se dice, no se inventa', async () => {
     const visor = await mountSuspended(FloorPlanViewer, { props: { plano: null, modelo: null, modo: 'visor3d' } })
 

@@ -19,6 +19,8 @@ export interface PropiedadPublicada extends PropiedadPublica {
   plano: MedioConUrl | null
   /** Modelo `.glb` del plano elevado, si la propiedad lo publicó. */
   modelo: MedioConUrl | null
+  /** RF-08.5 · plano 2D en imagen o PDF, descargable desde la ficha. */
+  plano2d: MedioConUrl | null
   video: MedioConUrl | null
 }
 
@@ -26,7 +28,7 @@ export interface PropiedadPublicada extends PropiedadPublica {
 export const CAMPOS_DEL_DETALLE = [
   'id', 'slug', 'name', 'region', 'city', 'country', 'commercial', 'lowestPrice', 'availableFractions',
   'areaM2', 'bedrooms', 'bathrooms', 'parkingSpots', 'description', 'amenities', 'address', 'videoUrl',
-  'fotos', 'plano', 'modelo', 'video',
+  'fotos', 'plano', 'modelo', 'plano2d', 'video',
 ] as const satisfies readonly (keyof PropiedadPublicada)[]
 
 export type ResolucionDeDetalle

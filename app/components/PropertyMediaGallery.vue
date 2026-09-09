@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { ClaveDeValidacionDeMedio, TipoDeMedio } from '#shared/properties/medios'
-import { aceptaDe, esModelo3D, mimeDeArchivo, TIPOS_DE_MEDIO, ordenarMedios, validarArchivo } from '#shared/properties/medios'
+import { aceptaDe, esModelo3D, esPdf, mimeDeArchivo, nombreDeDescarga, TIPOS_DE_MEDIO, ordenarMedios, urlDeDescarga, validarArchivo } from '#shared/properties/medios'
 import type { MedioConUrl } from '#shared/properties/vistas'
 
 /**
- * HU-08 · RF-08.5 y RT-12 — fotos, video y plano elevado de la propiedad.
+ * HU-08 · RF-08.5 y RT-12 — fotos, video, plano elevado y plano 2D de la propiedad.
+ * El plano 2D (imagen o PDF) se ofrece para descargar por su URL firmada.
  *
  * El componente valida el archivo **antes** de emitirlo: formato y tamaño salen de
  * `shared/properties/medios.ts`, los mismos que declara el bucket. Así el error
@@ -128,6 +129,17 @@ function elegir(tipo: TipoDeMedio, evento: Event) {
             />
             <span class="text-xs">{{ t('properties.media.model3d') }}</span>
           </div>
+          <div
+            v-else-if="esPdf(medio.path)"
+            class="flex aspect-4/3 w-full flex-col items-center justify-center gap-1 bg-elevated text-muted"
+            :data-test="`pdf-${medio.id}`"
+          >
+            <UIcon
+              name="i-lucide-file-text"
+              class="size-8"
+            />
+            <span class="max-w-full truncate px-2 text-xs">{{ nombreDeDescarga(medio.path) }}</span>
+          </div>
           <NuxtImg
             v-else-if="grupo.tipo !== 'video'"
             :src="medio.url"
@@ -152,6 +164,19 @@ function elegir(tipo: TipoDeMedio, evento: Event) {
             :aria-label="t('properties.media.remove')"
             :data-test="`quitar-${medio.id}`"
             @click="emit('quitar', medio.id)"
+          />
+          <UButton
+            v-if="grupo.tipo === 'floor_plan_2d'"
+            color="neutral"
+            variant="solid"
+            size="xs"
+            icon="i-lucide-download"
+            class="absolute bottom-1 right-1"
+            :label="t('properties.media.download')"
+            :to="urlDeDescarga(medio.url, nombreDeDescarga(medio.path))"
+            external
+            target="_blank"
+            :data-test="`descargar-${medio.id}`"
           />
         </li>
       </ul>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { claveDeErrorDeAuth } from '#shared/identity/errores'
+import { RUTAS } from '#shared/permissions/acceso'
 
 /**
  * HU-04 · RF-04.2 — la cuenta no entra a rutas privadas hasta verificar el correo.
@@ -9,6 +10,16 @@ const { t } = useI18n()
 const client = useSupabaseClient()
 const route = useRoute()
 const toast = useToast()
+const localePath = useLocalePath()
+const { sesion, esperar } = useCuenta()
+
+// Una cuenta ya verificada (Google llega verificada) no tiene nada que hacer aquí.
+onMounted(async () => {
+  await esperar()
+  if (sesion.value.autenticado && sesion.value.verificado) {
+    await navigateTo(localePath(RUTAS.panel))
+  }
+})
 
 const email = computed(() => (typeof route.query.email === 'string' ? route.query.email : null))
 const reenviando = ref(false)

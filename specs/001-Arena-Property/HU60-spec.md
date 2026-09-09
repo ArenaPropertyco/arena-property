@@ -4,6 +4,8 @@
 Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md). Implementa [D-30](../../docs/decisions.md).
 🆕 Historia nueva: cierra el hueco de las noches que quedaban fuera de la rejilla, sin semana, sin temporada y sin dueño.
 
+> **Aplazada el 2026-09-09 (D-33):** mientras la semana sea la única unidad de uso, las noches fuera de la rejilla quedan en la bolsa del Administrador.
+
 ## Historia
 Como Propietario, quiero disponer de una bolsa comodín de Fechas Especiales para escapadas cortas, para aprovechar las noches que no caben en la rejilla sin obtener más tiempo de temporada alta del que me corresponde.
 

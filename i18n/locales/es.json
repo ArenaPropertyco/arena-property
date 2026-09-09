@@ -18,7 +18,8 @@
     "roles": "Roles",
     "admins": "Administradores",
     "catalog": "Propiedades",
-    "inbox": "Notificaciones"
+    "inbox": "Notificaciones",
+    "myCalendar": "Mi calendario"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -262,7 +263,7 @@
       "results": "{count} de {total} propiedades"
     },
     "media": {
-      "title": "Fotos, video y plano",
+      "title": "Fotos, video y planos",
       "photo": "Fotos",
       "video": "Video",
       "floor_plan": "Plano elevado",
@@ -272,7 +273,10 @@
       "uploading": "Subiendo…",
       "uploaded": "Archivo subido.",
       "removed": "Archivo retirado.",
-      "model3d": "Modelo 3D (.glb)"
+      "model3d": "Modelo 3D (.glb)",
+      "floor_plan_2d": "Plano 2D (imagen o PDF)",
+      "download": "Descargar",
+      "pdf": "Plano en PDF"
     },
     "fractions": {
       "title": "Fracciones",
@@ -630,7 +634,9 @@
     "contactUs": "Contáctanos",
     "contactTitle": "¿Quieres saber más de {name}?",
     "contactSubtitle": "Déjanos tus datos y te contamos cómo hacerte con una fracción.",
-    "floorPlanOnly3d": "El plano 3D de esta propiedad necesita un dispositivo con WebGL; aquí no puede mostrarse."
+    "floorPlanOnly3d": "El plano 3D de esta propiedad necesita un dispositivo con WebGL; aquí no puede mostrarse.",
+    "floorPlan2d": "Plano 2D",
+    "downloadFloorPlan2d": "Descargar plano 2D"
   },
   "contact": {
     "title": "Contacto",
@@ -777,7 +783,7 @@
   },
   "calendar": {
     "title": "Calendario",
-    "subtitle": "Clasifica las semanas del año, marca los bloques pico y publica el reparto de las 8 fracciones.",
+    "subtitle": "Clasifica las semanas del año, fija el orden de turnos y abre la selección para que cada Propietario elija sus semanas.",
     "property": "Propiedad",
     "year": "Año",
     "previousYear": "Año anterior",
@@ -800,30 +806,11 @@
     },
     "suggestPeaks": "Sugerir bloques pico",
     "summary": "{available} de {required} semanas",
-    "preview": "Reparto previsto",
-    "previewHint": "Sale del motor con el año base {base}; cada fracción recibe 1 alta, 1 media-alta, 1 media y 3 bajas.",
     "fraction": "Fracción",
-    "position": "Posición",
-    "weeks": "Semanas",
-    "quota": "Cupo (alta · media-alta · media · baja)",
-    "peak": "Bloque pico",
-    "pool": "Bolsa del Administrador",
-    "poolHint": "{count} semanas sin repartir; se comportan como bloqueos.",
-    "impossible": "El reparto no es posible con esta rejilla.",
     "save": "Guardar clasificación",
     "saved": "Clasificación guardada.",
-    "publish": "Publicar reparto",
-    "republish": "Volver a publicar",
-    "published": "Reparto publicado.",
-    "publishedAt": "Publicado el {date}",
-    "draft": "Sin publicar",
-    "confirmTitle": "Reconfigurar con estadías existentes",
-    "confirmHint": "Este calendario tiene {count} estadías declaradas. Reconfigurarlo no las elimina: las que queden fuera de su fracción se listan aquí y en la bandeja del Administrador.",
-    "conflicts": "Conflictos previstos",
-    "noConflicts": "Ninguna estadía queda fuera del nuevo reparto.",
-    "conflict": "Estadía de la fracción {fraction} sobre {nights}, que ahora es de la fracción {now}",
-    "conflictPool": "Estadía de la fracción {fraction} sobre {nights}, que ahora va a la bolsa",
-    "confirm": "Confirmar y publicar",
+    "publishedAt": "Selección abierta el {date}",
+    "draft": "Selección sin abrir",
     "validation": {
       "week_unclassified": "Hay semanas sin clasificar.",
       "week_unknown": "Hay semanas que no pertenecen a la rejilla.",
@@ -834,8 +821,190 @@
       "impossible_grid": "La rejilla no permite cumplir el criterio: faltan semanas de {season} ({available} de {required}).",
       "invalid_classification": "La clasificación de la rejilla no es válida.",
       "save_failed": "No pudimos guardar el calendario.",
-      "publish_failed": "No pudimos publicar el reparto."
+      "open_failed": "No pudimos abrir la selección."
     },
-    "fractionLabel": "{n}/8"
+    "fractionLabel": "{n}/8",
+    "selection": {
+      "title": "Selección de semanas",
+      "subtitle": "Cada fracción elige 1 semana alta, 1 media-alta, 1 media y 3 bajas cuando le llega el turno.",
+      "orderTitle": "Orden de turnos",
+      "orderHint": "El primer año manda el orden de compra; después la plataforma sugiere rotar el del año anterior y tú decides.",
+      "suggest": "Sugerir orden",
+      "up": "Subir",
+      "down": "Bajar",
+      "noOwners": "Todavía no hay fracciones con titular: no hay a quién dar turno.",
+      "open": "Abrir selección",
+      "opened": "Selección abierta. Los propietarios ya pueden elegir por turnos.",
+      "progressTitle": "Avance de la selección",
+      "status": {
+        "done": "Eligió",
+        "current": "Le toca",
+        "waiting": "Espera",
+        "skipped": "Sin turno (sin titular o calendario inactivo)"
+      },
+      "selectedOf": "{selected} de {needed} semanas",
+      "poolNote": "{count} semanas sin elegir; al cerrar los turnos quedan en la bolsa del Administrador.",
+      "chooseTitle": "Elige tus semanas",
+      "chooseHint": "Toca las semanas que quieres. Necesitas exactamente {needed}: {composition}.",
+      "composition": "{n} {season}",
+      "turnWaiting": "Todavía es el turno de la fracción {fraction}. Verás qué semanas quedan libres cuando termine.",
+      "turnReady": "Es tu turno: elige tus semanas entre las que siguen libres.",
+      "turnDone": "Ya elegiste tus semanas de {year}. Los cambios se piden como intercambio.",
+      "noTurn": "Tu fracción no tiene turno en este calendario.",
+      "notOpen": "El Administrador aún no abre la selección de {year}.",
+      "summary": "{chosen} de {required}",
+      "submit": "Confirmar mis semanas",
+      "selected": "Semanas elegidas.",
+      "takenBy": "Elegida por la fracción {fraction}",
+      "free": "Libre",
+      "validation": {
+        "wrong_count": "Elige exactamente {required} semanas (llevas {chosen}).",
+        "wrong_composition": "En temporada {season} debes elegir {required} (llevas {chosen}).",
+        "week_unknown": "Hay semanas que no están en la rejilla.",
+        "week_duplicated": "Hay semanas repetidas.",
+        "week_taken": "Estas semanas ya las eligió otra fracción: {weeks}.",
+        "not_your_turn": "Todavía es el turno de la fracción {fraction}.",
+        "already_selected": "Tu fracción ya eligió sus semanas."
+      },
+      "errors": {
+        "open_failed": "No pudimos abrir la selección.",
+        "select_failed": "No pudimos guardar tu elección."
+      },
+      "chosenTitle": "Semanas elegidas por fracción",
+      "chosenEmpty": "Ninguna fracción ha elegido todavía."
+    },
+    "swaps": {
+      "title": "Intercambios de semanas",
+      "subtitle": "Cambia una semana de una fracción por una de otra de la misma temporada. Queda auditado y ambos titulares reciben aviso.",
+      "from": "Semana de la fracción A",
+      "to": "Semana de la fracción B",
+      "week": "Semana {n} · {date} · {season} · fracción {fraction}",
+      "reason": "Motivo",
+      "submit": "Intercambiar",
+      "done": "Intercambio aplicado.",
+      "requestTitle": "Solicitar un intercambio",
+      "requestHint": "Ofrece una semana tuya por una de otra fracción de la misma temporada. El Administrador decide.",
+      "offered": "Semana que ofreces",
+      "requested": "Semana que pides",
+      "message": "Mensaje para el Administrador",
+      "request": "Enviar solicitud",
+      "requested_ok": "Solicitud enviada.",
+      "requestsTitle": "Solicitudes de intercambio",
+      "noRequests": "No hay solicitudes de intercambio.",
+      "requestLine": "La fracción {from} ofrece la semana {offered} por la semana {requested} de la fracción {to}",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "rejectReason": "Motivo del rechazo",
+      "resolved": "Solicitud resuelta.",
+      "status": {
+        "open": "Pendiente",
+        "approved": "Aprobada",
+        "rejected": "Rechazada"
+      },
+      "validation": {
+        "same_fraction": "Las dos fracciones deben ser distintas.",
+        "week_not_owned": "Cada semana debe pertenecer a la fracción indicada.",
+        "different_season": "Solo se intercambian semanas de la misma temporada.",
+        "reason_required": "El intercambio necesita un motivo.",
+        "week_locked": "Estas semanas ya están confirmadas o liberadas: {weeks}."
+      },
+      "errors": {
+        "swap_failed": "No pudimos aplicar el intercambio.",
+        "request_failed": "No pudimos enviar la solicitud.",
+        "resolve_failed": "No pudimos resolver la solicitud."
+      }
+    },
+    "weeks": {
+      "title": "Mi calendario",
+      "subtitle": "Tus semanas del año, las de tus copropietarios y lo que puedes confirmar, cancelar o liberar.",
+      "noFractions": "Todavía no eres titular de ninguna fracción.",
+      "legend": "Leyenda",
+      "types": {
+        "own": "Mis semanas",
+        "other": "De otra fracción",
+        "blocked": "Bloqueada",
+        "rented": "Bolsa de renta",
+        "pool": "Bolsa del Administrador",
+        "free": "Sin elegir"
+      },
+      "states": {
+        "elected": "Por confirmar",
+        "confirmed": "Confirmada",
+        "used": "Usada",
+        "released": "Liberada"
+      },
+      "reasons": {
+        "cancelled": "cancelada",
+        "voluntary": "liberada",
+        "expired": "caducada"
+      },
+      "quota": "Mi cupo por temporada",
+      "quotaLine": "{confirmed} confirmadas · {elected} por confirmar · {released} liberadas · de {required}",
+      "week": "Semana {n}",
+      "deadline": "Confirma antes del {date}",
+      "ownerLine": "Fracción {n}/8 · {name}",
+      "blockedLine": "Bloqueada: {reason}",
+      "rentedLine": "En la bolsa de renta ({reason})",
+      "pendingTitle": "Semanas por confirmar",
+      "pendingHint": "Te faltan {count} semanas por confirmar. La más próxima vence el {date}: si no la confirmas, pasa a la bolsa de renta.",
+      "allConfirmed": "Todas tus semanas están confirmadas o resueltas.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "release": "Liberar",
+      "confirmed": "Semana confirmada.",
+      "cancelled": "Semana cancelada; pasa a la bolsa de renta.",
+      "released": "Semana liberada a la bolsa de renta.",
+      "validation": {
+        "calendar_inactive": "Tu calendario está inactivo: completa el plan de pagos para operar.",
+        "not_own": "Esa semana no es de tu fracción.",
+        "already_confirmed": "Esa semana ya está confirmada.",
+        "already_released": "Esa semana ya está en la bolsa de renta.",
+        "not_confirmed": "Esa semana no está confirmada: libérala en vez de cancelarla.",
+        "in_the_past": "Esa semana ya pasó.",
+        "before_activation": "Esa semana empieza antes de la activación de tu calendario.",
+        "week_blocked": "El Administrador bloqueó esa semana.",
+        "confirmation_closed": "La confirmación se cerró el {deadline}: 60 días antes de la entrada.",
+        "cancel_too_late": "La cancelación se cierra {days} días antes de la entrada."
+      },
+      "errors": {
+        "confirm_failed": "No pudimos confirmar la semana.",
+        "cancel_failed": "No pudimos cancelar la semana.",
+        "release_failed": "No pudimos liberar la semana."
+      },
+      "inactive": "Tu calendario está inactivo: ves tus semanas y las de tus copropietarios, pero no puedes confirmar, cancelar ni liberar hasta completar el plan de pagos.",
+      "inactiveBalance": "Saldo pendiente: {amount}.",
+      "viewPlan": "Ver plan de pagos",
+      "weeksCount": "{n} semanas"
+    },
+    "blocks": {
+      "title": "Bloqueos",
+      "subtitle": "Semanas que nadie puede confirmar ni rentar: mantenimiento, uso institucional o cualquier motivo que quede registrado.",
+      "weeks": "Semanas a bloquear",
+      "weekOption": "Semana {n} · {date} · {season}",
+      "reason": "Motivo",
+      "reasonHint": "Queda en la auditoría y lo ven los propietarios.",
+      "create": "Bloquear semanas",
+      "created": "Bloqueo creado.",
+      "createdWithConflicts": "Bloqueo creado. {count} semanas confirmadas quedan en conflicto para la bandeja del Administrador.",
+      "lift": "Levantar",
+      "liftReason": "Motivo para levantarlo",
+      "lifted": "Bloqueo levantado.",
+      "liftedAt": "Levantado el {date}",
+      "active": "Vigente",
+      "empty": "No hay bloqueos en este calendario.",
+      "conflicts": "Conflictos abiertos",
+      "conflict": "Semana {week} confirmada por la fracción {fraction}",
+      "validation": {
+        "reason_required": "El bloqueo necesita un motivo.",
+        "empty": "Elige al menos una semana.",
+        "week_unknown": "Hay semanas que no están en la rejilla.",
+        "in_the_past": "No se bloquean semanas pasadas: {weeks}.",
+        "already_blocked": "Estas semanas ya están bloqueadas: {weeks}."
+      },
+      "errors": {
+        "create_failed": "No pudimos crear el bloqueo.",
+        "lift_failed": "No pudimos levantar el bloqueo."
+      }
+    }
   }
 }

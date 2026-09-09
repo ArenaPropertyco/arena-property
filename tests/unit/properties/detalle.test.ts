@@ -38,6 +38,7 @@ function propiedad(cambios: Partial<PropiedadPublicada> = {}): PropiedadPublicad
     fotos: [{ id: 'm1', kind: 'photo', path: 'p1/photo/1.jpg', position: 0, url: 'https://firmada/1.jpg' }],
     plano: null,
     modelo: null,
+    plano2d: null,
     video: null,
     ...cambios,
   }

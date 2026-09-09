@@ -13,9 +13,15 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
-  const { sesion, esperar } = useCuenta()
+  const { sesion, perfil, esperar, recargar } = useCuenta()
   const { matriz, esperar: esperarPermisos } = usePermisos()
   await Promise.all([esperar(), esperarPermisos()])
+
+  // HU-61 · tras volver de Google la sesión existe antes de que el perfil se haya
+  // leído: sin perfil no se decide «no verificado», se vuelve a cargar primero.
+  if (sesion.value.autenticado && !perfil.value) {
+    await recargar()
+  }
 
   // Con la matriz efectiva: si el Superadmin ajustó una celda, la guarda de rutas y
   // la interfaz deciden igual y no se contradicen.

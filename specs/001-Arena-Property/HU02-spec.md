@@ -11,7 +11,7 @@ Como Visitante, quiero ver el detalle de una propiedad luego de dar clic en el c
 - **RF-02.2** — Muestra galería de imágenes y video, plano elevado, descripción larga, ubicación y equipamiento.
 - **RF-02.3** — Muestra la ficha técnica (m², habitaciones, baños, estacionamientos), el precio por fracción y el estado comercial con las fracciones disponibles (HU-09).
 - **RF-02.4** — Incluye el botón "Contáctanos" que ancla al formulario de contacto de la misma página (HU-03).
-- **RF-02.5** — El plano elevado se presenta con un visor 3D en `@tresjs/nuxt` (RT-12); una función pura decide el modo de presentación y devuelve la imagen estática de respaldo cuando no hay WebGL disponible o el visitante tiene `prefers-reduced-motion`.
+- **RF-02.5** — El plano elevado se presenta con un visor 3D en `@tresjs/nuxt` (RT-12); una función pura decide el modo de presentación y devuelve la imagen estática de respaldo cuando no hay WebGL disponible o el visitante tiene `prefers-reduced-motion`. Si la propiedad publicó un **plano 2D** (imagen o PDF, HU-08 RF-08.5), la ficha ofrece su descarga.
 - **RF-02.6** — Las imágenes de la galería se sirven con `@nuxt/image` (RT-12).
 
 ## Criterios de aceptación (base de las pruebas unitarias)

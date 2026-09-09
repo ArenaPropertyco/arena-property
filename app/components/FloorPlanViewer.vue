@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ModoDelPlano } from '#shared/properties/detalle'
+import { nombreDeDescarga, urlDeDescarga } from '#shared/properties/medios'
 import type { MedioConUrl } from '#shared/properties/vistas'
 
 /**
@@ -14,8 +15,10 @@ const props = withDefaults(defineProps<{
   plano: MedioConUrl | null
   /** Modelo `.glb` del plano, si la propiedad lo publicó. */
   modelo?: MedioConUrl | null
+  /** RF-08.5 · plano 2D en imagen o PDF, que se ofrece para descargar. */
+  plano2d?: MedioConUrl | null
   modo: ModoDelPlano
-}>(), { modelo: null })
+}>(), { modelo: null, plano2d: null })
 
 const { t } = useI18n()
 
@@ -27,6 +30,24 @@ const fuente3d = computed(() => props.modelo ?? props.plano)
     class="overflow-hidden rounded-2xl border border-default bg-elevated/40"
     data-test="visor-plano"
   >
+    <div
+      v-if="plano2d"
+      class="flex flex-wrap items-center justify-between gap-2 border-b border-default px-4 py-3"
+      data-test="plano-2d"
+    >
+      <span class="text-sm text-muted">{{ t('property.floorPlan2d') }} · {{ nombreDeDescarga(plano2d.path) }}</span>
+      <UButton
+        size="sm"
+        variant="outline"
+        icon="i-lucide-download"
+        :label="t('property.downloadFloorPlan2d')"
+        :to="urlDeDescarga(plano2d.url, nombreDeDescarga(plano2d.path))"
+        external
+        target="_blank"
+        data-test="descargar-plano-2d"
+      />
+    </div>
+
     <p
       v-if="!plano && !modelo"
       class="px-6 py-16 text-center text-sm text-muted"

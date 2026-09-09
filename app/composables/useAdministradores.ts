@@ -89,7 +89,7 @@ export function useAdministradores() {
   async function promover(cuentaId: string): Promise<ResultadoDeEscritura> {
     const { error } = await client
       .from('user_roles')
-      .insert({ user_id: cuentaId, role: 'property_admin', granted_by: user.value?.id ?? null })
+      .insert({ user_id: cuentaId, role: 'property_admin', granted_by: (user.value?.sub ?? user.value?.id ?? null) })
 
     if (error) {
       return { ok: false, clave: 'admins.promoteFailed' }
@@ -115,7 +115,7 @@ export function useAdministradores() {
       return { ok: true }
     }
 
-    const autor = user.value?.id ?? null
+    const autor = (user.value?.sub ?? user.value?.id ?? null)
 
     if (cambio.otorgar.length > 0) {
       const { error } = await client.from('property_admins').insert(

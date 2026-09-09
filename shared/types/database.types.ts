@@ -37,26 +37,47 @@ export type Database = {
       allocations: {
         Row: {
           calendar_id: string
+          confirmed_at: string | null
+          confirmed_by: string | null
           created_at: string
           fraction_id: string
           id: string
           kind: string
+          release_reason: string | null
+          released_at: string | null
+          released_by: string | null
+          selected_at: string
+          selected_by: string | null
           week_id: string
         }
         Insert: {
           calendar_id: string
+          confirmed_at?: string | null
+          confirmed_by?: string | null
           created_at?: string
           fraction_id: string
           id?: string
           kind?: string
+          release_reason?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          selected_at?: string
+          selected_by?: string | null
           week_id: string
         }
         Update: {
           calendar_id?: string
+          confirmed_at?: string | null
+          confirmed_by?: string | null
           created_at?: string
           fraction_id?: string
           id?: string
           kind?: string
+          release_reason?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          selected_at?: string
+          selected_by?: string | null
           week_id?: string
         }
         Relationships: [
@@ -142,6 +163,85 @@ export type Database = {
           source?: string
         }
         Relationships: []
+      }
+      calendar_conflicts: {
+        Row: {
+          allocation_id: string
+          block_id: string | null
+          created_at: string
+          fraction_id: string
+          id: string
+          property_id: string
+          resolved_at: string | null
+          status: string
+          week_id: string
+        }
+        Insert: {
+          allocation_id: string
+          block_id?: string | null
+          created_at?: string
+          fraction_id: string
+          id?: string
+          property_id: string
+          resolved_at?: string | null
+          status?: string
+          week_id: string
+        }
+        Update: {
+          allocation_id?: string
+          block_id?: string | null
+          created_at?: string
+          fraction_id?: string
+          id?: string
+          property_id?: string
+          resolved_at?: string | null
+          status?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_conflicts_allocation_id_fkey"
+            columns: ["allocation_id"]
+            isOneToOne: false
+            referencedRelation: "allocations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_conflicts_block_id_fkey"
+            columns: ["block_id"]
+            isOneToOne: false
+            referencedRelation: "week_blocks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_conflicts_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_conflicts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_conflicts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_conflicts_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_weeks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       calendar_weeks: {
         Row: {
@@ -255,6 +355,7 @@ export type Database = {
       }
       fractions: {
         Row: {
+          calendar_activated_at: string | null
           calendar_active: boolean
           created_at: string
           id: string
@@ -266,6 +367,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          calendar_activated_at?: string | null
           calendar_active?: boolean
           created_at?: string
           id?: string
@@ -277,6 +379,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          calendar_activated_at?: string | null
           calendar_active?: boolean
           created_at?: string
           id?: string
@@ -890,65 +993,6 @@ export type Database = {
           },
         ]
       }
-      released_nights: {
-        Row: {
-          calendar_id: string
-          fraction_id: string
-          id: string
-          night: string
-          property_id: string
-          reason: string
-          released_at: string
-        }
-        Insert: {
-          calendar_id: string
-          fraction_id: string
-          id?: string
-          night: string
-          property_id: string
-          reason?: string
-          released_at?: string
-        }
-        Update: {
-          calendar_id?: string
-          fraction_id?: string
-          id?: string
-          night?: string
-          property_id?: string
-          reason?: string
-          released_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "released_nights_calendar_id_fkey"
-            columns: ["calendar_id"]
-            isOneToOne: false
-            referencedRelation: "season_calendars"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "released_nights_fraction_id_fkey"
-            columns: ["fraction_id"]
-            isOneToOne: false
-            referencedRelation: "fractions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "released_nights_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "released_nights_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "property_overview"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       role_capabilities: {
         Row: {
           capability: string
@@ -1030,67 +1074,41 @@ export type Database = {
           },
         ]
       }
-      stays: {
+      selection_turns: {
         Row: {
           calendar_id: string
           created_at: string
-          created_by: string | null
           fraction_id: string
           id: string
-          nights: unknown
-          origin: string
-          property_id: string
-          status: string
+          position: number
         }
         Insert: {
           calendar_id: string
           created_at?: string
-          created_by?: string | null
           fraction_id: string
           id?: string
-          nights: unknown
-          origin?: string
-          property_id: string
-          status?: string
+          position: number
         }
         Update: {
           calendar_id?: string
           created_at?: string
-          created_by?: string | null
           fraction_id?: string
           id?: string
-          nights?: unknown
-          origin?: string
-          property_id?: string
-          status?: string
+          position?: number
         }
         Relationships: [
           {
-            foreignKeyName: "stays_calendar_id_fkey"
+            foreignKeyName: "selection_turns_calendar_id_fkey"
             columns: ["calendar_id"]
             isOneToOne: false
             referencedRelation: "season_calendars"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "stays_fraction_id_fkey"
+            foreignKeyName: "selection_turns_fraction_id_fkey"
             columns: ["fraction_id"]
             isOneToOne: false
             referencedRelation: "fractions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stays_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "stays_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "property_overview"
             referencedColumns: ["id"]
           },
         ]
@@ -1118,6 +1136,175 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      week_blocks: {
+        Row: {
+          calendar_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          lift_reason: string | null
+          lifted_at: string | null
+          lifted_by: string | null
+          property_id: string
+          reason: string
+          week_id: string
+        }
+        Insert: {
+          calendar_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          lift_reason?: string | null
+          lifted_at?: string | null
+          lifted_by?: string | null
+          property_id: string
+          reason: string
+          week_id: string
+        }
+        Update: {
+          calendar_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          lift_reason?: string | null
+          lifted_at?: string | null
+          lifted_by?: string | null
+          property_id?: string
+          reason?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "week_blocks_calendar_id_fkey"
+            columns: ["calendar_id"]
+            isOneToOne: false
+            referencedRelation: "season_calendars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_blocks_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_blocks_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_blocks_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      week_swap_requests: {
+        Row: {
+          calendar_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          message: string | null
+          offered_week_id: string
+          property_id: string
+          requested_week_id: string
+          requester_fraction_id: string
+          resolution_reason: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          target_fraction_id: string
+        }
+        Insert: {
+          calendar_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          message?: string | null
+          offered_week_id: string
+          property_id: string
+          requested_week_id: string
+          requester_fraction_id: string
+          resolution_reason?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          target_fraction_id: string
+        }
+        Update: {
+          calendar_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          message?: string | null
+          offered_week_id?: string
+          property_id?: string
+          requested_week_id?: string
+          requester_fraction_id?: string
+          resolution_reason?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          target_fraction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "week_swap_requests_calendar_id_fkey"
+            columns: ["calendar_id"]
+            isOneToOne: false
+            referencedRelation: "season_calendars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_swap_requests_offered_week_id_fkey"
+            columns: ["offered_week_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_weeks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_swap_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_swap_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_swap_requests_requested_week_id_fkey"
+            columns: ["requested_week_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_weeks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_swap_requests_requester_fraction_id_fkey"
+            columns: ["requester_fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "week_swap_requests_target_fraction_id_fkey"
+            columns: ["target_fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -1291,6 +1478,14 @@ export type Database = {
         Args: { codigo: string }
         Returns: undefined
       }
+      block_weeks: {
+        Args: { calendar: string; reason: string; week_indexes: number[] }
+        Returns: Json
+      }
+      cancel_week: {
+        Args: { calendar: string; fraction: string; week_index: number }
+        Returns: undefined
+      }
       cerrar_compra: {
         Args: { invitacion: string; precio_pactado?: number }
         Returns: {
@@ -1316,6 +1511,18 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      confirm_week: {
+        Args: { calendar: string; fraction: string; week_index: number }
+        Returns: undefined
+      }
+      copropietarios_de: {
+        Args: { propiedad: string }
+        Returns: {
+          calendar_active: boolean
+          fraction_number: number
+          owner_name: string
+        }[]
+      }
       derivar_estado_del_plan: {
         Args: { abonado: number; anulado: boolean; precio: number }
         Returns: string
@@ -1334,9 +1541,14 @@ export type Database = {
       }
       estado_comercial: { Args: { propiedad: string }; Returns: string }
       estado_del_plan: { Args: { plan: string }; Returns: string }
+      expire_unconfirmed_weeks: {
+        Args: { days?: number; today?: string }
+        Returns: number
+      }
       fraccionar_propiedad: {
         Args: { precios: number[]; propiedad: string }
         Returns: {
+          calendar_activated_at: string | null
           calendar_active: boolean
           created_at: string
           id: string
@@ -1364,15 +1576,53 @@ export type Database = {
         }
         Returns: string
       }
-      liberar_noches_vencidas: {
-        Args: { hoy?: string; plazo?: number }
-        Returns: number
+      lift_week_block: {
+        Args: { block: string; reason: string }
+        Returns: undefined
       }
       marcar_leida: { Args: { destinatario: string }; Returns: string }
       marcar_todas_leidas: { Args: never; Returns: number }
-      publicar_calendario: {
-        Args: { calendario: string; confirmar?: boolean; reparto: Json }
-        Returns: Json
+      open_calendar_selection: {
+        Args: { calendar: string; fraction_order?: number[] }
+        Returns: number[]
+      }
+      release_week: {
+        Args: { calendar: string; fraction: string; week_index: number }
+        Returns: undefined
+      }
+      request_week_swap: {
+        Args: {
+          calendar: string
+          fraction: string
+          message?: string
+          offered_week: number
+          requested_week: number
+          target_fraction: number
+        }
+        Returns: string
+      }
+      resolve_swap_request: {
+        Args: { approve: boolean; reason?: string; request: string }
+        Returns: undefined
+      }
+      select_weeks: {
+        Args: { calendar: string; fraction: string; week_indexes: number[] }
+        Returns: number
+      }
+      suggested_selection_order: {
+        Args: { calendar: string }
+        Returns: number[]
+      }
+      swap_weeks: {
+        Args: {
+          calendar: string
+          fraction_a: number
+          fraction_b: number
+          reason: string
+          week_a: number
+          week_b: number
+        }
+        Returns: undefined
       }
       traspasar_fraccion: {
         Args: {
@@ -1383,6 +1633,7 @@ export type Database = {
           nuevo_titular: string
         }
         Returns: {
+          calendar_activated_at: string | null
           calendar_active: boolean
           created_at: string
           id: string
@@ -1411,7 +1662,7 @@ export type Database = {
         | "user"
       fraction_status: "available" | "reserved" | "sold"
       payment_event_kind: "payment_completed" | "purchase_voided"
-      property_media_kind: "photo" | "video" | "floor_plan"
+      property_media_kind: "photo" | "video" | "floor_plan" | "floor_plan_2d"
       property_visibility: "draft" | "published" | "inactive"
       purchase_invitation_status: "pending" | "accepted" | "cancelled"
       suspension_kind: "administrative" | "breach_or_fraud"
@@ -1549,7 +1800,7 @@ export const Constants = {
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
       fraction_status: ["available", "reserved", "sold"],
       payment_event_kind: ["payment_completed", "purchase_voided"],
-      property_media_kind: ["photo", "video", "floor_plan"],
+      property_media_kind: ["photo", "video", "floor_plan", "floor_plan_2d"],
       property_visibility: ["draft", "published", "inactive"],
       purchase_invitation_status: ["pending", "accepted", "cancelled"],
       suspension_kind: ["administrative", "breach_or_fraud"],

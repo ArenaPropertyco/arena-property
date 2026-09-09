@@ -18,7 +18,8 @@
     "roles": "Roles",
     "admins": "Administrators",
     "catalog": "Properties",
-    "inbox": "Notifications"
+    "inbox": "Notifications",
+    "myCalendar": "My calendar"
   },
   "actions": {
     "login": "Log in",
@@ -262,7 +263,7 @@
       "results": "{count} of {total} properties"
     },
     "media": {
-      "title": "Photos, video and floor plan",
+      "title": "Photos, video and floor plans",
       "photo": "Photos",
       "video": "Video",
       "floor_plan": "Floor plan",
@@ -272,7 +273,10 @@
       "uploading": "Uploading…",
       "uploaded": "File uploaded.",
       "removed": "File removed.",
-      "model3d": "3D model (.glb)"
+      "model3d": "3D model (.glb)",
+      "floor_plan_2d": "2D floor plan (image or PDF)",
+      "download": "Download",
+      "pdf": "PDF floor plan"
     },
     "fractions": {
       "title": "Fractions",
@@ -630,7 +634,9 @@
     "contactUs": "Contact us",
     "contactTitle": "Want to know more about {name}?",
     "contactSubtitle": "Leave your details and we'll tell you how to get a fraction.",
-    "floorPlanOnly3d": "This property's 3D plan needs a device with WebGL; it can't be shown here."
+    "floorPlanOnly3d": "This property's 3D plan needs a device with WebGL; it can't be shown here.",
+    "floorPlan2d": "2D floor plan",
+    "downloadFloorPlan2d": "Download 2D floor plan"
   },
   "contact": {
     "title": "Contact",
@@ -777,7 +783,7 @@
   },
   "calendar": {
     "title": "Calendar",
-    "subtitle": "Classify the year's weeks, mark the peak blocks and publish the allocation for the 8 fractions.",
+    "subtitle": "Classify the weeks of the year, set the turn order and open the selection so each Owner picks their weeks.",
     "property": "Property",
     "year": "Year",
     "previousYear": "Previous year",
@@ -800,30 +806,11 @@
     },
     "suggestPeaks": "Suggest peak blocks",
     "summary": "{available} of {required} weeks",
-    "preview": "Planned allocation",
-    "previewHint": "Computed by the engine with base year {base}; each fraction gets 1 high, 1 mid-high, 1 mid and 3 low weeks.",
     "fraction": "Fraction",
-    "position": "Position",
-    "weeks": "Weeks",
-    "quota": "Quota (high · mid-high · mid · low)",
-    "peak": "Peak block",
-    "pool": "Administrator's pool",
-    "poolHint": "{count} weeks left unallocated; they behave as blocks.",
-    "impossible": "The allocation is not possible with this grid.",
     "save": "Save classification",
     "saved": "Classification saved.",
-    "publish": "Publish allocation",
-    "republish": "Publish again",
-    "published": "Allocation published.",
-    "publishedAt": "Published on {date}",
-    "draft": "Unpublished",
-    "confirmTitle": "Reconfigure with existing stays",
-    "confirmHint": "This calendar has {count} declared stays. Reconfiguring does not delete them: any left outside its fraction is listed here and in the Administrator's inbox.",
-    "conflicts": "Expected conflicts",
-    "noConflicts": "No stay falls outside the new allocation.",
-    "conflict": "Stay of fraction {fraction} on {nights}, now belonging to fraction {now}",
-    "conflictPool": "Stay of fraction {fraction} on {nights}, now in the pool",
-    "confirm": "Confirm and publish",
+    "publishedAt": "Selection opened on {date}",
+    "draft": "Selection not open",
     "validation": {
       "week_unclassified": "Some weeks are unclassified.",
       "week_unknown": "Some weeks don't belong to the grid.",
@@ -834,8 +821,190 @@
       "impossible_grid": "The grid can't meet the criteria: {season} weeks are missing ({available} of {required}).",
       "invalid_classification": "The grid classification is not valid.",
       "save_failed": "We could not save the calendar.",
-      "publish_failed": "We could not publish the allocation."
+      "open_failed": "We could not open the selection."
     },
-    "fractionLabel": "{n}/8"
+    "fractionLabel": "{n}/8",
+    "selection": {
+      "title": "Week selection",
+      "subtitle": "Each fraction picks 1 high, 1 mid-high, 1 mid and 3 low weeks when its turn comes.",
+      "orderTitle": "Turn order",
+      "orderHint": "The first year follows purchase order; afterwards the platform suggests rotating last year’s order and you decide.",
+      "suggest": "Suggest order",
+      "up": "Move up",
+      "down": "Move down",
+      "noOwners": "There are no fractions with an owner yet: nobody to give a turn to.",
+      "open": "Open selection",
+      "opened": "Selection open. Owners can now pick in turns.",
+      "progressTitle": "Selection progress",
+      "status": {
+        "done": "Picked",
+        "current": "Its turn",
+        "waiting": "Waiting",
+        "skipped": "No turn (no owner or inactive calendar)"
+      },
+      "selectedOf": "{selected} of {needed} weeks",
+      "poolNote": "{count} weeks unpicked; once turns close they go to the Administrator pool.",
+      "chooseTitle": "Pick your weeks",
+      "chooseHint": "Tap the weeks you want. You need exactly {needed}: {composition}.",
+      "composition": "{n} {season}",
+      "turnWaiting": "It is still fraction {fraction}’s turn. You will see which weeks remain once they finish.",
+      "turnReady": "It is your turn: pick your weeks among those still free.",
+      "turnDone": "You already picked your {year} weeks. Changes are requested as swaps.",
+      "noTurn": "Your fraction has no turn in this calendar.",
+      "notOpen": "The Administrator has not opened the {year} selection yet.",
+      "summary": "{chosen} of {required}",
+      "submit": "Confirm my weeks",
+      "selected": "Weeks selected.",
+      "takenBy": "Picked by fraction {fraction}",
+      "free": "Free",
+      "validation": {
+        "wrong_count": "Pick exactly {required} weeks (you have {chosen}).",
+        "wrong_composition": "In {season} season you must pick {required} (you have {chosen}).",
+        "week_unknown": "Some weeks are not in the grid.",
+        "week_duplicated": "Some weeks are repeated.",
+        "week_taken": "These weeks were already picked by another fraction: {weeks}.",
+        "not_your_turn": "It is still fraction {fraction}’s turn.",
+        "already_selected": "Your fraction already picked its weeks."
+      },
+      "errors": {
+        "open_failed": "We could not open the selection.",
+        "select_failed": "We could not save your pick."
+      },
+      "chosenTitle": "Weeks picked by fraction",
+      "chosenEmpty": "No fraction has picked yet."
+    },
+    "swaps": {
+      "title": "Week swaps",
+      "subtitle": "Swap a week of one fraction for a week of another in the same season. It is audited and both owners are notified.",
+      "from": "Week of fraction A",
+      "to": "Week of fraction B",
+      "week": "Week {n} · {date} · {season} · fraction {fraction}",
+      "reason": "Reason",
+      "submit": "Swap",
+      "done": "Swap applied.",
+      "requestTitle": "Request a swap",
+      "requestHint": "Offer one of your weeks for a week of another fraction in the same season. The Administrator decides.",
+      "offered": "Week you offer",
+      "requested": "Week you ask for",
+      "message": "Message for the Administrator",
+      "request": "Send request",
+      "requested_ok": "Request sent.",
+      "requestsTitle": "Swap requests",
+      "noRequests": "There are no swap requests.",
+      "requestLine": "Fraction {from} offers week {offered} for week {requested} of fraction {to}",
+      "approve": "Approve",
+      "reject": "Reject",
+      "rejectReason": "Rejection reason",
+      "resolved": "Request resolved.",
+      "status": {
+        "open": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "validation": {
+        "same_fraction": "The two fractions must be different.",
+        "week_not_owned": "Each week must belong to the given fraction.",
+        "different_season": "Only weeks of the same season can be swapped.",
+        "reason_required": "The swap needs a reason.",
+        "week_locked": "These weeks are already confirmed or released: {weeks}."
+      },
+      "errors": {
+        "swap_failed": "We could not apply the swap.",
+        "request_failed": "We could not send the request.",
+        "resolve_failed": "We could not resolve the request."
+      }
+    },
+    "weeks": {
+      "title": "My calendar",
+      "subtitle": "Your weeks of the year, your co-owners’ weeks, and what you can confirm, cancel or release.",
+      "noFractions": "You are not the holder of any fraction yet.",
+      "legend": "Legend",
+      "types": {
+        "own": "My weeks",
+        "other": "Another fraction",
+        "blocked": "Blocked",
+        "rented": "Rental pool",
+        "pool": "Administrator pool",
+        "free": "Unpicked"
+      },
+      "states": {
+        "elected": "To confirm",
+        "confirmed": "Confirmed",
+        "used": "Used",
+        "released": "Released"
+      },
+      "reasons": {
+        "cancelled": "cancelled",
+        "voluntary": "released",
+        "expired": "expired"
+      },
+      "quota": "My quota by season",
+      "quotaLine": "{confirmed} confirmed · {elected} to confirm · {released} released · of {required}",
+      "week": "Week {n}",
+      "deadline": "Confirm before {date}",
+      "ownerLine": "Fraction {n}/8 · {name}",
+      "blockedLine": "Blocked: {reason}",
+      "rentedLine": "In the rental pool ({reason})",
+      "pendingTitle": "Weeks to confirm",
+      "pendingHint": "You still have {count} weeks to confirm. The nearest one is due on {date}: if you do not confirm it, it goes to the rental pool.",
+      "allConfirmed": "All your weeks are confirmed or settled.",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "release": "Release",
+      "confirmed": "Week confirmed.",
+      "cancelled": "Week cancelled; it goes to the rental pool.",
+      "released": "Week released to the rental pool.",
+      "validation": {
+        "calendar_inactive": "Your calendar is inactive: complete the payment plan to operate.",
+        "not_own": "That week does not belong to your fraction.",
+        "already_confirmed": "That week is already confirmed.",
+        "already_released": "That week is already in the rental pool.",
+        "not_confirmed": "That week is not confirmed: release it instead of cancelling.",
+        "in_the_past": "That week is already past.",
+        "before_activation": "That week starts before your calendar was activated.",
+        "week_blocked": "The Administrator blocked that week.",
+        "confirmation_closed": "Confirmation closed on {deadline}: 60 days before check-in.",
+        "cancel_too_late": "Cancellation closes {days} days before check-in."
+      },
+      "errors": {
+        "confirm_failed": "We could not confirm the week.",
+        "cancel_failed": "We could not cancel the week.",
+        "release_failed": "We could not release the week."
+      },
+      "inactive": "Your calendar is inactive: you can see your weeks and your co-owners’, but you cannot confirm, cancel or release until the payment plan is complete.",
+      "inactiveBalance": "Outstanding balance: {amount}.",
+      "viewPlan": "View payment plan",
+      "weeksCount": "{n} weeks"
+    },
+    "blocks": {
+      "title": "Blocks",
+      "subtitle": "Weeks nobody can confirm or rent: maintenance, institutional use or any reason that gets recorded.",
+      "weeks": "Weeks to block",
+      "weekOption": "Week {n} · {date} · {season}",
+      "reason": "Reason",
+      "reasonHint": "It is audited and visible to the owners.",
+      "create": "Block weeks",
+      "created": "Block created.",
+      "createdWithConflicts": "Block created. {count} confirmed weeks are now in conflict for the Administrator inbox.",
+      "lift": "Lift",
+      "liftReason": "Reason to lift it",
+      "lifted": "Block lifted.",
+      "liftedAt": "Lifted on {date}",
+      "active": "Active",
+      "empty": "There are no blocks on this calendar.",
+      "conflicts": "Open conflicts",
+      "conflict": "Week {week} confirmed by fraction {fraction}",
+      "validation": {
+        "reason_required": "The block needs a reason.",
+        "empty": "Pick at least one week.",
+        "week_unknown": "Some weeks are not in the grid.",
+        "in_the_past": "Past weeks cannot be blocked: {weeks}.",
+        "already_blocked": "These weeks are already blocked: {weeks}."
+      },
+      "errors": {
+        "create_failed": "We could not create the block.",
+        "lift_failed": "We could not lift the block."
+      }
+    }
   }
 }
