@@ -774,5 +774,68 @@
         "body": "El retiro por {amount} ya fue pagado a tu cuenta."
       }
     }
+  },
+  "calendar": {
+    "title": "Calendario",
+    "subtitle": "Clasifica las semanas del año, marca los bloques pico y publica el reparto de las 8 fracciones.",
+    "property": "Propiedad",
+    "year": "Año",
+    "previousYear": "Año anterior",
+    "nextYear": "Año siguiente",
+    "noProperties": "No administras ninguna propiedad fraccionada todavía.",
+    "grid": "Rejilla de {year}",
+    "gridHint": "{weeks} semanas completas de sábado a sábado; quedan {special} noches de Fechas Especiales fuera de la rejilla.",
+    "week": "Semana {n}",
+    "weekRange": "{from} – {to}",
+    "seasons": {
+      "alta": "Alta",
+      "media_alta": "Media-alta",
+      "media": "Media",
+      "baja": "Baja"
+    },
+    "peaks": {
+      "christmas": "Navidad",
+      "new_year": "Año Nuevo",
+      "holy_week": "Semana Santa"
+    },
+    "suggestPeaks": "Sugerir bloques pico",
+    "summary": "{available} de {required} semanas",
+    "preview": "Reparto previsto",
+    "previewHint": "Sale del motor con el año base {base}; cada fracción recibe 1 alta, 1 media-alta, 1 media y 3 bajas.",
+    "fraction": "Fracción",
+    "position": "Posición",
+    "weeks": "Semanas",
+    "quota": "Cupo (alta · media-alta · media · baja)",
+    "peak": "Bloque pico",
+    "pool": "Bolsa del Administrador",
+    "poolHint": "{count} semanas sin repartir; se comportan como bloqueos.",
+    "impossible": "El reparto no es posible con esta rejilla.",
+    "save": "Guardar clasificación",
+    "saved": "Clasificación guardada.",
+    "publish": "Publicar reparto",
+    "republish": "Volver a publicar",
+    "published": "Reparto publicado.",
+    "publishedAt": "Publicado el {date}",
+    "draft": "Sin publicar",
+    "confirmTitle": "Reconfigurar con estadías existentes",
+    "confirmHint": "Este calendario tiene {count} estadías declaradas. Reconfigurarlo no las elimina: las que queden fuera de su fracción se listan aquí y en la bandeja del Administrador.",
+    "conflicts": "Conflictos previstos",
+    "noConflicts": "Ninguna estadía queda fuera del nuevo reparto.",
+    "conflict": "Estadía de la fracción {fraction} sobre {nights}, que ahora es de la fracción {now}",
+    "conflictPool": "Estadía de la fracción {fraction} sobre {nights}, que ahora va a la bolsa",
+    "confirm": "Confirmar y publicar",
+    "validation": {
+      "week_unclassified": "Hay semanas sin clasificar.",
+      "week_unknown": "Hay semanas que no pertenecen a la rejilla.",
+      "peak_not_high": "Un bloque pico solo cabe en una semana alta.",
+      "peak_duplicated": "Un bloque pico está marcado dos veces."
+    },
+    "errors": {
+      "impossible_grid": "La rejilla no permite cumplir el criterio: faltan semanas de {season} ({available} de {required}).",
+      "invalid_classification": "La clasificación de la rejilla no es válida.",
+      "save_failed": "No pudimos guardar el calendario.",
+      "publish_failed": "No pudimos publicar el reparto."
+    },
+    "fractionLabel": "{n}/8"
   }
 }
