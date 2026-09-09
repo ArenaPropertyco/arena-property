@@ -4,10 +4,10 @@ import { DATOS_DEL_HERO, FONDO_DEL_HERO } from '#shared/content/home'
 import { RUTAS_PUBLICAS } from '#shared/content/rutas'
 
 /**
- * HU-00 · RF-00.1 — hero con fondo animado y slogan. El fondo es el GIF oficial de
- * Invictvs: decorativo, en bucle por naturaleza, con un fotograma fijo como póster
- * mientras carga y como único fondo para quien pidió menos movimiento. Los textos
- * salen del manifiesto por clave i18n.
+ * HU-00 · RF-00.1 — hero con video de fondo y slogan. El video es decorativo: va
+ * silenciado, en bucle y sin controles, con un fotograma fijo debajo que sostiene
+ * la sección mientras carga y es el único fondo para quien pidió menos movimiento.
+ * Los textos salen del manifiesto por clave i18n.
  */
 defineProps<{
   seccion: SeccionDeLaHome
@@ -32,15 +32,24 @@ const localePath = useLocalePath()
       class="absolute inset-0 -z-30 size-full object-cover"
       fetchpriority="high"
     >
-    <img
+    <video
       v-if="!reducirMovimiento"
-      :src="FONDO_DEL_HERO.gif"
-      :alt="t('home.hero.videoLabel')"
       class="absolute inset-0 -z-20 size-full object-cover"
-      loading="eager"
-      decoding="async"
+      :poster="FONDO_DEL_HERO.poster"
+      :aria-label="t('home.hero.videoLabel')"
+      autoplay
+      muted
+      loop
+      playsinline
+      disablepictureinpicture
+      preload="metadata"
       data-test="hero-fondo"
     >
+      <source
+        :src="FONDO_DEL_HERO.video"
+        type="video/mp4"
+      >
+    </video>
     <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/60 to-ink-950/10" />
 
     <UContainer class="w-full pb-16 pt-40 sm:pb-24">

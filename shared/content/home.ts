@@ -126,11 +126,12 @@ export function clavesDelManifiesto(secciones: readonly SeccionDeLaHome[]): stri
 }
 
 /**
- * RF-00.1 · el fondo animado del hero: el GIF oficial de Invictvs, con un fotograma
- * fijo como póster mientras carga y para quien pidió menos movimiento.
+ * RF-00.1 · el video de fondo del hero (H.264, sin audio, en bucle) con un
+ * fotograma fijo como póster mientras carga y como único fondo para quien pidió
+ * menos movimiento. Para cambiar el video basta con reemplazar el archivo.
  */
 export const FONDO_DEL_HERO = {
-  gif: '/media/hero.gif',
+  video: '/media/hero.mp4',
   poster: '/media/hero-poster.jpg',
 } as const
 

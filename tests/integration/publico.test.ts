@@ -77,11 +77,17 @@ function plan(cambios: Partial<PlanDePagosListado> = {}): PlanDePagosListado {
 }
 
 describe('HU-00 · secciones de la home desde el manifiesto', () => {
-  it('RF-00.1 · el hero muestra el slogan y el GIF oficial de fondo', async () => {
+  it('RF-00.1 · el hero muestra el slogan y el video de fondo silenciado, en bucle y con póster', async () => {
     const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
 
     expect(hero.text()).toContain('Sé dueño de Bocagrande')
-    expect(hero.find('[data-test="hero-fondo"]').attributes('src')).toBe('/media/hero.gif')
+    const video = hero.find('video[data-test="hero-fondo"]')
+    expect(video.exists()).toBe(true)
+    expect(video.find('source').attributes('src')).toBe('/media/hero.mp4')
+    expect(video.attributes('poster')).toBe('/media/hero-poster.jpg')
+    expect(video.attributes()).toHaveProperty('muted')
+    expect(video.attributes()).toHaveProperty('loop')
+    expect(video.attributes()).toHaveProperty('playsinline')
   })
 
   it('CA-00.4 · con movimiento reducido el hero deja solo el fotograma fijo', async () => {

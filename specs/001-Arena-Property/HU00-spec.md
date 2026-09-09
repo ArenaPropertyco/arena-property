@@ -7,7 +7,7 @@ Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 Como Visitante, quiero explorar la información general del negocio en la página de inicio, para entender rápidamente qué es Arena Property.
 
 ## Requisitos funcionales
-- **RF-00.1** — La ruta `/` renderiza, en orden: Navbar, Hero con fondo animado (GIF oficial) y slogan, sección Modelo de negocio, sección Beneficios, sección Propiedades activas (las publicadas de HU-01, con enlace al catálogo), CTA principal y Footer.
+- **RF-00.1** — La ruta `/` renderiza, en orden: Navbar, Hero con video de fondo y slogan, sección Modelo de negocio, sección Beneficios, sección Propiedades activas (las publicadas de HU-01, con enlace al catálogo), CTA principal y Footer.
 - **RF-00.2** — La composición de la página se declara en un **manifiesto tipado de secciones** en `shared/` (identificador, orden, clave i18n del título, destino del CTA si lo tiene); la página recorre el manifiesto y no fija secciones en el marcado. Es el objeto que prueban los CA (RT-03).
 - **RF-00.3** — La sección Modelo de negocio muestra una explicación corta y un botón que navega a la página de detalle (HU-41).
 - **RF-00.4** — La sección Beneficios lista ventajas del modelo fraccionado frente a una propiedad completa (bullets cortos) y un botón que navega a la página de detalle (HU-42).

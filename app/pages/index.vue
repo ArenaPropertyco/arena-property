@@ -54,7 +54,7 @@ useSeoMeta({
   ogDescription: t('home.hero.description'),
   ogImage: '/media/hero-poster.jpg',
   ogImageWidth: 1280,
-  ogImageHeight: 719,
+  ogImageHeight: 720,
 })
 </script>
 
