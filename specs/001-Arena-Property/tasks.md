@@ -265,42 +265,64 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 3 · HU-13, HU-14, HU-15 — Vista, estadías y bloqueos
 
-- [ ] **T-110 · Migración de `stays` con `daterange` y exclusión GIST** — `HU-14 · RF-14.10` · DT-02
+- [x] **T-110 · Migración de `stays` con `daterange` y exclusión GIST** — `HU-14 · RF-14.10` · DT-02
   Hecho cuando: pasa `CA-14.9` con dos escrituras simultáneas sobre la misma noche.
-- [ ] **T-111 · Migración de `blocks` con motivo obligatorio** — `HU-15 · RF-15.1, RF-15.5`
+- [x] **T-111 · Migración de `blocks` con motivo obligatorio** — `HU-15 · RF-15.1, RF-15.5`
   Hecho cuando: pasa `CA-15.1` y la creación queda auditada.
-- [ ] **T-112 · Bloqueo por noches que impide reservar** — `HU-15 · RF-15.2`
+- [x] **T-112 · Bloqueo por noches que impide reservar** — `HU-15 · RF-15.2`
   Hecho cuando: pasa `CA-15.2`.
-- [ ] **T-113 · Conflicto de bloqueo sobre estadía existente** — `HU-15 · RF-15.4`
+- [x] **T-113 · Conflicto de bloqueo sobre estadía existente** — `HU-15 · RF-15.4`
   Hecho cuando: pasa `CA-15.3` indicando las noches que colisionan.
-- [ ] **T-114 · RLS de bloqueos por propiedad asignada** — `HU-15 · RF-15.1`
+- [x] **T-114 · RLS de bloqueos por propiedad asignada** — `HU-15 · RF-15.1`
   Hecho cuando: pasa `CA-15.4`.
-- [ ] **T-115 · Proyección pura del calendario por noches** — `HU-13 · RF-13.2, RF-13.4`
+- [x] **T-115 · Proyección pura del calendario por noches** — `HU-13 · RF-13.2, RF-13.4`
   Hecho cuando: pasa `CA-13.1` incluido el cupo restante por temporada.
-- [ ] **T-116 · Visibilidad de copropietarios con nombre y fracción** — `HU-13 · RF-13.3` · D-16
+- [x] **T-116 · Visibilidad de copropietarios con nombre y fracción** — `HU-13 · RF-13.3` · D-16
   Hecho cuando: pasa `CA-13.2` y no se expone ningún dato de contacto.
-- [ ] **T-117 · Acceso al calendario con interruptor inactivo** — `HU-13 · RF-13.1, RF-13.1b` · D-31
+- [x] **T-117 · Acceso al calendario con interruptor inactivo** — `HU-13 · RF-13.1, RF-13.1b` · D-31
   Hecho cuando: pasa `CA-13.3` y la vista inactiva no ofrece ninguna acción.
-- [ ] **T-118 · Consumo de cupo por temporada al declarar estadía** — `HU-14 · RF-14.1`
+- [x] **T-118 · Consumo de cupo por temporada al declarar estadía** — `HU-14 · RF-14.1`
   Hecho cuando: pasa `CA-14.3`.
-- [ ] **T-119 · Guarda de calendario activo** — `HU-14 · RF-14.1b` · D-31
+- [x] **T-119 · Guarda de calendario activo** — `HU-14 · RF-14.1b` · D-31
   Hecho cuando: pasa `CA-14.0`, validado también en el servidor.
-- [ ] **T-120 · Cupo del primer año tras la activación** — `HU-14 · RF-14.1c` · D-31
+- [x] **T-120 · Cupo del primer año tras la activación** — `HU-14 · RF-14.1c` · D-31
   Hecho cuando: pasa `CA-14.0b`.
-- [ ] **T-121 · Estadía mínima por temporada** — `HU-14 · RF-14.2` · schedule.md P-08
+- [x] **T-121 · Estadía mínima por temporada** — `HU-14 · RF-14.2` · schedule.md P-08
   Hecho cuando: pasan `CA-14.1` y `CA-14.2`.
-- [ ] **T-122 · Validación de colisiones al declarar** — `HU-14 · RF-14.4`
+- [x] **T-122 · Validación de colisiones al declarar** — `HU-14 · RF-14.4`
   Hecho cuando: pasa `CA-14.4`.
-- [ ] **T-123 · Cancelación con plazo y cancelación parcial** — `HU-14 · RF-14.6` · schedule.md P-10
+- [x] **T-123 · Cancelación con plazo y cancelación parcial** — `HU-14 · RF-14.6` · schedule.md P-10
   Hecho cuando: pasan `CA-14.5` y `CA-14.6`.
-- [ ] **T-124 · Liberación voluntaria y caducidad a 60 días** — `HU-14 · RF-14.7` · schedule.md P-11
+- [x] **T-124 · Liberación voluntaria y caducidad a 60 días** — `HU-14 · RF-14.7` · schedule.md P-11
   Hecho cuando: pasa `CA-14.7`.
-- [ ] **T-125 · Advertencia de noches huérfanas** — `HU-14 · RF-14.9`
+- [x] **T-125 · Advertencia de noches huérfanas** — `HU-14 · RF-14.9`
   Hecho cuando: pasa `CA-14.8` y la advertencia no bloquea la declaración.
-- [ ] **T-126 · Auditoría y notificación de cada movimiento de estadía** — `HU-14 · RF-14.10` · `TR-01`, `TR-03`
+- [x] **T-126 · Auditoría y notificación de cada movimiento de estadía** — `HU-14 · RF-14.10` · `TR-01`, `TR-03`
   Hecho cuando: declarar, cancelar y liberar dejan entrada de auditoría y notificación, una sola vez cada una.
-- [ ] **T-127 · Interfaz de calendario por noches** — `HU-13 · RF-13.2` · `HU-14 · RF-14.1` · `RT-06`
+- [x] **T-127 · Interfaz de calendario por noches** — `HU-13 · RF-13.2` · `HU-14 · RF-14.1` · `RT-06`
   Hecho cuando: se opera de 320 px a escritorio, en ambos temas, y las noches propias, ajenas, bloqueadas y rentadas se distinguen.
+
+## Paso 3b · HU-12 revisada (D-32) — Selección de semanas por turnos
+
+- [x] **T-127a · Reglas puras de selección, turnos y orden** — `HU-12 · RF-12.3, RF-12.4, RF-12.5` · D-32
+  Hecho cuando: pasan `CA-12.2`, `CA-12.4`, `CA-12.5` y `CA-12.6`; desaparece el motor de reparto automático.
+- [x] **T-127b · Reglas puras de intercambio** — `HU-12 · RF-12.6` · D-28
+  Hecho cuando: pasa `CA-12.10` en `shared/`.
+- [x] **T-127c · Migración de turnos, selección e intercambios** — `HU-12 · RF-12.3…RF-12.6` · `TR-01`, `TR-03`
+  Hecho cuando: pasan `CA-12.3`, `CA-12.5`, `CA-12.10` y `CA-12.11` en la base, con RLS, auditoría y aviso.
+- [x] **T-127d · Pantallas de apertura, orden de turnos, selección e intercambios** — `HU-12 · RF-12.4, RF-12.5, RF-12.6` · `RT-06`
+  Hecho cuando: el Administrador abre el calendario y fija el orden, el Propietario elige sus semanas en su turno y solicita intercambios, y desaparece «Reparto previsto».
+
+## Paso 3c · Revisión D-33 — La semana como única unidad de uso
+
+- [x] **T-127e · Reglas puras de uso de semanas** — `HU-14 · RF-14.1…RF-14.7, RF-14.9` · D-33
+  Hecho cuando: pasan `CA-14.0`, `CA-14.0b`, `CA-14.1`, `CA-14.2`, `CA-14.3`, `CA-14.5`, `CA-14.6` en `shared/`; desaparecen las estadías por noches.
+- [x] **T-127f · Proyección y bloqueos por semanas** — `HU-13 · RF-13.2, RF-13.4` · `HU-15 · RF-15.1, RF-15.4` · D-33
+  Hecho cuando: pasan `CA-13.1`, `CA-13.2`, `CA-15.1` y `CA-15.3` en `shared/`.
+- [x] **T-127g · Migración del uso de semanas** — `HU-14 · RF-14.10` · `HU-15 · RF-15.2, RF-15.5` · `TR-01`, `TR-03`, DT-09
+  Hecho cuando: pasan `CA-14.0`, `CA-14.4`, `CA-14.5`, `CA-14.7`, `CA-14.8`, `CA-14.9`, `CA-15.2`, `CA-15.4` y `CA-13.3` en la base; la caducidad a 60 días corre en `pg_cron`.
+- [x] **T-127h · Interfaz de calendario por semanas** — `HU-13 · RF-13.2` · `HU-14 · RF-14.1` · `RT-06`
+  Hecho cuando: el Propietario confirma, cancela y libera semanas y el Administrador bloquea semanas, de 320 px a escritorio y en ambos temas.
 
 ## Paso 4 · HU-59 — Ventana de reubicación
 

@@ -3,6 +3,8 @@
 Épica E4 · Sprint 2 · SP 5 · Prioridad **Must** · Rol: Administrador de Propiedad
 Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 
+> **Revisión 2026-09-09 (D-33):** la unidad de reserva es la semana completa; «reserva» aquí significa semana confirmada. Las excepciones a la regla de temporada alta se refieren a los intercambios de HU-12 RF-12.6.
+
 ## Historia
 Como Administrador de Propiedad, quiero tener permisos completos sobre el calendario de cada propiedad que administro (crear, editar, bloquear, reasignar), para resolver conflictos de agendamiento.
 

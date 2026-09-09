@@ -17,7 +17,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const client = useSupabaseClient<Database>()
 const route = useRoute()
-const { esperarSesion, recargar } = useCuenta()
+const { esperarSesion, recargar, perfil } = useCuenta()
 const codigoDeSesion = useCookie<string | null>('arena_ref')
 
 const error = ref<string | null>(null)
@@ -40,7 +40,11 @@ onMounted(async () => {
     codigoDeSesion.value = null
   }
 
-  await recargar()
+  // El perfil lo escribe un disparador al crear la cuenta: se espera a leerlo para
+  // que la guarda de rutas no vea una sesión sin perfil y la mande a verificar.
+  for (let intento = 0; intento < 5 && !perfil.value; intento++) {
+    await recargar()
+  }
   await navigateTo(localePath(RUTAS.panel))
 })
 </script>

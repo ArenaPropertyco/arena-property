@@ -42,7 +42,13 @@ const secciones = computed<NavigationMenuItem[]>(() => [
   ...(puede(roles.value, 'gestionar_propiedades')
     ? [{ label: t('nav.properties'), icon: 'i-lucide-building-2', to: localePath('/panel/propiedades') }]
     : []),
-  { label: t('nav.calendar'), icon: 'i-lucide-calendar-days', to: localePath('/panel/calendario') },
+  // HU-13 · el Propietario tiene su calendario por noches; el Administrador, la configuración (HU-12).
+  ...(roles.value.includes('owner')
+    ? [{ label: t('nav.myCalendar'), icon: 'i-lucide-calendar-heart', to: localePath('/panel/mi-calendario') }]
+    : []),
+  ...(puede(roles.value, 'gestionar_calendario')
+    ? [{ label: t('nav.calendar'), icon: 'i-lucide-calendar-days', to: localePath('/panel/calendario') }]
+    : []),
   { label: t('nav.finance'), icon: 'i-lucide-wallet', to: localePath('/panel/finanzas') },
   {
     label: t('nav.inbox'),

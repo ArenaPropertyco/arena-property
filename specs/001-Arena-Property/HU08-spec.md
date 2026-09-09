@@ -12,7 +12,7 @@ Como Administrador de Propiedad, quiero crear una nueva propiedad con su ficha t
 - **RF-08.2** — Máquina de estados de **visibilidad**: `En borrador` → `Publicada` ↔ `Inactiva`; solo `Publicada` aparece en el catálogo (HU-01).
 - **RF-08.3** — Máquina de estados **comercial (D-18)**: `Próximamente` lo marca el Administrador a mano (la propiedad aún no sale a la venta); `Fracciones disponibles` y `Vendido` se **derivan** de los estados de las 8 fracciones (HU-09) en cuanto la propiedad sale de `Próximamente`. "Lista de espera" no es un estado: es la condición derivada de no tener fracciones disponibles (HU-47).
 - **RF-08.4** — Ambas máquinas viven como lógica pura en `shared/` con transiciones válidas explícitas; toda transición inválida se rechaza.
-- **RF-08.5** — Los archivos (fotos, video, plano) se almacenan en Supabase Storage con políticas por rol.
+- **RF-08.5** — Los archivos (fotos, video, plano elevado y **plano 2D** en imagen o PDF) se almacenan en Supabase Storage con políticas por rol. El plano 2D se puede **descargar** desde la ficha del panel y desde la ficha pública.
 - **RF-08.6** — La creación queda ligada al Administrador creador (asignación HU-05).
 
 ## Criterios de aceptación (base de las pruebas unitarias)

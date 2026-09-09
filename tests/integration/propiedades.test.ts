@@ -568,6 +568,20 @@ describe('FractionTransferForm', () => {
 })
 
 describe('PropertyMediaGallery', () => {
+  it('RF-08.5 · el plano 2D en PDF se muestra como archivo y se ofrece para descargar con su nombre', async () => {
+    const galeria = await mountSuspended(PropertyMediaGallery, {
+      props: {
+        medios: [{ id: 'p2d', kind: 'floor_plan_2d', path: 'p1/floor_plan_2d/abc-plano-piso-1.pdf', position: 0, url: 'https://firmada/plano.pdf?token=x' }],
+        puedeGestionar: false,
+        subiendo: false,
+      },
+    })
+
+    expect(galeria.find('[data-test="galeria-floor_plan_2d"]').exists()).toBe(true)
+    expect(galeria.find('[data-test="pdf-p2d"]').text()).toContain('plano-piso-1.pdf')
+    expect(galeria.find('[data-test="descargar-p2d"]').attributes('href')).toBe('https://firmada/plano.pdf?token=x&download=plano-piso-1.pdf')
+  })
+
   const medios = [
     { id: 'm1', kind: 'photo' as const, path: `${PROPIEDAD}/photo/uno.jpg`, position: 0, url: 'https://x/uno.jpg' },
     { id: 'm2', kind: 'photo' as const, path: `${PROPIEDAD}/photo/dos.jpg`, position: 1, url: 'https://x/dos.jpg' },

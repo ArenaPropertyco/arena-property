@@ -3,6 +3,8 @@
 Épica E4 · Sprint 2 · SP 8 · Prioridad **Should** · Rol: Administrador de Propiedad
 Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 
+> **Revisión 2026-09-09 (D-33):** la renta a terceros es por semanas completas de la bolsa de renta (semanas liberadas, canceladas, caducadas o no elegidas); las noches sueltas fuera de la rejilla se retoman con HU-60.
+
 ## Historia
 Como Administrador de Propiedad, quiero crear una reserva en el calendario de una propiedad para un tercero (no propietario), para generar rentabilidad adicional del inmueble en semanas sin uso.
 

@@ -13,15 +13,16 @@ Specs que lo implementan: [HU-12](./HU12-spec.md), [HU-13](./HU13-spec.md), [HU-
 
 | Término | Definición |
 |---|---|
-| **Noche** | Unidad de reserva. Va de las 15:00 de un día a las 11:00 del siguiente, en `America/Bogota`. |
+| **Semana** | Unidad de uso (D-33). Va del sábado a las 15:00 al sábado siguiente a las 11:00, en `America/Bogota`. |
+| **Noche** | Unidad de la rejilla y del check-in/check-out; por ahora no se reserva suelta (D-33). |
 | **Rejilla** | Conjunto de semanas completas sábado→sábado que caben dentro del año (51 o 52), anclada al primer sábado. |
 | **Temporada** | Clasificación de cada semana de la rejilla: `alta`, `media_alta`, `media`, `baja`. Toda noche hereda la de su semana. |
 | **Bloque pico** | Semana alta marcada como especialmente disputada: Navidad, Año Nuevo, Semana Santa. |
 | **Cupo** | Derecho anual de una fracción: 42 noches (7 altas, 7 media-altas, 7 medias, 21 bajas). |
 | **Bolsa del Administrador** | Las 3 o 4 semanas de la rejilla que no se reparten; mantenimiento y uso institucional. |
-| **Fechas Especiales** | Noches del año que quedan fuera de la rejilla (1 a 9). Bolsa comodín para estadías cortas. |
-| **Bolsa de renta** | Noches liberadas, canceladas o caducadas, disponibles para renta a terceros. |
-| **Estadía** | Una o más noches consecutivas declaradas por un Propietario. |
+| **Fechas Especiales** | Noches del año que quedan fuera de la rejilla (1 a 9). Aplazadas (D-33): por ahora van a la bolsa del Administrador. |
+| **Bolsa de renta** | Semanas liberadas, canceladas, caducadas o no elegidas, disponibles para renta a terceros. |
+| **Semana confirmada** | Semana elegida que el Propietario confirmó como uso propio antes de 60 días (D-33). |
 | **Ventana** | Periodo anual en que las fracciones, por turnos rotativos, reubican noches. |
 | **Calendario activo** | Interruptor derivado del plan de pagos; sin él la fracción no puede reservar. |
 
@@ -39,11 +40,11 @@ Se cambian por configuración, sin tocar el motor ni las specs.
 | P-04 | Reparto por fracción | 1 alta, 1 media-alta, 1 media, 3 bajas | Propiedad | Administrador | HU-12 RF-12.3 |
 | P-05 | Clasificación de temporada por semana | Definida cada año | Propiedad / año | Administrador | HU-12 RF-12.2 |
 | P-06 | Bloques pico | Navidad, Año Nuevo, Semana Santa | Propiedad / año | Administrador | HU-12 RF-12.2 |
-| P-07 | Año base de la rotación | Año de la primera venta | Propiedad | Superadmin | HU-12 RF-12.4 |
-| P-08 | Estadía mínima por temporada | Alta 3, media-alta 2, media 1, baja 1 | Propiedad | Superadmin | HU-14 RF-14.2 |
-| P-09 | Tope de estadía comodín | 3 noches | Propiedad | Superadmin | HU-60 RF-60.4 |
-| P-10 | Plazo de cancelación | 30 días antes | Propiedad | Superadmin | HU-14 RF-14.6 |
-| P-11 | Plazo de liberación automática | 60 días antes | Propiedad | Superadmin | HU-14 RF-14.7 |
+| P-07 | Orden de selección de semanas | Primer año: orden de compra; después, el que fije el Administrador (sugerido: rotar el anterior) | Propiedad / año | Administrador | HU-12 RF-12.4, RF-12.5 |
+| P-08 | Estadía mínima por temporada | Suspendido (D-33) | Propiedad | Superadmin | HU-14 RF-14.2 |
+| P-09 | Tope de estadía comodín | Aplazado (D-33) | Propiedad | Superadmin | HU-60 RF-60.4 |
+| P-10 | Plazo de cancelación de una semana confirmada | 30 días antes de su entrada | Propiedad | Superadmin | HU-14 RF-14.6 |
+| P-11 | Plazo para confirmar una semana elegida | 60 días antes de su entrada | Propiedad | Superadmin | HU-14 RF-14.7 |
 | P-12 | Apertura de la ventana | 1 de octubre del año anterior | Propiedad | Superadmin | HU-59 RF-59.1 |
 | P-13 | Duración de la ventana | 16 días | Propiedad | Superadmin | HU-59 RF-59.1 |
 | P-14 | Duración del turno | 48 horas por fracción | Propiedad | Superadmin | HU-59 RF-59.1 |
@@ -59,16 +60,16 @@ No se cambian por configuración. Cambiarlas exige decisión nueva en `docs/deci
 
 | # | Invariante | Decisión | Verificado por |
 |---|---|---|---|
-| I-01 | Ninguna noche del año queda sin temporada ni sin dueño: rejilla ∪ Fechas Especiales = año completo | D-30 | CA-60.1, CA-12.9 |
+| I-01 | Ninguna noche del año queda sin temporada ni sin dueño: rejilla ∪ noches sobrantes (bolsa del Administrador mientras HU-60 esté aplazada) = año completo | D-30, D-33 | CA-60.1, CA-12.9 |
 | I-02 | El cupo por temporada de una fracción es 7/7/7/21 y no cambia por reubicar | D-12, D-28 | CA-59.2 |
 | I-03 | Una noche solo se reubica dentro de su misma temporada | D-28 | CA-59.1 |
-| I-04 | Una noche pertenece a lo sumo a una ocupación (estadía, bloqueo o renta) | D-11 | CA-12.3, CA-14.9 |
-| I-05 | Ninguna fracción repite posición de reparto ni bloque pico dos años seguidos | D-13, D-27 | CA-12.4 |
-| I-06 | En 8 años cada fracción pasa por las 8 posiciones, por cada bloque pico y por la bolsa comodín una vez | D-13, D-27, D-30 | CA-12.5, CA-60.4 |
-| I-07 | Una noche comodín en temporada alta descuenta del cupo alto y nunca cae en bloque pico ajeno | D-30 | CA-60.6, CA-60.7 |
-| I-08 | Sin calendario activo no se declara, cancela ni libera ninguna estadía | D-31 | CA-14.0 |
-| I-09 | Las noches no usadas no se acumulan al año siguiente | D-15 | CA-14.7 |
-| I-10 | El motor es determinista: mismas entradas, misma asignación | D-13 | CA-12.6 |
+| I-04 | Una semana pertenece a lo sumo a una fracción y a lo sumo a una ocupación (confirmación, bloqueo o renta) | D-33 | CA-12.3, CA-14.9 |
+| I-05 | Cada fracción elige exactamente 1 alta, 1 media-alta, 1 media y 3 bajas, y elige solo cuando le llega el turno | D-12, D-32 | CA-12.2, CA-12.5 |
+| I-06 | Una semana se intercambia solo por otra de la misma temporada y sin estadías encima; la bolsa comodín rota entre las 8 fracciones | D-28, D-32, D-30 | CA-12.10, CA-60.4 |
+| I-07 | (Aplazada con HU-60) Una noche comodín en temporada alta descuenta del cupo alto y nunca cae en bloque pico ajeno | D-30, D-33 | CA-60.6, CA-60.7 |
+| I-08 | Sin calendario activo no se elige, confirma, cancela ni libera ninguna semana | D-31 | CA-14.0 |
+| I-09 | Las semanas no usadas no se acumulan al año siguiente | D-15 | CA-14.7 |
+| I-10 | El orden de turnos es determinista y auditado: el primer año sale del orden de compra y los siguientes de una sugerencia rotada que el Administrador confirma | D-32 | CA-12.4, CA-12.6 |
 
 ---
 
@@ -77,11 +78,11 @@ No se cambian por configuración. Cambiarlas exige decisión nueva en `docs/deci
 ```
   Oct (año N-1)        Ene (año N)                                    Todo el año N
   ─────────────        ───────────                                    ─────────────
-  1. El motor asigna   2. Se publica el calendario del año N          4. Estadías por orden de llegada
-     el reparto del        (asignación + Fechas Especiales)              sobre noches libres
-     año N por rotación
-                       3. Ventana de reubicación por turnos           5. A 60 días: noche sin estadía
-                          (P-12, P-13, P-14)                             → bolsa de renta
+  1. El Administrador  2. Cada Propietario elige sus 6 semanas        4. Cada Propietario confirma sus
+     clasifica el año     por turnos (orden de compra el primer          semanas; libera las que no use
+     y fija el orden      año; después el que fije el Administrador)
+                       3. Intercambios de semanas (RF-12.6)          5. A 60 días: semana sin confirmar
+                                                                         → bolsa de renta
                                                                       6. A 30 días: se cierra la cancelación
 ```
 

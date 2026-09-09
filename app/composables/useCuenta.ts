@@ -102,6 +102,8 @@ export function useCuenta() {
 
   return {
     user,
+    /** El id de la cuenta: las claims del JWT lo traen en `sub`, no en `id`. */
+    idDeCuenta,
     perfil,
     roles,
     sesion,

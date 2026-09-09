@@ -162,7 +162,7 @@ export function usePropiedades() {
       return { ok: true }
     }
 
-    const autor = user.value?.id ?? null
+    const autor = (user.value?.sub ?? user.value?.id ?? null)
 
     if (cambio.otorgar.length > 0) {
       const { error } = await client.from('property_admins').insert(

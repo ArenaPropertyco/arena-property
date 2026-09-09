@@ -12,10 +12,10 @@ import type { Database } from '#shared/types/database.types'
  */
 export function usePlanesPropios() {
   const client = useSupabaseClient<Database>()
-  const { user } = useCuenta()
+  const { user, idDeCuenta } = useCuenta()
 
   const consulta = useAsyncData<PlanDePagosListado[]>('planes-propios', async () => {
-    const cuenta = user.value?.id
+    const cuenta = idDeCuenta.value
     if (!cuenta) {
       return []
     }
@@ -49,7 +49,7 @@ export function usePlanesPropios() {
         voidedAt: fila.voided_at,
         voidReason: fila.void_reason,
       }))
-  }, { watch: [user] })
+  }, { watch: [idDeCuenta] })
 
   return {
     planes: computed(() => consulta.data.value ?? []),

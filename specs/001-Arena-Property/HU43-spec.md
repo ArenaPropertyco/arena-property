@@ -3,6 +3,8 @@
 Épica E1 · Sprint 1 · SP 3 · Prioridad **Should** · Rol: Visitante
 Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 
+> **Revisión 2026-09-09 (D-32, D-33):** la página explica la selección de semanas por turnos y el uso por semanas completas; no menciona reservas por noches.
+
 ## Historia
 Como Visitante, quiero ver una página que explique cómo funciona el sistema de agendamiento (distribución del tiempo de uso), para tener transparencia total antes de comprar.
 

@@ -1,5 +1,5 @@
 /**
- * HU-08 · RF-08.5 y RT-12 — fotos, video y plano elevado en Supabase Storage.
+ * HU-08 · RF-08.5 y RT-12 — fotos, video, plano elevado y plano 2D en Supabase Storage.
  *
  * La ruta del objeto es parte de la seguridad, no una convención estética: la política
  * de Storage decide por la **primera carpeta**, que es el identificador de la
@@ -8,7 +8,7 @@
  * nombre saneado, y ninguna llamada arma la plantilla a mano.
  */
 
-export const TIPOS_DE_MEDIO = ['photo', 'video', 'floor_plan'] as const
+export const TIPOS_DE_MEDIO = ['photo', 'video', 'floor_plan', 'floor_plan_2d'] as const
 export type TipoDeMedio = typeof TIPOS_DE_MEDIO[number]
 
 /** Bucket privado de la migración de HU-08. */
@@ -21,6 +21,8 @@ export const MIMES_PERMITIDOS: Record<TipoDeMedio, readonly string[]> = {
   video: ['video/mp4', 'video/webm'],
   // El plano llega como imagen o PDF; `glb` es lo que consume el visor 3D de HU-02.
   floor_plan: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf', 'model/gltf-binary'],
+  // RF-08.5 · el plano 2D es una imagen o un PDF descargable; nunca un modelo.
+  floor_plan_2d: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
 }
 
 /** Topes por tipo. Ninguno supera el `file_size_limit` del bucket (50 MiB). */
@@ -28,6 +30,7 @@ export const TAMANO_MAXIMO: Record<TipoDeMedio, number> = {
   photo: 10 * MiB,
   video: 50 * MiB,
   floor_plan: 20 * MiB,
+  floor_plan_2d: 20 * MiB,
 }
 
 /**
@@ -68,6 +71,27 @@ export function aceptaDe(tipo: TipoDeMedio): string {
 /** HU-02 · RF-02.5 · el plano elevado en modelo 3D se reconoce por su ruta en Storage. */
 export function esModelo3D(ruta: string): boolean {
   return extensionDe(ruta) === 'glb'
+}
+
+/** RF-08.5 · un plano 2D en PDF no se pinta como imagen: se ofrece para descargar. */
+export function esPdf(ruta: string): boolean {
+  return extensionDe(ruta) === 'pdf'
+}
+
+/** El nombre con que se descarga: el último segmento de la ruta, sin el identificador que lo hace único. */
+export function nombreDeDescarga(ruta: string): string {
+  const archivo = ruta.split('/').pop() ?? ruta
+  const separador = archivo.indexOf('-')
+  return separador === -1 ? archivo : archivo.slice(separador + 1) || archivo
+}
+
+/**
+ * RF-08.5 · la URL firmada de Storage descarga en vez de abrir cuando lleva el
+ * parámetro `download`; con nombre, el navegador lo usa para el archivo.
+ */
+export function urlDeDescarga(urlFirmada: string, nombre: string): string {
+  const separador = urlFirmada.includes('?') ? '&' : '?'
+  return `${urlFirmada}${separador}download=${encodeURIComponent(nombre)}`
 }
 
 export const CLAVES_DE_VALIDACION_DE_MEDIO = [

@@ -40,7 +40,7 @@ export function useRoles() {
     }
     const { error } = await client
       .from('user_roles')
-      .insert({ user_id: cuenta.id, role: rol, granted_by: user.value?.id ?? null })
+      .insert({ user_id: cuenta.id, role: rol, granted_by: (user.value?.sub ?? user.value?.id ?? null) })
     if (error) {
       return 'error'
     }

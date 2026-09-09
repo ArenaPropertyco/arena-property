@@ -9,8 +9,7 @@ import {
   siguienteOrden,
   validarArchivo,
   esModelo3D,
-  mimeDeArchivo,
-} from '#shared/properties/medios'
+  mimeDeArchivo, esPdf, nombreDeDescarga, urlDeDescarga } from '#shared/properties/medios'
 import type { Medio } from '#shared/properties/medios'
 
 /**
@@ -26,8 +25,22 @@ import type { Medio } from '#shared/properties/medios'
 const PROPIEDAD = 'c0000000-0000-4000-8000-00000000000a'
 
 describe('RF-08.5 · vocabulario de medios', () => {
-  it('los tres tipos son foto, video y plano elevado', () => {
-    expect(TIPOS_DE_MEDIO).toEqual(['photo', 'video', 'floor_plan'])
+  it('los cuatro tipos son foto, video, plano elevado y plano 2D', () => {
+    expect(TIPOS_DE_MEDIO).toEqual(['photo', 'video', 'floor_plan', 'floor_plan_2d'])
+  })
+
+  it('RF-08.5 · el plano 2D admite imagen o PDF, nunca un modelo 3D', () => {
+    expect(validarArchivo({ tipo: 'floor_plan_2d', mime: 'application/pdf', size: 1024 })).toBeNull()
+    expect(validarArchivo({ tipo: 'floor_plan_2d', mime: 'image/png', size: 1024 })).toBeNull()
+    expect(validarArchivo({ tipo: 'floor_plan_2d', mime: 'model/gltf-binary', size: 1024 })).toBe('properties.validation.media_format')
+  })
+
+  it('RF-08.5 · el plano 2D se descarga con su nombre por la URL firmada', () => {
+    expect(esPdf('p1/floor_plan_2d/abc-plano.pdf')).toBe(true)
+    expect(esPdf('p1/floor_plan_2d/abc-plano.png')).toBe(false)
+    expect(nombreDeDescarga('p1/floor_plan_2d/abc123-plano-piso-1.pdf')).toBe('plano-piso-1.pdf')
+    expect(urlDeDescarga('https://firmada/plano.pdf?token=xyz', 'plano-piso-1.pdf')).toBe('https://firmada/plano.pdf?token=xyz&download=plano-piso-1.pdf')
+    expect(urlDeDescarga('https://firmada/plano.pdf', 'plano 1.pdf')).toBe('https://firmada/plano.pdf?download=plano%201.pdf')
   })
 
   it('cada tipo declara sus formatos permitidos y su tope de tamaño', () => {

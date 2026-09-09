@@ -83,6 +83,7 @@ export function usePropiedadPublica(slug: Ref<string>) {
         fotos,
         plano: conUrl.find(medio => medio.kind === 'floor_plan' && !esModelo3D(medio.path)) ?? null,
         modelo: conUrl.find(medio => medio.kind === 'floor_plan' && esModelo3D(medio.path)) ?? null,
+        plano2d: conUrl.find(medio => medio.kind === 'floor_plan_2d') ?? null,
         video: conUrl.find(medio => medio.kind === 'video') ?? null,
       }
     },
