@@ -17,7 +17,8 @@
     "dashboard": "Dashboard",
     "roles": "Roles",
     "admins": "Administrators",
-    "catalog": "Properties"
+    "catalog": "Properties",
+    "inbox": "Notifications"
   },
   "actions": {
     "login": "Log in",
@@ -709,5 +710,69 @@
     "empty": "You don't have fractions with a payment plan yet.",
     "fraction": "Fraction {number}/8",
     "open": "View payment plan"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Updates about your properties, your calendar and your referrals. Marked as read only for you.",
+    "empty": "You have no notifications.",
+    "unread": "{count} unread",
+    "allRead": "All read",
+    "markRead": "Mark as read",
+    "markAll": "Mark all as read",
+    "messages": {
+      "read": "Notification marked as read.",
+      "allRead": "All notifications are now read.",
+      "failed": "We could not update the notification."
+    },
+    "filters": {
+      "property": "Property",
+      "allProperties": "All properties",
+      "kind": "Type",
+      "allKinds": "All types",
+      "unreadOnly": "Unread only",
+      "clear": "Clear filters"
+    },
+    "kinds": {
+      "stay_confirmed": {
+        "title": "Stay confirmed",
+        "body": "Your stay at {property_name} from {check_in} to {check_out} is confirmed."
+      },
+      "calendar_changed": {
+        "title": "Change in your calendar",
+        "body": "There was a change affecting fraction {fraction_number}/8 at {property_name}: {detail}"
+      },
+      "calendar_activated": {
+        "title": "Your calendar is active",
+        "body": "Fraction {fraction_number}/8 at {property_name} completed its payment plan. You can now book your nights."
+      },
+      "announcement_published": {
+        "title": "{title}",
+        "body": "{body}"
+      },
+      "broadcast": {
+        "title": "{title}",
+        "body": "{body}"
+      },
+      "referral_in_progress": {
+        "title": "Your referral started their payment plan",
+        "body": "{referral_label} closed the purchase of a fraction at {property_name} and started paying."
+      },
+      "referral_paid": {
+        "title": "Your referral completed payment",
+        "body": "{amount} was credited to your balance. It will be available on {available_on}."
+      },
+      "commission_available": {
+        "title": "Balance available to withdraw",
+        "body": "The {amount} commission left the grace period. You can now request a withdrawal."
+      },
+      "withdrawal_approved": {
+        "title": "Withdrawal approved",
+        "body": "We approved your withdrawal request for {amount}."
+      },
+      "withdrawal_paid": {
+        "title": "Withdrawal paid",
+        "body": "The {amount} withdrawal was paid to your account."
+      }
+    }
   }
 }

@@ -47,6 +47,8 @@ export default defineNuxtConfig({
     resendApiKey: '',
     contactInbox: '',
     mailFrom: 'Arena Property <no-reply@arena-property.com>',
+    // TR-03 · token que autoriza al programador externo a despachar el correo pendiente.
+    notificationsDispatchToken: '',
   },
 
   future: {
