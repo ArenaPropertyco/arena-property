@@ -15,6 +15,8 @@ import { puede } from '#shared/permissions/mapa'
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { perfil, roles, cerrarSesion } = useCuenta()
+// TR-03 · el contador de no leídas acompaña la entrada de la bandeja en todo el panel.
+const { noLeidas } = useNotificaciones()
 
 const cuenta = computed(() => {
   const datos = perfil.value
@@ -42,7 +44,13 @@ const secciones = computed<NavigationMenuItem[]>(() => [
     : []),
   { label: t('nav.calendar'), icon: 'i-lucide-calendar-days', to: localePath('/panel/calendario') },
   { label: t('nav.finance'), icon: 'i-lucide-wallet', to: localePath('/panel/finanzas') },
-  { label: t('nav.notifications'), icon: 'i-lucide-bell', to: localePath('/panel/novedades') },
+  {
+    label: t('nav.inbox'),
+    icon: 'i-lucide-bell',
+    to: localePath('/panel/notificaciones'),
+    badge: noLeidas.value > 0 ? String(noLeidas.value) : undefined,
+  },
+  { label: t('nav.notifications'), icon: 'i-lucide-megaphone', to: localePath('/panel/novedades') },
   ...(puede(roles.value, 'administrar_usuarios_y_roles')
     ? [
         { label: t('nav.roles'), icon: 'i-lucide-shield-check', to: localePath('/panel/roles') },

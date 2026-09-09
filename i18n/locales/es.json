@@ -17,7 +17,8 @@
     "dashboard": "Panel",
     "roles": "Roles",
     "admins": "Administradores",
-    "catalog": "Propiedades"
+    "catalog": "Propiedades",
+    "inbox": "Notificaciones"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -709,5 +710,69 @@
     "empty": "Todavía no tienes fracciones con plan de pagos.",
     "fraction": "Fracción {number}/8",
     "open": "Ver plan de pagos"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "subtitle": "Avisos de tus propiedades, tu calendario y tus referidos. Se marcan como leídas solo para ti.",
+    "empty": "No tienes notificaciones.",
+    "unread": "{count} sin leer",
+    "allRead": "Todo leído",
+    "markRead": "Marcar como leída",
+    "markAll": "Marcar todas como leídas",
+    "messages": {
+      "read": "Notificación marcada como leída.",
+      "allRead": "Todas las notificaciones quedaron leídas.",
+      "failed": "No pudimos actualizar la notificación."
+    },
+    "filters": {
+      "property": "Propiedad",
+      "allProperties": "Todas las propiedades",
+      "kind": "Tipo",
+      "allKinds": "Todos los tipos",
+      "unreadOnly": "Solo no leídas",
+      "clear": "Limpiar filtros"
+    },
+    "kinds": {
+      "stay_confirmed": {
+        "title": "Reserva confirmada",
+        "body": "Tu estadía en {property_name} del {check_in} al {check_out} quedó confirmada."
+      },
+      "calendar_changed": {
+        "title": "Cambio en tu calendario",
+        "body": "Hubo un cambio que afecta la fracción {fraction_number}/8 de {property_name}: {detail}"
+      },
+      "calendar_activated": {
+        "title": "Tu calendario está activo",
+        "body": "La fracción {fraction_number}/8 de {property_name} completó su plan de pagos. Ya puedes reservar tus noches."
+      },
+      "announcement_published": {
+        "title": "{title}",
+        "body": "{body}"
+      },
+      "broadcast": {
+        "title": "{title}",
+        "body": "{body}"
+      },
+      "referral_in_progress": {
+        "title": "Tu referido inició su plan de pagos",
+        "body": "{referral_label} cerró la compra de una fracción en {property_name} y empezó a pagar."
+      },
+      "referral_paid": {
+        "title": "Tu referido completó el pago",
+        "body": "Se acreditó {amount} a tu saldo. Estará disponible el {available_on}."
+      },
+      "commission_available": {
+        "title": "Saldo disponible para retirar",
+        "body": "La comisión de {amount} salió del periodo de gracia. Ya puedes solicitar el retiro."
+      },
+      "withdrawal_approved": {
+        "title": "Retiro aprobado",
+        "body": "Aprobamos tu solicitud de retiro por {amount}."
+      },
+      "withdrawal_paid": {
+        "title": "Retiro pagado",
+        "body": "El retiro por {amount} ya fue pagado a tu cuenta."
+      }
+    }
   }
 }

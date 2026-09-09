@@ -214,6 +214,98 @@ export type Database = {
           },
         ]
       }
+      notification_recipients: {
+        Row: {
+          created_at: string
+          email_attempts: number
+          email_last_error: string | null
+          email_next_attempt_at: string | null
+          email_sent_at: string | null
+          id: string
+          notification_id: string
+          read_at: string | null
+          recipient_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_attempts?: number
+          email_last_error?: string | null
+          email_next_attempt_at?: string | null
+          email_sent_at?: string | null
+          id?: string
+          notification_id: string
+          read_at?: string | null
+          recipient_id: string
+        }
+        Update: {
+          created_at?: string
+          email_attempts?: number
+          email_last_error?: string | null
+          email_next_attempt_at?: string | null
+          email_sent_at?: string | null
+          id?: string
+          notification_id?: string
+          read_at?: string | null
+          recipient_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_recipients_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          kind: string
+          payload: Json
+          property_id: string | null
+          requires_email: boolean
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          kind: string
+          payload?: Json
+          property_id?: string | null
+          requires_email?: boolean
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          property_id?: string | null
+          requires_email?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_events: {
         Row: {
           emitted_at: string
@@ -758,6 +850,44 @@ export type Database = {
       }
     }
     Views: {
+      notification_inbox: {
+        Row: {
+          created_at: string | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string | null
+          kind: string | null
+          notification_id: string | null
+          payload: Json | null
+          property_id: string | null
+          property_name: string | null
+          read_at: string | null
+          recipient_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_recipients_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_plan_overview: {
         Row: {
           agreed_price: number | null
@@ -919,6 +1049,18 @@ export type Database = {
         Args: { abonado: number; anulado: boolean; precio: number }
         Returns: string
       }
+      emitir_notificacion: {
+        Args: {
+          carga: Json
+          destinatarios: string[]
+          entidad: string
+          entidad_id: string
+          propiedad: string
+          requiere_correo?: boolean
+          tipo: string
+        }
+        Returns: string
+      }
       estado_comercial: { Args: { propiedad: string }; Returns: string }
       estado_del_plan: { Args: { plan: string }; Returns: string }
       fraccionar_propiedad: {
@@ -941,6 +1083,8 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      marcar_leida: { Args: { destinatario: string }; Returns: string }
+      marcar_todas_leidas: { Args: never; Returns: number }
       traspasar_fraccion: {
         Args: {
           destino_cuotas: string

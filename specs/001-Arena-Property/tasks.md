@@ -223,17 +223,17 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 1 · TR-03 — Canal de notificaciones
 
-- [ ] **T-092 · Migración de `notifications` y `notification_recipients`** — `TR-03 · RF-N.1`
+- [x] **T-092 · Migración de `notifications` y `notification_recipients`** — `TR-03 · RF-N.1`
   Hecho cuando: existen con RLS y el estado leído es por destinatario, no por notificación.
-- [ ] **T-093 · Resolutores puros de destinatarios por tipo de evento** — `TR-03 · RF-N.3`
+- [x] **T-093 · Resolutores puros de destinatarios por tipo de evento** — `TR-03 · RF-N.3`
   Hecho cuando: pasan `CA-N.1` y `CA-N.2`.
-- [ ] **T-094 · Idempotencia de emisión** — `TR-03 · RF-N.4`
+- [x] **T-094 · Idempotencia de emisión** — `TR-03 · RF-N.4`
   Hecho cuando: pasa `CA-N.3`.
-- [ ] **T-095 · Envío de correo por API REST desde Nitro con reintento** — `TR-03 · RF-N.2, RF-N.6`
+- [x] **T-095 · Envío de correo por API REST desde Nitro con reintento** — `TR-03 · RF-N.2, RF-N.6`
   Hecho cuando: pasa `CA-N.6` y el fallo del proveedor no revierte la operación de negocio.
-- [ ] **T-096 · Bandeja accesible a cualquier rol autenticado** — `TR-03 · RF-N.5`
+- [x] **T-096 · Bandeja accesible a cualquier rol autenticado** — `TR-03 · RF-N.5`
   Hecho cuando: pasan `CA-N.4` y `CA-N.5`.
-- [ ] **T-097 · Plantillas de correo en `en` y `es`** — `TR-03 · RF-N.2` · `RT-05`
+- [x] **T-097 · Plantillas de correo en `en` y `es`** — `TR-03 · RF-N.2` · `RT-05`
   Hecho cuando: cada tipo de notificación tiene plantilla en ambos idiomas y se elige por el idioma del destinatario.
 
 ## Paso 2 · HU-12 — Motor de calendario

@@ -4,20 +4,26 @@
  * servidor. Sin llave configurada no se envía y se dice: el negocio sigue (RF-N.6).
  */
 
-export interface CorreoInterno {
-  asunto: string
-  texto: string
+export interface CorreoSaliente {
+  to: string
+  subject: string
+  text: string
   html: string
-  /** Responder-a: el correo del visitante que escribió. */
-  responderA?: string
+  /** Responder-a, cuando el correo lo origina una persona. */
+  replyTo?: string
 }
 
-export async function enviarCorreoInterno(correo: CorreoInterno): Promise<{ enviado: boolean }> {
+/** ¿Hay proveedor configurado? Si no, el despacho se omite en vez de fallar. */
+export function correoConfigurado(): boolean {
   const config = useRuntimeConfig()
+  return Boolean(config.resendApiKey && config.mailFrom)
+}
 
-  if (!config.resendApiKey || !config.contactInbox) {
-    console.warn('[correo] Sin NUXT_RESEND_API_KEY o NUXT_CONTACT_INBOX: el correo interno no se envía.')
-    return { enviado: false }
+/** Envía un correo; lanza si el proveedor falla, para que quien llama registre el fallo. */
+export async function enviarCorreo(correo: CorreoSaliente): Promise<void> {
+  const config = useRuntimeConfig()
+  if (!correoConfigurado()) {
+    throw new Error('Proveedor de correo no configurado (NUXT_RESEND_API_KEY, NUXT_MAIL_FROM).')
   }
 
   await $fetch('https://api.resend.com/emails', {
@@ -25,12 +31,37 @@ export async function enviarCorreoInterno(correo: CorreoInterno): Promise<{ envi
     headers: { Authorization: `Bearer ${config.resendApiKey}` },
     body: {
       from: config.mailFrom,
-      to: [config.contactInbox],
-      reply_to: correo.responderA,
-      subject: correo.asunto,
-      text: correo.texto,
+      to: [correo.to],
+      reply_to: correo.replyTo,
+      subject: correo.subject,
+      text: correo.text,
       html: correo.html,
     },
+  })
+}
+
+export interface CorreoInterno {
+  asunto: string
+  texto: string
+  html: string
+  responderA?: string
+}
+
+/** HU-46 · HU-03 · correo a la bandeja principal de Arena Property. */
+export async function enviarCorreoInterno(correo: CorreoInterno): Promise<{ enviado: boolean }> {
+  const config = useRuntimeConfig()
+
+  if (!correoConfigurado() || !config.contactInbox) {
+    console.warn('[correo] Sin NUXT_RESEND_API_KEY o NUXT_CONTACT_INBOX: el correo interno no se envía.')
+    return { enviado: false }
+  }
+
+  await enviarCorreo({
+    to: config.contactInbox,
+    subject: correo.asunto,
+    text: correo.texto,
+    html: correo.html,
+    replyTo: correo.responderA,
   })
 
   return { enviado: true }
