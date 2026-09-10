@@ -1,11 +1,13 @@
 /**
- * HU-12, HU-13, HU-14, HU-15 — lo que las pantallas del calendario reciben ya
- * resuelto por los composables: turnos, solicitudes, fracciones propias y bloqueos.
- * Solo tipos: la lógica vive en `selection.ts`, `swaps.ts`, `week-usage.ts`,
- * `week-blocks.ts` y `week-projection.ts`.
+ * HU-12, HU-13, HU-14, HU-15, HU-59 — lo que las pantallas del calendario reciben
+ * ya resuelto por los composables: turnos, solicitudes, fracciones propias,
+ * bloqueos y la ventana de reubicación. Solo tipos: la lógica vive en
+ * `selection.ts`, `swaps.ts`, `week-usage.ts`, `week-blocks.ts`,
+ * `week-projection.ts` y `relocation.ts`.
  */
 
 import type { Dia } from './rejilla'
+import type { RelocationWindow, TurnSlot } from './relocation'
 import type { Temporada } from './temporadas'
 
 /** Un turno del año tal como se lista: fracción, posición y cuánto lleva elegido (D-32). */
@@ -55,4 +57,16 @@ export interface WeekBlockListed {
   createdAt: string
   liftedAt: string | null
   conflicts: { fraction: number, week: number }[]
+}
+
+/** Un turno de la ventana de reubicación tal como se lista, con el nombre del titular (D-16). */
+export interface RelocationTurnListed extends TurnSlot {
+  ownerName: string | null
+}
+
+/** La ventana de reubicación de un calendario, con sus turnos ya resueltos (HU-59). */
+export interface SelectionWindowListed extends RelocationWindow {
+  id: string
+  closesAt: string
+  turns: RelocationTurnListed[]
 }

@@ -1113,6 +1113,118 @@ export type Database = {
           },
         ]
       }
+      selection_window_turns: {
+        Row: {
+          closes_at: string
+          created_at: string
+          fraction_id: string
+          id: string
+          opens_at: string
+          position: number
+          window_id: string
+        }
+        Insert: {
+          closes_at: string
+          created_at?: string
+          fraction_id: string
+          id?: string
+          opens_at: string
+          position: number
+          window_id: string
+        }
+        Update: {
+          closes_at?: string
+          created_at?: string
+          fraction_id?: string
+          id?: string
+          opens_at?: string
+          position?: number
+          window_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "selection_window_turns_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "selection_window_turns_window_id_fkey"
+            columns: ["window_id"]
+            isOneToOne: false
+            referencedRelation: "selection_windows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      selection_windows: {
+        Row: {
+          calendar_id: string
+          closed_at: string | null
+          closes_at: string
+          created_at: string
+          created_by: string | null
+          duration_days: number
+          id: string
+          opens_at: string
+          property_id: string
+          turn_hours: number
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          calendar_id: string
+          closed_at?: string | null
+          closes_at: string
+          created_at?: string
+          created_by?: string | null
+          duration_days?: number
+          id?: string
+          opens_at: string
+          property_id: string
+          turn_hours?: number
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          calendar_id?: string
+          closed_at?: string | null
+          closes_at?: string
+          created_at?: string
+          created_by?: string | null
+          duration_days?: number
+          id?: string
+          opens_at?: string
+          property_id?: string
+          turn_hours?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "selection_windows_calendar_id_fkey"
+            columns: ["calendar_id"]
+            isOneToOne: true
+            referencedRelation: "season_calendars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "selection_windows_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "selection_windows_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           granted_at: string
@@ -1511,6 +1623,21 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      close_expired_selection_windows: {
+        Args: { at?: string }
+        Returns: number
+      }
+      close_selection_window: { Args: { calendar: string }; Returns: undefined }
+      configure_selection_window: {
+        Args: {
+          calendar: string
+          duration_days?: number
+          fraction_order?: number[]
+          opens_at?: string
+          turn_hours?: number
+        }
+        Returns: string
+      }
       confirm_week: {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
@@ -1590,6 +1717,15 @@ export type Database = {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
       }
+      relocate_week: {
+        Args: {
+          calendar: string
+          fraction: string
+          from_week: number
+          to_week: number
+        }
+        Returns: undefined
+      }
       request_week_swap: {
         Args: {
           calendar: string
@@ -1608,6 +1744,10 @@ export type Database = {
       select_weeks: {
         Args: { calendar: string; fraction: string; week_indexes: number[] }
         Returns: number
+      }
+      suggested_relocation_order: {
+        Args: { calendar: string }
+        Returns: number[]
       }
       suggested_selection_order: {
         Args: { calendar: string }

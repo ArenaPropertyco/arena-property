@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { formatearDia } from '#shared/dates/formato'
 import type { Idioma } from '#shared/money/formato'
+import { movableWeeks } from '#shared/scheduling/relocation'
+import type { RelocationContext } from '#shared/scheduling/relocation'
 import type { SwapRequestDraft } from '#shared/scheduling/swaps'
 
 /**
  * HU-13 · RF-13.1…RF-13.4 · HU-14 · RF-14.1…RF-14.9 · HU-12 · RF-12.3, RF-12.4,
- * RF-12.6 (D-32, D-33) — el calendario del Propietario, por semanas.
+ * RF-12.6 · HU-59 · RF-59.3, RF-59.6 (D-32, D-33, D-36) — el calendario del
+ * Propietario, por semanas.
  *
  * La página orquesta: elige fracción y año; si la selección está abierta y le
  * toca, monta la elección de semanas; con semanas elegidas, el calendario por
  * semanas donde confirma, cancela o libera, el aviso de las que faltan por
- * confirmar, la solicitud de intercambios y sus solicitudes. Con el calendario
- * inactivo (D-31) todo se ve y nada se puede hacer (RF-13.1b).
+ * confirmar, la ventana de reubicación con el estado de su turno, la solicitud
+ * de intercambios y sus solicitudes. Con el calendario inactivo (D-31) todo se ve
+ * y nada se puede hacer (RF-13.1b).
  */
 definePageMeta({ layout: 'dashboard', acceso: { privada: true } })
 
@@ -37,6 +41,7 @@ const anio = ref(new Date().getFullYear())
 
 const semanas = useOwnerWeeks(fraccion, anio)
 const seleccion = useWeekSelection(fraccion, anio)
+const reubicacion = useRelocation(fraccion, anio)
 
 const plan = computed(() => planes.value.find(p => p.fractionId === fraccion.value?.id) ?? null)
 const takenList = computed(() => [...seleccion.taken.value])
@@ -45,9 +50,30 @@ const proximaLimite = computed(() => {
   return primera ? formatearDia(primera.deadline, locale.value as Idioma) : ''
 })
 
+/** HU-59 · lo que el motor de reubicación necesita: calendario ocupado, turno y hoy. */
+const contextoDeReubicacion = computed<RelocationContext | null>(() => {
+  const propia = fraccion.value
+  if (!propia || !semanas.projection.value) {
+    return null
+  }
+  return {
+    rejilla: semanas.rejilla.value,
+    classification: semanas.classification.value,
+    allocations: semanas.allocations.value,
+    blockedWeeks: new Set(semanas.blockedWeeks.value),
+    today: semanas.today.value,
+    calendarActive: propia.calendarActive,
+    turn: reubicacion.turno.value,
+  }
+})
+const semanasMovibles = computed(() => (contextoDeReubicacion.value && fraccion.value)
+  ? movableWeeks(contextoDeReubicacion.value.allocations, fraccion.value.number, { rejilla: contextoDeReubicacion.value.rejilla, today: contextoDeReubicacion.value.today })
+  : [])
+
 const busyWeek = ref<number | null>(null)
 const eligiendo = ref(false)
 const solicitando = ref(false)
+const reubicando = ref(false)
 
 async function operar(accion: 'confirm' | 'cancel' | 'release', week: number, exito: string) {
   busyWeek.value = week
@@ -71,6 +97,18 @@ async function elegirSemanas(elegidas: number[]) {
   }
   await semanas.recargar()
   toast.add({ title: t('calendar.selection.selected'), color: 'success' })
+}
+
+async function reubicarSemana(desde: number, hasta: number) {
+  reubicando.value = true
+  const resultado = await reubicacion.reubicar(desde, hasta)
+  reubicando.value = false
+  if (!resultado.ok) {
+    toast.add({ title: t(resultado.clave), color: 'error' })
+    return
+  }
+  await Promise.all([semanas.recargar(), seleccion.recargar()])
+  toast.add({ title: t('calendar.relocation.done'), color: 'success' })
 }
 
 async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string | null) {
@@ -161,6 +199,29 @@ async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string 
               @confirm="operar('confirm', $event, 'calendar.weeks.confirmed')"
               @cancel="operar('cancel', $event, 'calendar.weeks.cancelled')"
               @release="operar('release', $event, 'calendar.weeks.released')"
+            />
+          </section>
+
+          <section
+            v-if="reubicacion.ventana.value && reubicacion.turno.value && contextoDeReubicacion"
+            class="space-y-4"
+            data-test="seccion-reubicacion"
+          >
+            <SectionHeading :titulo="t('calendar.relocation.title')" />
+            <p class="text-sm text-muted">
+              {{ t('calendar.relocation.ownerSubtitle') }}
+            </p>
+            <RelocationTurnStatus
+              :turn="reubicacion.turno.value"
+              :anio="anio"
+              :movable="semanasMovibles"
+            />
+            <WeekRelocationForm
+              v-if="reubicacion.turno.value.canRelocate && fraccion.calendarActive && !semanas.projection.value.readOnly"
+              :fraction="fraccion.number"
+              :context="contextoDeReubicacion"
+              :enviando="reubicando"
+              @submit="reubicarSemana"
             />
           </section>
 

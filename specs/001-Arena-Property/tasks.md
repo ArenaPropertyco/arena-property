@@ -326,19 +326,19 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 4 · HU-59 — Ventana de reubicación
 
-- [ ] **T-128 · Migración de `selection_windows` y turnos** — `HU-59 · RF-59.1` · schedule.md P-12, P-13, P-14
+- [x] **T-128 · Migración de `selection_windows` y turnos** — `HU-59 · RF-59.1` · schedule.md P-12, P-13, P-14
   Hecho cuando: existe con RLS y guarda apertura, duración y duración de turno por propiedad.
-- [ ] **T-129 · Orden de turno rotativo** — `HU-59 · RF-59.2`
+- [x] **T-129 · Orden de turno rotativo** — `HU-59 · RF-59.2`
   Hecho cuando: pasa `CA-59.6` sobre 8 años.
-- [ ] **T-130 · Validador puro de reubicación** — `HU-59 · RF-59.4, RF-59.5, RF-59.8`
+- [x] **T-130 · Validador puro de reubicación** — `HU-59 · RF-59.4, RF-59.5, RF-59.8`
   Hecho cuando: pasan `CA-59.1`, `CA-59.2`, `CA-59.3` y `CA-59.4`.
-- [ ] **T-131 · Guarda de turno y de calendario activo** — `HU-59 · RF-59.3, RF-59.6`
+- [x] **T-131 · Guarda de turno y de calendario activo** — `HU-59 · RF-59.3, RF-59.6`
   Hecho cuando: pasa `CA-59.5`.
-- [ ] **T-132 · Cierre de la ventana y apertura por orden de llegada** — `HU-59 · RF-59.6`
+- [x] **T-132 · Cierre de la ventana y apertura por orden de llegada** — `HU-59 · RF-59.6`
   Hecho cuando: pasa `CA-59.7`.
-- [ ] **T-133 · Auditoría y aviso de cada reubicación** — `HU-59 · RF-59.8` · `TR-01`, `TR-03`
+- [x] **T-133 · Auditoría y aviso de cada reubicación** — `HU-59 · RF-59.8` · `TR-01`, `TR-03`
   Hecho cuando: cada movimiento deja entrada de auditoría y notifica al Propietario.
-- [ ] **T-134 · Interfaz de la ventana con estado de turno** — `HU-59 · RF-59.3, RF-59.6` · `RT-06`
+- [x] **T-134 · Interfaz de la ventana con estado de turno** — `HU-59 · RF-59.3, RF-59.6` · `RT-06`
   Hecho cuando: muestra si el turno está abierto, cuánto falta y qué noches se pueden mover.
 
 ## Paso 5 · Comisión y alta de Embajadores
