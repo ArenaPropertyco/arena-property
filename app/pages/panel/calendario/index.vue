@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { hoy as hoyDe } from '#shared/dates/formato'
+import { propiedadesGestionadas } from '#shared/properties/asignaciones'
 import type { RelocationWindowConfig } from '#shared/scheduling/relocation'
 import type { SwapProposal } from '#shared/scheduling/swaps'
 
@@ -19,18 +20,31 @@ definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_calendario
 const { t } = useI18n()
 const toast = useToast()
 const { propiedades: todas } = usePropiedades()
-const { roles } = useCuenta()
+const { roles, idDeCuenta } = useCuenta()
 const esSuperadmin = computed(() => roles.value.includes('superadmin'))
 const ahora = useAhora()
 
-const propiedades = computed(() => todas.value
+/**
+ * CA-05.2 · RF-05.3 · qué calendarios ofrece el selector.
+ *
+ * No basta con lo que la consulta devuelve: `property_overview` trae también las
+ * propiedades publicadas, que lee cualquiera. Sin este filtro un Administrador
+ * vería calendarios ajenos y la base le rechazaría el guardado. El Superadmin
+ * los ve todos, incluidos los de propiedades sin administrador asignado.
+ */
+const propiedades = computed(() => propiedadesGestionadas(todas.value, {
+  id: idDeCuenta.value,
+  esSuperadmin: esSuperadmin.value,
+})
   .filter(propiedad => propiedad.fractionCount === 8)
   .map(propiedad => ({ id: propiedad.id, label: propiedad.name })))
 
 const propertyId = ref<string | null>(null)
 watch(propiedades, (lista) => {
-  if (!propertyId.value && lista[0]) {
-    propertyId.value = lista[0].id
+  // Si la lista cambia y la elegida ya no está, se vuelve a la primera: quedarse
+  // en una propiedad que dejó de gestionarse pediría datos que la RLS no da.
+  if (!lista.some(propiedad => propiedad.id === propertyId.value)) {
+    propertyId.value = lista[0]?.id ?? null
   }
 }, { immediate: true })
 
