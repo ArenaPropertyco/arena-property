@@ -19,7 +19,10 @@
     "admins": "Administrators",
     "catalog": "Properties",
     "inbox": "Notifications",
-    "myCalendar": "My calendar"
+    "myCalendar": "My calendar",
+    "commission": "Commission",
+    "ambassadors": "Ambassadors",
+    "referralProgram": "Referral Program"
   },
   "actions": {
     "login": "Log in",
@@ -1078,6 +1081,138 @@
         "configure_failed": "We could not save the window.",
         "close_failed": "We could not close the window.",
         "relocate_failed": "We could not move the week."
+      }
+    }
+  },
+  "referrals": {
+    "commission": {
+      "title": "Commission types",
+      "subtitle": "Manage the program's commission types and decide which one each Ambassador gets. Anyone without an assigned type earns the default.",
+      "name": "Type name",
+      "nameHint": "How you will recognise it in the list.",
+      "kind": "Value kind",
+      "kinds": {
+        "percentage": "Percentage of the agreed price",
+        "fixed": "Fixed amount in pesos"
+      },
+      "percentage": "Percentage",
+      "percentageHint": "On the price agreed in the purchase, not on the list price.",
+      "amount": "Fixed amount",
+      "amountHint": "In Colombian pesos, no decimals.",
+      "makeDefault": "Make it the default",
+      "create": "Create commission type",
+      "created": "Commission type created.",
+      "catalogTitle": "Type catalogue",
+      "catalogHint": "A type's value cannot be edited: to pay a different amount, create another one. Retiring a type stops offering it without taking it away from whoever already had it.",
+      "default": "Default",
+      "inactive": "Retired",
+      "makeDefaultAction": "Make default",
+      "defaultChanged": "Default updated.",
+      "activate": "Offer again",
+      "activated": "Commission type available again.",
+      "deactivate": "Stop offering",
+      "deactivated": "Commission type retired.",
+      "empty": "There are no commission types yet.",
+      "assignTitle": "Each Ambassador's commission",
+      "assignHint": "Pick the type each one gets. With “The default” they earn whatever rules for everyone.",
+      "useDefault": "The default",
+      "applies": "Earns {type}",
+      "noType": "No applicable commission",
+      "assigned": "Ambassador's commission updated.",
+      "noAmbassadors": "There are no approved Ambassadors yet.",
+      "validation": {
+        "name_required": "Give it a name of up to 60 characters.",
+        "name_duplicated": "A type with that name already exists.",
+        "kind_mismatch": "The value does not match the chosen kind.",
+        "amount_not_positive": "The fixed amount must be greater than zero.",
+        "basis_points_out_of_range": "The percentage must be between 0.01% and 100%.",
+        "type_unknown": "That commission type no longer exists.",
+        "type_inactive": "That type is retired and cannot be assigned."
+      },
+      "errors": {
+        "create_failed": "We could not create the commission type.",
+        "default_failed": "We could not change the default.",
+        "active_failed": "We could not change the type's availability.",
+        "assign_failed": "We could not change the Ambassador's commission."
+      }
+    },
+    "signup": {
+      "title": "Join as an Ambassador",
+      "hint": "Get your own code, share your link and earn a commission for every referral who completes a purchase.",
+      "bank": "Bank",
+      "accountKind": "Account type",
+      "accountKinds": {
+        "savings": "Savings",
+        "checking": "Checking"
+      },
+      "accountNumber": "Account number",
+      "holder": "Account holder",
+      "terms": "I accept the Referral Program terms and conditions (version {version}).",
+      "submit": "Send application",
+      "sent": "Application sent. The Superadmin will review it.",
+      "statusTitle": "Your application",
+      "pending": "Your application is under review. We will let you know when it is approved.",
+      "approvedNotice": "Your application is approved: you can share your code now.",
+      "rejectedNotice": "Your application was rejected: {reason}",
+      "suspendedNotice": "Your Ambassador account is suspended.",
+      "validation": {
+        "terms_required": "You must accept the program terms.",
+        "terms_version_missing": "We could not read the terms version.",
+        "bank_required": "Enter the bank.",
+        "account_kind_invalid": "Choose an account type.",
+        "account_number_invalid": "The account number is 5 to 20 digits.",
+        "holder_required": "Enter the account holder.",
+        "role_not_allowed": "Your role does not take part in the Referral Program.",
+        "already_enrolled": "This account is already enrolled in the program."
+      },
+      "errors": {
+        "enroll_failed": "We could not send your application."
+      }
+    },
+    "ambassadors": {
+      "title": "Ambassadors",
+      "subtitle": "Referral Program applications. On approval the account gains the Ambassador role and receives its code.",
+      "empty": "There are no applications to the program yet.",
+      "approve": "Approve",
+      "reject": "Reject",
+      "rejectReason": "Rejection reason",
+      "reasonRequired": "A rejection needs a reason.",
+      "resolved": "Application resolved.",
+      "bankLine": "{bank} · {kind} · {account} · {holder}",
+      "enrolledAt": "Enrolled on {date}",
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "suspended": "Suspended"
+      },
+      "errors": {
+        "resolve_failed": "We could not resolve the application."
+      }
+    },
+    "code": {
+      "title": "Your referral code",
+      "copyCode": "Copy code",
+      "copyLink": "Copy link",
+      "codeCopied": "Code copied.",
+      "linkCopied": "Link copied.",
+      "copyFailed": "We could not copy. Select the text manually.",
+      "shareSubject": "Discover Arena Property",
+      "shareMessage": "Own a vacation property in Bocagrande with Arena Property’s co-ownership model.",
+      "share": {
+        "whatsapp": "WhatsApp",
+        "email": "Email",
+        "x": "X",
+        "facebook": "Facebook"
+      }
+    },
+    "attribution": {
+      "validation": {
+        "unknown_code": "That referral code does not exist.",
+        "disabled_code": "That referral code is disabled.",
+        "self_referral": "You cannot refer yourself.",
+        "window_expired": "The referral link expired: the window is 90 days.",
+        "invalid_transition": "That referral state change is not valid."
       }
     }
   }

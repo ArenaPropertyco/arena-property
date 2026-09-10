@@ -104,6 +104,157 @@ export type Database = {
           },
         ]
       }
+      ambassador_commissions: {
+        Row: {
+          ambassador_id: string
+          assigned_at: string
+          assigned_by: string | null
+          commission_type_id: string
+        }
+        Insert: {
+          ambassador_id: string
+          assigned_at?: string
+          assigned_by?: string | null
+          commission_type_id: string
+        }
+        Update: {
+          ambassador_id?: string
+          assigned_at?: string
+          assigned_by?: string | null
+          commission_type_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ambassador_commissions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: true
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ambassador_commissions_commission_type_id_fkey"
+            columns: ["commission_type_id"]
+            isOneToOne: false
+            referencedRelation: "commission_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ambassadors: {
+        Row: {
+          account_kind: string
+          account_number: string
+          approved_at: string | null
+          approved_by: string | null
+          bank: string
+          created_at: string
+          holder: string
+          id: string
+          rejection_reason: string | null
+          status: Database["public"]["Enums"]["ambassador_status"]
+          terms_accepted_at: string
+          terms_version: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_kind: string
+          account_number: string
+          approved_at?: string | null
+          approved_by?: string | null
+          bank: string
+          created_at?: string
+          holder: string
+          id?: string
+          rejection_reason?: string | null
+          status?: Database["public"]["Enums"]["ambassador_status"]
+          terms_accepted_at?: string
+          terms_version: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_kind?: string
+          account_number?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          bank?: string
+          created_at?: string
+          holder?: string
+          id?: string
+          rejection_reason?: string | null
+          status?: Database["public"]["Enums"]["ambassador_status"]
+          terms_accepted_at?: string
+          terms_version?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      attributions: {
+        Row: {
+          ambassador_id: string
+          clicked_at: string
+          code: string
+          commissioned_purchase_id: string | null
+          created_at: string
+          id: string
+          prospect_email: string
+          prospect_id: string
+          registered_at: string
+          stage: Database["public"]["Enums"]["referral_stage"]
+          updated_at: string
+        }
+        Insert: {
+          ambassador_id: string
+          clicked_at: string
+          code: string
+          commissioned_purchase_id?: string | null
+          created_at?: string
+          id?: string
+          prospect_email: string
+          prospect_id: string
+          registered_at?: string
+          stage?: Database["public"]["Enums"]["referral_stage"]
+          updated_at?: string
+        }
+        Update: {
+          ambassador_id?: string
+          clicked_at?: string
+          code?: string
+          commissioned_purchase_id?: string | null
+          created_at?: string
+          id?: string
+          prospect_email?: string
+          prospect_id?: string
+          registered_at?: string
+          stage?: Database["public"]["Enums"]["referral_stage"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attributions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attributions_commissioned_purchase_id_fkey"
+            columns: ["commissioned_purchase_id"]
+            isOneToOne: true
+            referencedRelation: "payment_plan_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attributions_commissioned_purchase_id_fkey"
+            columns: ["commissioned_purchase_id"]
+            isOneToOne: true
+            referencedRelation: "payment_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -283,6 +434,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      commission_types: {
+        Row: {
+          active: boolean
+          amount: number | null
+          basis_points: number | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_default: boolean
+          kind: Database["public"]["Enums"]["commission_kind"]
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          amount?: number | null
+          basis_points?: number | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_default?: boolean
+          kind: Database["public"]["Enums"]["commission_kind"]
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          amount?: number | null
+          basis_points?: number | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_default?: boolean
+          kind?: Database["public"]["Enums"]["commission_kind"]
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       contact_requests: {
         Row: {
@@ -993,6 +1183,59 @@ export type Database = {
           },
         ]
       }
+      referral_clicks: {
+        Row: {
+          clicked_at: string
+          code: string
+          id: string
+          visitor_id: string
+        }
+        Insert: {
+          clicked_at?: string
+          code: string
+          id?: string
+          visitor_id: string
+        }
+        Update: {
+          clicked_at?: string
+          code?: string
+          id?: string
+          visitor_id?: string
+        }
+        Relationships: []
+      }
+      referral_codes: {
+        Row: {
+          ambassador_id: string
+          code: string
+          created_at: string
+          enabled: boolean
+          id: string
+        }
+        Insert: {
+          ambassador_id: string
+          code: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+        }
+        Update: {
+          ambassador_id?: string
+          code?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_codes_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: true
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       role_capabilities: {
         Row: {
           capability: string
@@ -1590,6 +1833,18 @@ export type Database = {
         Args: { codigo: string }
         Returns: undefined
       }
+      approve_ambassador: {
+        Args: { ambassador: string; approve: boolean; reason?: string }
+        Returns: string
+      }
+      assign_commission_type: {
+        Args: { ambassador: string; commission_type?: string }
+        Returns: undefined
+      }
+      attribute_referral: {
+        Args: { referral_code?: string; visitor?: string }
+        Returns: string
+      }
       block_weeks: {
         Args: { calendar: string; reason: string; week_indexes: number[] }
         Returns: Json
@@ -1628,6 +1883,17 @@ export type Database = {
         Returns: number
       }
       close_selection_window: { Args: { calendar: string }; Returns: undefined }
+      commission_type_for: {
+        Args: { ambassador: string }
+        Returns: {
+          amount: number
+          basis_points: number
+          id: string
+          is_default: boolean
+          kind: Database["public"]["Enums"]["commission_kind"]
+          name: string
+        }[]
+      }
       configure_selection_window: {
         Args: {
           calendar: string
@@ -1650,6 +1916,27 @@ export type Database = {
           owner_name: string
         }[]
       }
+      create_commission_type: {
+        Args: {
+          amount?: number
+          basis_points?: number
+          kind: Database["public"]["Enums"]["commission_kind"]
+          make_default?: boolean
+          name: string
+        }
+        Returns: string
+      }
+      default_commission_type: {
+        Args: never
+        Returns: {
+          amount: number
+          basis_points: number
+          id: string
+          is_default: boolean
+          kind: Database["public"]["Enums"]["commission_kind"]
+          name: string
+        }[]
+      }
       derivar_estado_del_plan: {
         Args: { abonado: number; anulado: boolean; precio: number }
         Returns: string
@@ -1663,6 +1950,16 @@ export type Database = {
           propiedad: string
           requiere_correo?: boolean
           tipo: string
+        }
+        Returns: string
+      }
+      enroll_as_ambassador: {
+        Args: {
+          account_kind: string
+          account_number: string
+          bank: string
+          holder: string
+          terms_version: string
         }
         Returns: string
       }
@@ -1713,6 +2010,10 @@ export type Database = {
         Args: { calendar: string; fraction_order?: number[] }
         Returns: number[]
       }
+      record_referral_click: {
+        Args: { referral_code: string; visitor: string }
+        Returns: undefined
+      }
       release_week: {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
@@ -1724,6 +2025,10 @@ export type Database = {
           from_week: number
           to_week: number
         }
+        Returns: undefined
+      }
+      rename_commission_type: {
+        Args: { commission_type: string; name: string }
         Returns: undefined
       }
       request_week_swap: {
@@ -1744,6 +2049,14 @@ export type Database = {
       select_weeks: {
         Args: { calendar: string; fraction: string; week_indexes: number[] }
         Returns: number
+      }
+      set_commission_type_active: {
+        Args: { active: boolean; commission_type: string }
+        Returns: undefined
+      }
+      set_default_commission_type: {
+        Args: { commission_type: string }
+        Returns: undefined
       }
       suggested_relocation_order: {
         Args: { calendar: string }
@@ -1794,17 +2107,20 @@ export type Database = {
     }
     Enums: {
       account_status: "active" | "suspended"
+      ambassador_status: "pending" | "approved" | "rejected" | "suspended"
       app_role:
         | "superadmin"
         | "property_admin"
         | "owner"
         | "ambassador"
         | "user"
+      commission_kind: "fixed" | "percentage"
       fraction_status: "available" | "reserved" | "sold"
       payment_event_kind: "payment_completed" | "purchase_voided"
       property_media_kind: "photo" | "video" | "floor_plan" | "floor_plan_2d"
       property_visibility: "draft" | "published" | "inactive"
       purchase_invitation_status: "pending" | "accepted" | "cancelled"
+      referral_stage: "registered" | "payment_in_progress" | "paid"
       suspension_kind: "administrative" | "breach_or_fraud"
     }
     CompositeTypes: {
@@ -1937,12 +2253,15 @@ export const Constants = {
   public: {
     Enums: {
       account_status: ["active", "suspended"],
+      ambassador_status: ["pending", "approved", "rejected", "suspended"],
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
+      commission_kind: ["fixed", "percentage"],
       fraction_status: ["available", "reserved", "sold"],
       payment_event_kind: ["payment_completed", "purchase_voided"],
       property_media_kind: ["photo", "video", "floor_plan", "floor_plan_2d"],
       property_visibility: ["draft", "published", "inactive"],
       purchase_invitation_status: ["pending", "accepted", "cancelled"],
+      referral_stage: ["registered", "payment_in_progress", "paid"],
       suspension_kind: ["administrative", "breach_or_fraud"],
     },
   },

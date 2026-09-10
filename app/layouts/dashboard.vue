@@ -2,6 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { nombreParaMostrar } from '#shared/identity/perfil'
 import { puede } from '#shared/permissions/mapa'
+import { canSignUp } from '#shared/referrals/signup'
 
 /**
  * Layout del panel privado (propietario, administrador, superadmin). Solo estructura:
@@ -17,6 +18,12 @@ const localePath = useLocalePath()
 const { perfil, roles, cerrarSesion } = useCuenta()
 // TR-03 · el contador de no leídas acompaña la entrada de la bandeja en todo el panel.
 const { noLeidas } = useNotificaciones()
+// HU-51 · RF-51.1 · quien entra al panel con una atribución pendiente la fija aquí,
+// una sola vez: la base ignora el intento si el prospecto ya está atribuido.
+const { aplicar: aplicarAtribucion } = useAtribucion()
+onMounted(() => {
+  aplicarAtribucion()
+})
 
 const cuenta = computed(() => {
   const datos = perfil.value
@@ -57,10 +64,21 @@ const secciones = computed<NavigationMenuItem[]>(() => [
     badge: noLeidas.value > 0 ? String(noLeidas.value) : undefined,
   },
   { label: t('nav.notifications'), icon: 'i-lucide-megaphone', to: localePath('/panel/novedades') },
+  // HU-49 · HU-50 · el Programa de Referidos: se ofrece a quien puede inscribirse
+  // y a quien ya es Embajador, que es justo cuando la capacidad deja de aplicar.
+  // La elegibilidad sale de `canSignUp` y no de la capacidad suelta: así el menú no
+  // le ofrece al Superadmin una pantalla que solo puede decirle que no (RF-07.1).
+  ...(canSignUp(roles.value, false).allowed || roles.value.includes('ambassador')
+    ? [{ label: t('nav.referralProgram'), icon: 'i-lucide-handshake', to: localePath('/panel/embajador') }]
+    : []),
+  ...(puede(roles.value, 'definir_comision')
+    ? [{ label: t('nav.commission'), icon: 'i-lucide-percent', to: localePath('/panel/comision') }]
+    : []),
   ...(puede(roles.value, 'administrar_usuarios_y_roles')
     ? [
         { label: t('nav.roles'), icon: 'i-lucide-shield-check', to: localePath('/panel/roles') },
         { label: t('nav.admins'), icon: 'i-lucide-users', to: localePath('/panel/administradores') },
+        { label: t('nav.ambassadors'), icon: 'i-lucide-megaphone', to: localePath('/panel/embajadores') },
       ]
     : []),
 ])
