@@ -1,21 +1,27 @@
 <script setup lang="ts">
 import { hoy as hoyDe } from '#shared/dates/formato'
+import type { RelocationWindowConfig } from '#shared/scheduling/relocation'
 import type { SwapProposal } from '#shared/scheduling/swaps'
 
 /**
  * HU-12 · RF-12.2, RF-12.4…RF-12.7 · D-32 — configuración del calendario.
  * HU-15 · RF-15.1…RF-15.5 · D-33 — bloqueos del Administrador por semanas.
+ * HU-59 · RF-59.1, RF-59.2, RF-59.6 · D-36 — la ventana de reubicación.
  *
  * La página orquesta: elige propiedad y año, deja al Administrador clasificar la
  * rejilla, fijar el orden de turnos y abrir la selección; abierta, muestra el
- * avance de cada fracción, permite intercambiar semanas y resolver solicitudes.
- * Debajo, los bloqueos de la propiedad.
+ * avance de cada fracción, permite intercambiar semanas y resolver solicitudes,
+ * y deja al Superadmin configurar la ventana de reubicación (que el Administrador
+ * ve y puede cerrar). Debajo, los bloqueos de la propiedad.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_calendario' } })
 
 const { t } = useI18n()
 const toast = useToast()
 const { propiedades: todas } = usePropiedades()
+const { roles } = useCuenta()
+const esSuperadmin = computed(() => roles.value.includes('superadmin'))
+const ahora = useAhora()
 
 const propiedades = computed(() => todas.value
   .filter(propiedad => propiedad.fractionCount === 8)
@@ -33,6 +39,7 @@ const anio = ref(new Date().getFullYear() + 1)
 const { id: calendarId, rejilla, fechasEspeciales, clasificacion, errorDeRejilla, publicadoEl, pendiente, guardar } = useCalendario(propertyId, anio)
 const { turnos, fracciones, asignaciones, lockedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, resolver } = useSelectionOrder(calendarId, propertyId)
 const { bloqueos, blockedWeeks, crear: crearBloqueo, levantar: levantarBloqueo } = useWeekBlocks(calendarId)
+const { ventana, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, cerrar: cerrarVentana } = useSelectionWindow(calendarId, propertyId)
 const hoy = computed(() => hoyDe())
 
 const ocupado = ref(false)
@@ -41,6 +48,8 @@ const intercambiando = ref(false)
 const resolviendo = ref<string | null>(null)
 const bloqueando = ref(false)
 const levantando = ref<string | null>(null)
+const configurandoVentana = ref(false)
+const cerrandoVentana = ref(false)
 
 /** El orden que se va a abrir: parte de la sugerencia de la base y el Administrador lo ajusta. */
 const orden = ref<number[]>([])
@@ -57,6 +66,20 @@ watch(calendarId, (id) => {
 }, { immediate: true })
 
 const semanasLibres = computed(() => rejilla.value.length - asignaciones.value.length)
+
+/** RF-59.2 · el orden que la ventana propone; el Superadmin lo ajusta antes de guardar. */
+const ordenDeVentana = ref<number[]>([])
+async function sugerirOrdenDeVentana() {
+  ordenDeVentana.value = await ordenDeVentanaSugerido()
+}
+watch([calendarId, publicadoEl, esSuperadmin], ([id, abierto, superadmin]) => {
+  if (id && abierto && superadmin) {
+    sugerirOrdenDeVentana()
+  }
+  else {
+    ordenDeVentana.value = []
+  }
+}, { immediate: true })
 
 async function guardarClasificacion() {
   ocupado.value = true
@@ -104,6 +127,20 @@ async function bloquear(semanas: number[], motivo: string) {
       : t('calendar.blocks.created'),
     color: resultado.conflictos > 0 ? 'warning' : 'success',
   })
+}
+
+async function guardarVentana(config: RelocationWindowConfig) {
+  configurandoVentana.value = true
+  const resultado = await configurarVentana(config)
+  configurandoVentana.value = false
+  toast.add(resultado.ok ? { title: t('calendar.relocation.configured'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
+}
+
+async function cerrarLaVentana() {
+  cerrandoVentana.value = true
+  const resultado = await cerrarVentana()
+  cerrandoVentana.value = false
+  toast.add(resultado.ok ? { title: t('calendar.relocation.closed'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
 }
 
 async function levantar(id: string, motivo: string) {
@@ -238,6 +275,48 @@ async function levantar(id: string, motivo: string) {
             @resolver="resolverSolicitud"
           />
         </template>
+      </section>
+
+      <section
+        v-if="publicadoEl"
+        class="space-y-4"
+        data-test="seccion-ventana"
+      >
+        <SectionHeading :titulo="t('calendar.relocation.title')" />
+        <p class="text-sm text-muted">
+          {{ t('calendar.relocation.subtitle') }}
+        </p>
+        <SelectionWindowForm
+          v-if="esSuperadmin"
+          :window="ventana"
+          :fractions="fracciones"
+          :suggested-order="ordenDeVentana"
+          :anio="anio"
+          :enviando="configurandoVentana"
+          @sugerir="sugerirOrdenDeVentana"
+          @submit="guardarVentana"
+        />
+        <p
+          v-else-if="!ventana"
+          class="text-sm text-muted"
+          data-test="ventana-sin-configurar"
+        >
+          {{ t('calendar.relocation.notConfigured', { year: anio }) }}
+        </p>
+        <p
+          v-else
+          class="text-sm text-muted"
+        >
+          {{ t('calendar.relocation.onlySuperadmin') }}
+        </p>
+        <SelectionWindowTurns
+          v-if="ventana"
+          :window="ventana"
+          :now="ahora"
+          can-close
+          :cerrando="cerrandoVentana"
+          @cerrar="cerrarLaVentana"
+        />
       </section>
 
       <section

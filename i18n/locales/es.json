@@ -1005,6 +1005,80 @@
         "create_failed": "No pudimos crear el bloqueo.",
         "lift_failed": "No pudimos levantar el bloqueo."
       }
+    },
+    "relocation": {
+      "title": "Ventana de reubicación",
+      "subtitle": "Por turnos rotativos de 48 horas, cada fracción puede mover una semana elegida a otra libre de la misma temporada. El Superadmin fija apertura, duración y turno.",
+      "ownerSubtitle": "Durante tu turno puedes mover una semana elegida, todavía sin confirmar, a otra libre de la misma temporada.",
+      "opensAt": "Apertura (hora de Bogotá)",
+      "durationDays": "Duración (días)",
+      "turnHours": "Turno por fracción (horas)",
+      "orderTitle": "Orden de los turnos",
+      "orderHint": "Rota cada año: quien abrió la ventana anterior pasa al final. Puedes ajustarlo antes de guardar.",
+      "configure": "Guardar ventana",
+      "configured": "Ventana guardada.",
+      "close": "Cerrar ventana",
+      "closed": "Ventana cerrada.",
+      "notConfigured": "El Superadmin aún no configura la ventana de reubicación de {year}.",
+      "onlySuperadmin": "Solo el Superadmin configura la ventana; tú puedes verla y cerrarla.",
+      "turnsTitle": "Turnos",
+      "turnSlot": "{from} → {to}",
+      "phase": {
+        "scheduled": "Programada: abre el {date}",
+        "turns": "Abierta por turnos hasta el {date}",
+        "open": "Abierta por orden de llegada hasta el {date}",
+        "closed": "Cerrada el {date}"
+      },
+      "turnStatus": {
+        "scheduled": "Programado",
+        "before": "Espera",
+        "own": "En turno",
+        "after": "Turno cumplido",
+        "open": "Orden de llegada",
+        "closed": "Cerrada",
+        "none": "Sin turno"
+      },
+      "status": {
+        "scheduled": "Tu turno en la ventana de {year} abre el {date}.",
+        "before": "Tu turno abre el {date}. Ahora es el turno de la fracción {fraction}.",
+        "own": "Es tu turno: puedes mover semanas hasta el {date}.",
+        "after": "Tu turno ya pasó. Cuando terminen los turnos, la ventana abre por orden de llegada hasta el {date}.",
+        "open": "Ventana abierta por orden de llegada hasta el {date}.",
+        "closed": "La ventana de {year} está cerrada: tus semanas quedan donde están.",
+        "none": "Tu fracción no tiene turno en esta ventana."
+      },
+      "remaining": "Quedan {days} d {hours} h {minutes} min",
+      "movable": "Puedes mover {count} semanas: {weeks}.",
+      "nothingMovable": "No tienes semanas que mover: las confirmadas y liberadas se quedan donde están.",
+      "from": "Semana que mueves",
+      "to": "Semana libre de destino",
+      "weekOption": "Semana {n} · {date} · {season}",
+      "submit": "Mover semana",
+      "done": "Semana reubicada.",
+      "validation": {
+        "calendar_inactive": "Tu calendario está inactivo: completa el plan de pagos para operar.",
+        "window_closed": "La ventana de reubicación está cerrada.",
+        "outside_turn": "Todavía no es tu turno: abre el {date}.",
+        "not_own": "Elige una semana tuya que se pueda mover.",
+        "week_locked": "Esa semana ya está confirmada o liberada y no se mueve.",
+        "same_week": "Elige una semana de destino distinta.",
+        "week_unknown": "Elige una semana de destino de la rejilla.",
+        "season_mismatch": "Solo puedes moverla dentro de su temporada ({from} → {to} no vale).",
+        "in_the_past": "Esa semana ya pasó.",
+        "week_taken": "Esa semana ya la eligió la fracción {fraction}.",
+        "week_rented": "Esa semana está en la bolsa de renta.",
+        "week_blocked": "El Administrador bloqueó esa semana."
+      },
+      "form": {
+        "duration": "La duración debe ser de al menos un día.",
+        "turn": "El turno debe ser de al menos una hora.",
+        "order": "El orden debe incluir cada fracción con titular una sola vez."
+      },
+      "errors": {
+        "configure_failed": "No pudimos guardar la ventana.",
+        "close_failed": "No pudimos cerrar la ventana.",
+        "relocate_failed": "No pudimos mover la semana."
+      }
     }
   }
 }

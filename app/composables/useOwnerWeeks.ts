@@ -158,6 +158,10 @@ export function useOwnerWeeks(fraccion: Ref<FraccionPropia | null>, anio: Ref<nu
     abiertoEl: computed(() => cargado.value?.abiertoEl ?? null),
     projection,
     context,
+    /** HU-59 · lo que el motor de reubicación necesita, tal como lo sabe la base. */
+    allocations: computed(() => cargado.value?.allocations ?? []),
+    classification: computed(() => cargado.value?.classification ?? []),
+    blockedWeeks: computed(() => (cargado.value?.blocks ?? []).map(b => b.week)),
     pendiente: consulta.pending,
     recargar: consulta.refresh,
     confirm: (week: number) => ejecutar('confirm_week', week, 'calendar.weeks.errors.confirm_failed'),

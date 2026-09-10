@@ -1005,6 +1005,80 @@
         "create_failed": "We could not create the block.",
         "lift_failed": "We could not lift the block."
       }
+    },
+    "relocation": {
+      "title": "Relocation window",
+      "subtitle": "In rotating 48-hour turns, each fraction may move a picked week to another free week of the same season. The Superadmin sets opening, duration and turn length.",
+      "ownerSubtitle": "During your turn you can move a picked week, not yet confirmed, to another free week of the same season.",
+      "opensAt": "Opening (Bogotá time)",
+      "durationDays": "Duration (days)",
+      "turnHours": "Turn per fraction (hours)",
+      "orderTitle": "Turn order",
+      "orderHint": "Rotates every year: whoever opened last year’s window goes last. You can adjust it before saving.",
+      "configure": "Save window",
+      "configured": "Window saved.",
+      "close": "Close window",
+      "closed": "Window closed.",
+      "notConfigured": "The Superadmin has not configured the {year} relocation window yet.",
+      "onlySuperadmin": "Only the Superadmin configures the window; you can view and close it.",
+      "turnsTitle": "Turns",
+      "turnSlot": "{from} → {to}",
+      "phase": {
+        "scheduled": "Scheduled: opens on {date}",
+        "turns": "Open in turns until {date}",
+        "open": "Open first come, first served until {date}",
+        "closed": "Closed on {date}"
+      },
+      "turnStatus": {
+        "scheduled": "Scheduled",
+        "before": "Waiting",
+        "own": "In turn",
+        "after": "Turn done",
+        "open": "First come",
+        "closed": "Closed",
+        "none": "No turn"
+      },
+      "status": {
+        "scheduled": "Your turn in the {year} window opens on {date}.",
+        "before": "Your turn opens on {date}. It is fraction {fraction}’s turn now.",
+        "own": "It is your turn: you can move weeks until {date}.",
+        "after": "Your turn has passed. Once all turns end, the window opens first come, first served until {date}.",
+        "open": "Window open first come, first served until {date}.",
+        "closed": "The {year} window is closed: your weeks stay where they are.",
+        "none": "Your fraction has no turn in this window."
+      },
+      "remaining": "{days} d {hours} h {minutes} min left",
+      "movable": "You can move {count} weeks: {weeks}.",
+      "nothingMovable": "You have no weeks to move: confirmed and released weeks stay where they are.",
+      "from": "Week to move",
+      "to": "Free target week",
+      "weekOption": "Week {n} · {date} · {season}",
+      "submit": "Move week",
+      "done": "Week relocated.",
+      "validation": {
+        "calendar_inactive": "Your calendar is inactive: complete the payment plan to operate.",
+        "window_closed": "The relocation window is closed.",
+        "outside_turn": "It is not your turn yet: it opens on {date}.",
+        "not_own": "Pick one of your weeks that can be moved.",
+        "week_locked": "That week is already confirmed or released and cannot move.",
+        "same_week": "Pick a different target week.",
+        "week_unknown": "Pick a target week from the grid.",
+        "season_mismatch": "You can only move it within its season ({from} → {to} is not allowed).",
+        "in_the_past": "That week has already passed.",
+        "week_taken": "That week was already picked by fraction {fraction}.",
+        "week_rented": "That week is in the rental pool.",
+        "week_blocked": "The Administrator blocked that week."
+      },
+      "form": {
+        "duration": "Duration must be at least one day.",
+        "turn": "The turn must be at least one hour.",
+        "order": "The order must include every fraction with an owner exactly once."
+      },
+      "errors": {
+        "configure_failed": "We could not save the window.",
+        "close_failed": "We could not close the window.",
+        "relocate_failed": "We could not move the week."
+      }
     }
   }
 }
