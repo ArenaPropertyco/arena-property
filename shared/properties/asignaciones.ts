@@ -129,3 +129,38 @@ export function filtrarCuentas<T extends Pick<CuentaPromovible, 'email' | 'fullN
     normalizarTexto(cuenta.fullName ?? '').includes(criterio)
     || normalizarTexto(cuenta.email ?? '').includes(criterio))
 }
+
+// ── RF-05.3 · sobre qué propiedades manda quien está mirando ────────────────
+
+/** Quien consulta: su identificador de cuenta y si manda sobre todo. */
+export interface ActorDeGestion {
+  id: string | null
+  esSuperadmin: boolean
+}
+
+/**
+ * CA-05.2 · las propiedades que el actor gestiona de verdad.
+ *
+ * El Superadmin las obtiene todas sin excepción, incluidas las que no tienen
+ * administrador asignado; el Administrador, exactamente las suyas.
+ *
+ * Hace falta porque «poder leer» y «poder gestionar» no son lo mismo: una
+ * propiedad publicada la lee cualquiera —está en el catálogo público—, así que
+ * una pantalla que se guíe por lo que la consulta devuelve le ofrecería a un
+ * Administrador calendarios ajenos que la base le va a rechazar al guardar.
+ */
+export function propiedadesGestionadas<T extends { adminIds: readonly string[] }>(
+  propiedades: readonly T[],
+  actor: ActorDeGestion,
+): T[] {
+  if (actor.esSuperadmin) {
+    return [...propiedades]
+  }
+
+  const cuenta = actor.id
+  if (!cuenta) {
+    return []
+  }
+
+  return propiedades.filter(propiedad => propiedad.adminIds.includes(cuenta))
+}

@@ -19,7 +19,10 @@
     "admins": "Administradores",
     "catalog": "Propiedades",
     "inbox": "Notificaciones",
-    "myCalendar": "Mi calendario"
+    "myCalendar": "Mi calendario",
+    "commission": "Comisión",
+    "ambassadors": "Embajadores",
+    "referralProgram": "Programa de Referidos"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -1078,6 +1081,138 @@
         "configure_failed": "No pudimos guardar la ventana.",
         "close_failed": "No pudimos cerrar la ventana.",
         "relocate_failed": "No pudimos mover la semana."
+      }
+    }
+  },
+  "referrals": {
+    "commission": {
+      "title": "Tipos de comisión",
+      "subtitle": "Administra los tipos de comisión del programa y decide cuál lleva cada Embajador. Quien no tenga uno asignado cobra el predeterminado.",
+      "name": "Nombre del tipo",
+      "nameHint": "Con el que lo reconocerás en la lista.",
+      "kind": "Clase de valor",
+      "kinds": {
+        "percentage": "Porcentaje del precio pactado",
+        "fixed": "Importe fijo en pesos"
+      },
+      "percentage": "Porcentaje",
+      "percentageHint": "Sobre el precio pactado en la compra, no sobre el precio de lista.",
+      "amount": "Importe fijo",
+      "amountHint": "En pesos colombianos, sin decimales.",
+      "makeDefault": "Dejarlo como predeterminado",
+      "create": "Crear tipo de comisión",
+      "created": "Tipo de comisión creado.",
+      "catalogTitle": "Catálogo de tipos",
+      "catalogHint": "El valor de un tipo no se edita: para pagar otra cantidad, crea otro. Desactivarlo deja de ofrecerlo sin retirárselo a quien ya lo tenía.",
+      "default": "Predeterminado",
+      "inactive": "Retirado",
+      "makeDefaultAction": "Hacer predeterminado",
+      "defaultChanged": "Predeterminado actualizado.",
+      "activate": "Volver a ofrecer",
+      "activated": "Tipo de comisión disponible de nuevo.",
+      "deactivate": "Dejar de ofrecer",
+      "deactivated": "Tipo de comisión retirado.",
+      "empty": "Todavía no hay ningún tipo de comisión.",
+      "assignTitle": "Comisión de cada Embajador",
+      "assignHint": "Elige el tipo que le corresponde a cada uno. Con «El predeterminado» cobra el que rija para todos.",
+      "useDefault": "El predeterminado",
+      "applies": "Cobra {type}",
+      "noType": "Sin comisión aplicable",
+      "assigned": "Comisión del Embajador actualizada.",
+      "noAmbassadors": "Todavía no hay Embajadores aprobados.",
+      "validation": {
+        "name_required": "Ponle un nombre de hasta 60 caracteres.",
+        "name_duplicated": "Ya existe un tipo con ese nombre.",
+        "kind_mismatch": "El valor no corresponde a la clase elegida.",
+        "amount_not_positive": "El importe fijo debe ser mayor que cero.",
+        "basis_points_out_of_range": "El porcentaje debe estar entre 0,01 % y 100 %.",
+        "type_unknown": "Ese tipo de comisión ya no existe.",
+        "type_inactive": "Ese tipo está retirado y no se asigna."
+      },
+      "errors": {
+        "create_failed": "No pudimos crear el tipo de comisión.",
+        "default_failed": "No pudimos cambiar el predeterminado.",
+        "active_failed": "No pudimos cambiar la disponibilidad del tipo.",
+        "assign_failed": "No pudimos cambiar la comisión del Embajador."
+      }
+    },
+    "signup": {
+      "title": "Inscríbete como Embajador",
+      "hint": "Recibe un código propio, comparte tu enlace y gana una comisión por cada referido que complete su compra.",
+      "bank": "Banco",
+      "accountKind": "Tipo de cuenta",
+      "accountKinds": {
+        "savings": "Ahorros",
+        "checking": "Corriente"
+      },
+      "accountNumber": "Número de cuenta",
+      "holder": "Titular de la cuenta",
+      "terms": "Acepto los términos y condiciones del Programa de Referidos (versión {version}).",
+      "submit": "Enviar inscripción",
+      "sent": "Inscripción enviada. El Superadmin la revisará.",
+      "statusTitle": "Tu inscripción",
+      "pending": "Tu inscripción está en revisión. Te avisaremos cuando se apruebe.",
+      "approvedNotice": "Tu inscripción está aprobada: ya puedes compartir tu código.",
+      "rejectedNotice": "Tu inscripción fue rechazada: {reason}",
+      "suspendedNotice": "Tu cuenta de Embajador está suspendida.",
+      "validation": {
+        "terms_required": "Debes aceptar los términos del programa.",
+        "terms_version_missing": "No pudimos leer la versión de los términos.",
+        "bank_required": "Indica el banco.",
+        "account_kind_invalid": "Elige un tipo de cuenta.",
+        "account_number_invalid": "El número de cuenta son entre 5 y 20 dígitos.",
+        "holder_required": "Indica el titular de la cuenta.",
+        "role_not_allowed": "Tu rol no participa en el Programa de Referidos.",
+        "already_enrolled": "Esta cuenta ya está inscrita en el programa."
+      },
+      "errors": {
+        "enroll_failed": "No pudimos enviar tu inscripción."
+      }
+    },
+    "ambassadors": {
+      "title": "Embajadores",
+      "subtitle": "Inscripciones al Programa de Referidos. Al aprobar, la cuenta suma el rol Embajador y recibe su código.",
+      "empty": "Todavía no hay inscripciones al programa.",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "rejectReason": "Motivo del rechazo",
+      "reasonRequired": "El rechazo necesita un motivo.",
+      "resolved": "Inscripción resuelta.",
+      "bankLine": "{bank} · {kind} · {account} · {holder}",
+      "enrolledAt": "Inscrito el {date}",
+      "status": {
+        "pending": "Pendiente",
+        "approved": "Aprobado",
+        "rejected": "Rechazado",
+        "suspended": "Suspendido"
+      },
+      "errors": {
+        "resolve_failed": "No pudimos resolver la inscripción."
+      }
+    },
+    "code": {
+      "title": "Tu código de referido",
+      "copyCode": "Copiar código",
+      "copyLink": "Copiar enlace",
+      "codeCopied": "Código copiado.",
+      "linkCopied": "Enlace copiado.",
+      "copyFailed": "No pudimos copiar. Selecciona el texto a mano.",
+      "shareSubject": "Conoce Arena Property",
+      "shareMessage": "Sé dueño de una propiedad vacacional en Bocagrande con el modelo de copropiedad de Arena Property.",
+      "share": {
+        "whatsapp": "WhatsApp",
+        "email": "Correo",
+        "x": "X",
+        "facebook": "Facebook"
+      }
+    },
+    "attribution": {
+      "validation": {
+        "unknown_code": "Ese código de referido no existe.",
+        "disabled_code": "Ese código de referido está inhabilitado.",
+        "self_referral": "No puedes referirte a ti mismo.",
+        "window_expired": "El enlace de referido caducó: la ventana es de 90 días.",
+        "invalid_transition": "Ese cambio de estado del referido no es válido."
       }
     }
   }

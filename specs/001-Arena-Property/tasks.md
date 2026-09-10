@@ -343,37 +343,37 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 5 · Comisión y alta de Embajadores
 
-- [ ] **T-135 · Migración de `commission_rates` con vigencias** — `HU-52 · RF-52.1, RF-52.3`
-  Hecho cuando: existe con RLS, histórico inmutable y porcentaje en puntos básicos.
-- [ ] **T-136 · Resolución pura de la vigencia aplicable a una fecha** — `HU-52 · RF-52.2, RF-52.5`
-  Hecho cuando: pasa `CA-52.1`.
-- [ ] **T-137 · Cálculo sobre el precio pactado** — `HU-52 · RF-52.1` · D-05
+- [x] **T-135 · Migración de `commission_types` y `ambassador_commissions`** — `HU-52 · RF-52.1, RF-52.2` · D-37
+  Hecho cuando: existen con RLS, valor inmutable, un solo predeterminado y porcentaje en puntos básicos.
+- [x] **T-136 · Resolución pura del tipo aplicable a un Embajador** — `HU-52 · RF-52.3, RF-52.5` · D-37
+  Hecho cuando: pasan `CA-52.1` y `CA-52.5`.
+- [x] **T-137 · Cálculo sobre el precio pactado** — `HU-52 · RF-52.1` · D-05
   Hecho cuando: pasa `CA-52.2`.
-- [ ] **T-138 · Validaciones e histórico de cambios de vigencia** — `HU-52 · RF-52.3, RF-52.4`
-  Hecho cuando: pasan `CA-52.3` y `CA-52.4`.
-- [ ] **T-139 · Migración de `ambassadors` con términos y datos bancarios** — `HU-49 · RF-49.2, RF-49.3`
+- [x] **T-138 · Validaciones del catálogo y asignación por Embajador** — `HU-52 · RF-52.2, RF-52.4`
+  Hecho cuando: pasan `CA-52.3`, `CA-52.4` y `CA-52.6`.
+- [x] **T-139 · Migración de `ambassadors` con términos y datos bancarios** — `HU-49 · RF-49.2, RF-49.3`
   Hecho cuando: existe con RLS y guarda la versión de términos aceptada.
-- [ ] **T-140 · Formulario de inscripción con validaciones** — `HU-49 · RF-49.1, RF-49.2, RF-49.3`
+- [x] **T-140 · Formulario de inscripción con validaciones** — `HU-49 · RF-49.1, RF-49.2, RF-49.3`
   Hecho cuando: pasan `CA-49.1` y `CA-49.4`.
-- [ ] **T-141 · Acumulación del rol Embajador al aprobar** — `HU-49 · RF-49.4, RF-49.6`
+- [x] **T-141 · Acumulación del rol Embajador al aprobar** — `HU-49 · RF-49.4, RF-49.6`
   Hecho cuando: pasan `CA-49.2` y `CA-49.3`.
-- [ ] **T-142 · Gestión de embajadores por el Superadmin** — `HU-49 · RF-49.5`
+- [x] **T-142 · Gestión de embajadores por el Superadmin** — `HU-49 · RF-49.5`
   Hecho cuando: lista inscritos con estado, datos de pago y fecha de alta.
-- [ ] **T-143 · Generación del código único e inmutable** — `HU-50 · RF-50.1, RF-50.2`
+- [x] **T-143 · Generación del código único e inmutable** — `HU-50 · RF-50.1, RF-50.2`
   Hecho cuando: pasan `CA-50.1` y `CA-50.2`, con restricción de unicidad en base de datos.
-- [ ] **T-144 · Enlace compartible y botones de difusión** — `HU-50 · RF-50.3, RF-50.4`
+- [x] **T-144 · Enlace compartible y botones de difusión** — `HU-50 · RF-50.3, RF-50.4`
   Hecho cuando: pasan `CA-50.3` y `CA-50.4`.
-- [ ] **T-145 · Migración de `attributions` con ventana de 90 días** — `HU-51 · RF-51.1` · D-03
+- [x] **T-145 · Migración de `attributions` con ventana de 90 días** — `HU-51 · RF-51.1` · D-03
   Hecho cuando: existe con RLS y pasa `CA-51.6`.
-- [ ] **T-146 · Persistencia de la atribución hasta el registro** — `HU-51 · RF-51.1, RF-51.2`
+- [x] **T-146 · Persistencia de la atribución hasta el registro** — `HU-51 · RF-51.1, RF-51.2`
   Hecho cuando: el código llega prellenado al registro y al contacto.
-- [ ] **T-147 · Primera atribución gana y sin auto-referencia** — `HU-51 · RF-51.3, RF-51.4`
+- [x] **T-147 · Primera atribución gana y sin auto-referencia** — `HU-51 · RF-51.3, RF-51.4`
   Hecho cuando: pasan `CA-51.1` y `CA-51.2`.
-- [ ] **T-148 · Ciclo de vida del referido** — `HU-51 · RF-51.5`
+- [x] **T-148 · Ciclo de vida del referido** — `HU-51 · RF-51.5`
   Hecho cuando: pasan `CA-51.3` y `CA-51.4`.
-- [ ] **T-149 · Código inválido o inhabilitado sin bloquear el flujo** — `HU-51 · RF-51.6`
+- [x] **T-149 · Código inválido o inhabilitado sin bloquear el flujo** — `HU-51 · RF-51.6`
   Hecho cuando: pasa `CA-51.5`.
-- [ ] **T-150 · Una sola comisión por prospecto** — `HU-51 · RF-51.7` · D-04
+- [x] **T-150 · Una sola comisión por prospecto** — `HU-51 · RF-51.7` · D-04
   Hecho cuando: pasa `CA-51.7`.
 
 ## Paso 6 · Subpáginas institucionales

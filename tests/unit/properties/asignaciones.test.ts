@@ -5,6 +5,7 @@ import {
   cuentasPromovibles,
   filtrarCuentas,
   hayCambios,
+  propiedadesGestionadas,
   validarAsignacion,
 } from '#shared/properties/asignaciones'
 
@@ -125,5 +126,32 @@ describe('RF-05.1 · alta de Administrador desde una cuenta existente', () => {
     expect(filtrarCuentas(cuentas, 'ejemplo').map(c => c.id)).toEqual(['u1', 'u2', 'u3', 'u4'])
     expect(filtrarCuentas(cuentas, 'sofia').map(c => c.id)).toEqual(['u3'])
     expect(filtrarCuentas(cuentas, '   ').length).toBe(5)
+  })
+})
+
+describe('CA-05.2 · de qué propiedades manda cada quien', () => {
+  const propiedades = [
+    { id: 'A', adminIds: [ANA] },
+    { id: 'B', adminIds: [ANA, LUIS] },
+    { id: 'C', adminIds: [] },
+    { id: 'D', adminIds: [LUIS] },
+  ]
+
+  it('CA-05.2 · el Administrador obtiene exactamente las que tiene asignadas', () => {
+    expect(propiedadesGestionadas(propiedades, { id: ANA, esSuperadmin: false }).map(p => p.id))
+      .toEqual(['A', 'B'])
+  })
+
+  it('RF-05.3 · una propiedad publicada que no administra tampoco la gestiona', () => {
+    expect(propiedadesGestionadas(propiedades, { id: SOFIA, esSuperadmin: false })).toEqual([])
+  })
+
+  it('CA-05.1 · el Superadmin manda en todas, incluida la que no tiene administrador', () => {
+    expect(propiedadesGestionadas(propiedades, { id: SOFIA, esSuperadmin: true }).map(p => p.id))
+      .toEqual(['A', 'B', 'C', 'D'])
+  })
+
+  it('sin sesión no se gestiona nada', () => {
+    expect(propiedadesGestionadas(propiedades, { id: null, esSuperadmin: false })).toEqual([])
   })
 })
