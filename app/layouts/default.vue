@@ -18,6 +18,7 @@ const enlaces = computed<NavigationMenuItem[]>(() => [
   { label: t('nav.benefits'), to: localePath('/beneficios') },
   { label: t('nav.scheduling'), to: localePath('/agendamiento') },
   { label: t('nav.about'), to: localePath('/nosotros') },
+  { label: t('nav.referralProgram'), to: localePath('/embajadores') },
   { label: t('nav.contact'), to: localePath('/contacto') },
 ])
 </script>

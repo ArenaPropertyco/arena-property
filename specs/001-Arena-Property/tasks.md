@@ -378,41 +378,41 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 6 · Subpáginas institucionales
 
-- [ ] **T-151 · Manifiesto y página de Modelo de negocio** — `HU-41 · RF-41.1, RF-41.2, RF-41.4`
+- [x] **T-151 · Manifiesto y página de Modelo de negocio** — `HU-41 · RF-41.1, RF-41.2, RF-41.4`
   Hecho cuando: pasan `CA-41.1` y `CA-41.3`.
-- [ ] **T-152 · CTA de Modelo de negocio hacia el registro** — `HU-41 · RF-41.3`
+- [x] **T-152 · CTA de Modelo de negocio hacia el registro** — `HU-41 · RF-41.3`
   Hecho cuando: pasa `CA-41.2`.
-- [ ] **T-153 · Estructura tipada del comparativo de Beneficios** — `HU-42 · RF-42.1, RF-42.2`
+- [x] **T-153 · Estructura tipada del comparativo de Beneficios** — `HU-42 · RF-42.1, RF-42.2`
   Hecho cuando: pasa `CA-42.1`.
-- [ ] **T-154 · Marcado de cifras estimadas del comparativo** — `HU-42 · RF-42.3` · `TR-02`
+- [x] **T-154 · Marcado de cifras estimadas del comparativo** — `HU-42 · RF-42.3` · `TR-02`
   Hecho cuando: pasan `CA-42.2` y `CA-42.3`.
-- [ ] **T-155 · Página de Beneficios con su CTA** — `HU-42 · RF-42.4` · `RT-06`
+- [x] **T-155 · Página de Beneficios con su CTA** — `HU-42 · RF-42.4` · `RT-06`
   Hecho cuando: el comparativo se lee en 320 px y el CTA resuelve al registro.
-- [ ] **T-156 · Manifiesto de la página de Agendamiento** — `HU-43 · RF-43.1, RF-43.4`
+- [x] **T-156 · Manifiesto de la página de Agendamiento** — `HU-43 · RF-43.1, RF-43.4`
   Hecho cuando: pasa `CA-43.1` con el cupo 7/7/7/21.
-- [ ] **T-157 · Coherencia de la página con el motor** — `HU-43 · RF-43.2`
+- [x] **T-157 · Coherencia de la página con el motor** — `HU-43 · RF-43.2`
   Hecho cuando: pasa `CA-43.2`.
-- [ ] **T-158 · CTA de la página de Agendamiento** — `HU-43 · RF-43.3`
+- [x] **T-158 · CTA de la página de Agendamiento** — `HU-43 · RF-43.3`
   Hecho cuando: pasa `CA-43.3`.
-- [ ] **T-159 · Manifiesto y secciones de Sobre Nosotros** — `HU-44 · RF-44.1, RF-44.4`
+- [x] **T-159 · Manifiesto y secciones de Sobre Nosotros** — `HU-44 · RF-44.1, RF-44.4`
   Hecho cuando: pasa `CA-44.1`.
-- [ ] **T-160 · Estructuras de preguntas frecuentes y testimonios** — `HU-44 · RF-44.2`
+- [x] **T-160 · Estructuras de preguntas frecuentes y testimonios** — `HU-44 · RF-44.2`
   Hecho cuando: pasa `CA-44.2` y el acordeón funciona en móvil.
-- [ ] **T-161 · CTA e i18n de Sobre Nosotros** — `HU-44 · RF-44.3`
+- [x] **T-161 · CTA e i18n de Sobre Nosotros** — `HU-44 · RF-44.3`
   Hecho cuando: pasa `CA-44.3`.
-- [ ] **T-162 · Migración de `waitlist_entries` con consentimiento** — `HU-47 · RF-47.2, RF-47.5` · D-25
+- [x] **T-162 · Migración de `waitlist_entries` con consentimiento** — `HU-47 · RF-47.2, RF-47.5` · D-25
   Hecho cuando: existe con RLS, orden de inscripción y unicidad por correo y propiedad.
-- [ ] **T-163 · Formulario de lista de espera condicionado** — `HU-47 · RF-47.1`
+- [x] **T-163 · Formulario de lista de espera condicionado** — `HU-47 · RF-47.1`
   Hecho cuando: pasan `CA-47.1` y `CA-47.2`.
-- [ ] **T-164 · Correo de confirmación con límite de tasa** — `HU-47 · RF-47.3` · D-24
+- [x] **T-164 · Correo de confirmación con límite de tasa** — `HU-47 · RF-47.3` · D-24
   Hecho cuando: pasa `CA-47.3`.
-- [ ] **T-165 · Disparador de aviso al liberarse una fracción** — `HU-47 · RF-47.4`
+- [x] **T-165 · Disparador de aviso al liberarse una fracción** — `HU-47 · RF-47.4`
   Hecho cuando: pasa `CA-47.4`, en orden de inscripción y una sola vez por persona.
-- [ ] **T-166 · Página del Programa de Embajadores** — `HU-48 · RF-48.1, RF-48.3`
+- [x] **T-166 · Página del Programa de Embajadores** — `HU-48 · RF-48.1, RF-48.3`
   Hecho cuando: explica el flujo completo y las condiciones, con claves en ambos locales.
-- [ ] **T-167 · Publicación del monto de comisión vigente** — `HU-48 · RF-48.2` · `TR-02`
+- [x] **T-167 · Publicación del monto de comisión vigente** — `HU-48 · RF-48.2` · `TR-02`
   Hecho cuando: pasa `CA-48.1` leyendo la vigencia de HU-52, sin valor fijo en el código.
-- [ ] **T-168 · CTA condicionado por sesión** — `HU-48 · RF-48.4`
+- [x] **T-168 · CTA condicionado por sesión** — `HU-48 · RF-48.4`
   Hecho cuando: pasan `CA-48.2` y `CA-48.3`.
 
 ---

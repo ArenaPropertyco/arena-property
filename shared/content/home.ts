@@ -10,25 +10,17 @@
  * los tres pilares del modelo, las propiedades activas y el cierre «Reserva tu cupo».
  */
 
+import { clavesDe, clavesDeSecciones } from './manifiesto'
+import type { SeccionDePagina } from './manifiesto'
 import { RUTAS_PUBLICAS } from './rutas'
-import type { RutaPublica } from './rutas'
 
 export const IDS_DE_SECCION = ['navbar', 'hero', 'business_model', 'benefits', 'properties', 'cta', 'footer'] as const
 export type IdDeSeccion = typeof IDS_DE_SECCION[number]
 
-export interface CtaDeSeccion {
-  labelKey: string
-  destino: RutaPublica
-}
+export type { CtaDeSeccion } from './manifiesto'
 
-export interface SeccionDeLaHome {
-  id: IdDeSeccion
-  orden: number
-  tituloKey: string
-  /** Claves i18n adicionales que la sección pinta (antetítulo, descripción, ítems). */
-  claves: readonly string[]
-  cta?: CtaDeSeccion
-}
+/** Una sección de la home: el manifiesto genérico con sus identificadores cerrados. */
+export type SeccionDeLaHome = SeccionDePagina<IdDeSeccion>
 
 /** Los tres pilares de «¿Qué es Arena Property?» (RF-00.3). */
 export const PILARES_DEL_MODELO = ['owner', 'price', 'carefree'] as const
@@ -40,10 +32,6 @@ export type Beneficio = typeof BENEFICIOS[number]
 
 /** Datos duros del hero, sin cifras estimadas (principio 9): pisos, altura, entrega. */
 export const DATOS_DEL_HERO = ['floors', 'height', 'delivery'] as const
-
-function clavesDe(prefijo: string, ids: readonly string[], campos: readonly string[]): string[] {
-  return ids.flatMap(id => campos.map(campo => `${prefijo}.${id}.${campo}`))
-}
 
 export const SECCIONES_DE_LA_HOME: readonly SeccionDeLaHome[] = [
   {
@@ -118,11 +106,7 @@ export function seccionesDeContenido(secciones: readonly SeccionDeLaHome[] = SEC
 
 /** Todas las claves i18n que el manifiesto promete (CA-00.3). */
 export function clavesDelManifiesto(secciones: readonly SeccionDeLaHome[]): string[] {
-  return [...new Set(secciones.flatMap(seccion => [
-    seccion.tituloKey,
-    ...seccion.claves,
-    ...(seccion.cta ? [seccion.cta.labelKey] : []),
-  ]))]
+  return clavesDeSecciones(secciones)
 }
 
 /**

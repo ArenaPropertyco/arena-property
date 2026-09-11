@@ -497,9 +497,9 @@
       "footer": "Pie de página"
     },
     "hero": {
-      "headline": "Co-inversión inmobiliaria en el Caribe",
-      "title": "Sé dueño de Bocagrande desde COP $173M.",
-      "description": "1/8 de un apartamento en Invictvs, el rascacielos más icónico de Bocagrande, Cartagena. Vista al Mar Atlántico, Sky Club, restaurante y helipuerto.",
+      "headline": "Copropiedad fraccionada",
+      "title": "Tu vivienda vacacional no es un sueño. Es una decisión que aún no has tomado.",
+      "description": "Sé dueño de un apartamento en el rascacielos más icónico de Bocagrande desde COP $173M. 1/8 de Invictvs, en primera línea de playa, registrado a tu nombre en fiducia.",
       "cta": "Ver propiedades",
       "secondary": "Cómo funciona",
       "videoLabel": "Video de Invictvs en primera línea de Bocagrande",
@@ -521,12 +521,12 @@
     "model": {
       "headline": "¿Qué es Arena Property?",
       "title": "La forma inteligente de poseer el Caribe",
-      "description": "Compras 1/8 de una propiedad vacacional premium, registrada a tu nombre en fiducia, y un operador único se encarga de todo lo demás.",
+      "description": "Estructuramos y administramos copropiedades fraccionadas de segunda vivienda de lujo, mediante S.A.S. y con operación hotelera profesional, para hacer eficiente la inversión y el gasto en propiedades que se usan poco al año. Participamos como copropietarios fundadores en cada proyecto.",
       "cta": "Conoce el modelo",
       "pillars": {
         "owner": {
           "title": "Eres propietario real",
-          "description": "Tu 1/8 queda registrado en la fiducia del proyecto. Propiedad real sobre un activo en primera línea de playa."
+          "description": "Tu 1/8 queda registrado en la fiducia del proyecto. Propiedad real sobre un activo en primera línea de playa para disfrutar seis semanas al año. La carga de gastos es proporcional a tu fracción."
         },
         "price": {
           "title": "Desde COP $173M",
@@ -539,9 +539,9 @@
       }
     },
     "benefits": {
-      "headline": "Beneficios",
+      "headline": "¿Cuáles son los beneficios?",
       "title": "Ocho dueños, cero preocupaciones",
-      "description": "Frente a comprar una propiedad completa, la fracción te da lo mejor del Caribe por una parte del costo y sin cargar con la operación.",
+      "description": "Eres dueño de tu vivienda vacacional en el Caribe por una fracción de la inversión y del gasto. Frente a comprar una propiedad completa, la fracción te da lo mejor del Caribe por una parte del costo y sin cargar con la operación.",
       "cta": "Compara con una propiedad completa",
       "items": {
         "capital": {
@@ -550,11 +550,11 @@
         },
         "weeks": {
           "title": "42 noches al año",
-          "description": "Semanas repartidas en las cuatro temporadas, con rotación justa entre los ocho copropietarios."
+          "description": "Seis semanas repartidas en las cuatro temporadas, con rotación justa entre los ocho copropietarios."
         },
         "income": {
           "title": "Ingresos cuando no la usas",
-          "description": "Las noches libres se rentan a terceros y el ingreso se reparte a tu fracción."
+          "description": "Las semanas que no usas se rentan a terceros y el ingreso se reparte a tu fracción."
         },
         "management": {
           "title": "Operación centralizada",
@@ -693,25 +693,6 @@
       "rate_limited": "Has enviado varios mensajes seguidos. Espera unos minutos e inténtalo de nuevo.",
       "send_failed": "No pudimos enviar tu mensaje. Escríbenos por WhatsApp."
     }
-  },
-  "placeholder": {
-    "model": {
-      "title": "Modelo de negocio",
-      "description": "Muy pronto: cómo te haces dueño de una fracción, paso a paso."
-    },
-    "benefits": {
-      "title": "Beneficios del sistema fraccionado",
-      "description": "Muy pronto: el comparativo entre la renta tradicional y la copropiedad fraccionada."
-    },
-    "scheduling": {
-      "title": "Sistema de agendamiento",
-      "description": "Muy pronto: las cuatro temporadas y tus 42 noches al año."
-    },
-    "about": {
-      "title": "Sobre nosotros",
-      "description": "Muy pronto: quiénes somos y las preguntas frecuentes."
-    },
-    "cta": "Crear mi cuenta"
   },
   "owner": {
     "title": "Mis fracciones",
@@ -1214,6 +1195,482 @@
         "window_expired": "El enlace de referido caducó: la ventana es de 90 días.",
         "invalid_transition": "Ese cambio de estado del referido no es válido."
       }
+    }
+  },
+  "model": {
+    "hero": {
+      "headline": "Modelo de negocio",
+      "title": "Copropiedad fraccionada, explicada de principio a fin",
+      "description": "Compras 1/8 de una propiedad vacacional premium, registrada a tu nombre en fiducia, y un operador único se encarga de todo lo demás. Así funciona y así te haces dueño de una fracción."
+    },
+    "structure": {
+      "headline": "Cómo está armado",
+      "title": "Una propiedad, ocho dueños, una sola operación",
+      "description": "Cada inmueble se estructura igual, y eso es lo que hace que la copropiedad funcione sin fricción.",
+      "items": {
+        "fractions": {
+          "title": "Ocho fracciones iguales",
+          "description": "Cada inmueble se divide en exactamente ocho fracciones. Compras una y eres copropietario con siete socios más, en las mismas condiciones."
+        },
+        "ownership": {
+          "title": "Titularidad real, en fiducia",
+          "description": "Una S.A.S. es la dueña del inmueble y tu 1/8 son acciones de esa sociedad, registradas en la fiducia del proyecto: propiedad real, trazable y traspasable."
+        },
+        "seasons": {
+          "title": "Derechos de uso por temporada",
+          "description": "Cada fracción recibe seis semanas al año repartidas en las cuatro temporadas, con un orden de elección que rota cada año para que el reparto sea justo."
+        },
+        "operation": {
+          "title": "Operación centralizada",
+          "description": "Agendamiento, gastos comunes, mantenimiento, proveedores y comunicación viven en la plataforma. Tú usas; Arena y el operador hacen el resto."
+        }
+      }
+    },
+    "whatWeDo": {
+      "headline": "Qué hace Arena Property",
+      "title": "Tres cosas por cada inmueble",
+      "description": "Y las tres son permanentes en el tiempo, salvo la primera.",
+      "partner": "Arena entra además como un socio más, en las mismas condiciones que los demás. Sus ingresos son una comisión declarada por estructurar cada sociedad y un fee mensual por administrarla.",
+      "items": {
+        "structure": {
+          "title": "Estructuramos",
+          "description": "Analizamos el activo, convocamos un grupo cerrado de socios nominados y constituimos la sociedad que compra la propiedad, dividida en ocho fracciones iguales."
+        },
+        "commercialize": {
+          "title": "Comercializamos",
+          "description": "Buscamos y calificamos a los socios de cada inmueble. La colocación es privada y uno a uno, nunca abierta."
+        },
+        "manage": {
+          "title": "Administramos",
+          "description": "Somos el administrador de la propiedad mientras la sociedad exista. Aseo, mantenimiento, proveedores, predial, seguros, servicios y la relación con el operador turístico pasan por nosotros, no por los socios."
+        }
+      }
+    },
+    "whatWeAreNot": {
+      "title": "Qué no es",
+      "items": {
+        "fund": {
+          "title": "No es un fondo",
+          "description": "Ni un vehículo de capital propio: compras una participación en la sociedad dueña de un inmueble concreto."
+        },
+        "timeshare": {
+          "title": "No es un tiempo compartido",
+          "description": "Eres accionista de la sociedad dueña del inmueble, con titularidad real y traspasable."
+        },
+        "yield": {
+          "title": "No promete rentabilidad operativa",
+          "description": "El retorno viene del uso y de la eventual valorización, no del arriendo. Nada estimado se presenta como confirmado."
+        }
+      }
+    },
+    "path": {
+      "headline": "Cómo te haces dueño",
+      "title": "De visitante a propietario, paso a paso",
+      "description": "Cinco pasos, tres roles. Ninguno te compromete antes de tiempo.",
+      "roles": {
+        "visitor": "Visitante",
+        "user": "Usuario",
+        "owner": "Propietario"
+      },
+      "steps": {
+        "explore": {
+          "title": "Explora las propiedades",
+          "description": "Recorre el catálogo, la ficha de cada inmueble y este modelo. Sin cuenta y sin compromiso."
+        },
+        "account": {
+          "title": "Crea tu cuenta",
+          "description": "Con tu correo o con Google. Si llegaste por un Embajador, su código queda registrado."
+        },
+        "choose": {
+          "title": "Elige tu fracción",
+          "description": "Nos escribes desde la ficha, resolvemos tus preguntas y cerramos la compra con un precio pactado y un plan de pagos."
+        },
+        "pay": {
+          "title": "Paga tu plan",
+          "description": "En cuotas y sin hipoteca adicional. Cada abono queda registrado y lo ves desde tu panel."
+        },
+        "own": {
+          "title": "Usa tu fracción",
+          "description": "Con el plan completo se activa tu calendario: eliges tus semanas en tu turno y el operador se encarga del resto."
+        }
+      }
+    },
+    "cta": {
+      "title": "Empieza por crear tu cuenta",
+      "description": "Es gratis y no te compromete a nada. Desde ahí te acompañamos hasta tu fracción registrada.",
+      "cta": "Crear mi cuenta"
+    }
+  },
+  "benefits": {
+    "hero": {
+      "headline": "Beneficios",
+      "title": "Ocho dueños, cero preocupaciones",
+      "description": "Eres dueño de tu vivienda vacacional en el Caribe por una fracción de la inversión y del gasto. Compara la fracción con comprar una propiedad completa."
+    },
+    "comparison": {
+      "headline": "Comparativo",
+      "title": "Propiedad completa frente a fracción",
+      "description": "Cada cifra dice si es un hecho o una estimación. Nada estimado se presenta como confirmado.",
+      "columns": {
+        "criterion": "Criterio",
+        "traditional": "Propiedad completa",
+        "fractional": "Fracción Arena"
+      },
+      "legend": {
+        "confirmed": "Confirmado",
+        "estimated": "Estimado"
+      },
+      "criteria": {
+        "capital": "Inversión inicial",
+        "payment": "Forma de pago",
+        "usage": "Uso al año",
+        "income": "Ingresos por renta",
+        "expenses": "Gastos y mantenimiento",
+        "operation": "Operación",
+        "ownership": "Titularidad"
+      },
+      "cells": {
+        "payment": {
+          "traditional": "Crédito hipotecario o pago de contado",
+          "fractional": "30 cuotas, sin hipoteca adicional"
+        },
+        "usage": {
+          "traditional": "Todo el año, con el inmueble vacío la mayor parte del tiempo",
+          "fractional": "Seis semanas al año, 42 noches, repartidas en las cuatro temporadas"
+        },
+        "income": {
+          "traditional": "Los gestionas tú, si consigues arrendar",
+          "fractional": "Las semanas que no usas las renta el operador y el ingreso se reparte a tu 1/8"
+        },
+        "expenses": {
+          "traditional": "El 100 % a tu cargo",
+          "fractional": "1/8 de los gastos comunes, con reporte mensual"
+        },
+        "operation": {
+          "traditional": "Aseo, mantenimiento, proveedores, predial y seguros dependen de ti",
+          "fractional": "Arena administra y un operador turístico gestiona huéspedes y reportería"
+        },
+        "ownership": {
+          "traditional": "Escritura a tu nombre",
+          "fractional": "Acciones de la S.A.S. dueña del inmueble, en fiducia y traspasables"
+        }
+      }
+    },
+    "list": {
+      "headline": "Lo que ganas",
+      "title": "Seis razones para elegir la fracción",
+      "description": "Lo mejor del Caribe por una parte del costo, y sin cargar con la operación."
+    },
+    "items": {
+      "capital": {
+        "title": "Una fracción del capital",
+        "description": "Desde COP $173M en 30 cuotas, en lugar de más de COP $1.384M por el apartamento completo."
+      },
+      "weeks": {
+        "title": "42 noches al año",
+        "description": "Seis semanas repartidas en las cuatro temporadas, con rotación justa entre los ocho copropietarios."
+      },
+      "income": {
+        "title": "Ingresos cuando no la usas",
+        "description": "Las semanas que no usas se rentan a terceros y el ingreso se reparte a tu fracción."
+      },
+      "ownership": {
+        "title": "Tu fracción es tuya",
+        "description": "Registrada en fiducia y trazable; puedes traspasarla cuando lo decidas."
+      },
+      "management": {
+        "title": "Operación centralizada",
+        "description": "Agendamiento, gastos comunes, mantenimiento y comunicación viven en la plataforma."
+      },
+      "transparency": {
+        "title": "Cuentas claras",
+        "description": "Reportes mensuales y cada peso con su registro. Nada estimado se presenta como confirmado."
+      }
+    },
+    "cta": {
+      "title": "Tu fracción en el Caribe te está esperando",
+      "description": "Crea tu cuenta y te contamos qué fracciones quedan y cómo cerrar la tuya.",
+      "cta": "Crear mi cuenta"
+    }
+  },
+  "scheduling": {
+    "hero": {
+      "headline": "Sistema de agendamiento",
+      "title": "Seis semanas al año por fracción",
+      "description": "En la copropiedad de lujo la promesa se expresa en semanas: 1/8 equivale a seis semanas al año, que son exactamente 42 noches repartidas por temporada. Así se eligen, se usan y se rotan."
+    },
+    "seasons": {
+      "headline": "Tu cupo anual",
+      "title": "Cuatro temporadas, 42 noches",
+      "description": "Cada fracción recibe el mismo cupo. La rejilla va de sábado a sábado y cada semana pertenece a una temporada.",
+      "columns": {
+        "season": "Temporada",
+        "weeks": "Semanas",
+        "nights": "Noches",
+        "minimum": "Estadía mínima"
+      },
+      "total": "Total",
+      "wholeWeek": "Semana completa",
+      "names": {
+        "alta": "Alta",
+        "media_alta": "Media-alta",
+        "media": "Media",
+        "baja": "Baja"
+      }
+    },
+    "rules": {
+      "headline": "Las reglas",
+      "title": "Transparencia total antes de comprar",
+      "description": "Lo que ves aquí es lo que aplica el sistema. La página no promete nada distinto al motor que reparte las semanas.",
+      "peakBlocks": {
+        "christmas": "Navidad",
+        "new_year": "Año Nuevo",
+        "holy_week": "Semana Santa"
+      },
+      "whole_weeks": {
+        "title": "Uso por semanas completas",
+        "description": "Cada semana va de sábado a sábado, con entrada a las 15:00 y salida a las 11:00. Eliges y usas semanas enteras."
+      },
+      "turns": {
+        "title": "Selección por turnos",
+        "description": "El Administrador abre la selección del año y cada fracción elige sus semanas en su turno, según el orden publicado."
+      },
+      "rotation": {
+        "title": "Rotación anual del orden",
+        "description": "El orden de elección rota cada año: quien eligió primero pasa al final. Nadie repite ventaja."
+      },
+      "peaks": {
+        "title": "Bloques pico con rotación estricta",
+        "description": "Navidad, Año Nuevo y Semana Santa son bloques pico dentro de la temporada alta y rotan entre las ocho fracciones con la misma disciplina."
+      },
+      "relocation": {
+        "title": "Ventana anual de reubicación",
+        "description": "Cada año se abre una ventana por turnos para mover una semana elegida y sin confirmar a otra libre de la misma temporada."
+      },
+      "confirmation": {
+        "title": "Confirmación y renta",
+        "description": "Confirmas cada semana hasta 60 días antes de su sábado de entrada. La que sigue sin confirmar pasa a la bolsa de renta y el ingreso se reparte a tu fracción."
+      }
+    },
+    "cta": {
+      "title": "Tu turno empieza con tu cuenta",
+      "description": "Crea tu cuenta, elige tu fracción y, con el plan completo, tu calendario queda activo.",
+      "cta": "Crear mi cuenta"
+    }
+  },
+  "about": {
+    "whoWeAre": {
+      "headline": "Quiénes somos",
+      "title": "Estructuramos, comercializamos y administramos",
+      "description": "Arena Property estructura y administra copropiedades fraccionadas de segunda vivienda de lujo, mediante S.A.S. y con operación hotelera profesional, para hacer eficiente la inversión y el gasto en propiedades que se usan poco al año.",
+      "founder": "Participamos como copropietarios fundadores en cada proyecto, en las mismas condiciones que los demás socios.",
+      "fronts": {
+        "structure": {
+          "title": "Estructuramos",
+          "description": "Analizamos el activo, convocamos un grupo cerrado de socios y constituimos la sociedad que compra el inmueble en ocho fracciones iguales."
+        },
+        "commercialize": {
+          "title": "Comercializamos",
+          "description": "Buscamos y calificamos a los socios de cada inmueble, de forma privada y uno a uno."
+        },
+        "manage": {
+          "title": "Administramos",
+          "description": "Somos el administrador mientras la sociedad exista: aseo, mantenimiento, proveedores, predial, seguros y la relación con el operador."
+        }
+      }
+    },
+    "faq": {
+      "headline": "Preguntas frecuentes",
+      "title": "Lo que todos preguntan antes de comprar",
+      "description": "Respuestas cortas y honestas. Si te queda alguna duda, escríbenos.",
+      "items": {
+        "what_is": {
+          "question": "¿Qué es exactamente una fracción?",
+          "answer": "Es 1/8 de una propiedad vacacional. Una S.A.S. es la dueña del inmueble y tu fracción son acciones de esa sociedad, registradas en la fiducia del proyecto."
+        },
+        "ownership": {
+          "question": "¿La fracción es realmente mía?",
+          "answer": "Sí. Es propiedad real, trazable y traspasable. No es un tiempo compartido ni un derecho de uso: eres accionista de la sociedad dueña del inmueble."
+        },
+        "weeks": {
+          "question": "¿Cuántas semanas puedo usar al año?",
+          "answer": "Seis semanas completas, que son 42 noches: una en temporada alta, una en media-alta, una en media y tres en baja. El orden de elección rota cada año."
+        },
+        "expenses": {
+          "question": "¿Quién paga los gastos del inmueble?",
+          "answer": "Los ocho copropietarios, en proporción a su fracción: 1/8 cada uno. Arena administra los gastos comunes y entrega un reporte mensual con cada peso registrado."
+        },
+        "income": {
+          "question": "¿Recibo ingresos cuando no la uso?",
+          "answer": "Las semanas que no confirmas pasan a la bolsa de renta. El operador las renta a terceros y el ingreso se reparte a tu fracción. Es un ingreso variable, nunca una promesa."
+        },
+        "transfer": {
+          "question": "¿Puedo vender o traspasar mi fracción?",
+          "answer": "Sí. La fracción es traspasable; el traspaso lo registra Arena como operación auditada, decidiendo contigo qué pasa con las semanas y las cuotas pendientes."
+        },
+        "operator": {
+          "question": "¿Quién atiende a los huéspedes?",
+          "answer": "Un operador turístico único gestiona arrendamiento, huéspedes y reportería. Tú no atiendes a nadie: solo usas tu fracción cuando te corresponde."
+        },
+        "arena_role": {
+          "question": "¿Qué gana Arena Property?",
+          "answer": "Una comisión declarada por estructurar cada sociedad y un fee mensual por administrarla. Además entramos como un socio más, en las mismas condiciones que los demás."
+        }
+      }
+    },
+    "testimonials": {
+      "headline": "Voces del equipo",
+      "title": "El compromiso en cada frente",
+      "description": "Lo que asumimos frente a cada socio, dicho por quienes lo hacen.",
+      "items": {
+        "structuring": {
+          "author": "Equipo de estructuración",
+          "role": "Arena Property",
+          "quote": "Cada sociedad nace con las cuentas claras: ocho fracciones iguales, un precio pactado por escrito y la titularidad en fiducia desde el primer día."
+        },
+        "administration": {
+          "author": "Administración de propiedades",
+          "role": "Arena Property",
+          "quote": "Nuestro trabajo es que el socio no tenga que pensar en la operación. Cada gasto queda registrado y cada mes llega su reporte."
+        },
+        "operator": {
+          "author": "Operación turística",
+          "role": "Operador aliado",
+          "quote": "Atendemos a cada huésped como si el dueño estuviera mirando, porque de hecho lo está: ve cada renta y cada ingreso en su panel."
+        }
+      }
+    },
+    "info": {
+      "headline": "Información de interés",
+      "title": "Lo que conviene saber",
+      "description": "Los términos que aparecen una y otra vez en el modelo, explicados sin rodeos.",
+      "ctaDescription": "¿Listo para conocer las fracciones disponibles? Crea tu cuenta y te acompañamos.",
+      "cta": "Crear mi cuenta",
+      "items": {
+        "trust": {
+          "title": "La fiducia",
+          "description": "El patrimonio autónomo donde queda registrada la titularidad de cada fracción. Es lo que hace tu propiedad trazable frente a terceros."
+        },
+        "company": {
+          "title": "La S.A.S.",
+          "description": "La sociedad por acciones simplificada que compra el inmueble. Tus acciones en ella son tu fracción."
+        },
+        "operator": {
+          "title": "El operador turístico",
+          "description": "El aliado único que renta las semanas libres, atiende huéspedes y entrega reportería mensual."
+        },
+        "expenses": {
+          "title": "Gastos comunes",
+          "description": "Aseo, mantenimiento, predial, seguros y servicios, repartidos entre las ocho fracciones y reportados cada mes."
+        },
+        "transfer": {
+          "title": "Traspaso",
+          "description": "El cambio de titular de una fracción, registrado como operación auditada por Arena."
+        }
+      }
+    }
+  },
+  "ambassadors": {
+    "hero": {
+      "headline": "Programa de Embajadores",
+      "title": "Gana una comisión por cada referido que compre",
+      "description": "Cualquier persona registrada puede inscribirse como Embajador, recibir un código único y presentar Arena Property a quien quiera ser dueño de una fracción. Cuando tu referido completa el pago, se libera tu comisión."
+    },
+    "flow": {
+      "headline": "Cómo funciona",
+      "title": "Cuatro pasos",
+      "description": "Del enlace que compartes a la comisión en tu saldo.",
+      "steps": {
+        "refer": {
+          "title": "Refiero",
+          "description": "Compartes tu enlace o tu código. Quien llega por él queda atribuido a ti durante {days} días."
+        },
+        "purchase": {
+          "title": "Mi referido compra",
+          "description": "Cierra la compra de una fracción con un precio pactado y un plan de pagos. Lo ves en tu panel como «en proceso de pago»."
+        },
+        "pay": {
+          "title": "Paga la totalidad",
+          "description": "Cuando completa el plan, tu comisión se calcula sobre el precio pactado de esa compra."
+        },
+        "release": {
+          "title": "Se libera mi comisión",
+          "description": "Tras {days} días de gracia pasa a tu saldo disponible y puedes solicitar el retiro."
+        }
+      }
+    },
+    "commission": {
+      "headline": "Comisión vigente",
+      "title": "Lo que paga hoy el programa",
+      "description": "El monto lo define Arena Property y se publica aquí tal como está configurado. Sin letra pequeña.",
+      "percentageHint": "Sobre el precio pactado en la compra de tu referido.",
+      "fixedHint": "Por cada referido que complete el pago de su fracción.",
+      "unavailable": "El monto de la comisión se publicará en cuanto quede configurado."
+    },
+    "terms": {
+      "headline": "Condiciones",
+      "title": "Las reglas del programa, resumidas",
+      "description": "Las mismas que aplica la plataforma. Los términos completos los aceptas al inscribirte.",
+      "items": {
+        "window": {
+          "title": "Ventana de {days} días",
+          "description": "El referido cuenta si se registra dentro de los {days} días siguientes a su primer clic en tu enlace."
+        },
+        "first_click": {
+          "title": "La primera atribución gana",
+          "description": "Si llegó por varios enlaces, cuenta el primero válido."
+        },
+        "no_self": {
+          "title": "Nadie se auto-refiere",
+          "description": "Tu propio correo o tu propia cuenta no generan comisión."
+        },
+        "one_commission": {
+          "title": "Una comisión por referido",
+          "description": "Solo la primera compra de fracción de un referido genera comisión."
+        },
+        "grace": {
+          "title": "{days} días de gracia",
+          "description": "La comisión queda en gracia desde el pago completo y luego pasa a disponible. Si la compra se anula en ese plazo, se revierte."
+        },
+        "minimum": {
+          "title": "Retiro con mínimo",
+          "description": "Eliges cuánto retirar de tu saldo disponible, con un mínimo por retiro que fija Arena."
+        },
+        "roles": {
+          "title": "Quién puede inscribirse",
+          "description": "Usuarios y Propietarios. El Superadmin y los Administradores de propiedad no participan."
+        }
+      }
+    },
+    "cta": {
+      "title": "Conviértete en Embajador",
+      "description": "Crea tu cuenta, inscríbete en el programa y recibe tu código.",
+      "signedIn": "Ya tienes cuenta: inscríbete y recibe tu código.",
+      "cta": "Quiero ser Embajador"
+    }
+  },
+  "waitlist": {
+    "title": "Lista de espera",
+    "subtitle": "Esta propiedad no tiene fracciones disponibles. Déjanos tus datos y te avisamos, en orden de inscripción, cuando se libere una.",
+    "fields": {
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "consent": "Acepto que Arena Property guarde mis datos para avisarme cuando se libere una fracción. Se conservan cinco años y después se anonimizan."
+    },
+    "submit": "Anotarme en la lista",
+    "sent": "Quedaste en la lista de espera. Te enviamos un correo de confirmación.",
+    "sentNoEmail": "Quedaste en la lista de espera; te avisaremos a tu correo cuando se libere una fracción.",
+    "validation": {
+      "name_required": "Escribe tu nombre.",
+      "email_invalid": "Escribe un correo válido.",
+      "phone_required": "Escribe un teléfono de contacto.",
+      "consent_required": "Necesitamos tu consentimiento para guardar tus datos."
+    },
+    "errors": {
+      "rate_limited": "Has enviado varias solicitudes seguidas. Espera unos minutos e inténtalo de nuevo.",
+      "already_enrolled": "Ese correo ya está en la lista de espera de esta propiedad.",
+      "save_failed": "No pudimos anotarte en la lista. Inténtalo de nuevo o escríbenos por WhatsApp."
     }
   }
 }

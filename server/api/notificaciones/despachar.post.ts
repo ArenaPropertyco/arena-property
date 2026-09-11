@@ -4,8 +4,10 @@
  * Lo invoca un programador externo (una función programada de Netlify o un cron)
  * con el token de despacho en cabecera. No recibe datos: toma lo pendiente de la
  * base, intenta cada correo y registra el resultado. Un fallo del proveedor nunca
- * responde error: queda anotado para reintentar.
+ * responde error: queda anotado para reintentar. En la misma pasada entrega los
+ * avisos de la lista de espera (HU-47 · RF-47.4), que siguen el mismo ciclo.
  */
+import { despacharAvisosDeListaDeEspera } from '../../utils/lista-de-espera'
 import { despacharCorreos } from '../../utils/notificaciones'
 
 export default defineEventHandler(async (event) => {
@@ -19,5 +21,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'notifications.errors.dispatch_unauthorized' })
   }
 
-  return despacharCorreos(event)
+  const notificaciones = await despacharCorreos(event)
+  const listaDeEspera = await despacharAvisosDeListaDeEspera(event)
+  return { ...notificaciones, listaDeEspera }
 })

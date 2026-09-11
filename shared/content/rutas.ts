@@ -14,6 +14,8 @@ export const RUTAS_PUBLICAS = {
   agendamiento: '/agendamiento',
   nosotros: '/nosotros',
   contacto: '/contacto',
+  /** HU-48 · la página pública del Programa de Embajadores. */
+  embajadores: '/embajadores',
   registro: '/registro',
 } as const
 

@@ -497,9 +497,9 @@
       "footer": "Footer"
     },
     "hero": {
-      "headline": "Real estate co-investment in the Caribbean",
-      "title": "Own Bocagrande from COP $173M.",
-      "description": "1/8 of an apartment in Invictvs, the most iconic tower in Bocagrande, Cartagena. Atlantic Ocean views, Sky Club, restaurant and helipad.",
+      "headline": "Fractional co-ownership",
+      "title": "Your holiday home is not a dream. It is a decision you have not made yet.",
+      "description": "Own an apartment in the most iconic tower in Bocagrande from COP $173M. 1/8 of Invictvs, on the beachfront, registered in your name in trust.",
       "cta": "View properties",
       "secondary": "How it works",
       "videoLabel": "Invictvs video on the Bocagrande beachfront",
@@ -521,12 +521,12 @@
     "model": {
       "headline": "What is Arena Property?",
       "title": "The smart way to own the Caribbean",
-      "description": "You buy 1/8 of a premium vacation property, registered in your name through a trust, and a single operator takes care of everything else.",
+      "description": "We structure and manage fractional co-ownership of luxury second homes, through an S.A.S. company and professional hotel operation, to make the investment and the running costs efficient in properties that are used little during the year. We take part as founding co-owners in every project.",
       "cta": "Learn about the model",
       "pillars": {
         "owner": {
           "title": "You are a real owner",
-          "description": "Your 1/8 is registered in the project's trust. Real ownership of a beachfront asset."
+          "description": "Your 1/8 is registered in the project trust. Real ownership of a beachfront asset to enjoy six weeks a year. Expenses are shared in proportion to your fraction."
         },
         "price": {
           "title": "From COP $173M",
@@ -539,9 +539,9 @@
       }
     },
     "benefits": {
-      "headline": "Benefits",
+      "headline": "What are the benefits?",
       "title": "Eight owners, zero worries",
-      "description": "Compared with buying a whole property, a fraction gives you the best of the Caribbean for part of the cost and none of the operational burden.",
+      "description": "You own your holiday home in the Caribbean for a fraction of the investment and the running costs. Compared with buying a whole property, the fraction gives you the best of the Caribbean for a part of the cost and without carrying the operation.",
       "cta": "Compare with a whole property",
       "items": {
         "capital": {
@@ -550,11 +550,11 @@
         },
         "weeks": {
           "title": "42 nights a year",
-          "description": "Weeks spread across the four seasons, with fair rotation among the eight co-owners."
+          "description": "Six weeks spread across the four seasons, with fair rotation among the eight co-owners."
         },
         "income": {
-          "title": "Income when you're not there",
-          "description": "Free nights are rented to third parties and the income is shared with your fraction."
+          "title": "Income when you are not using it",
+          "description": "The weeks you do not use are rented to third parties and the income is shared with your fraction."
         },
         "management": {
           "title": "Centralized operation",
@@ -693,25 +693,6 @@
       "rate_limited": "You've sent several messages in a row. Wait a few minutes and try again.",
       "send_failed": "We couldn't send your message. Reach us on WhatsApp."
     }
-  },
-  "placeholder": {
-    "model": {
-      "title": "Business model",
-      "description": "Coming soon: how you become the owner of a fraction, step by step."
-    },
-    "benefits": {
-      "title": "Benefits of the fractional system",
-      "description": "Coming soon: the comparison between traditional renting and fractional co-ownership."
-    },
-    "scheduling": {
-      "title": "Scheduling system",
-      "description": "Coming soon: the four seasons and your 42 nights a year."
-    },
-    "about": {
-      "title": "About us",
-      "description": "Coming soon: who we are and frequently asked questions."
-    },
-    "cta": "Create my account"
   },
   "owner": {
     "title": "My fractions",
@@ -1214,6 +1195,482 @@
         "window_expired": "The referral link expired: the window is 90 days.",
         "invalid_transition": "That referral state change is not valid."
       }
+    }
+  },
+  "model": {
+    "hero": {
+      "headline": "Business model",
+      "title": "Fractional co-ownership, explained from start to finish",
+      "description": "You buy 1/8 of a premium holiday property, registered in your name in trust, and a single operator takes care of everything else. This is how it works and how you become the owner of a fraction."
+    },
+    "structure": {
+      "headline": "How it is built",
+      "title": "One property, eight owners, one operation",
+      "description": "Every property is structured the same way, and that is what makes co-ownership run without friction.",
+      "items": {
+        "fractions": {
+          "title": "Eight equal fractions",
+          "description": "Each property is divided into exactly eight fractions. You buy one and become a co-owner alongside seven partners, on the same terms."
+        },
+        "ownership": {
+          "title": "Real ownership, in trust",
+          "description": "An S.A.S. company owns the property and your 1/8 is shares in that company, registered in the project trust: real, traceable and transferable ownership."
+        },
+        "seasons": {
+          "title": "Usage rights by season",
+          "description": "Each fraction gets six weeks a year spread across the four seasons, with a picking order that rotates every year so the split stays fair."
+        },
+        "operation": {
+          "title": "Centralised operation",
+          "description": "Scheduling, shared expenses, maintenance, suppliers and communication live on the platform. You use it; Arena and the operator do the rest."
+        }
+      }
+    },
+    "whatWeDo": {
+      "headline": "What Arena Property does",
+      "title": "Three things for every property",
+      "description": "And all three are permanent over time, except the first.",
+      "partner": "Arena also joins as one more partner, on the same terms as everyone else. Its income is a declared fee for structuring each company and a monthly fee for managing it.",
+      "items": {
+        "structure": {
+          "title": "We structure",
+          "description": "We analyse the asset, gather a closed group of nominated partners and incorporate the company that buys the property, divided into eight equal fractions."
+        },
+        "commercialize": {
+          "title": "We place",
+          "description": "We find and qualify the partners of each property. Placement is private and one to one, never open."
+        },
+        "manage": {
+          "title": "We manage",
+          "description": "We are the property manager for as long as the company exists. Cleaning, maintenance, suppliers, property tax, insurance, utilities and the relationship with the tourism operator go through us, not the partners."
+        }
+      }
+    },
+    "whatWeAreNot": {
+      "title": "What it is not",
+      "items": {
+        "fund": {
+          "title": "Not a fund",
+          "description": "Nor a proprietary capital vehicle: you buy a stake in the company that owns one specific property."
+        },
+        "timeshare": {
+          "title": "Not a timeshare",
+          "description": "You are a shareholder of the company that owns the property, with real and transferable ownership."
+        },
+        "yield": {
+          "title": "No promise of operating returns",
+          "description": "The return comes from use and possible appreciation, not from rent. Nothing estimated is presented as confirmed."
+        }
+      }
+    },
+    "path": {
+      "headline": "How you become an owner",
+      "title": "From visitor to owner, step by step",
+      "description": "Five steps, three roles. None of them commits you ahead of time.",
+      "roles": {
+        "visitor": "Visitor",
+        "user": "User",
+        "owner": "Owner"
+      },
+      "steps": {
+        "explore": {
+          "title": "Explore the properties",
+          "description": "Browse the catalogue, each property page and this model. No account and no commitment."
+        },
+        "account": {
+          "title": "Create your account",
+          "description": "With your email or with Google. If you arrived through an Ambassador, their code is recorded."
+        },
+        "choose": {
+          "title": "Choose your fraction",
+          "description": "You write to us from the property page, we answer your questions and close the purchase with an agreed price and a payment plan."
+        },
+        "pay": {
+          "title": "Pay your plan",
+          "description": "In instalments and without an additional mortgage. Every payment is recorded and visible from your dashboard."
+        },
+        "own": {
+          "title": "Use your fraction",
+          "description": "Once the plan is complete your calendar activates: you pick your weeks on your turn and the operator takes care of the rest."
+        }
+      }
+    },
+    "cta": {
+      "title": "Start by creating your account",
+      "description": "It is free and commits you to nothing. From there we walk with you all the way to your registered fraction.",
+      "cta": "Create my account"
+    }
+  },
+  "benefits": {
+    "hero": {
+      "headline": "Benefits",
+      "title": "Eight owners, zero worries",
+      "description": "You own your holiday home in the Caribbean for a fraction of the investment and the running costs. Compare the fraction with buying a whole property."
+    },
+    "comparison": {
+      "headline": "Comparison",
+      "title": "Whole property versus fraction",
+      "description": "Every figure says whether it is a fact or an estimate. Nothing estimated is presented as confirmed.",
+      "columns": {
+        "criterion": "Criterion",
+        "traditional": "Whole property",
+        "fractional": "Arena fraction"
+      },
+      "legend": {
+        "confirmed": "Confirmed",
+        "estimated": "Estimated"
+      },
+      "criteria": {
+        "capital": "Initial investment",
+        "payment": "Payment",
+        "usage": "Use per year",
+        "income": "Rental income",
+        "expenses": "Expenses and maintenance",
+        "operation": "Operation",
+        "ownership": "Ownership"
+      },
+      "cells": {
+        "payment": {
+          "traditional": "Mortgage loan or cash payment",
+          "fractional": "30 instalments, no additional mortgage"
+        },
+        "usage": {
+          "traditional": "All year, with the property empty most of the time",
+          "fractional": "Six weeks a year, 42 nights, across the four seasons"
+        },
+        "income": {
+          "traditional": "You manage it yourself, if you manage to rent it",
+          "fractional": "The weeks you do not use are rented by the operator and the income is shared with your 1/8"
+        },
+        "expenses": {
+          "traditional": "100% at your expense",
+          "fractional": "1/8 of shared expenses, with a monthly report"
+        },
+        "operation": {
+          "traditional": "Cleaning, maintenance, suppliers, property tax and insurance depend on you",
+          "fractional": "Arena manages and a tourism operator handles guests and reporting"
+        },
+        "ownership": {
+          "traditional": "Deed in your name",
+          "fractional": "Shares of the S.A.S. that owns the property, in trust and transferable"
+        }
+      }
+    },
+    "list": {
+      "headline": "What you gain",
+      "title": "Six reasons to choose the fraction",
+      "description": "The best of the Caribbean for a part of the cost, without carrying the operation."
+    },
+    "items": {
+      "capital": {
+        "title": "A fraction of the capital",
+        "description": "From COP $173M in 30 instalments, instead of more than COP $1,384M for the whole apartment."
+      },
+      "weeks": {
+        "title": "42 nights a year",
+        "description": "Six weeks spread across the four seasons, with fair rotation among the eight co-owners."
+      },
+      "income": {
+        "title": "Income when you are not using it",
+        "description": "The weeks you do not use are rented to third parties and the income is shared with your fraction."
+      },
+      "ownership": {
+        "title": "Your fraction is yours",
+        "description": "Registered in trust and traceable; you can transfer it whenever you decide."
+      },
+      "management": {
+        "title": "Centralised operation",
+        "description": "Scheduling, shared expenses, maintenance and communication live on the platform."
+      },
+      "transparency": {
+        "title": "Clear accounts",
+        "description": "Monthly reports and every peso with its record. Nothing estimated is presented as confirmed."
+      }
+    },
+    "cta": {
+      "title": "Your fraction in the Caribbean is waiting",
+      "description": "Create your account and we will tell you which fractions are left and how to close yours.",
+      "cta": "Create my account"
+    }
+  },
+  "scheduling": {
+    "hero": {
+      "headline": "Scheduling system",
+      "title": "Six weeks a year per fraction",
+      "description": "In luxury co-ownership the promise is expressed in weeks: 1/8 equals six weeks a year, which are exactly 42 nights spread by season. This is how they are picked, used and rotated."
+    },
+    "seasons": {
+      "headline": "Your annual allowance",
+      "title": "Four seasons, 42 nights",
+      "description": "Every fraction gets the same allowance. The grid runs Saturday to Saturday and every week belongs to a season.",
+      "columns": {
+        "season": "Season",
+        "weeks": "Weeks",
+        "nights": "Nights",
+        "minimum": "Minimum stay"
+      },
+      "total": "Total",
+      "wholeWeek": "Whole week",
+      "names": {
+        "alta": "High",
+        "media_alta": "Mid-high",
+        "media": "Mid",
+        "baja": "Low"
+      }
+    },
+    "rules": {
+      "headline": "The rules",
+      "title": "Full transparency before you buy",
+      "description": "What you see here is what the system applies. The page promises nothing different from the engine that allocates the weeks.",
+      "peakBlocks": {
+        "christmas": "Christmas",
+        "new_year": "New Year",
+        "holy_week": "Holy Week"
+      },
+      "whole_weeks": {
+        "title": "Use by whole weeks",
+        "description": "Each week runs Saturday to Saturday, check-in at 15:00 and check-out at 11:00. You pick and use whole weeks."
+      },
+      "turns": {
+        "title": "Selection by turns",
+        "description": "The Administrator opens the selection for the year and each fraction picks its weeks on its turn, following the published order."
+      },
+      "rotation": {
+        "title": "Yearly rotation of the order",
+        "description": "The picking order rotates every year: whoever picked first goes last. Nobody repeats an advantage."
+      },
+      "peaks": {
+        "title": "Peak blocks with strict rotation",
+        "description": "Christmas, New Year and Holy Week are peak blocks within the high season and rotate among the eight fractions with the same discipline."
+      },
+      "relocation": {
+        "title": "Yearly relocation window",
+        "description": "Every year a window opens, by turns, to move a picked and unconfirmed week to another free week of the same season."
+      },
+      "confirmation": {
+        "title": "Confirmation and rental",
+        "description": "You confirm each week up to 60 days before its check-in Saturday. A week left unconfirmed goes to the rental pool and the income is shared with your fraction."
+      }
+    },
+    "cta": {
+      "title": "Your turn starts with your account",
+      "description": "Create your account, choose your fraction and, once the plan is complete, your calendar is active.",
+      "cta": "Create my account"
+    }
+  },
+  "about": {
+    "whoWeAre": {
+      "headline": "Who we are",
+      "title": "We structure, place and manage",
+      "description": "Arena Property structures and manages fractional co-ownership of luxury second homes, through an S.A.S. company and professional hotel operation, to make the investment and the running costs efficient in properties that are used little during the year.",
+      "founder": "We take part as founding co-owners in every project, on the same terms as the other partners.",
+      "fronts": {
+        "structure": {
+          "title": "We structure",
+          "description": "We analyse the asset, gather a closed group of partners and incorporate the company that buys the property in eight equal fractions."
+        },
+        "commercialize": {
+          "title": "We place",
+          "description": "We find and qualify the partners of each property, privately and one to one."
+        },
+        "manage": {
+          "title": "We manage",
+          "description": "We are the manager for as long as the company exists: cleaning, maintenance, suppliers, property tax, insurance and the relationship with the operator."
+        }
+      }
+    },
+    "faq": {
+      "headline": "Frequently asked questions",
+      "title": "What everyone asks before buying",
+      "description": "Short, honest answers. If anything is still unclear, write to us.",
+      "items": {
+        "what_is": {
+          "question": "What exactly is a fraction?",
+          "answer": "It is 1/8 of a holiday property. An S.A.S. company owns the property and your fraction is shares in that company, registered in the project trust."
+        },
+        "ownership": {
+          "question": "Is the fraction really mine?",
+          "answer": "Yes. It is real, traceable and transferable ownership. It is not a timeshare or a right of use: you are a shareholder of the company that owns the property."
+        },
+        "weeks": {
+          "question": "How many weeks can I use per year?",
+          "answer": "Six whole weeks, which are 42 nights: one in high season, one in mid-high, one in mid and three in low. The picking order rotates every year."
+        },
+        "expenses": {
+          "question": "Who pays the property expenses?",
+          "answer": "The eight co-owners, in proportion to their fraction: 1/8 each. Arena manages the shared expenses and delivers a monthly report with every peso recorded."
+        },
+        "income": {
+          "question": "Do I earn income when I am not using it?",
+          "answer": "The weeks you do not confirm go to the rental pool. The operator rents them to third parties and the income is shared with your fraction. It is variable income, never a promise."
+        },
+        "transfer": {
+          "question": "Can I sell or transfer my fraction?",
+          "answer": "Yes. The fraction is transferable; Arena records the transfer as an audited operation, deciding with you what happens to the weeks and pending instalments."
+        },
+        "operator": {
+          "question": "Who looks after the guests?",
+          "answer": "A single tourism operator handles rentals, guests and reporting. You do not look after anyone: you simply use your fraction when it is your turn."
+        },
+        "arena_role": {
+          "question": "What does Arena Property earn?",
+          "answer": "A declared fee for structuring each company and a monthly fee for managing it. We also join as one more partner, on the same terms as everyone else."
+        }
+      }
+    },
+    "testimonials": {
+      "headline": "Voices from the team",
+      "title": "Commitment on every front",
+      "description": "What we take on for each partner, in the words of the people who do it.",
+      "items": {
+        "structuring": {
+          "author": "Structuring team",
+          "role": "Arena Property",
+          "quote": "Every company is born with clear accounts: eight equal fractions, a price agreed in writing and ownership in trust from day one."
+        },
+        "administration": {
+          "author": "Property management",
+          "role": "Arena Property",
+          "quote": "Our job is that the partner never has to think about the operation. Every expense is recorded and every month the report arrives."
+        },
+        "operator": {
+          "author": "Tourism operation",
+          "role": "Partner operator",
+          "quote": "We look after every guest as if the owner were watching, because they actually are: they see every rental and every income in their dashboard."
+        }
+      }
+    },
+    "info": {
+      "headline": "Useful information",
+      "title": "Worth knowing",
+      "description": "The terms that come up again and again in the model, explained plainly.",
+      "ctaDescription": "Ready to see the available fractions? Create your account and we will walk with you.",
+      "cta": "Create my account",
+      "items": {
+        "trust": {
+          "title": "The trust",
+          "description": "The autonomous estate where the ownership of each fraction is registered. It is what makes your property traceable before third parties."
+        },
+        "company": {
+          "title": "The S.A.S.",
+          "description": "The simplified joint-stock company that buys the property. Your shares in it are your fraction."
+        },
+        "operator": {
+          "title": "The tourism operator",
+          "description": "The single partner that rents the free weeks, looks after guests and delivers monthly reporting."
+        },
+        "expenses": {
+          "title": "Shared expenses",
+          "description": "Cleaning, maintenance, property tax, insurance and utilities, shared among the eight fractions and reported every month."
+        },
+        "transfer": {
+          "title": "Transfer",
+          "description": "The change of owner of a fraction, recorded by Arena as an audited operation."
+        }
+      }
+    }
+  },
+  "ambassadors": {
+    "hero": {
+      "headline": "Ambassador Program",
+      "title": "Earn a commission for every referral who buys",
+      "description": "Anyone with an account can enrol as an Ambassador, receive a unique code and introduce Arena Property to whoever wants to own a fraction. When your referral completes payment, your commission is released."
+    },
+    "flow": {
+      "headline": "How it works",
+      "title": "Four steps",
+      "description": "From the link you share to the commission in your balance.",
+      "steps": {
+        "refer": {
+          "title": "I refer",
+          "description": "You share your link or your code. Whoever arrives through it is attributed to you for {days} days."
+        },
+        "purchase": {
+          "title": "My referral buys",
+          "description": "They close the purchase of a fraction with an agreed price and a payment plan. You see it in your dashboard as “payment in progress”."
+        },
+        "pay": {
+          "title": "They pay in full",
+          "description": "When they complete the plan, your commission is calculated on the agreed price of that purchase."
+        },
+        "release": {
+          "title": "My commission is released",
+          "description": "After {days} days of grace it moves to your available balance and you can request a withdrawal."
+        }
+      }
+    },
+    "commission": {
+      "headline": "Current commission",
+      "title": "What the program pays today",
+      "description": "The amount is set by Arena Property and published here exactly as configured. No fine print.",
+      "percentageHint": "On the price agreed in your referral’s purchase.",
+      "fixedHint": "For every referral who completes payment for their fraction.",
+      "unavailable": "The commission amount will be published as soon as it is configured."
+    },
+    "terms": {
+      "headline": "Terms",
+      "title": "The program rules, in short",
+      "description": "The same ones the platform applies. You accept the full terms when you enrol.",
+      "items": {
+        "window": {
+          "title": "{days}-day window",
+          "description": "A referral counts if they sign up within {days} days of their first click on your link."
+        },
+        "first_click": {
+          "title": "First attribution wins",
+          "description": "If they arrived through several links, the first valid one counts."
+        },
+        "no_self": {
+          "title": "No self-referrals",
+          "description": "Your own email or your own account earn no commission."
+        },
+        "one_commission": {
+          "title": "One commission per referral",
+          "description": "Only a referral’s first fraction purchase earns a commission."
+        },
+        "grace": {
+          "title": "{days} days of grace",
+          "description": "The commission stays in grace from full payment and then becomes available. If the purchase is voided within that period, it is reversed."
+        },
+        "minimum": {
+          "title": "Withdrawal with a minimum",
+          "description": "You choose how much to withdraw from your available balance, with a minimum per withdrawal set by Arena."
+        },
+        "roles": {
+          "title": "Who can enrol",
+          "description": "Users and Owners. The Superadmin and property Administrators do not take part."
+        }
+      }
+    },
+    "cta": {
+      "title": "Become an Ambassador",
+      "description": "Create your account, enrol in the program and receive your code.",
+      "signedIn": "You already have an account: enrol and receive your code.",
+      "cta": "I want to be an Ambassador"
+    }
+  },
+  "waitlist": {
+    "title": "Waiting list",
+    "subtitle": "This property has no fractions available. Leave your details and we will let you know, in order of enrolment, when one becomes available.",
+    "fields": {
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "consent": "I agree that Arena Property keeps my details to notify me when a fraction becomes available. They are kept for five years and anonymised afterwards."
+    },
+    "submit": "Join the list",
+    "sent": "You are on the waiting list. We sent you a confirmation email.",
+    "sentNoEmail": "You are on the waiting list; we will email you when a fraction becomes available.",
+    "validation": {
+      "name_required": "Enter your name.",
+      "email_invalid": "Enter a valid email.",
+      "phone_required": "Enter a contact phone.",
+      "consent_required": "We need your consent to keep your details."
+    },
+    "errors": {
+      "rate_limited": "You have sent several requests in a row. Wait a few minutes and try again.",
+      "already_enrolled": "That email is already on the waiting list for this property.",
+      "save_failed": "We could not add you to the list. Try again or write to us on WhatsApp."
     }
   }
 }

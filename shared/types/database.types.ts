@@ -1492,6 +1492,84 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist_entries: {
+        Row: {
+          anonymized_at: string | null
+          confirmation_sent_at: string | null
+          consent_at: string
+          consent_version: string
+          created_at: string
+          email: string
+          email_attempts: number
+          email_last_error: string | null
+          email_next_attempt_at: string | null
+          full_name: string
+          id: string
+          ip_hash: string | null
+          locale: string
+          notified_at: string | null
+          notify_requested_at: string | null
+          phone: string
+          property_id: string
+          retain_until: string
+        }
+        Insert: {
+          anonymized_at?: string | null
+          confirmation_sent_at?: string | null
+          consent_at?: string
+          consent_version: string
+          created_at?: string
+          email: string
+          email_attempts?: number
+          email_last_error?: string | null
+          email_next_attempt_at?: string | null
+          full_name: string
+          id?: string
+          ip_hash?: string | null
+          locale?: string
+          notified_at?: string | null
+          notify_requested_at?: string | null
+          phone: string
+          property_id: string
+          retain_until: string
+        }
+        Update: {
+          anonymized_at?: string | null
+          confirmation_sent_at?: string | null
+          consent_at?: string
+          consent_version?: string
+          created_at?: string
+          email?: string
+          email_attempts?: number
+          email_last_error?: string | null
+          email_next_attempt_at?: string | null
+          full_name?: string
+          id?: string
+          ip_hash?: string | null
+          locale?: string
+          notified_at?: string | null
+          notify_requested_at?: string | null
+          phone?: string
+          property_id?: string
+          retain_until?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_entries_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       week_blocks: {
         Row: {
           calendar_id: string
@@ -1780,6 +1858,10 @@ export type Database = {
       }
     }
     Functions: {
+      anonimizar_lista_de_espera: {
+        Args: { momento?: string }
+        Returns: number
+      }
       anular_abono: {
         Args: { abono: string; motivo: string }
         Returns: {

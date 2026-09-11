@@ -80,7 +80,7 @@ describe('HU-00 · secciones de la home desde el manifiesto', () => {
   it('RF-00.1 · el hero muestra el slogan y el video de fondo silenciado, en bucle y con póster', async () => {
     const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
 
-    expect(hero.text()).toContain('Sé dueño de Bocagrande')
+    expect(hero.text()).toContain('Tu vivienda vacacional no es un sueño')
     const video = hero.find('video[data-test="hero-fondo"]')
     expect(video.exists()).toBe(true)
     expect(video.find('source').attributes('src')).toBe('/media/hero.mp4')
