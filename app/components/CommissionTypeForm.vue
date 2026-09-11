@@ -24,8 +24,8 @@ const { t } = useI18n()
 const estado = reactive({
   name: '',
   kind: 'percentage' as CommissionKind,
-  porcentaje: '',
-  monto: '',
+  porcentaje: null as number | null,
+  monto: null as number | null,
   makeDefault: false,
 })
 
@@ -36,23 +36,37 @@ const opcionesDeClase = computed(() => COMMISSION_KINDS.map(kind => ({
   value: kind,
 })))
 
+/**
+ * Los campos numéricos llegan como número, pero al vaciarlos el componente
+ * devuelve una cadena vacía. Se normaliza aquí para que el borrador no dependa
+ * del tipo que traiga la vista.
+ */
+function numeroDelCampo(valor: number | string | null): number | null {
+  if (valor === null || valor === '') {
+    return null
+  }
+
+  const numero = Number(valor)
+  return Number.isFinite(numero) ? numero : null
+}
+
 /** El borrador tal como lo entiende el motor; un número ilegible se convierte en `null`. */
 function borrador(): CommissionTypeDraft {
   if (estado.kind === 'fixed') {
-    const valor = Number(estado.monto)
+    const valor = numeroDelCampo(estado.monto)
     return {
       name: estado.name,
       kind: 'fixed',
-      amount: estado.monto.trim() !== '' && Number.isInteger(valor) ? pesos(valor) : null,
+      amount: valor !== null && Number.isInteger(valor) ? pesos(valor) : null,
       basisPoints: null,
       makeDefault: estado.makeDefault,
     }
   }
 
+  const valor = numeroDelCampo(estado.porcentaje)
   let puntos: number | null = null
   try {
-    const valor = Number(estado.porcentaje)
-    puntos = estado.porcentaje.trim() !== '' && Number.isFinite(valor) ? puntosBasicos(valor) : null
+    puntos = valor === null ? null : puntosBasicos(valor)
   }
   catch {
     // Más de dos decimales: el motor lo rechaza igual por rango.
@@ -77,7 +91,7 @@ function errorDe(campo: CommissionTypeField): string | undefined {
 }
 
 defineExpose({
-  limpiar: () => Object.assign(estado, { name: '', porcentaje: '', monto: '', makeDefault: false }),
+  limpiar: () => Object.assign(estado, { name: '', porcentaje: null, monto: null, makeDefault: false }),
 })
 </script>
 
