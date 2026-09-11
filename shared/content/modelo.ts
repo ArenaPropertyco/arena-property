@@ -100,9 +100,15 @@ export const SECCIONES_DEL_MODELO: readonly SeccionDelModelo[] = [
   },
 ]
 
-/** Imágenes oficiales que ilustran la página. */
+/**
+ * Imágenes que ilustran la página. Las de Invictvs son fotografía oficial del
+ * inmueble; las nombradas por su propósito (`modelo-*`) son ambientación
+ * generada con IA y no retratan ninguna propiedad real (P-09).
+ */
 export const IMAGENES_DEL_MODELO = {
-  hero: '/media/invictvs-aereo-atardecer.jpg',
-  structure: '/media/invictvs-unidad.jpg',
+  /** La costa de Bocagrande a la hora dorada. Ambientación generada (P-09). */
+  hero: '/media/modelo-hero.jpg',
+  /** Las ocho fracciones iguales de cada inmueble. */
+  structure: '/media/modelo-estructura.jpg',
   path: '/media/invictvs-frontal.jpg',
 } as const
