@@ -154,6 +154,8 @@ export const SECCIONES_DE_BENEFICIOS: readonly SeccionDeBeneficios[] = [
 ]
 
 export const IMAGENES_DE_BENEFICIOS = {
-  hero: '/media/invictvs-terraza.jpg',
-  benefits: '/media/invictvs-amenidades.jpg',
+  /** La playa que se gana con la fracción. Ambientación generada (P-09). */
+  hero: '/media/beneficios-hero.jpg',
+  /** El Caribe que se gana con la fracción. Ambientación generada (P-09). */
+  benefits: '/media/beneficios-lifestyle.jpg',
 } as const

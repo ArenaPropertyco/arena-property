@@ -98,6 +98,7 @@ export const SECCIONES_DE_NOSOTROS: readonly SeccionDeNosotros[] = [
 ]
 
 export const IMAGENES_DE_NOSOTROS = {
-  whoWeAre: '/media/invictvs-frontal.jpg',
+  /** La conversación privada, uno a uno. Ambientación generada (P-09). */
+  whoWeAre: '/media/nosotros-quienes-somos.jpg',
   info: '/media/invictvs-fachada.jpg',
 } as const

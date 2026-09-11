@@ -30,7 +30,7 @@ const localePath = useLocalePath()
       :src="IMAGENES_DE_LA_HOME.properties"
       alt=""
       class="absolute inset-0 -z-20 size-full object-cover opacity-60"
-      sizes="100vw"
+      sizes="100vw sm:100vw md:100vw lg:100vw xl:100vw"
       loading="lazy"
     />
     <div class="absolute inset-0 -z-10 bg-gradient-to-b from-ink-950/80 via-ink-950/70 to-ink-950" />

@@ -44,6 +44,15 @@ const traspasando = ref<string | null>(null)
 const invitando = ref<string | null>(null)
 const ocupado = ref(false)
 
+/**
+ * Subir o quitar un archivo refresca la ficha entera, y con ella las URL firmadas
+ * de *todos* los medios (el bucket es privado). Al reutilizar los mismos nodos con
+ * una firma distinta, la galería se quedaba en blanco. Cambiar esta clave la vuelve
+ * a montar desde cero, que es lo único que garantiza imágenes, vídeo y modelos 3D
+ * recreados contra la firma vigente.
+ */
+const versionDeLaGaleria = ref(0)
+
 const fraccionAinvitar = computed(() =>
   fracciones.value.find(fraccion => fraccion.id === invitando.value) ?? null)
 
@@ -117,10 +126,12 @@ async function enviarTraspaso(solicitud: SolicitudDeTraspaso) {
 
 async function cargarMedios(peticion: { tipo: TipoDeMedio, archivos: File[] }) {
   await ejecutar(() => subirMedios(peticion.tipo, peticion.archivos), 'properties.media.uploaded')
+  versionDeLaGaleria.value += 1
 }
 
 async function retirarMedio(medio: string) {
   await ejecutar(() => quitarMedio(medio), 'properties.media.removed')
+  versionDeLaGaleria.value += 1
 }
 
 // ── HU-06 · vincular propietario: invitación y, si se pide, cierre en el acto ─
@@ -222,6 +233,7 @@ function abrirPlan(plan: string) {
       <section class="space-y-4">
         <SectionHeading :titulo="t('properties.media.title')" />
         <PropertyMediaGallery
+          :key="versionDeLaGaleria"
           :medios="medios"
           :puede-gestionar="puedeGestionar"
           :subiendo="ocupado"

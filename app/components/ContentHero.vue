@@ -26,7 +26,7 @@ const { t } = useI18n()
       :src="imagen"
       alt=""
       class="absolute inset-0 -z-20 size-full object-cover"
-      sizes="100vw"
+      sizes="100vw sm:100vw md:100vw lg:100vw xl:100vw"
       fetchpriority="high"
     />
     <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/5" />

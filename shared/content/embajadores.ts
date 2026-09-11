@@ -120,5 +120,6 @@ export const SECCIONES_DE_EMBAJADORES: readonly SeccionDeEmbajadores[] = [
 ]
 
 export const IMAGENES_DE_EMBAJADORES = {
-  hero: '/media/invictvs-hero.jpg',
+  /** La ciudad amurallada desde el mar. Ambientación generada (P-09). */
+  hero: '/media/embajadores-hero.jpg',
 } as const

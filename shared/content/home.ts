@@ -169,13 +169,14 @@ export const FONDO_DEL_HERO = {
 export const PROPIEDADES_EN_LA_HOME = 3
 
 /**
- * Imágenes que ilustran las secciones. Las de Invictvs son fotografía oficial;
- * las nombradas por su propósito (`home-*`) son las que se reemplazan por las
- * generadas para el texto, sin tocar ningún componente.
+ * Imágenes que ilustran las secciones. Las de Invictvs son fotografía oficial
+ * del inmueble; las nombradas por su propósito (`home-*`) son ambientación
+ * generada con IA y no retratan ninguna propiedad real, por lo que solo
+ * acompañan secciones conceptuales y nunca una ficha de propiedad (P-09).
  */
 export const IMAGENES_DE_LA_HOME = {
-  /** Foto del apartamento Invictvs. */
-  model: '/media/invictvs-unidad.jpg',
+  /** El activo en primera línea de playa, ambientado. */
+  model: '/media/home-modelo.jpg',
   /** Un apartamento dividido en ocho. */
   benefits: '/media/home-fraccion-en-ocho.jpg',
   /** Fondo del banner de propiedades activas. */

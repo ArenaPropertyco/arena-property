@@ -41,7 +41,7 @@ describe('CommissionTypeForm', () => {
   it('RF-52.1 · un tipo porcentual viaja en puntos básicos, no en coma flotante', async () => {
     const formulario = await mountSuspended(CommissionTypeForm, { props })
 
-    Object.assign(formulario.vm.estado, { name: 'Aliados', kind: 'percentage', porcentaje: '4.5' })
+    Object.assign(formulario.vm.estado, { name: 'Aliados', kind: 'percentage', porcentaje: 4.5 })
     await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
     await flushPromises()
 
@@ -52,7 +52,7 @@ describe('CommissionTypeForm', () => {
   it('RF-52.1 · RF-52.3 · un tipo de importe fijo puede nacer como predeterminado', async () => {
     const formulario = await mountSuspended(CommissionTypeForm, { props })
 
-    Object.assign(formulario.vm.estado, { name: 'Bono', kind: 'fixed', monto: '1500000', makeDefault: true })
+    Object.assign(formulario.vm.estado, { name: 'Bono', kind: 'fixed', monto: 1_500_000, makeDefault: true })
     await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
     await flushPromises()
 
@@ -60,10 +60,43 @@ describe('CommissionTypeForm', () => {
       .toEqual({ name: 'Bono', kind: 'fixed', amount: pesos(1_500_000), basisPoints: null, makeDefault: true })
   })
 
+  it('RF-52.1 · un porcentaje escrito en el campo llega al motor; el campo numérico no entrega texto', async () => {
+    const formulario = await mountSuspended(CommissionTypeForm, { props })
+
+    formulario.vm.estado.name = 'Gold'
+    await formulario.find('input[type="number"]').setValue('7.12')
+
+    // El campo entrega un número: tratarlo como texto era lo que rompía el envío.
+    expect(typeof formulario.vm.estado.porcentaje).toBe('number')
+
+    await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
+    await flushPromises()
+
+    expect(formulario.find('[data-test="campo-comision-porcentaje"]').text()).not.toContain('100 %')
+    expect(formulario.emitted('submit')?.[0]?.[0] as CommissionTypeDraft)
+      .toEqual({ name: 'Gold', kind: 'percentage', amount: null, basisPoints: 712, makeDefault: false })
+  })
+
+  it('RF-52.1 · un importe fijo escrito en el campo se guarda en pesos enteros', async () => {
+    const formulario = await mountSuspended(CommissionTypeForm, { props })
+
+    Object.assign(formulario.vm.estado, { name: 'Gold fijo', kind: 'fixed' })
+    await flushPromises()
+    await formulario.find('input[type="number"]').setValue('3500000')
+
+    expect(typeof formulario.vm.estado.monto).toBe('number')
+
+    await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
+    await flushPromises()
+
+    expect(formulario.emitted('submit')?.[0]?.[0] as CommissionTypeDraft)
+      .toEqual({ name: 'Gold fijo', kind: 'fixed', amount: pesos(3_500_000), basisPoints: null, makeDefault: false })
+  })
+
   it('CA-52.3 · un nombre repetido se rechaza antes de enviarlo', async () => {
     const formulario = await mountSuspended(CommissionTypeForm, { props })
 
-    Object.assign(formulario.vm.estado, { name: '  premium ', kind: 'percentage', porcentaje: '5' })
+    Object.assign(formulario.vm.estado, { name: '  premium ', kind: 'percentage', porcentaje: 5 })
     await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
     await flushPromises()
 
@@ -74,7 +107,7 @@ describe('CommissionTypeForm', () => {
   it('CA-52.3 · un porcentaje por encima del 100 % se rechaza antes de enviarlo', async () => {
     const formulario = await mountSuspended(CommissionTypeForm, { props })
 
-    Object.assign(formulario.vm.estado, { name: 'Excesivo', kind: 'percentage', porcentaje: '120' })
+    Object.assign(formulario.vm.estado, { name: 'Excesivo', kind: 'percentage', porcentaje: 120 })
     await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
     await flushPromises()
 
@@ -85,7 +118,7 @@ describe('CommissionTypeForm', () => {
   it('CA-52.3 · un importe fijo de cero se rechaza antes de enviarlo', async () => {
     const formulario = await mountSuspended(CommissionTypeForm, { props })
 
-    Object.assign(formulario.vm.estado, { name: 'Cero', kind: 'fixed', monto: '0' })
+    Object.assign(formulario.vm.estado, { name: 'Cero', kind: 'fixed', monto: 0 })
     await formulario.find('[data-test="formulario-tipo-comision"]').trigger('submit')
     await flushPromises()
 

@@ -103,5 +103,6 @@ export const SECCIONES_DE_AGENDAMIENTO: readonly SeccionDeAgendamiento[] = [
 ]
 
 export const IMAGENES_DE_AGENDAMIENTO = {
-  hero: '/media/invictvs-nocturno.jpg',
+  /** El final de un día de uso, a la hora azul. Ambientación generada (P-09). */
+  hero: '/media/agendamiento-hero.jpg',
 } as const
