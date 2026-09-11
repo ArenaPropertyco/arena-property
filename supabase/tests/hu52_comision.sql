@@ -41,18 +41,24 @@ select throws_like(
   '%CA-52.6%', 'CA-52.6 · un Usuario no asigna el tipo de un Embajador');
 
 -- ── RF-52.1 · RF-52.3 · el catálogo ─────────────────────────────────────────
+-- La base local puede traer tipos sembrados: se retira la marca de predeterminado
+-- para probar la regla «el primero que entra manda»; la transacción lo revierte.
+reset role;
+set local request.jwt.claim.sub = '';
+update public.commission_types set is_default = false where is_default;
+set local role authenticated;
 set local request.jwt.claim.sub = 'c5200000-0000-4000-8000-000000000001';
 select lives_ok(
-  $$ select public.create_commission_type('Base', 'percentage', null, 300) $$,
+  $$ select public.create_commission_type('Base pgTAP', 'percentage', null, 300) $$,
   'RF-52.1 · el Superadmin crea el tipo Base del 3 %');
 select is(
-  (select is_default from public.commission_types where name = 'Base'),
+  (select is_default from public.commission_types where name = 'Base pgTAP'),
   true, 'RF-52.3 · el primer tipo del catálogo queda como predeterminado');
 select lives_ok(
-  $$ select public.create_commission_type('Premium', 'percentage', null, 500) $$,
+  $$ select public.create_commission_type('Premium pgTAP', 'percentage', null, 500) $$,
   'RF-52.1 · y el tipo Premium del 5 %');
 select lives_ok(
-  $$ select public.create_commission_type('Bono lanzamiento', 'fixed', 1500000, null) $$,
+  $$ select public.create_commission_type('Bono pgTAP', 'fixed', 1500000, null) $$,
   'RF-52.1 · y uno de importe fijo');
 select is(
   (select count(*) from public.commission_types where is_default),
@@ -78,7 +84,7 @@ select throws_ok(
   $$ select public.create_commission_type('   ', 'percentage', null, 300) $$,
   '23514', null, 'CA-52.3 · un nombre vacío se rechaza');
 select throws_ok(
-  $$ select public.create_commission_type('  base ', 'percentage', null, 400) $$,
+  $$ select public.create_commission_type('  base pgtap ', 'percentage', null, 400) $$,
   '23505', null, 'CA-52.3 · un nombre repetido se rechaza, sin distinguir caja ni espacios');
 
 -- ── CA-52.4 · RF-52.2 · el valor de un tipo no se edita ─────────────────────
@@ -90,35 +96,35 @@ select is(
 reset role;
 set local request.jwt.claim.sub = '';
 select throws_like(
-  $$ update public.commission_types set basis_points = 2000 where name = 'Base' $$,
+  $$ update public.commission_types set basis_points = 2000 where name = 'Base pgTAP' $$,
   '%CA-52.4%', 'CA-52.4 · el valor de un tipo no se edita');
 select throws_like(
-  $$ update public.commission_types set kind = 'fixed', amount = 1, basis_points = null where name = 'Base' $$,
+  $$ update public.commission_types set kind = 'fixed', amount = 1, basis_points = null where name = 'Base pgTAP' $$,
   '%CA-52.4%', 'CA-52.4 · tampoco cambiando la clase del valor');
 select throws_like(
-  $$ delete from public.commission_types where name = 'Base' $$,
+  $$ delete from public.commission_types where name = 'Base pgTAP' $$,
   '%RF-52.2%', 'RF-52.2 · un tipo no se borra: se desactiva');
 set local role authenticated;
 set local request.jwt.claim.sub = 'c5200000-0000-4000-8000-000000000001';
 select lives_ok(
-  $$ select public.rename_commission_type((select id from public.commission_types where name = 'Bono lanzamiento'), 'Bono de lanzamiento') $$,
+  $$ select public.rename_commission_type((select id from public.commission_types where name = 'Bono pgTAP'), 'Bono de lanzamiento pgTAP') $$,
   'CA-52.4 · renombrar sí procede');
 select is(
-  (select basis_points from public.commission_types where name = 'Base'),
+  (select basis_points from public.commission_types where name = 'Base pgTAP'),
   300, 'CA-52.4 · el valor de Base sigue intacto');
 
 -- ── CA-52.1 · RF-52.4 · a quién se le aplica cada tipo ──────────────────────
 select lives_ok(
   $$ select public.assign_commission_type(
        'c52a0000-0000-4000-8000-00000000000a',
-       (select id from public.commission_types where name = 'Premium')) $$,
+       (select id from public.commission_types where name = 'Premium pgTAP')) $$,
   'RF-52.4 · el Superadmin le asigna Premium a Ana');
 select is(
   (select name from public.commission_type_for('c52a0000-0000-4000-8000-00000000000a')),
-  'Premium', 'CA-52.1 · Ana cobra con el tipo que le asignaron');
+  'Premium pgTAP', 'CA-52.1 · Ana cobra con el tipo que le asignaron');
 select is(
   (select name from public.commission_type_for('c52a0000-0000-4000-8000-00000000000b')),
-  'Base', 'CA-52.1 · Luis, sin asignación, cobra con el predeterminado');
+  'Base pgTAP', 'CA-52.1 · Luis, sin asignación, cobra con el predeterminado');
 select is(
   (select basis_points from public.commission_type_for('c52a0000-0000-4000-8000-00000000000a')),
   500, 'CA-52.2 · el porcentaje que cobra Ana es el suyo, no el de todos');
@@ -127,25 +133,25 @@ select lives_ok(
   'RF-52.4 · retirar la asignación procede');
 select is(
   (select name from public.commission_type_for('c52a0000-0000-4000-8000-00000000000a')),
-  'Base', 'RF-52.4 · sin asignación, Ana vuelve al predeterminado');
+  'Base pgTAP', 'RF-52.4 · sin asignación, Ana vuelve al predeterminado');
 
 -- ── CA-52.5 · RF-52.2 · predeterminado y desactivación ──────────────────────
 select lives_ok(
-  $$ select public.set_default_commission_type((select id from public.commission_types where name = 'Premium')) $$,
+  $$ select public.set_default_commission_type((select id from public.commission_types where name = 'Premium pgTAP')) $$,
   'CA-52.5 · el Superadmin nombra otro predeterminado');
 select is(
   (select string_agg(name, ',') from public.commission_types where is_default),
-  'Premium', 'CA-52.5 · el anterior deja de serlo y queda exactamente uno');
+  'Premium pgTAP', 'CA-52.5 · el anterior deja de serlo y queda exactamente uno');
 select throws_like(
-  $$ select public.set_commission_type_active((select id from public.commission_types where name = 'Premium'), false) $$,
+  $$ select public.set_commission_type_active((select id from public.commission_types where name = 'Premium pgTAP'), false) $$,
   '%RF-52.3%', 'RF-52.3 · el predeterminado no se desactiva');
 select lives_ok(
-  $$ select public.set_commission_type_active((select id from public.commission_types where name = 'Base'), false) $$,
+  $$ select public.set_commission_type_active((select id from public.commission_types where name = 'Base pgTAP'), false) $$,
   'RF-52.2 · un tipo que no es el predeterminado sí se desactiva');
 select throws_like(
   $$ select public.assign_commission_type(
        'c52a0000-0000-4000-8000-00000000000b',
-       (select id from public.commission_types where name = 'Base')) $$,
+       (select id from public.commission_types where name = 'Base pgTAP')) $$,
   '%RF-52.2%', 'RF-52.2 · un tipo desactivado no se le asigna a nadie nuevo');
 
 -- ── RF-52.3 · lectura ───────────────────────────────────────────────────────
@@ -155,13 +161,14 @@ select is(
   'RF-52.1 · el catálogo completo no lo ve quien no es Superadmin');
 select is(
   (select name from public.default_commission_type()),
-  'Premium', 'RF-52.3 · pero el predeterminado sí lo ve cualquiera (HU-48)');
+  'Premium pgTAP', 'RF-52.3 · pero el predeterminado sí lo ve cualquiera (HU-48)');
 
 -- ── TR-01 · auditoría ───────────────────────────────────────────────────────
 reset role;
 set local request.jwt.claim.sub = '';
 select is(
-  (select count(*) from public.audit_log where entity_type = 'commission_type' and action = 'commission_type.creada'),
+  (select count(*) from public.audit_log where entity_type = 'commission_type' and action = 'commission_type.creada'
+     and entity_id in (select id from public.commission_types where name like '% pgTAP')),
   3::bigint, 'TR-01 · cada tipo creado deja su entrada de auditoría');
 select ok(
   (select count(*) from public.audit_log where entity_type = 'ambassador_commission') >= 2,
