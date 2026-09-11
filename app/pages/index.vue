@@ -11,9 +11,10 @@ import type { IdDeSeccion, SeccionDeLaHome } from '#shared/content/home'
  * propiedades activas se consultan aquí (solo lo publicado, por RLS) y se pasan a
  * su sección como props.
  *
- * RF-00.7 · la animación de entrada sale de una función pura y se apaga con
- * `prefers-reduced-motion`. RF-00.8 · cada CTA activado va a `nuxt-gtag` con su
- * sección de origen.
+ * RF-00.7 · RF-00.11 · la animación de entrada sale de una función pura y se
+ * apaga con `prefers-reduced-motion`; el hero además revela sus textos con
+ * `motion-v`. RF-00.8 · cada CTA activado va a `nuxt-gtag` con su sección de
+ * origen. D-38 · el agendamiento y los tres frentes de Arena son secciones propias.
  */
 const { t } = useI18n()
 const { reducirMovimiento } = useMovimientoReducido()
@@ -25,6 +26,8 @@ const COMPONENTE: Partial<Record<IdDeSeccion, Component>> = {
   business_model: resolveComponent('HomeBusinessModel') as Component,
   benefits: resolveComponent('HomeBenefits') as Component,
   properties: resolveComponent('HomeProperties') as Component,
+  scheduling: resolveComponent('HomeScheduling') as Component,
+  what_we_do: resolveComponent('HomeWhatWeDo') as Component,
   cta: resolveComponent('HomeCta') as Component,
 }
 

@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { clavesDelManifiesto, IDS_DE_SECCION, SECCIONES_DE_LA_HOME } from '#shared/content/home'
+import { CUPO_PUBLICADO, TEMPORADAS_PUBLICADAS } from '#shared/content/agendamiento'
+import { clavesDelManifiesto, CUPO_DE_LA_HOME, IDS_DE_SECCION, SECCIONES_DE_LA_HOME, TEMPORADAS_DE_LA_HOME } from '#shared/content/home'
 import { archivosDePagina, RUTAS_PUBLICAS } from '#shared/content/rutas'
 import { aplanarClaves } from '#shared/i18n/keys'
 
@@ -16,10 +17,10 @@ function locale(codigo: string): Record<string, string> {
   return aplanarClaves(JSON.parse(readFileSync(resolve(raiz, `i18n/locales/${codigo}.json`), 'utf8')))
 }
 
-describe('CA-00.1 · el manifiesto declara las siete secciones de RF-00.1', () => {
-  it('CA-00.1 · son exactamente navbar, hero, modelo de negocio, beneficios, propiedades, CTA y footer, en ese orden', () => {
+describe('CA-00.1 · el manifiesto declara las nueve secciones de RF-00.1', () => {
+  it('CA-00.1 · D-38 · son exactamente navbar, hero, modelo, beneficios, propiedades, agendamiento, qué hace Arena, CTA y footer, en ese orden', () => {
     expect(SECCIONES_DE_LA_HOME.map(seccion => seccion.id))
-      .toEqual(['navbar', 'hero', 'business_model', 'benefits', 'properties', 'cta', 'footer'])
+      .toEqual(['navbar', 'hero', 'business_model', 'benefits', 'properties', 'scheduling', 'what_we_do', 'cta', 'footer'])
     expect([...IDS_DE_SECCION]).toEqual(SECCIONES_DE_LA_HOME.map(seccion => seccion.id))
   })
 
@@ -33,12 +34,14 @@ describe('CA-00.1 · el manifiesto declara las siete secciones de RF-00.1', () =
 describe('CA-00.2 · cada CTA resuelve a una ruta declarada del router', () => {
   const conCta = SECCIONES_DE_LA_HOME.filter(seccion => seccion.cta)
 
-  it('CA-00.2 · modelo de negocio → HU-41, beneficios → HU-42, CTA principal → registro o catálogo', () => {
+  it('CA-00.2 · modelo → HU-41, beneficios → HU-42, agendamiento → HU-43, qué hace Arena → HU-44, CTA principal → registro o catálogo', () => {
     const destinos = Object.fromEntries(conCta.map(seccion => [seccion.id, seccion.cta!.destino]))
 
     expect(destinos.business_model).toBe(RUTAS_PUBLICAS.modelo)
     expect(destinos.benefits).toBe(RUTAS_PUBLICAS.beneficios)
     expect(destinos.properties).toBe(RUTAS_PUBLICAS.catalogo)
+    expect(destinos.scheduling).toBe(RUTAS_PUBLICAS.agendamiento)
+    expect(destinos.what_we_do).toBe(RUTAS_PUBLICAS.nosotros)
     expect([RUTAS_PUBLICAS.registro, RUTAS_PUBLICAS.catalogo]).toContain(destinos.cta)
   })
 
@@ -70,5 +73,14 @@ describe('CA-00.3 · las claves i18n del manifiesto existen en ambos locales', (
 
   it('CA-00.3 · toda clave del manifiesto existe en en.json, en paridad', () => {
     expect(claves.filter(clave => !(clave in en))).toEqual([])
+  })
+})
+
+describe('CA-00.6 · RF-00.9 · la tabla de la home es la que publica HU-43', () => {
+  it('CA-00.6 · mismas temporadas, semanas y noches, y el mismo total: una sola fuente derivada del motor', () => {
+    expect(TEMPORADAS_DE_LA_HOME).toBe(TEMPORADAS_PUBLICADAS)
+    expect(CUPO_DE_LA_HOME).toBe(CUPO_PUBLICADO)
+    expect(TEMPORADAS_DE_LA_HOME.map(t => t.noches)).toEqual([7, 7, 7, 21])
+    expect(CUPO_DE_LA_HOME).toEqual({ semanas: 6, noches: 42 })
   })
 })

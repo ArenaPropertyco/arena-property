@@ -497,9 +497,9 @@
       "footer": "Footer"
     },
     "hero": {
-      "headline": "Fractional co-ownership",
-      "title": "Your holiday home is not a dream. It is a decision you have not made yet.",
-      "description": "Own an apartment in the most iconic tower in Bocagrande from COP $173M. 1/8 of Invictvs, on the beachfront, registered in your name in trust.",
+      "headline": "Fractional Co-ownership",
+      "title": "“Your holiday home is not a dream. It is a decision you have not made yet”",
+      "description": "Own an apartment in the most iconic tower in Bocagrande from COP $173M.",
       "cta": "View properties",
       "secondary": "How it works",
       "videoLabel": "Invictvs video on the Bocagrande beachfront",
@@ -521,67 +521,105 @@
     "model": {
       "headline": "What is Arena Property?",
       "title": "The smart way to own the Caribbean",
-      "description": "We structure and manage fractional co-ownership of luxury second homes, through an S.A.S. company and professional hotel operation, to make the investment and the running costs efficient in properties that are used little during the year. We take part as founding co-owners in every project.",
+      "tagline": "Structuring fractional co-ownership of second homes, through an S.A.S. company, with professional hotel operation.",
+      "description": "Arena Property structures and manages fractional co-ownership of luxury second homes, to make the investment and the running costs efficient in properties that are used little during the year. We take part as founding co-owners in every project.",
+      "lead": "You buy 1/8 of a premium holiday property, registered in your name in trust, and a single operator takes care of everything else. All sized to how much you use it.",
       "cta": "Learn about the model",
       "pillars": {
         "owner": {
           "title": "You are a real owner",
-          "description": "Your 1/8 is registered in the project trust. Real ownership of a beachfront asset to enjoy six weeks a year. Expenses are shared in proportion to your fraction."
+          "description": "Your 1/8 is registered in the project trust. Real ownership of a beachfront asset to enjoy 6 weeks a year. Likewise, expenses are shared in proportion to your fraction."
         },
         "price": {
           "title": "From COP $173M",
-          "description": "In installments and with no additional mortgage. Access the most premium asset in Bocagrande with a fraction of the total capital."
+          "description": "In instalments and without an additional mortgage. You access the most premium asset in Bocagrande with a fraction of the total capital."
         },
         "carefree": {
-          "title": "Worry-free",
-          "description": "A single tourism operator manages rentals, guests and monthly reporting. Distributions proportional to your 1/8."
+          "title": "No worries",
+          "description": "A single tourism operator handles rentals, guests and monthly reporting. Distributions in proportion to your 1/8."
         }
       }
     },
     "benefits": {
-      "headline": "What are the benefits?",
+      "headline": "What are the benefits of Arena Property?",
       "title": "Eight owners, zero worries",
-      "description": "You own your holiday home in the Caribbean for a fraction of the investment and the running costs. Compared with buying a whole property, the fraction gives you the best of the Caribbean for a part of the cost and without carrying the operation.",
+      "description": "You own your holiday home in the Caribbean for a fraction of the investment and the running costs.",
+      "lead": "Compared with buying a whole property, the fraction gives you the best of the Caribbean for a part of the cost and without carrying the operation.",
       "cta": "Compare with a whole property",
       "items": {
         "capital": {
           "title": "A fraction of the capital",
-          "description": "From COP $173M in 30 installments, instead of more than COP $1,384M for the whole apartment."
-        },
-        "weeks": {
-          "title": "42 nights a year",
-          "description": "Six weeks spread across the four seasons, with fair rotation among the eight co-owners."
+          "description": "From COP $173M in 30 instalments, instead of more than COP $1,384M for the whole apartment."
         },
         "income": {
           "title": "Income when you are not using it",
-          "description": "The weeks you do not use are rented to third parties and the income is shared with your fraction."
-        },
-        "management": {
-          "title": "Centralized operation",
-          "description": "Scheduling, common expenses, maintenance and communication all live on the platform."
+          "description": "Free nights are rented to third parties and the income is shared with your fraction."
         },
         "ownership": {
           "title": "Your fraction is yours",
-          "description": "Registered in a trust and traceable; transfer it whenever you decide."
+          "description": "Registered in trust and traceable; you can transfer it whenever you decide."
+        },
+        "weeks": {
+          "title": "42 nights a year",
+          "description": "Weeks spread across the four seasons, with fair rotation among the eight co-owners."
+        },
+        "management": {
+          "title": "Centralised operation",
+          "description": "Scheduling, shared expenses, maintenance and communication live on the platform."
         },
         "transparency": {
           "title": "Clear accounts",
-          "description": "Monthly reports and every peso on record. Nothing estimated is shown as confirmed."
+          "description": "Monthly reports and every peso with its record. Nothing estimated is presented as confirmed."
+        }
+      }
+    },
+    "properties": {
+      "headline": "Active properties",
+      "title": "What is on sale today",
+      "description": "Name, location, area, bedrooms, bathrooms and fraction price: the quick sheet of every published project.",
+      "cta": "View the whole catalogue",
+      "empty": "We will publish the next properties soon."
+    },
+    "scheduling": {
+      "headline": "How does the scheduling model work?",
+      "title": "6 weeks a year per fraction",
+      "description": "In luxury co-ownership the promise is expressed in weeks: 1/8 equals six weeks a year. Arena Property keeps that unit so you can compare. Six weeks are exactly 42 nights, spread by season:",
+      "columns": {
+        "season": "Season",
+        "weeks": "Weeks",
+        "nights": "Nights",
+        "minimum": "Minimum stay"
+      },
+      "total": "Total",
+      "wholeWeek": "Whole week",
+      "cta": "See the scheduling system"
+    },
+    "whatWeDo": {
+      "headline": "What does Arena Property do?",
+      "title": "Three things for every property",
+      "description": "And all three are permanent over time, except the first.",
+      "partner": "Arena also joins as one more partner, on the same terms as everyone else. Its income is a declared fee for structuring each company and a monthly fee for managing it.",
+      "cta": "Get to know us",
+      "items": {
+        "structure": {
+          "title": "We structure",
+          "description": "We analyse the asset, gather a closed group of nominated partners and incorporate the company (S.A.S.) that buys the property, divided into eight equal fractions."
+        },
+        "commercialize": {
+          "title": "We place",
+          "description": "We find and qualify the partners of each property. Placement is private and one to one, never open."
+        },
+        "manage": {
+          "title": "We manage",
+          "description": "We are the property manager for as long as the company exists. Cleaning, maintenance, suppliers, property tax, insurance, utilities and the relationship with the tourism operator go through us, not the partners. That is the work that makes co-ownership run without friction."
         }
       }
     },
     "cta": {
-      "title": "Reserve your spot in Invictvs",
-      "description": "Bocagrande beachfront, 53 floors and estimated delivery in 2029. Create your account and we'll walk with you from the first call to your registered fraction.",
+      "title": "Reserve your place at Invictvs",
+      "description": "Bocagrande beachfront, 53 floors and estimated delivery in 2029. Create your account and we walk with you from the first call to your registered fraction.",
       "cta": "Create my account",
-      "secondary": "Message us on WhatsApp"
-    },
-    "properties": {
-      "headline": "Active properties",
-      "title": "What's on sale today",
-      "description": "Published projects with available fractions. Each listing shows photos, location, price per fraction and how many are left.",
-      "cta": "See the full catalog",
-      "empty": "We'll publish the next properties soon."
+      "secondary": "Write to us on WhatsApp"
     }
   },
   "catalog": {

@@ -497,9 +497,9 @@
       "footer": "Pie de página"
     },
     "hero": {
-      "headline": "Copropiedad fraccionada",
-      "title": "Tu vivienda vacacional no es un sueño. Es una decisión que aún no has tomado.",
-      "description": "Sé dueño de un apartamento en el rascacielos más icónico de Bocagrande desde COP $173M. 1/8 de Invictvs, en primera línea de playa, registrado a tu nombre en fiducia.",
+      "headline": "Copropiedad Fraccionada",
+      "title": "“Tu vivienda vacacional no es un sueño. Es una decisión que aún no has tomado”",
+      "description": "Sé dueño de un apartamento en el rascacielos más icónico de Bocagrande desde COP $173M.",
       "cta": "Ver propiedades",
       "secondary": "Cómo funciona",
       "videoLabel": "Video de Invictvs en primera línea de Bocagrande",
@@ -521,12 +521,14 @@
     "model": {
       "headline": "¿Qué es Arena Property?",
       "title": "La forma inteligente de poseer el Caribe",
-      "description": "Estructuramos y administramos copropiedades fraccionadas de segunda vivienda de lujo, mediante S.A.S. y con operación hotelera profesional, para hacer eficiente la inversión y el gasto en propiedades que se usan poco al año. Participamos como copropietarios fundadores en cada proyecto.",
+      "tagline": "Estructuración de copropiedad fraccionada de segunda vivienda, mediante S.A.S., con operación hotelera profesional.",
+      "description": "Arena Property estructura y administra copropiedades fraccionadas de segunda vivienda de lujo, para hacer eficiente la inversión y el gasto en propiedades que tienen poco uso en el año. Participamos como copropietarios fundadores en cada proyecto.",
+      "lead": "Compras 1/8 de una propiedad vacacional premium, registrada a tu nombre en fiducia, y un operador único se encarga de todo lo demás. Todo a la medida de su uso.",
       "cta": "Conoce el modelo",
       "pillars": {
         "owner": {
           "title": "Eres propietario real",
-          "description": "Tu 1/8 queda registrado en la fiducia del proyecto. Propiedad real sobre un activo en primera línea de playa para disfrutar seis semanas al año. La carga de gastos es proporcional a tu fracción."
+          "description": "Tu 1/8 queda registrado en la fiducia del proyecto. Propiedad real sobre un activo en primera línea de playa para disfrutar 6 semanas del año. De igual modo, la carga de gastos es proporcional a tu fracción."
         },
         "price": {
           "title": "Desde COP $173M",
@@ -539,34 +541,77 @@
       }
     },
     "benefits": {
-      "headline": "¿Cuáles son los beneficios?",
+      "headline": "¿Cuáles son los beneficios de Arena Property?",
       "title": "Ocho dueños, cero preocupaciones",
-      "description": "Eres dueño de tu vivienda vacacional en el Caribe por una fracción de la inversión y del gasto. Frente a comprar una propiedad completa, la fracción te da lo mejor del Caribe por una parte del costo y sin cargar con la operación.",
+      "description": "Eres dueño de tu vivienda vacacional en el Caribe por una fracción de la inversión y del gasto.",
+      "lead": "Frente a comprar una propiedad completa, la fracción te da lo mejor del Caribe por una parte del costo y sin cargar con la operación.",
       "cta": "Compara con una propiedad completa",
       "items": {
         "capital": {
           "title": "Una fracción del capital",
           "description": "Desde COP $173M en 30 cuotas, en lugar de más de COP $1.384M por el apartamento completo."
         },
-        "weeks": {
-          "title": "42 noches al año",
-          "description": "Seis semanas repartidas en las cuatro temporadas, con rotación justa entre los ocho copropietarios."
-        },
         "income": {
           "title": "Ingresos cuando no la usas",
-          "description": "Las semanas que no usas se rentan a terceros y el ingreso se reparte a tu fracción."
-        },
-        "management": {
-          "title": "Operación centralizada",
-          "description": "Agendamiento, gastos comunes, mantenimiento y comunicación viven en la plataforma."
+          "description": "Las noches libres se rentan a terceros y el ingreso se reparte a tu fracción."
         },
         "ownership": {
           "title": "Tu fracción es tuya",
           "description": "Registrada en fiducia y trazable; puedes traspasarla cuando lo decidas."
         },
+        "weeks": {
+          "title": "42 noches al año",
+          "description": "Semanas repartidas en las cuatro temporadas, con rotación justa entre los ocho copropietarios."
+        },
+        "management": {
+          "title": "Operación centralizada",
+          "description": "Agendamiento, gastos comunes, mantenimiento y comunicación viven en la plataforma."
+        },
         "transparency": {
           "title": "Cuentas claras",
           "description": "Reportes mensuales y cada peso con su registro. Nada estimado se presenta como confirmado."
+        }
+      }
+    },
+    "properties": {
+      "headline": "Propiedades activas",
+      "title": "Lo que está a la venta hoy",
+      "description": "Nombre, ubicación, área, habitaciones, baños y valor de la fracción: la ficha rápida de cada proyecto publicado.",
+      "cta": "Ver todo el catálogo",
+      "empty": "Pronto publicaremos las próximas propiedades."
+    },
+    "scheduling": {
+      "headline": "¿Cómo es el modelo de agendamiento?",
+      "title": "6 semanas al año por fracción",
+      "description": "En el gremio de la copropiedad de lujo la promesa se expresa en semanas: 1/8 equivale a seis semanas al año. Arena Property mantiene esa unidad para que puedas comparar. Seis semanas son exactamente 42 noches, repartidas por temporada:",
+      "columns": {
+        "season": "Temporada",
+        "weeks": "Semanas",
+        "nights": "Noches",
+        "minimum": "Estadía mínima"
+      },
+      "total": "Total",
+      "wholeWeek": "Semana completa",
+      "cta": "Ver el sistema de agendamiento"
+    },
+    "whatWeDo": {
+      "headline": "¿Qué hace Arena Property?",
+      "title": "Tres cosas por cada inmueble",
+      "description": "Y las tres son permanentes en el tiempo, salvo la primera.",
+      "partner": "Arena entra además como un socio más, en las mismas condiciones que los demás. Sus ingresos son una comisión declarada por estructurar cada sociedad y un fee mensual por administrarla.",
+      "cta": "Conócenos",
+      "items": {
+        "structure": {
+          "title": "Estructuramos",
+          "description": "Analizamos el activo, convocamos un grupo cerrado de socios nominados y constituimos la sociedad (S.A.S.) que compra la propiedad, dividida en ocho fracciones iguales."
+        },
+        "commercialize": {
+          "title": "Comercializamos",
+          "description": "Buscamos y calificamos a los socios de cada inmueble. La colocación es privada y uno a uno, nunca abierta."
+        },
+        "manage": {
+          "title": "Administramos",
+          "description": "Somos el administrador de la propiedad mientras la sociedad exista. Aseo, mantenimiento, proveedores, predial, seguros, servicios y la relación con el operador turístico pasan por nosotros, no por los socios. Ese es el trabajo que hace que la copropiedad funcione sin fricción."
         }
       }
     },
@@ -575,13 +620,6 @@
       "description": "Primera línea de Bocagrande, 53 pisos y entrega estimada en 2029. Crea tu cuenta y te acompañamos desde la primera llamada hasta tu fracción registrada.",
       "cta": "Crear mi cuenta",
       "secondary": "Escríbenos por WhatsApp"
-    },
-    "properties": {
-      "headline": "Propiedades activas",
-      "title": "Lo que está a la venta hoy",
-      "description": "Proyectos publicados con fracciones disponibles. Cada ficha trae fotos, ubicación, precio por fracción y cuántas quedan.",
-      "cta": "Ver todo el catálogo",
-      "empty": "Pronto publicaremos las próximas propiedades."
     }
   },
   "catalog": {
