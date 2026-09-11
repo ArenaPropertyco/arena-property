@@ -9,6 +9,8 @@ import HomeBusinessModel from '~/components/HomeBusinessModel.vue'
 import HomeCta from '~/components/HomeCta.vue'
 import HomeHero from '~/components/HomeHero.vue'
 import HomeProperties from '~/components/HomeProperties.vue'
+import HomeScheduling from '~/components/HomeScheduling.vue'
+import HomeWhatWeDo from '~/components/HomeWhatWeDo.vue'
 import OwnerPlansList from '~/components/OwnerPlansList.vue'
 import PropertyCard from '~/components/PropertyCard.vue'
 import PropertyCatalog from '~/components/PropertyCatalog.vue'
@@ -80,7 +82,7 @@ describe('HU-00 · secciones de la home desde el manifiesto', () => {
   it('RF-00.1 · el hero muestra el slogan y el video de fondo silenciado, en bucle y con póster', async () => {
     const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
 
-    expect(hero.text()).toContain('Sé dueño de Bocagrande')
+    expect(hero.text()).toContain('Tu vivienda vacacional no es un sueño')
     const video = hero.find('video[data-test="hero-fondo"]')
     expect(video.exists()).toBe(true)
     expect(video.find('source').attributes('src')).toBe('/media/hero.mp4')
@@ -127,6 +129,42 @@ describe('HU-00 · secciones de la home desde el manifiesto', () => {
 
     expect(beneficios.findAll('[data-test="beneficio"]').length).toBeGreaterThanOrEqual(4)
     expect(beneficios.find('[data-test="cta-benefits"]').attributes('href')).toBe('/beneficios')
+  })
+
+  it('RF-00.9 · CA-00.6 · el modelo de agendamiento publica 7/7/7/21 noches, 42 en total, y manda a HU-43', async () => {
+    const agendamiento = await mountSuspended(HomeScheduling, { props: { seccion: seccion('scheduling') } })
+
+    expect(agendamiento.findAll('[data-test^="temporada-"]')).toHaveLength(4)
+    expect(['alta', 'media_alta', 'media', 'baja'].map(id => agendamiento.find(`[data-test="noches-${id}"]`).text())).toEqual(['7', '7', '7', '21'])
+    expect(agendamiento.find('[data-test="noches-total"]').text()).toBe('42')
+    expect(agendamiento.find('[data-test="cta-scheduling"]').attributes('href')).toBe('/agendamiento')
+  })
+
+  it('RF-00.10 · qué hace Arena presenta los tres frentes, la condición de socio y manda a Sobre Nosotros', async () => {
+    const queHace = await mountSuspended(HomeWhatWeDo, { props: { seccion: seccion('what_we_do') } })
+
+    expect(queHace.findAll('[data-test="frente-home"]')).toHaveLength(3)
+    expect(queHace.text()).toContain('Estructuramos')
+    expect(queHace.text()).toContain('socio más')
+    expect(queHace.find('[data-test="cta-what_we_do"]').attributes('href')).toBe('/nosotros')
+  })
+
+  it('RF-00.11 · el hero lleva sobre el video la jerarquía h1, h2 y h3 del texto oficial', async () => {
+    const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
+
+    expect(hero.find('h1[data-test="hero-titulo"]').text()).toContain('Copropiedad Fraccionada')
+    expect(hero.find('h2[data-test="hero-frase"]').text()).toContain('Tu vivienda vacacional no es un sueño')
+    expect(hero.find('h3[data-test="hero-promesa"]').text()).toContain('COP $173M')
+    // El revelado es CSS: ningún bloque nace con opacidad cero en el marcado.
+    expect(hero.html()).not.toContain('opacity:0')
+  })
+
+  it('RF-00.11 · CA-00.4 · con movimiento reducido el hero pinta sus textos sin clases de revelado', async () => {
+    const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero'), reducirMovimiento: true } })
+
+    expect(hero.text()).toContain('Tu vivienda vacacional no es un sueño')
+    expect(hero.find('[data-test="hero-animado"]').exists()).toBe(false)
+    expect(hero.find('.hero-revelado').exists()).toBe(false)
   })
 
   it('RF-00.5 · el CTA principal dirige al registro o al catálogo', async () => {

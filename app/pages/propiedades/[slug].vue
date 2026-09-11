@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { SolicitudDeContacto } from '#shared/contact/esquema'
 import { RUTAS_PUBLICAS } from '#shared/content/rutas'
+import { admiteListaDeEspera } from '#shared/properties/catalogo-publico'
+import type { InscripcionEnListaDeEspera } from '#shared/waitlist/esquema'
 
 /**
  * HU-02 · RF-02.1…RF-02.6 y HU-03 · RF-03.1, RF-03.4 — la ficha pública.
@@ -8,6 +10,7 @@ import { RUTAS_PUBLICAS } from '#shared/content/rutas'
  * La página orquesta: resuelve por slug (404 para el Visitante si no está
  * publicada; vista previa para quien la administra), monta galería, ficha, plano y
  * el formulario de contacto de la misma página, y anota cada envío en un aviso.
+ * HU-47 · RF-47.1 · sin fracciones disponibles ofrece además la lista de espera.
  */
 const { t } = useI18n()
 const toast = useToast()
@@ -20,9 +23,15 @@ const { resolucion, propiedad, esperar } = usePropiedadPublica(slug)
 const { modo } = useModoDelPlano()
 const { codigo } = useCodigoDeReferido()
 const { enviar } = useContacto()
+const { inscribir } = useListaDeEspera()
 
 const formulario = ref<{ enfocar: () => void } | null>(null)
 const enviando = ref(false)
+const inscribiendo = ref(false)
+const enListaDeEspera = ref(false)
+
+/** CA-47.1 · solo se ofrece cuando no queda ninguna fracción disponible. */
+const listaDeEspera = computed(() => propiedad.value !== null && admiteListaDeEspera(propiedad.value))
 
 useSeoMeta({
   title: () => propiedad.value?.name ?? t('property.notFound'),
@@ -42,6 +51,17 @@ if (resolucion.value.estado === 'no_encontrada') {
 function irAlContacto() {
   document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   window.setTimeout(() => formulario.value?.enfocar(), 400)
+}
+
+async function inscribirEnLista(inscripcion: InscripcionEnListaDeEspera) {
+  inscribiendo.value = true
+  const resultado = await inscribir(inscripcion)
+  inscribiendo.value = false
+
+  toast.add(resultado.ok
+    ? { title: resultado.correoEnviado === false ? t('waitlist.sentNoEmail') : t('waitlist.sent'), color: 'success' }
+    : { title: t(resultado.clave), color: 'error' })
+  enListaDeEspera.value = resultado.ok
 }
 
 async function enviarContacto(solicitud: SolicitudDeContacto) {
@@ -143,6 +163,35 @@ async function enviarContacto(solicitud: SolicitudDeContacto) {
           <PropertyPublicSheet :propiedad="propiedad" />
         </aside>
       </div>
+
+      <section
+        v-if="listaDeEspera"
+        id="lista-de-espera"
+        class="scroll-mt-24 space-y-6 rounded-2xl border border-primary/30 bg-elevated/30 p-6 sm:p-10"
+        data-test="seccion-lista-de-espera"
+      >
+        <div>
+          <h2 class="font-display text-3xl font-medium text-highlighted">
+            {{ t('waitlist.title') }}
+          </h2>
+          <p class="mt-2 text-sm text-muted">
+            {{ t('waitlist.subtitle') }}
+          </p>
+        </div>
+        <p
+          v-if="enListaDeEspera"
+          class="rounded-2xl border border-success/30 bg-success/5 px-6 py-8 text-center text-success"
+          data-test="lista-de-espera-enviada"
+        >
+          {{ t('waitlist.sent') }}
+        </p>
+        <WaitlistForm
+          v-else
+          :propiedad="{ id: propiedad.id, name: propiedad.name }"
+          :enviando="inscribiendo"
+          @submit="inscribirEnLista"
+        />
+      </section>
 
       <section
         id="contacto"
