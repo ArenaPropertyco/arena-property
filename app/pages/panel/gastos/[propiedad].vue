@@ -7,9 +7,9 @@ import { puede } from '#shared/permissions/mapa'
  *
  * La página orquesta: carga la maestra y los movimientos con sus cuotas ya
  * generadas por la base, monta los componentes y traduce cada resultado en un
- * aviso. Registrar y anular es del Administrador de la propiedad (`registrar_gastos`
- * en la matriz de HU-07); el Propietario entra en lectura y la RLS solo le entrega
- * las cuotas de su fracción.
+ * aviso. Registrar y anular es del Administrador asignado y del Superadmin, que
+ * alcanza todas las propiedades (`registrar_gastos` en la matriz de HU-07, D-40);
+ * el Propietario entra en lectura y la RLS solo le entrega las cuotas de su fracción.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'ver_finanzas' } })
 
@@ -22,7 +22,7 @@ const { roles } = useCuenta()
 const propiedadId = computed(() => String(ruta.params.propiedad ?? ''))
 
 const { maestra } = useMaestraContable()
-const { propiedad, movimientos, cuotasDe, pendiente, registrar, anular } = useMovimientos(propiedadId)
+const { propiedad, fracciones, movimientos, cuotasDe, pendiente, registrar, anular } = useMovimientos(propiedadId)
 
 const puedeRegistrar = computed(() => puede(roles.value, 'registrar_gastos', { escritura: true }))
 
@@ -140,6 +140,7 @@ async function confirmarAnulacion(motivo: string) {
           v-if="registrando"
           :property-id="propiedadId"
           :maestra="maestra"
+          :fracciones="fracciones"
           :enviando="ocupado"
           @submit="guardarGasto"
         />

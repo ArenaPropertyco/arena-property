@@ -1767,7 +1767,11 @@
       "account_required": "Elige la cuenta contable.",
       "date_invalid": "Indica la fecha de causación.",
       "description_required": "Describe el gasto.",
-      "reason_required": "Escribe el motivo."
+      "reason_required": "Escribe el motivo.",
+      "fraction_required": "Elige la fracción a la que se imputa.",
+      "fraction_not_sold": "Solo se imputa a una fracción vendida: esa no tiene titular.",
+      "fraction_not_in_property": "Esa fracción no es de esta propiedad.",
+      "fraction_not_expected": "Un gasto prorrateado no lleva fracción."
     },
     "errors": {
       "save_failed": "No pudimos guardar el gasto.",
@@ -1777,6 +1781,17 @@
     "messages": {
       "registered": "Gasto registrado con sus 8 cuotas.",
       "voided": "Gasto anulado; sus 8 cuotas quedaron revertidas."
+    },
+    "allocation": {
+      "label": "Reparto",
+      "hint": "Un gasto común se divide entre las 8 fracciones. Un daño o una avería de una fracción se le imputa solo a ella.",
+      "prorated": "Entre las 8 fracciones",
+      "single_fraction": "A una sola fracción",
+      "fraction": "Fracción responsable",
+      "fractionPlaceholder": "Elige la fracción",
+      "noneSold": "Esta propiedad no tiene fracciones vendidas: no hay a quién imputar.",
+      "badgeProrated": "8 fracciones",
+      "badgeSingle": "Solo {number}/8"
     }
   }
 }

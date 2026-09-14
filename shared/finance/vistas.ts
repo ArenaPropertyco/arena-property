@@ -5,8 +5,9 @@
  */
 
 import type { CopAmount } from '../money/importe'
-import type { Pagador } from './cuotas'
+import type { Pagador, Reparto } from './cuotas'
 import type { ClaseDeMovimiento } from './maestra'
+import type { FraccionImputable } from './movimientos'
 
 export interface MovimientoListado {
   id: string
@@ -19,6 +20,10 @@ export interface MovimientoListado {
   /** D-09 · día de causación `AAAA-MM-DD`. */
   incurredOn: string
   description: string
+  /** RF-23.8 · D-41 · entre las 8 fracciones o a una sola. */
+  allocation: Reparto
+  /** RF-23.9 · número de la fracción imputada; `null` si se prorrateó. */
+  fractionNumber: number | null
   createdAt: string
   voidedAt: string | null
   voidReason: string | null
@@ -36,4 +41,10 @@ export interface CuotaListada {
   payerLabel: string | null
   /** RF-23.4 · la cuota quedó revertida al anularse el movimiento. */
   reversedAt: string | null
+}
+
+/** Una fracción tal como la ofrece el formulario para imputarle un gasto (RF-23.9). */
+export interface FraccionImputableListada extends FraccionImputable {
+  /** Nombre o correo del titular (D-16); `null` si no está vendida. */
+  ownerLabel: string | null
 }

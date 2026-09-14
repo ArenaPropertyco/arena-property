@@ -8,7 +8,7 @@ import { generarCuotas } from '#shared/finance/cuotas'
 import type { FraccionParaCuota } from '#shared/finance/cuotas'
 import type { MaestraContable } from '#shared/finance/maestra'
 import type { NuevoMovimiento } from '#shared/finance/movimientos'
-import type { CuotaListada, MovimientoListado } from '#shared/finance/vistas'
+import type { CuotaListada, FraccionImputableListada, MovimientoListado } from '#shared/finance/vistas'
 import { pesos } from '#shared/money/importe'
 
 /**
@@ -48,6 +48,19 @@ function fracciones(activas: number[] = []): FraccionParaCuota[] {
   })
 }
 
+/** Las 8 fracciones para el formulario: la 3 y la 5 vendidas, el resto sin titular. */
+const fraccionesDelFormulario: FraccionImputableListada[] = Array.from({ length: 8 }, (_, indice) => {
+  const number = indice + 1
+  const vendida = number === 3 || number === 5
+  return {
+    id: `fraccion-${number}`,
+    number,
+    status: vendida ? 'sold' : 'available',
+    ownerId: vendida ? `titular-${number}` : null,
+    ownerLabel: vendida ? `Titular ${number}` : null,
+  }
+})
+
 function cuotas(monto: number, activas: number[] = [], revertidas = false): CuotaListada[] {
   return generarCuotas(pesos(monto), fracciones(activas), '2026-09-14').map(cuota => ({
     id: `cuota-${cuota.fraction}`,
@@ -72,6 +85,8 @@ function movimiento(cambios: Partial<MovimientoListado> = {}): MovimientoListado
     accountName: 'Cuenta bancaria',
     incurredOn: '2026-09-14',
     description: 'Bomba de la piscina',
+    allocation: 'prorated',
+    fractionNumber: null,
     createdAt: '2026-09-14T15:00:00Z',
     voidedAt: null,
     voidReason: null,
@@ -81,11 +96,20 @@ function movimiento(cambios: Partial<MovimientoListado> = {}): MovimientoListado
 
 describe('MovementForm', () => {
   async function montar() {
-    return mountSuspended(MovementForm, { props: { propertyId: PROPIEDAD, maestra, enviando: false } })
+    return mountSuspended(MovementForm, { props: { propertyId: PROPIEDAD, maestra, fracciones: fraccionesDelFormulario, enviando: false } })
   }
 
   function elegirCategoria(formulario: Awaited<ReturnType<typeof montar>>, id: string) {
     formulario.findComponent({ name: 'USelect' }).vm.$emit('update:modelValue', id)
+  }
+
+  /** RF-23.8 · el reparto directo abre el selector de fracción justo después del de categoría. */
+  async function imputarA(formulario: Awaited<ReturnType<typeof montar>>, fraccion: string | null) {
+    formulario.findComponent({ name: 'URadioGroup' }).vm.$emit('update:modelValue', 'single_fraction')
+    await flushPromises()
+    if (fraccion) {
+      formulario.findAllComponents({ name: 'USelect' })[1]!.vm.$emit('update:modelValue', fraccion)
+    }
   }
 
   it('RF-23.2 · emite el gasto completo con monto entero, categoría, medio, cuenta, fecha y descripción', async () => {
@@ -108,6 +132,8 @@ describe('MovementForm', () => {
       accountId: 'cuenta-banco',
       incurredOn: '2026-09-14',
       description: 'Bomba de la piscina',
+      allocation: 'prorated',
+      fractionId: null,
     })
     expect(typeof emitido.amount).toBe('number')
   })
@@ -151,6 +177,54 @@ describe('MovementForm', () => {
 
     expect(formulario.find('[data-test="campo-categoria"]').text()).toContain('costo de Arena')
     expect(formulario.emitted('submit')).toBeUndefined()
+  })
+
+  it('CA-23.8 · RF-23.8 · imputado a una fracción vendida emite el reparto directo con esa fracción', async () => {
+    const formulario = await montar()
+
+    await formulario.find('[data-test="campo-monto"] input').setValue('150000')
+    elegirCategoria(formulario, 'cat-mantenimiento')
+    await imputarA(formulario, 'fraccion-3')
+    await formulario.find('[data-test="campo-descripcion"] textarea').setValue('Vidrio roto')
+    await formulario.find('form').trigger('submit')
+    await flushPromises()
+
+    const emitido = formulario.emitted('submit')?.[0]?.[0] as NuevoMovimiento
+    expect(emitido.allocation).toBe('single_fraction')
+    expect(emitido.fractionId).toBe('fraccion-3')
+    expect(emitido.amount).toBe(150_000)
+  })
+
+  it('RF-23.9 · solo ofrece las fracciones vendidas, con su titular', async () => {
+    const formulario = await montar()
+    await imputarA(formulario, null)
+
+    const opciones = formulario.findAllComponents({ name: 'USelect' })[1]!.props('items') as { value: string, label: string }[]
+    expect(opciones.map(opcion => opcion.value)).toEqual(['fraccion-3', 'fraccion-5'])
+    expect(opciones[0]!.label).toContain('Titular 3')
+  })
+
+  it('CA-23.9 · imputado sin elegir fracción no se emite y lo dice en su campo', async () => {
+    const formulario = await montar()
+
+    await formulario.find('[data-test="campo-monto"] input').setValue('150000')
+    elegirCategoria(formulario, 'cat-mantenimiento')
+    await imputarA(formulario, null)
+    await formulario.find('[data-test="campo-descripcion"] textarea').setValue('Vidrio roto')
+    await formulario.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(formulario.find('[data-test="campo-fraccion"]').text()).toContain('Elige la fracción a la que se imputa')
+    expect(formulario.emitted('submit')).toBeUndefined()
+  })
+
+  it('RF-23.9 · sin fracciones vendidas avisa que no hay a quién imputar', async () => {
+    const formulario = await mountSuspended(MovementForm, {
+      props: { propertyId: PROPIEDAD, maestra, fracciones: fraccionesDelFormulario.map(f => ({ ...f, status: 'available', ownerId: null, ownerLabel: null })), enviando: false },
+    })
+    await imputarA(formulario, null)
+
+    expect(formulario.find('[data-test="sin-fracciones-vendidas"]').text()).toContain('no hay a quién imputar')
   })
 
   it('RF-23.7 · la fecha de causación viene propuesta y se explica como periodo, no como día de pago', async () => {
@@ -212,6 +286,21 @@ describe('MovementsTable', () => {
 
     await tabla.find('[data-test="anular-movimiento-mov-1"]').trigger('click')
     expect(tabla.emitted('anular')).toEqual([['mov-1']])
+  })
+
+  it('RF-23.8 · D-41 · la lista dice si el gasto se prorrateó o se imputó a una fracción', async () => {
+    const tabla = await mountSuspended(MovementsTable, {
+      props: {
+        movimientos: [
+          movimiento(),
+          movimiento({ id: 'mov-2', allocation: 'single_fraction', fractionNumber: 3, amount: pesos(150_000), description: 'Vidrio roto' }),
+        ],
+        puedeGestionar: true,
+      },
+    })
+
+    expect(tabla.find('[data-test="reparto-mov-1"]').text()).toBe('8 fracciones')
+    expect(tabla.find('[data-test="reparto-mov-2"]').text()).toBe('Solo 3/8')
   })
 
   it('CA-23.4 · un gasto anulado sigue en la lista, marcado y sin la acción de anular', async () => {

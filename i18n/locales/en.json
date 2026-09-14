@@ -1767,7 +1767,11 @@
       "account_required": "Choose the ledger account.",
       "date_invalid": "Enter the accrual date.",
       "description_required": "Describe the expense.",
-      "reason_required": "Write the reason."
+      "reason_required": "Write the reason.",
+      "fraction_required": "Choose the fraction to charge.",
+      "fraction_not_sold": "Only a sold fraction can be charged: that one has no owner.",
+      "fraction_not_in_property": "That fraction does not belong to this property.",
+      "fraction_not_expected": "A prorated expense does not take a fraction."
     },
     "errors": {
       "save_failed": "We could not save the expense.",
@@ -1777,6 +1781,17 @@
     "messages": {
       "registered": "Expense recorded with its 8 shares.",
       "voided": "Expense voided; its 8 shares were reversed."
+    },
+    "allocation": {
+      "label": "Split",
+      "hint": "A common expense is split across the 8 fractions. Damage caused by one fraction is charged to that fraction only.",
+      "prorated": "Across the 8 fractions",
+      "single_fraction": "To a single fraction",
+      "fraction": "Responsible fraction",
+      "fractionPlaceholder": "Choose the fraction",
+      "noneSold": "This property has no sold fractions: there is nobody to charge.",
+      "badgeProrated": "8 fractions",
+      "badgeSingle": "Only {number}/8"
     }
   }
 }

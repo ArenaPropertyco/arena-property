@@ -8,7 +8,7 @@ Como Administrador de Propiedad, quiero registrar gastos de mantenimiento asocia
 
 ## Requisitos funcionales
 - **RF-27.1** — Gasto de mantenimiento con categoría (de la maestra HU-23), monto, fecha y foto/factura opcional (Supabase Storage); asociable a un ítem de inventario (HU-26) o a la propiedad en general.
-- **RF-27.2** — Todo gasto de mantenimiento **es** un gasto del módulo financiero (HU-23): se prorratea entre las 8 fracciones y aparece en HU-19/HU-24/HU-25 — un solo modelo de gasto, no dos.
+- **RF-27.2** — Todo gasto de mantenimiento **es** un gasto del módulo financiero (HU-23): se reparte según RF-23.8 —prorrateado entre las 8 fracciones o imputado a una sola si el daño es de ella (D-41)— y aparece en HU-19/HU-24/HU-25 — un solo modelo de gasto, no dos.
 - **RF-27.3** — Desde el ítem se consulta su historial de mantenimientos.
 
 ## Criterios de aceptación (base de las pruebas unitarias)

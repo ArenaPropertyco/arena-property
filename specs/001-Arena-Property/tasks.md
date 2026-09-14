@@ -439,11 +439,13 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
   Hecho cuando: pasa `CA-23.6`.
 - [x] **T-177 · Formulario de gasto del Administrador** — `HU-23 · RF-23.2` · `RT-06`
   Hecho cuando: registra un gasto completo desde móvil y muestra las 8 cuotas generadas.
+- [x] **T-177b · Gasto imputado a una sola fracción** — `HU-23 · RF-23.8, RF-23.9` · D-41
+  Hecho cuando: el reparto se elige al registrar, la imputación exige fracción vendida y genera una sola cuota; pasan `CA-23.8`, `CA-23.9` y `CA-23.10`.
 
 ## Paso 2 · HU-24, HU-40, HU-39 — Detalle, ingresos y renta a terceros
 
-- [ ] **T-178 · Armado puro del detalle de prorrateo** — `HU-24 · RF-24.1, RF-24.4`
-  Hecho cuando: pasa `CA-24.1`.
+- [ ] **T-178 · Armado puro del detalle de prorrateo** — `HU-24 · RF-24.1, RF-24.2c, RF-24.4` · D-41
+  Hecho cuando: pasan `CA-24.1` y `CA-24.2c`; la cuota imputada no muestra la fórmula de división.
 - [ ] **T-179 · Detalle de cuota de ingreso y marca de residuo** — `HU-24 · RF-24.2, RF-24.2b` · `TR-02 RF-D.3` · D-39
   Hecho cuando: pasan `CA-24.2` y `CA-24.2b`, el residuo aparece explícito y la cuota atribuida no muestra la fórmula de división.
 - [ ] **T-180 · RLS del detalle por fracción propia** — `HU-24 · RF-24.3`

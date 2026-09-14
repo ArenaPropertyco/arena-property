@@ -5,7 +5,7 @@ Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 ⚠️ Define la maestra de categorías/cuentas que consumen HU-24, HU-25, HU-27, HU-40 y E11: diseñarla primero.
 
 ## Historia
-Como Administrador de Propiedad, quiero registrar gastos comunes de una propiedad (mantención, servicios, limpieza), para que se prorrateen automáticamente entre las 8 fracciones.
+Como Administrador de Propiedad, quiero registrar gastos comunes de una propiedad (mantención, servicios, limpieza), para que se prorrateen automáticamente entre las 8 fracciones; y, cuando un daño o una avería son de una fracción, imputárselos solo a ella (D-41).
 
 ## Requisitos funcionales
 - **RF-23.1** — **Maestra contable**: catálogo administrable de categorías de ingreso/egreso, tipos de pago y cuentas contables; todo movimiento financiero referencia obligatoriamente entradas de la maestra.
@@ -14,6 +14,8 @@ Como Administrador de Propiedad, quiero registrar gastos comunes de una propieda
 - **RF-23.4** — Un gasto no se elimina: se anula con motivo, revirtiendo sus cuotas de forma auditable.
 - **RF-23.5** — **Las comisiones a Embajadores NO pertenecen a esta maestra (D-01):** son costo de plataforma de Arena, se registran en el libro de plataforma de HU-25 y jamás se prorratean entre las fracciones.
 - **RF-23.6** — **Fracciones sin calendario activo (D-08, D-31):** el prorrateo es siempre 1/8 fijo; la cuota de cada fracción **no vendida o vendida con calendario inactivo** se imputa al **titular del inventario** (Arena o el vendedor), que figura como su pagador. El Propietario empieza a asumirla desde la primera causación posterior a la activación de su calendario. Ninguna cuota queda sin pagador ni se redistribuye entre los propietarios actuales.
+- **RF-23.8** — **Reparto del gasto (D-41):** al registrarlo el Administrador elige entre **prorratear entre las 8 fracciones** (RF-23.3, el reparto por omisión) o **imputar a una sola fracción**, para daños o averías atribuibles al uso de esa fracción. El reparto queda persistido en el movimiento y no se edita: se anula y se registra otro.
+- **RF-23.9** — **Imputación a una fracción:** genera **una única cuota** por el monto íntegro, sin residuo, a cargo del Propietario de esa fracción. Solo procede sobre una fracción **vendida** de la misma propiedad; sobre una disponible o reservada se rechaza, porque no hay a quién imputarle. No depende del interruptor de calendario (D-31).
 - **RF-23.7** — Todo movimiento se imputa al periodo de su **fecha de causación**, no a la de su pago (D-09).
 
 ## Criterios de aceptación (base de las pruebas unitarias)
@@ -23,6 +25,9 @@ Como Administrador de Propiedad, quiero registrar gastos comunes de una propieda
 - **CA-23.4** — Dada la anulación de un gasto, entonces sus 8 cuotas quedan revertidas y el movimiento de anulación auditado.
 - **CA-23.5** — Dada una propiedad con 3 fracciones de calendario activo y un gasto de $80.000, entonces se generan igualmente 8 cuotas de $10.000: 3 a cargo de esos propietarios y 5 a cargo del titular del inventario.
 - **CA-23.7** — Dada una fracción vendida con calendario inactivo, entonces su cuota se imputa al titular del inventario; activado el calendario, la siguiente causación se imputa al Propietario.
+- **CA-23.8** — Dado un gasto de $150.000 imputado a la fracción 3/8 (vendida), entonces se genera exactamente una cuota de $150.000 a cargo de su Propietario, sin residuo, y ninguna cuota para las otras siete.
+- **CA-23.9** — Dado un gasto imputado a una fracción disponible o reservada, o a una fracción de otra propiedad, o sin indicar fracción, entonces se rechaza.
+- **CA-23.10** — Dada la anulación de un gasto imputado a una fracción, entonces su única cuota queda revertida y el movimiento auditado, igual que en CA-23.4.
 - **CA-23.6** — Dado un intento de registrar una comisión de Embajador en esta maestra, entonces se rechaza por categoría no permitida.
 
 ## Dependencias
