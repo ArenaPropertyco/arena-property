@@ -73,7 +73,9 @@ export const MATRIZ: Record<Capacidad, Fila> = {
   reservar_en_su_fraccion: fila('no', 'no', 'si', 'no', 'no', 'no'),
   ver_finanzas: fila('todas', 'propias', 'propias', 'no', 'no', 'no'),
   gestionar_inventario: fila('no', 'si', 'lectura', 'no', 'no', 'no'),
-  registrar_gastos: fila('no', 'si', 'lectura', 'no', 'no', 'no'),
+  // D-40 · el Superadmin registra en todas; sin él, una propiedad sin Administrador
+  // asignado se quedaba sin nadie capaz de darle de alta un gasto.
+  registrar_gastos: fila('todas', 'si', 'lectura', 'no', 'no', 'no'),
   enviar_novedades: fila('si', 'si', 'no', 'no', 'no', 'no'),
   administrar_usuarios_y_roles: fila('si', 'no', 'no', 'no', 'no', 'no'),
   registrarse: fila('no_aplica', 'no_aplica', 'no_aplica', 'no_aplica', 'no_aplica', 'si'),
@@ -114,6 +116,10 @@ export const CAPACIDADES_EN_BASE_DE_DATOS: readonly Capacidad[] = [
   // (RF-11.2): ampliarlas en esta pantalla no da acceso a los datos.
   'gestionar_propiedades',
   'eliminar_propiedades',
+  // HU-23 · las políticas de `movements` y `movement_shares` acotan por
+  // `puede_gestionar_propiedad` (D-40) y reservan las cuotas a la fracción propia
+  // (RF-24.3): ampliarla en esta pantalla no da acceso a los datos.
+  'registrar_gastos',
 ]
 
 /** Estados que condicionan una capacidad además del rol (RF-07.2b, D-31). */

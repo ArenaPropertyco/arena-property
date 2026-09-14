@@ -2,7 +2,7 @@
 -- movimientos y las 8 cuotas generadas por la base.
 -- Nivel N2: lo que garantiza el motor, no la disciplina de código.
 begin;
-select plan(67);
+select plan(71);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'expense_categories', 'RF-23.1 · existe expense_categories');
@@ -40,10 +40,13 @@ insert into auth.users (id, email) values
   ('d2300000-0000-4000-8000-000000000004', 'titular4.hu23@ejemplo.com'),
   ('d2300000-0000-4000-8000-000000000005', 'titular5.hu23@ejemplo.com'),
   ('d2300000-0000-4000-8000-000000000007', 'titular7.hu23@ejemplo.com'),
-  ('d2300000-0000-4000-8000-000000000009', 'ajeno.hu23@ejemplo.com');
+  ('d2300000-0000-4000-8000-000000000009', 'ajeno.hu23@ejemplo.com'),
+  ('d2300000-0000-4000-8000-00000000000b', 'admin.sinasignar.hu23@arena.co');
 insert into public.user_roles (user_id, role) values
   ('d2300000-0000-4000-8000-00000000000a', 'superadmin'),
-  ('d2300000-0000-4000-8000-000000000001', 'property_admin');
+  ('d2300000-0000-4000-8000-000000000001', 'property_admin'),
+  -- D-40 · CA-07.5 · Administrador con rol pero sin esta propiedad asignada.
+  ('d2300000-0000-4000-8000-00000000000b', 'property_admin');
 
 -- ── RF-23.1 · la maestra la escribe el Superadmin y la lee cualquiera ───────
 set local role authenticated;
@@ -303,6 +306,29 @@ set local request.jwt.claim.sub = 'd2300000-0000-4000-8000-00000000000a';
 select is(
   (select count(*) from public.movement_shares where property_id = 'a2300000-0000-4000-8000-000000000001'),
   40::bigint, 'RF-23.6 · el Superadmin ve todas las cuotas de todos los movimientos');
+
+-- ── CA-07.5 · D-40 · el Superadmin registra en una propiedad que no administra ─
+-- La propiedad la creó el Administrador ...001, que es su único asignado.
+select is(
+  (select count(*) from public.property_admins
+    where property_id = 'a2300000-0000-4000-8000-000000000001'
+      and admin_id = 'd2300000-0000-4000-8000-00000000000a' and revoked_at is null),
+  0::bigint, 'CA-07.5 · el Superadmin no figura como Administrador de esta propiedad');
+select lives_ok(
+  $$ insert into public.movements (id, property_id, amount, category_id, payment_method_id, account_id, incurred_on, description)
+     values ('e2300000-0000-4000-8000-000000000006', 'a2300000-0000-4000-8000-000000000001', 100000,
+             (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Gasto del Superadmin') $$,
+  'CA-07.5 · D-40 · aun así registra el gasto');
+select is(
+  (select count(*) from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000006'),
+  8::bigint, 'CA-07.5 · y la base le genera sus 8 cuotas igual que a cualquiera');
+
+-- La enmienda alcanza al Superadmin, no a cualquier Administrador.
+set local request.jwt.claim.sub = 'd2300000-0000-4000-8000-00000000000b';
+select throws_ok(
+  $$ insert into public.movements (property_id, amount, category_id, payment_method_id, account_id, incurred_on, description)
+     values ('a2300000-0000-4000-8000-000000000001', 1000, (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Admin sin asignar') $$,
+  '42501', null, 'CA-07.5 · un Administrador sin la propiedad asignada sigue sin poder registrar');
 
 reset role;
 select * from finish();

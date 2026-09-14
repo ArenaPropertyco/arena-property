@@ -7,7 +7,9 @@ import { esCombinacionValida, ROLES } from '#shared/permissions/roles'
  * HU-07 · RF-07.2 y RF-07.2b — el mapa de permisos tipado es la única fuente de
  * la interfaz. Nivel N1: sin Nuxt ni base de datos.
  *
- * La tabla esperada de abajo es una transcripción literal de la matriz del VSM §2.
+ * La tabla esperada de abajo transcribe la matriz del VSM §2 con las enmiendas que
+ * la spec declara encima: hoy solo `registrar_gastos` para el Superadmin (RF-07.2c,
+ * D-40).
  * Que exista dos veces (aquí y en `shared/permissions/mapa.ts`) es el punto del
  * "test tabla-completa": si alguien toca una celda del mapa sin tocar la spec, esto
  * falla.
@@ -31,7 +33,7 @@ const ESPERADO: Record<Capacidad, Alcance[]> = {
   reservar_en_su_fraccion: [N, N, S, N, N, N],
   ver_finanzas: [T, P, P, N, N, N],
   gestionar_inventario: [N, S, L, N, N, N],
-  registrar_gastos: [N, S, L, N, N, N],
+  registrar_gastos: [T, S, L, N, N, N],
   enviar_novedades: [S, S, N, N, N, N],
   administrar_usuarios_y_roles: [S, N, N, N, N, N],
   registrarse: [X, X, X, X, X, S],
