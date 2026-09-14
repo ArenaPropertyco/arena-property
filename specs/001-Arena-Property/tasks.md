@@ -444,22 +444,26 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 - [ ] **T-178 · Armado puro del detalle de prorrateo** — `HU-24 · RF-24.1, RF-24.4`
   Hecho cuando: pasa `CA-24.1`.
-- [ ] **T-179 · Detalle de cuota de ingreso y marca de residuo** — `HU-24 · RF-24.2` · `TR-02 RF-D.3`
-  Hecho cuando: pasa `CA-24.2` y el residuo aparece explícito.
+- [ ] **T-179 · Detalle de cuota de ingreso y marca de residuo** — `HU-24 · RF-24.2, RF-24.2b` · `TR-02 RF-D.3` · D-39
+  Hecho cuando: pasan `CA-24.2` y `CA-24.2b`, el residuo aparece explícito y la cuota atribuida no muestra la fórmula de división.
 - [ ] **T-180 · RLS del detalle por fracción propia** — `HU-24 · RF-24.3`
   Hecho cuando: pasa `CA-24.3`.
 - [ ] **T-181 · Migración de `third_parties` con consentimiento** — `HU-39 · RF-39.1, RF-39.5` · D-25
   Hecho cuando: existe con RLS, evita duplicar por documento y guarda fecha de anonimización.
-- [ ] **T-182 · Migración de `third_party_bookings` sobre la bolsa de renta** — `HU-39 · RF-39.2, RF-39.3`
-  Hecho cuando: comparte la restricción de exclusión con `stays` y `blocks`.
+- [ ] **T-182 · Migración de `third_party_bookings` sobre la bolsa de renta** — `HU-39 · RF-39.2, RF-39.2b, RF-39.3` · D-39
+  Hecho cuando: comparte la restricción de exclusión con `stays` y `blocks`, y guarda la fracción y el motivo de origen de la semana; pasa `CA-39.5`.
 - [ ] **T-183 · Validación de renta solo sobre bolsa de renta** — `HU-39 · RF-39.2`
   Hecho cuando: pasan `CA-39.1` y `CA-39.2`.
 - [ ] **T-184 · Reutilización de tercero y cancelación** — `HU-39 · RF-39.1, RF-39.4`
   Hecho cuando: pasan `CA-39.3` y `CA-39.4`.
 - [ ] **T-185 · Migración del ingreso por renta** — `HU-40 · RF-40.1, RF-40.3`
   Hecho cuando: existe vinculado a la reserva, con un solo ingreso vigente por reserva.
-- [ ] **T-186 · Prorrateo del ingreso a las 8 fracciones** — `HU-40 · RF-40.2` · `TR-02`
-  Hecho cuando: pasan `CA-40.1` y `CA-40.3`.
+- [ ] **T-186 · Reparto del ingreso según el origen de la semana** — `HU-40 · RF-40.2` · `TR-02` · D-39
+  Hecho cuando: una función pura decide entre prorrateo y atribución a partir del motivo, y pasan `CA-40.1`, `CA-40.3` y `CA-40.4`.
+- [ ] **T-186b · Comisión de gestión por propiedad** — `HU-40 · RF-40.4, RF-40.5` · `TR-02` · D-39
+  Hecho cuando: el Superadmin fija el porcentaje, la comisión va al libro de plataforma sin prorratearse, el ingreso se rechaza si no hay porcentaje, y pasan `CA-40.5` y `CA-40.6`.
+- [ ] **T-186c · Aviso al liberar y anulación del ingreso atribuido** — `HU-14 · RF-14.7b` · `HU-40 · RF-40.6` · D-39
+  Hecho cuando: liberar advierte de la consecuencia económica y la anulación revierte cuota y comisión; pasan `CA-14.8b` y `CA-40.7`.
 - [ ] **T-187 · Rechazo de segundo ingreso sobre la misma reserva** — `HU-40 · RF-40.3`
   Hecho cuando: pasa `CA-40.2`.
 

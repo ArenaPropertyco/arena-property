@@ -7,7 +7,7 @@ Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
 Como Propietario, quiero ver mis utilidades y gastos prorrateados por propiedad dentro de mi dashboard, para entender el rendimiento y costo de mi inversión.
 
 ## Requisitos funcionales
-- **RF-19.1** — Desglose por propiedad de gastos comunes e ingresos prorrateados a la fracción (1/8 de cada movimiento de HU-23/HU-40), agrupado por categoría de la maestra.
+- **RF-19.1** — Desglose por propiedad de los gastos comunes y los ingresos que tocan a la fracción, agrupado por categoría de la maestra: la cuota prorrateada (1/8 de cada movimiento de HU-23/HU-40) y, aparte, el **ingreso atribuido** por las semanas que la propia fracción liberó y se rentaron a terceros (D-39), que no es 1/8 de nada. Cada naturaleza se rotula como lo que es.
 - **RF-19.2** — Histórico mensual navegable: total de ingresos, total de gastos y neto por mes; la agregación mensual es una función pura.
 - **RF-19.3** — Cada línea enlaza al detalle del cálculo (HU-24).
 - **RF-19.4** — Cifras en IBM Plex Mono; ningún valor estimado sin etiqueta (RT-08); el Propietario solo ve sus fracciones (RLS).

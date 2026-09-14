@@ -17,6 +17,7 @@ Como Propietario, quiero confirmar las semanas que voy a usar, cancelar las que 
 - **RF-14.5** — La composición 1 alta, 1 media-alta, 1 media y 3 bajas es invariante de la selección (HU-12 RF-12.3), no una validación de esta historia.
 - **RF-14.6** — **Cancelación (D-14):** una semana confirmada se cancela hasta **30 días antes** de su sábado de entrada y pasa a la bolsa de renta; dentro de los 30 días se rechaza. No hay cancelación parcial: la semana es indivisible.
 - **RF-14.7** — **Liberación y caducidad (D-15, D-33):** el Propietario puede liberar cualquier semana suya en cualquier momento antes de su entrada, y la semana elegida que siga **sin confirmar a 60 días** de su entrada pasa automáticamente a la bolsa de renta, previo aviso (TR-03). Una semana liberada o caducada no vuelve a la fracción.
+- **RF-14.7b** — **Liberar tiene consecuencia económica (D-39).** La semana liberada voluntariamente guarda la fracción de la que salía y ese motivo. Si el Administrador la renta a un tercero, el ingreso es de esa fracción y no se prorratea (HU-40 RF-40.2). Lo cancelado (RF-14.6) y lo caducado a 60 días (RF-14.7) no dan ese derecho: se prorratean entre las ocho. La pantalla lo dice al liberar, para que la decisión se tome informada y no se descubra después en el estado de cuenta.
 - **RF-14.8** — Las Fechas Especiales (HU-60) quedan aplazadas (D-33): mientras tanto esas noches son de la bolsa del Administrador.
 - **RF-14.9** — Al confirmar, el sistema **advierte** de las semanas propias que aún faltan por confirmar y de cuándo vence cada una; es información, no un bloqueo.
 - **RF-14.10** — Toda confirmación, cancelación y liberación se audita (TR-01), se notifica (TR-03) y se valida también en el servidor; la unicidad de la semana por fracción la garantiza la base.
@@ -32,6 +33,7 @@ Como Propietario, quiero confirmar las semanas que voy a usar, cancelar las que 
 - **CA-14.6** — Dada una semana cancelada, entonces no puede volver a confirmarse ni figura como cupo disponible de la fracción.
 - **CA-14.7** — Dada una semana elegida sin confirmar a 59 días de su entrada, entonces ya está en la bolsa de renta y el Propietario fue avisado.
 - **CA-14.8** — Dada una semana propia liberada voluntariamente, entonces queda en la bolsa de renta con su motivo y el Propietario tiene constancia.
+- **CA-14.8b** — Dada una semana liberada voluntariamente y otra caducada a 60 días, entonces solo la primera queda marcada como atribuible a su fracción para el ingreso de HU-40.
 - **CA-14.9** — Dadas dos confirmaciones simultáneas de la misma semana, entonces exactamente una queda registrada.
 
 ## Dependencias

@@ -22,6 +22,7 @@ Specs que lo implementan: [HU-12](./HU12-spec.md), [HU-13](./HU13-spec.md), [HU-
 | **Bolsa del Administrador** | Las 3 o 4 semanas de la rejilla que no se reparten; mantenimiento y uso institucional. |
 | **Fechas Especiales** | Noches del año que quedan fuera de la rejilla (1 a 9). Aplazadas (D-33): por ahora van a la bolsa del Administrador. |
 | **Bolsa de renta** | Semanas liberadas, canceladas, caducadas o no elegidas, disponibles para renta a terceros. |
+| **Semana liberada** | Semana que su Propietario cede voluntariamente antes de su entrada (RF-14.7). Es el único camino a la bolsa que conserva dueño: si se renta, el ingreso es suyo, neto de comisión (D-39). |
 | **Semana confirmada** | Semana elegida que el Propietario confirmó como uso propio antes de 60 días (D-33). |
 | **Ventana** | Periodo anual en que las fracciones, por turnos rotativos, reubican semanas elegidas a otras libres de la misma temporada (D-36). |
 | **Calendario activo** | Interruptor derivado del plan de pagos; sin él la fracción no puede reservar. |
