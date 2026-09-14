@@ -8,7 +8,7 @@ Como Propietario, quiero un dashboard donde vea todas mis propiedades (fraccione
 
 ## Requisitos funcionales
 - **RF-18.1** — Tarjeta por propiedad/fracción con: número de fracción, próxima estadía (si existe) y estado de cuenta (saldo del periodo).
-- **RF-18.2** — Cuando la propiedad tiene ingresos por reserva a terceros (HU-40), la tarjeta muestra el detalle prorrateado que corresponde a la fracción.
+- **RF-18.2** — Cuando la propiedad tiene ingresos por reserva a terceros (HU-40), la tarjeta muestra lo que toca a la fracción distinguiendo su naturaleza: la parte **prorrateada** de las semanas sin dueño y el ingreso **atribuido** por las semanas que la propia fracción liberó (D-39), ya neto de la comisión de gestión.
 - **RF-18.3** — El armado del resumen (próxima estadía, saldo, ingresos prorrateados) es lógica pura en composables sobre datos tipados.
 - **RF-18.4** — El Propietario solo ve sus propias fracciones (RLS); un Propietario con fracciones en varias propiedades las ve todas.
 - **RF-18.5** — La tarjeta muestra el estado del **plan de pagos** y del **interruptor de calendario** de la fracción (HU-58, D-31) mientras no esté completado —con el saldo pendiente y qué falta para activarlo—, y el listado de copropietarios de la propiedad con nombre y fracción, sin datos de contacto (D-16).

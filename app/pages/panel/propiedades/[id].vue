@@ -37,6 +37,7 @@ const { administradores: cuentasAdministradoras } = useAdministradores()
 
 const esSuperadmin = computed(() => roles.value.includes('superadmin'))
 const puedeGestionar = computed(() => puede(roles.value, 'gestionar_propiedades', { escritura: true }))
+const puedeVerFinanzas = computed(() => puede(roles.value, 'ver_finanzas'))
 
 const editando = ref(false)
 const fraccionando = ref(false)
@@ -224,6 +225,17 @@ function abrirPlan(plan: string) {
             :label="t('properties.edit')"
             data-test="editar-propiedad"
             @click="editando = true"
+          />
+
+          <!-- HU-23 · los gastos comunes viven en su propia pantalla, con sus 8 cuotas. -->
+          <UButton
+            v-if="puedeVerFinanzas && ficha.fractionCount === 8"
+            variant="outline"
+            size="sm"
+            icon="i-lucide-receipt"
+            :to="localePath(`/panel/gastos/${id}`)"
+            :label="t('finance.open')"
+            data-test="abrir-gastos"
           />
         </div>
       </div>

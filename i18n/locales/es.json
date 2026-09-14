@@ -1710,5 +1710,73 @@
       "already_enrolled": "Ese correo ya está en la lista de espera de esta propiedad.",
       "save_failed": "No pudimos anotarte en la lista. Inténtalo de nuevo o escríbenos por WhatsApp."
     }
+  },
+  "finance": {
+    "title": "Gastos comunes",
+    "subtitle": "Gastos de la propiedad prorrateados entre las 8 fracciones.",
+    "open": "Gastos comunes",
+    "notFound": "No encontramos esa propiedad, o no tienes acceso a sus finanzas.",
+    "readOnly": "Solo lectura: los gastos los registra el Administrador de la propiedad.",
+    "register": "Registrar gasto",
+    "registerTitle": "Nuevo gasto común",
+    "amount": "Monto",
+    "amountHint": "Entero en pesos, sin decimales.",
+    "category": "Categoría",
+    "categoryPlaceholder": "Elige una categoría",
+    "method": "Medio de pago",
+    "account": "Cuenta contable",
+    "incurredOn": "Fecha de causación",
+    "incurredOnHint": "El periodo al que se imputa el gasto, no el día en que se pagó.",
+    "description": "Descripción",
+    "descriptionHint": "Qué se pagó y por qué.",
+    "submit": "Guardar gasto",
+    "empty": "Todavía no hay gastos registrados.",
+    "loading": "Cargando gastos…",
+    "columns": {
+      "date": "Causación",
+      "concept": "Concepto",
+      "amount": "Monto",
+      "method": "Medio · Cuenta"
+    },
+    "void": "Anular",
+    "voided": "Anulado",
+    "voidTitle": "Anular gasto",
+    "voidHint": "El gasto no se borra: queda anulado con este motivo y sus 8 cuotas se revierten.",
+    "confirmVoid": "Anular con este motivo",
+    "shares": {
+      "title": "Cuotas generadas",
+      "subtitle": "Ocho cuotas, una por fracción, cuya suma es exactamente el monto del gasto.",
+      "view": "Ver cuotas",
+      "fraction": "Fracción",
+      "amount": "Cuota",
+      "payer": "A cargo de",
+      "owner": "Propietario",
+      "inventory_holder": "Titular del inventario",
+      "remainder": "Con residuo",
+      "remainderHint": "Esta cuota absorbió un peso del residuo del reparto.",
+      "reversed": "Revertida",
+      "total": "Suma de las cuotas"
+    },
+    "validation": {
+      "amount_not_positive": "El monto debe ser un entero de pesos mayor que cero.",
+      "category_required": "Elige la categoría del gasto.",
+      "category_not_in_master": "Esa categoría no está en la maestra contable.",
+      "category_not_allowed": "Las comisiones a Embajadores son costo de Arena: no se prorratean a la propiedad.",
+      "category_kind_mismatch": "Esa categoría no es de gasto.",
+      "method_required": "Elige el medio de pago.",
+      "account_required": "Elige la cuenta contable.",
+      "date_invalid": "Indica la fecha de causación.",
+      "description_required": "Describe el gasto.",
+      "reason_required": "Escribe el motivo."
+    },
+    "errors": {
+      "save_failed": "No pudimos guardar el gasto.",
+      "category_rejected": "La base rechazó la categoría: revisa la maestra contable.",
+      "void_failed": "No pudimos anular el gasto."
+    },
+    "messages": {
+      "registered": "Gasto registrado con sus 8 cuotas.",
+      "voided": "Gasto anulado; sus 8 cuotas quedaron revertidas."
+    }
   }
 }

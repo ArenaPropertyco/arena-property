@@ -11,6 +11,7 @@ Como Administrador de Propiedad, quiero crear una reserva en el calendario de un
 ## Requisitos funcionales
 - **RF-39.1** — El Administrador registra al tercero (nombre, documento, contacto) en una base de datos de terceros asociada; un tercero es reutilizable entre reservas.
 - **RF-39.2** — La reserva a tercero solo procede sobre **noches de la bolsa de renta**: liberadas voluntariamente, canceladas a más de 30 días, sin estadía declarada a 60 días (D-14, D-15), liberadas en la ventana de reubicación (HU-59) o sobrantes de la rejilla. Nunca sobre noches con estadía declarada por un Propietario.
+- **RF-39.2b** — **La semana rentada conserva su origen (D-39).** La reserva a tercero guarda, por la semana que ocupa, de qué fracción salía y **con qué motivo** entró a la bolsa: liberada voluntariamente, cancelada, caducada a 60 días, reubicada (HU-59) o sobrante de la rejilla. Ese par —fracción y motivo— es el único dato con el que HU-40 decide a quién pertenece el ingreso, y se fija al crear la reserva: no se recalcula después.
 - **RF-39.5** — Los datos del tercero se guardan con consentimiento explícito y se conservan 5 años, tras los cuales se anonimizan (D-25).
 - **RF-39.3** — La reserva a tercero queda tipada como tal (distinta de reserva de propietario y de bloqueo) y enlaza con el ingreso financiero de HU-40.
 - **RF-39.4** — Cancelar una reserva a tercero libera la semana y queda auditado.
@@ -20,6 +21,7 @@ Como Administrador de Propiedad, quiero crear una reserva en el calendario de un
 - **CA-39.2** — Dada una reserva a tercero creada, entonces la semana aparece ocupada en la proyección del calendario de HU-13.
 - **CA-39.3** — Dado un tercero ya registrado, cuando se crea otra reserva, entonces se reutiliza su registro (sin duplicar por documento).
 - **CA-39.4** — Dada la cancelación, entonces la semana vuelve a estar disponible y existe el registro de auditoría.
+- **CA-39.5** — Dada una semana que la fracción 3/8 liberó voluntariamente, cuando se crea la reserva a tercero, entonces queda registrada con esa fracción y el motivo «liberada»; dada una semana sobrante de la rejilla, queda sin fracción de origen.
 
 ## Dependencias
-- HU-12/HU-15 (calendario y bloqueos) · HU-40 (ingreso asociado).
+- HU-12/HU-15 (calendario y bloqueos) · HU-14 (liberación voluntaria) · HU-40 (ingreso asociado) · D-39.
