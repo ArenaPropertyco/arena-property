@@ -543,6 +543,39 @@ export type Database = {
           },
         ]
       }
+      expense_categories: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          name: string
+          scope: Database["public"]["Enums"]["category_scope"]
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          name: string
+          scope?: Database["public"]["Enums"]["category_scope"]
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["movement_kind"]
+          name?: string
+          scope?: Database["public"]["Enums"]["category_scope"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       fractions: {
         Row: {
           calendar_activated_at: string | null
@@ -590,6 +623,197 @@ export type Database = {
           },
           {
             foreignKeyName: "fractions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ledger_accounts: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      movement_shares: {
+        Row: {
+          amount: number
+          created_at: string
+          fraction_id: string
+          fraction_number: number
+          has_remainder: boolean
+          id: string
+          movement_id: string
+          payer: Database["public"]["Enums"]["share_payer"]
+          payer_id: string | null
+          property_id: string
+          reversed_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          fraction_id: string
+          fraction_number: number
+          has_remainder?: boolean
+          id?: string
+          movement_id: string
+          payer: Database["public"]["Enums"]["share_payer"]
+          payer_id?: string | null
+          property_id: string
+          reversed_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          fraction_id?: string
+          fraction_number?: number
+          has_remainder?: boolean
+          id?: string
+          movement_id?: string
+          payer?: Database["public"]["Enums"]["share_payer"]
+          payer_id?: string | null
+          property_id?: string
+          reversed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "movement_shares_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movement_shares_movement_id_fkey"
+            columns: ["movement_id"]
+            isOneToOne: false
+            referencedRelation: "movements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movement_shares_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movement_shares_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      movements: {
+        Row: {
+          account_id: string
+          amount: number
+          category_id: string
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          incurred_on: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          payment_method_id: string
+          property_id: string
+          updated_at: string
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        Insert: {
+          account_id: string
+          amount: number
+          category_id: string
+          created_at?: string
+          created_by?: string | null
+          description: string
+          id?: string
+          incurred_on: string
+          kind?: Database["public"]["Enums"]["movement_kind"]
+          payment_method_id: string
+          property_id: string
+          updated_at?: string
+          void_reason?: string | null
+          voided_at?: string | null
+          voided_by?: string | null
+        }
+        Update: {
+          account_id?: string
+          amount?: number
+          category_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          incurred_on?: string
+          kind?: Database["public"]["Enums"]["movement_kind"]
+          payment_method_id?: string
+          property_id?: string
+          updated_at?: string
+          void_reason?: string | null
+          voided_at?: string | null
+          voided_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "movements_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "ledger_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "expense_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_payment_method_id_fkey"
+            columns: ["payment_method_id"]
+            isOneToOne: false
+            referencedRelation: "payment_methods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "property_overview"
@@ -744,6 +968,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      payment_methods: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       payment_plans: {
         Row: {
@@ -1911,6 +2165,32 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      anular_movimiento: {
+        Args: { motivo: string; movimiento: string }
+        Returns: {
+          account_id: string
+          amount: number
+          category_id: string
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          incurred_on: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          payment_method_id: string
+          property_id: string
+          updated_at: string
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "movements"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       aplicar_atribucion_referido: {
         Args: { codigo: string }
         Returns: undefined
@@ -2196,13 +2476,16 @@ export type Database = {
         | "owner"
         | "ambassador"
         | "user"
+      category_scope: "property" | "platform"
       commission_kind: "fixed" | "percentage"
       fraction_status: "available" | "reserved" | "sold"
+      movement_kind: "expense" | "income"
       payment_event_kind: "payment_completed" | "purchase_voided"
       property_media_kind: "photo" | "video" | "floor_plan" | "floor_plan_2d"
       property_visibility: "draft" | "published" | "inactive"
       purchase_invitation_status: "pending" | "accepted" | "cancelled"
       referral_stage: "registered" | "payment_in_progress" | "paid"
+      share_payer: "owner" | "inventory_holder"
       suspension_kind: "administrative" | "breach_or_fraud"
     }
     CompositeTypes: {
@@ -2337,13 +2620,16 @@ export const Constants = {
       account_status: ["active", "suspended"],
       ambassador_status: ["pending", "approved", "rejected", "suspended"],
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
+      category_scope: ["property", "platform"],
       commission_kind: ["fixed", "percentage"],
       fraction_status: ["available", "reserved", "sold"],
+      movement_kind: ["expense", "income"],
       payment_event_kind: ["payment_completed", "purchase_voided"],
       property_media_kind: ["photo", "video", "floor_plan", "floor_plan_2d"],
       property_visibility: ["draft", "published", "inactive"],
       purchase_invitation_status: ["pending", "accepted", "cancelled"],
       referral_stage: ["registered", "payment_in_progress", "paid"],
+      share_payer: ["owner", "inventory_holder"],
       suspension_kind: ["administrative", "breach_or_fraud"],
     },
   },

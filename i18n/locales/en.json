@@ -1710,5 +1710,73 @@
       "already_enrolled": "That email is already on the waiting list for this property.",
       "save_failed": "We could not add you to the list. Try again or write to us on WhatsApp."
     }
+  },
+  "finance": {
+    "title": "Common expenses",
+    "subtitle": "Property expenses prorated across the 8 fractions.",
+    "open": "Common expenses",
+    "notFound": "We could not find that property, or you do not have access to its finances.",
+    "readOnly": "Read only: expenses are recorded by the property administrator.",
+    "register": "Record expense",
+    "registerTitle": "New common expense",
+    "amount": "Amount",
+    "amountHint": "Whole pesos, no decimals.",
+    "category": "Category",
+    "categoryPlaceholder": "Choose a category",
+    "method": "Payment method",
+    "account": "Ledger account",
+    "incurredOn": "Accrual date",
+    "incurredOnHint": "The period the expense belongs to, not the day it was paid.",
+    "description": "Description",
+    "descriptionHint": "What was paid and why.",
+    "submit": "Save expense",
+    "empty": "No expenses recorded yet.",
+    "loading": "Loading expenses…",
+    "columns": {
+      "date": "Accrued",
+      "concept": "Concept",
+      "amount": "Amount",
+      "method": "Method · Account"
+    },
+    "void": "Void",
+    "voided": "Voided",
+    "voidTitle": "Void expense",
+    "voidHint": "The expense is not deleted: it is voided with this reason and its 8 shares are reversed.",
+    "confirmVoid": "Void with this reason",
+    "shares": {
+      "title": "Generated shares",
+      "subtitle": "Eight shares, one per fraction, adding up to exactly the expense amount.",
+      "view": "View shares",
+      "fraction": "Fraction",
+      "amount": "Share",
+      "payer": "Payable by",
+      "owner": "Owner",
+      "inventory_holder": "Inventory holder",
+      "remainder": "With remainder",
+      "remainderHint": "This share absorbed one peso of the split remainder.",
+      "reversed": "Reversed",
+      "total": "Sum of shares"
+    },
+    "validation": {
+      "amount_not_positive": "The amount must be a whole number of pesos greater than zero.",
+      "category_required": "Choose the expense category.",
+      "category_not_in_master": "That category is not in the ledger master.",
+      "category_not_allowed": "Ambassador commissions are an Arena cost: they are not prorated to the property.",
+      "category_kind_mismatch": "That category is not an expense category.",
+      "method_required": "Choose the payment method.",
+      "account_required": "Choose the ledger account.",
+      "date_invalid": "Enter the accrual date.",
+      "description_required": "Describe the expense.",
+      "reason_required": "Write the reason."
+    },
+    "errors": {
+      "save_failed": "We could not save the expense.",
+      "category_rejected": "The database rejected the category: check the ledger master.",
+      "void_failed": "We could not void the expense."
+    },
+    "messages": {
+      "registered": "Expense recorded with its 8 shares.",
+      "voided": "Expense voided; its 8 shares were reversed."
+    }
   }
 }

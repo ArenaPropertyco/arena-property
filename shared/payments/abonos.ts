@@ -6,6 +6,7 @@
  * formulario pero no la restricción.
  */
 
+import { esFecha } from '../dates/validacion'
 import type { CopAmount } from '../money/importe'
 import { esImporte } from '../money/importe'
 import type { EstadoDePlan } from './plan'
@@ -55,16 +56,6 @@ export interface ErrorDeAbono {
   message: ClaveDeValidacionDeAbono
 }
 
-const FECHA = /^\d{4}-\d{2}-\d{2}$/
-
-function esFechaValida(texto: string): boolean {
-  if (!FECHA.test(texto)) {
-    return false
-  }
-  const fecha = new Date(`${texto}T00:00:00Z`)
-  return !Number.isNaN(fecha.getTime()) && fecha.toISOString().startsWith(texto)
-}
-
 export function validarAbono(abono: NuevoAbono, plan: ContextoDelPlan): ErrorDeAbono[] {
   const errores: ErrorDeAbono[] = []
 
@@ -81,7 +72,7 @@ export function validarAbono(abono: NuevoAbono, plan: ContextoDelPlan): ErrorDeA
     errores.push({ name: 'amount', message: 'payments.validation.overpayment' })
   }
 
-  if (!esFechaValida(abono.paidOn)) {
+  if (!esFecha(abono.paidOn)) {
     errores.push({ name: 'paidOn', message: 'payments.validation.date_invalid' })
   }
 

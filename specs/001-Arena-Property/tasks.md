@@ -421,23 +421,23 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 1 · HU-23 — Maestra contable y prorrateo
 
-- [ ] **T-169 · Migración de la maestra contable** — `HU-23 · RF-23.1`
+- [x] **T-169 · Migración de la maestra contable** — `HU-23 · RF-23.1`
   Hecho cuando: existen categorías, medios de pago y cuentas con RLS y marca de activa.
-- [ ] **T-170 · Migración de `movements` con fecha de causación** — `HU-23 · RF-23.2, RF-23.7` · D-09
+- [x] **T-170 · Migración de `movements` con fecha de causación** — `HU-23 · RF-23.2, RF-23.7` · D-09
   Hecho cuando: existe con RLS, exige categoría de la maestra y monto mayor que cero.
-- [ ] **T-171 · Migración de `movement_shares` con pagador** — `HU-23 · RF-23.6` · D-08, D-31
+- [x] **T-171 · Migración de `movement_shares` con pagador** — `HU-23 · RF-23.6` · D-08, D-31
   Hecho cuando: cada cuota registra si la paga el Propietario o el titular del inventario.
-- [ ] **T-172 · Generación automática de las 8 cuotas** — `HU-23 · RF-23.3` · `TR-02`
+- [x] **T-172 · Generación automática de las 8 cuotas** — `HU-23 · RF-23.3` · `TR-02`
   Hecho cuando: pasan `CA-23.1` y `CA-23.2`.
-- [ ] **T-173 · Imputación de fracciones sin calendario activo** — `HU-23 · RF-23.6`
+- [x] **T-173 · Imputación de fracciones sin calendario activo** — `HU-23 · RF-23.6`
   Hecho cuando: pasan `CA-23.5` y `CA-23.7`.
-- [ ] **T-174 · Validaciones de alta de gasto** — `HU-23 · RF-23.2`
+- [x] **T-174 · Validaciones de alta de gasto** — `HU-23 · RF-23.2`
   Hecho cuando: pasa `CA-23.3`.
-- [ ] **T-175 · Anulación de gasto con reversa de cuotas** — `HU-23 · RF-23.4`
+- [x] **T-175 · Anulación de gasto con reversa de cuotas** — `HU-23 · RF-23.4`
   Hecho cuando: pasa `CA-23.4`.
-- [ ] **T-176 · Rechazo de comisiones en la maestra de propiedad** — `HU-23 · RF-23.5` · D-01
+- [x] **T-176 · Rechazo de comisiones en la maestra de propiedad** — `HU-23 · RF-23.5` · D-01
   Hecho cuando: pasa `CA-23.6`.
-- [ ] **T-177 · Formulario de gasto del Administrador** — `HU-23 · RF-23.2` · `RT-06`
+- [x] **T-177 · Formulario de gasto del Administrador** — `HU-23 · RF-23.2` · `RT-06`
   Hecho cuando: registra un gasto completo desde móvil y muestra las 8 cuotas generadas.
 
 ## Paso 2 · HU-24, HU-40, HU-39 — Detalle, ingresos y renta a terceros
