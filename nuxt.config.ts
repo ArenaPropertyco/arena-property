@@ -49,6 +49,15 @@ export default defineNuxtConfig({
     mailFrom: 'Arena Property <no-reply@arena-property.com>',
     // TR-03 · token que autoriza al programador externo a despachar el correo pendiente.
     notificationsDispatchToken: '',
+    supabase: {
+      // La llave de servicio se declara vacía a propósito. El módulo de Supabase la
+      // lee de `process.env` al construir, y eso la dejaba escrita dentro del bundle
+      // del servidor: el escaneo de secretos de Netlify la encontraba y tumbaba el
+      // despliegue, con razón. Al declararla aquí, `defu` respeta este valor y en el
+      // paquete no viaja ningún secreto; en ejecución, `NUXT_SUPABASE_SECRET_KEY`
+      // sobreescribe este hueco. Nunca se exime del escaneo: se evita que se filtre.
+      secretKey: '',
+    },
   },
 
   future: {
