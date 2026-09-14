@@ -10,11 +10,13 @@
 import { esFecha } from '../dates/validacion'
 import type { CopAmount } from '../money/importe'
 import { esImporte } from '../money/importe'
+import type { EstadoDeFraccion } from '../properties/fracciones'
+import type { Reparto } from './cuotas'
 import type { ClaseDeMovimiento, MaestraContable } from './maestra'
 import { esCategoriaDePropiedad } from './maestra'
 
 export const CAMPOS_DE_MOVIMIENTO = [
-  'amount', 'categoryId', 'paymentMethodId', 'accountId', 'incurredOn', 'description',
+  'amount', 'categoryId', 'paymentMethodId', 'accountId', 'incurredOn', 'description', 'fractionId',
 ] as const
 export type CampoDeMovimiento = typeof CAMPOS_DE_MOVIMIENTO[number]
 
@@ -28,6 +30,10 @@ export const CLAVES_DE_VALIDACION_DE_MOVIMIENTO = [
   'finance.validation.account_required',
   'finance.validation.date_invalid',
   'finance.validation.description_required',
+  'finance.validation.fraction_required',
+  'finance.validation.fraction_not_sold',
+  'finance.validation.fraction_not_in_property',
+  'finance.validation.fraction_not_expected',
   'finance.validation.reason_required',
 ] as const
 
@@ -43,6 +49,18 @@ export interface NuevoMovimiento {
   /** D-09 · día de causación `AAAA-MM-DD`: el periodo al que se imputa. */
   incurredOn: string
   description: string
+  /** RF-23.8 · D-41 · entre las 8 fracciones o a una sola. */
+  allocation: Reparto
+  /** RF-23.9 · la fracción imputada; solo con reparto `single_fraction`. */
+  fractionId: string | null
+}
+
+/** Lo que de una fracción decide si se le puede imputar un gasto (RF-23.9). */
+export interface FraccionImputable {
+  id: string
+  number: number
+  status: EstadoDeFraccion
+  ownerId: string | null
 }
 
 export interface ErrorDeMovimiento {
@@ -50,8 +68,16 @@ export interface ErrorDeMovimiento {
   message: ClaveDeValidacionDeMovimiento
 }
 
-/** RF-23.2 · CA-23.3 · CA-23.6 · qué movimiento entra y cuál se rechaza, con su mensaje. */
-export function validarMovimiento(movimiento: NuevoMovimiento, maestra: MaestraContable): ErrorDeMovimiento[] {
+/**
+ * RF-23.2 · CA-23.3 · CA-23.6 · CA-23.9 · qué movimiento entra y cuál se rechaza,
+ * con su mensaje. `fracciones` son las de la propiedad: deciden a cuál se puede
+ * imputar (D-41).
+ */
+export function validarMovimiento(
+  movimiento: NuevoMovimiento,
+  maestra: MaestraContable,
+  fracciones: readonly FraccionImputable[],
+): ErrorDeMovimiento[] {
   const errores: ErrorDeMovimiento[] = []
 
   if (!esImporte(movimiento.amount) || movimiento.amount <= 0) {
@@ -87,6 +113,24 @@ export function validarMovimiento(movimiento: NuevoMovimiento, maestra: MaestraC
 
   if (movimiento.description.trim() === '') {
     errores.push({ name: 'description', message: 'finance.validation.description_required' })
+  }
+
+  // RF-23.8 · RF-23.9 · D-41 · el reparto directo exige una fracción vendida de la
+  // propiedad; el prorrateado no admite fracción, para no dejar un dato ambiguo.
+  if (movimiento.allocation === 'single_fraction') {
+    const elegida = fracciones.find(fraccion => fraccion.id === movimiento.fractionId) ?? null
+    if (!movimiento.fractionId) {
+      errores.push({ name: 'fractionId', message: 'finance.validation.fraction_required' })
+    }
+    else if (!elegida) {
+      errores.push({ name: 'fractionId', message: 'finance.validation.fraction_not_in_property' })
+    }
+    else if (elegida.status !== 'sold' || elegida.ownerId === null) {
+      errores.push({ name: 'fractionId', message: 'finance.validation.fraction_not_sold' })
+    }
+  }
+  else if (movimiento.fractionId) {
+    errores.push({ name: 'fractionId', message: 'finance.validation.fraction_not_expected' })
   }
 
   return errores

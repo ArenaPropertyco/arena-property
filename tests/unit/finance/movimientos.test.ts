@@ -6,7 +6,7 @@ import {
   validarAnulacionDeMovimiento,
   validarMovimiento,
 } from '#shared/finance/movimientos'
-import type { NuevoMovimiento } from '#shared/finance/movimientos'
+import type { FraccionImputable, NuevoMovimiento } from '#shared/finance/movimientos'
 
 /**
  * HU-23 · RF-23.2, RF-23.4, RF-23.5 · D-01 — qué gasto entra y cuál se rechaza.
@@ -32,10 +32,23 @@ const maestra: MaestraContable = {
   ],
 }
 
+/** Las 8 fracciones de la propiedad: la 3 vendida, la 5 reservada, el resto disponibles. */
+const fracciones: FraccionImputable[] = Array.from({ length: 8 }, (_, indice) => {
+  const number = indice + 1
+  return {
+    id: `fraccion-${number}`,
+    number,
+    status: number === 3 ? 'sold' : number === 5 ? 'reserved' : 'available',
+    ownerId: number === 3 ? 'titular-3' : null,
+  }
+})
+
 function gasto(cambios: Partial<NuevoMovimiento> = {}): NuevoMovimiento {
   return {
     propertyId: 'a5000000-0000-4000-8000-000000000001',
     kind: 'expense',
+    allocation: 'prorated',
+    fractionId: null,
     amount: pesos(100_000),
     categoryId: 'cat-mantenimiento',
     paymentMethodId: 'medio-transfer',
@@ -47,12 +60,12 @@ function gasto(cambios: Partial<NuevoMovimiento> = {}): NuevoMovimiento {
 }
 
 function mensajes(cambios: Partial<NuevoMovimiento> = {}): string[] {
-  return validarMovimiento(gasto(cambios), maestra).map(error => error.message)
+  return validarMovimiento(gasto(cambios), maestra, fracciones).map(error => error.message)
 }
 
 describe('RF-23.2 · un gasto completo entra', () => {
   it('con monto, categoría, medio, cuenta, fecha y descripción no hay errores', () => {
-    expect(validarMovimiento(gasto(), maestra)).toEqual([])
+    expect(validarMovimiento(gasto(), maestra, fracciones)).toEqual([])
   })
 
   it('toda clave de validación tiene su texto en i18n (la paridad la comprueba el contrato)', () => {
@@ -116,9 +129,39 @@ describe('RF-23.2 · los demás campos obligatorios', () => {
   })
 
   it('cada error señala su campo, para que el formulario lo pinte donde toca', () => {
-    const errores = validarMovimiento(gasto({ amount: pesos(0), categoryId: '' }), maestra)
+    const errores = validarMovimiento(gasto({ amount: pesos(0), categoryId: '' }), maestra, fracciones)
 
     expect(errores.map(error => error.name)).toEqual(['amount', 'categoryId'])
+  })
+})
+
+describe('RF-23.8 · RF-23.9 · reparto del gasto: prorrateado o imputado a una fracción (D-41)', () => {
+  it('RF-23.8 · un gasto imputado a una fracción vendida de la propiedad entra', () => {
+    expect(mensajes({ allocation: 'single_fraction', fractionId: 'fraccion-3' })).toEqual([])
+  })
+
+  it('CA-23.9 · imputar sin indicar fracción se rechaza', () => {
+    expect(mensajes({ allocation: 'single_fraction', fractionId: null })).toEqual(['finance.validation.fraction_required'])
+    expect(mensajes({ allocation: 'single_fraction', fractionId: '' })).toEqual(['finance.validation.fraction_required'])
+  })
+
+  it('CA-23.9 · imputar a una fracción disponible o reservada se rechaza: no hay a quién', () => {
+    expect(mensajes({ allocation: 'single_fraction', fractionId: 'fraccion-1' })).toEqual(['finance.validation.fraction_not_sold'])
+    expect(mensajes({ allocation: 'single_fraction', fractionId: 'fraccion-5' })).toEqual(['finance.validation.fraction_not_sold'])
+  })
+
+  it('CA-23.9 · imputar a una fracción que no es de la propiedad se rechaza', () => {
+    expect(mensajes({ allocation: 'single_fraction', fractionId: 'fraccion-de-otra-casa' })).toEqual(['finance.validation.fraction_not_in_property'])
+  })
+
+  it('RF-23.8 · un gasto prorrateado no lleva fracción: si la trae, se rechaza para no dejar un dato ambiguo', () => {
+    expect(mensajes({ allocation: 'prorated', fractionId: 'fraccion-3' })).toEqual(['finance.validation.fraction_not_expected'])
+  })
+
+  it('el error señala el campo de fracción, para que el formulario lo pinte donde toca', () => {
+    const errores = validarMovimiento(gasto({ allocation: 'single_fraction', fractionId: null }), maestra, fracciones)
+
+    expect(errores.map(error => error.name)).toEqual(['fractionId'])
   })
 })
 

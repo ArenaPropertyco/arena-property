@@ -22,7 +22,7 @@ const { roles } = useCuenta()
 const propiedadId = computed(() => String(ruta.params.propiedad ?? ''))
 
 const { maestra } = useMaestraContable()
-const { propiedad, movimientos, cuotasDe, pendiente, registrar, anular } = useMovimientos(propiedadId)
+const { propiedad, fracciones, movimientos, cuotasDe, pendiente, registrar, anular } = useMovimientos(propiedadId)
 
 const puedeRegistrar = computed(() => puede(roles.value, 'registrar_gastos', { escritura: true }))
 
@@ -140,6 +140,7 @@ async function confirmarAnulacion(motivo: string) {
           v-if="registrando"
           :property-id="propiedadId"
           :maestra="maestra"
+          :fracciones="fracciones"
           :enviando="ocupado"
           @submit="guardarGasto"
         />

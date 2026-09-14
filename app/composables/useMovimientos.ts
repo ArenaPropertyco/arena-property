@@ -1,5 +1,5 @@
 import type { NuevoMovimiento } from '#shared/finance/movimientos'
-import type { CuotaListada, MovimientoListado } from '#shared/finance/vistas'
+import type { CuotaListada, FraccionImputableListada, MovimientoListado } from '#shared/finance/vistas'
 import type { CopAmount } from '#shared/money/importe'
 import type { Database } from '#shared/types/database.types'
 import type { ResultadoDeEscritura } from './usePropiedades'
@@ -22,11 +22,13 @@ export function useMovimientos(propiedadId: Ref<string>) {
         return null
       }
 
-      const [propiedad, movimientos, cuotas] = await Promise.all([
+      const [propiedad, fracciones, movimientos, cuotas] = await Promise.all([
         client.from('properties').select('id, name').eq('id', propiedadId.value).maybeSingle(),
+        // RF-23.9 · a qué fracción se puede imputar un gasto: solo a una vendida.
+        client.from('fractions').select('id, number, status, owner_id').eq('property_id', propiedadId.value).order('number'),
         client
           .from('movements')
-          .select('*, expense_categories(name), payment_methods(name), ledger_accounts(name)')
+          .select('*, expense_categories(name), payment_methods(name), ledger_accounts(name), fractions(number)')
           .eq('property_id', propiedadId.value)
           .order('incurred_on', { ascending: false })
           .order('created_at', { ascending: false }),
@@ -41,11 +43,12 @@ export function useMovimientos(propiedadId: Ref<string>) {
         return null
       }
 
-      // Quién paga cada cuota, con nombre: solo los Propietarios; el titular del
-      // inventario no es una cuenta.
-      const pagadores = [...new Set((cuotas.data ?? [])
-        .map(cuota => cuota.payer_id)
-        .filter((valor): valor is string => valor !== null))]
+      // Quién paga cada cuota y quién es titular de cada fracción, con nombre: solo
+      // los Propietarios; el titular del inventario no es una cuenta.
+      const pagadores = [...new Set([
+        ...(cuotas.data ?? []).map(cuota => cuota.payer_id),
+        ...(fracciones.data ?? []).map(fraccion => fraccion.owner_id),
+      ].filter((valor): valor is string => valor !== null))]
       const perfiles = pagadores.length === 0
         ? { data: [] }
         : await client.from('profiles').select('id, email, full_name').in('id', pagadores)
@@ -55,6 +58,13 @@ export function useMovimientos(propiedadId: Ref<string>) {
 
       return {
         propiedad: { id: propiedad.data.id, name: propiedad.data.name },
+        fracciones: (fracciones.data ?? []).map<FraccionImputableListada>(fila => ({
+          id: fila.id,
+          number: fila.number,
+          status: fila.status,
+          ownerId: fila.owner_id,
+          ownerLabel: fila.owner_id ? etiquetaPorCuenta.get(fila.owner_id) ?? fila.owner_id : null,
+        })),
         movimientos: (movimientos.data ?? []).map<MovimientoListado>(fila => ({
           id: fila.id,
           propertyId: fila.property_id,
@@ -65,6 +75,8 @@ export function useMovimientos(propiedadId: Ref<string>) {
           accountName: fila.ledger_accounts?.name ?? '',
           incurredOn: fila.incurred_on,
           description: fila.description,
+          allocation: fila.allocation,
+          fractionNumber: fila.fractions?.number ?? null,
           createdAt: fila.created_at,
           voidedAt: fila.voided_at,
           voidReason: fila.void_reason,
@@ -105,13 +117,21 @@ export function useMovimientos(propiedadId: Ref<string>) {
         account_id: nuevo.accountId,
         incurred_on: nuevo.incurredOn,
         description: nuevo.description,
+        allocation: nuevo.allocation,
+        fraction_id: nuevo.fractionId,
       })
       .select('id')
       .single()
 
     if (error || !data) {
       // CA-23.6 · la base rechaza la categoría aunque el formulario la dejara pasar.
-      return { ok: false, clave: /CA-23\.[36]/.test(error?.message ?? '') ? 'finance.errors.category_rejected' : 'finance.errors.save_failed' }
+      const mensaje = error?.message ?? ''
+      return {
+        ok: false,
+        clave: /CA-23\.[36]/.test(mensaje)
+          ? 'finance.errors.category_rejected'
+          : /CA-23\.9/.test(mensaje) ? 'finance.validation.fraction_not_sold' : 'finance.errors.save_failed',
+      }
     }
 
     await consulta.refresh()
@@ -131,6 +151,7 @@ export function useMovimientos(propiedadId: Ref<string>) {
 
   return {
     propiedad: computed(() => consulta.data.value?.propiedad ?? null),
+    fracciones: computed(() => consulta.data.value?.fracciones ?? []),
     movimientos,
     cuotasDe,
     pendiente: consulta.pending,

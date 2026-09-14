@@ -2,7 +2,7 @@
 -- movimientos y las 8 cuotas generadas por la base.
 -- Nivel N2: lo que garantiza el motor, no la disciplina de código.
 begin;
-select plan(71);
+select plan(85);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'expense_categories', 'RF-23.1 · existe expense_categories');
@@ -329,6 +329,77 @@ select throws_ok(
   $$ insert into public.movements (property_id, amount, category_id, payment_method_id, account_id, incurred_on, description)
      values ('a2300000-0000-4000-8000-000000000001', 1000, (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Admin sin asignar') $$,
   '42501', null, 'CA-07.5 · un Administrador sin la propiedad asignada sigue sin poder registrar');
+
+-- ── RF-23.8 · RF-23.9 · D-41 · gasto imputado a una sola fracción ───────────
+set local request.jwt.claim.sub = 'd2300000-0000-4000-8000-000000000001';
+select lives_ok(
+  $$ insert into public.movements (id, property_id, amount, category_id, payment_method_id, account_id, incurred_on, description, allocation, fraction_id)
+     values ('e2300000-0000-4000-8000-000000000007', 'a2300000-0000-4000-8000-000000000001', 150000,
+             (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Vidrio roto en la estadía',
+             'single_fraction', (select id from public.fractions where property_id = 'a2300000-0000-4000-8000-000000000001' and number = 2)) $$,
+  'CA-23.8 · RF-23.8 · el Administrador imputa $150.000 a la fracción 2/8, vendida');
+select is(
+  (select count(*) from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000007'),
+  1::bigint, 'CA-23.8 · se genera exactamente una cuota y ninguna para las otras siete');
+select is(
+  (select (fraction_number, amount, payer::text, payer_id, has_remainder)
+     from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000007'),
+  (2::smallint, 150000::bigint, 'owner'::text, 'd2300000-0000-4000-8000-000000000002'::uuid, false),
+  'CA-23.8 · por el monto íntegro, a cargo de su Propietario y sin residuo');
+
+-- La 4/8 está vendida con el calendario inactivo: la imputación no mira el interruptor (D-31).
+select lives_ok(
+  $$ insert into public.movements (id, property_id, amount, category_id, payment_method_id, account_id, incurred_on, description, allocation, fraction_id)
+     values ('e2300000-0000-4000-8000-000000000008', 'a2300000-0000-4000-8000-000000000001', 90000,
+             (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Avería en la visita',
+             'single_fraction', (select id from public.fractions where property_id = 'a2300000-0000-4000-8000-000000000001' and number = 4)) $$,
+  'RF-23.9 · D-31 · a una fracción vendida con calendario inactivo también se le imputa');
+select is(
+  (select payer_id from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000008'),
+  'd2300000-0000-4000-8000-000000000004'::uuid, 'RF-23.9 · y la paga su Propietario, no el titular del inventario');
+
+-- CA-23.9 · lo que se rechaza.
+select throws_like(
+  $$ insert into public.movements (property_id, amount, category_id, payment_method_id, account_id, incurred_on, description, allocation, fraction_id)
+     values ('a2300000-0000-4000-8000-000000000001', 1000, (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'A una disponible',
+             'single_fraction', (select id from public.fractions where property_id = 'a2300000-0000-4000-8000-000000000001' and number = 1)) $$,
+  '%CA-23.9%', 'CA-23.9 · imputar a una fracción disponible se rechaza: no hay a quién');
+select throws_like(
+  $$ insert into public.movements (property_id, amount, category_id, payment_method_id, account_id, incurred_on, description, allocation, fraction_id)
+     values ('a2300000-0000-4000-8000-000000000001', 1000, (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'A otra casa',
+             'single_fraction', gen_random_uuid()) $$,
+  '%CA-23.9%', 'CA-23.9 · imputar a una fracción que no es de la propiedad se rechaza');
+select throws_like(
+  $$ insert into public.movements (property_id, amount, category_id, payment_method_id, account_id, incurred_on, description, allocation, fraction_id)
+     values ('a2300000-0000-4000-8000-000000000001', 1000, (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Sin fracción',
+             'single_fraction', null) $$,
+  '%CA-23.9%', 'CA-23.9 · imputar sin indicar la fracción se rechaza');
+select throws_like(
+  $$ insert into public.movements (property_id, amount, category_id, payment_method_id, account_id, incurred_on, description, allocation, fraction_id)
+     values ('a2300000-0000-4000-8000-000000000001', 1000, (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date, 'Prorrateado con fracción',
+             'prorated', (select id from public.fractions where property_id = 'a2300000-0000-4000-8000-000000000001' and number = 2)) $$,
+  '%RF-23.8%', 'RF-23.8 · un gasto prorrateado no admite fracción');
+
+-- CA-23.10 · la anulación revierte la cuota única y queda auditada.
+select lives_ok(
+  $$ select public.anular_movimiento('e2300000-0000-4000-8000-000000000007', 'El vidrio lo cubrió el seguro.') $$,
+  'CA-23.10 · el Administrador anula el gasto imputado con motivo');
+select is(
+  (select count(*) from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000007' and reversed_at is not null),
+  1::bigint, 'CA-23.10 · su única cuota queda revertida');
+select is(
+  (select reason from public.audit_log where action = 'movement.actualizada' and entity_id = 'e2300000-0000-4000-8000-000000000007'),
+  'El vidrio lo cubrió el seguro.', 'CA-23.10 · y el movimiento de anulación queda auditado con su motivo');
+
+-- RLS · la cuota imputada la ve su Propietario y nadie más de la propiedad.
+set local request.jwt.claim.sub = 'd2300000-0000-4000-8000-000000000004';
+select is(
+  (select count(*) from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000008'),
+  1::bigint, 'RF-24.3 · el Propietario de la 4/8 ve la cuota que se le imputó');
+set local request.jwt.claim.sub = 'd2300000-0000-4000-8000-000000000002';
+select is(
+  (select count(*) from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000008'),
+  0::bigint, 'RF-24.3 · el Propietario de la 2/8 no ve la cuota imputada a otra fracción');
 
 reset role;
 select * from finish();

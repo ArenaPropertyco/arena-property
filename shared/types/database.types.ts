@@ -734,11 +734,13 @@ export type Database = {
       movements: {
         Row: {
           account_id: string
+          allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
           category_id: string
           created_at: string
           created_by: string | null
           description: string
+          fraction_id: string | null
           id: string
           incurred_on: string
           kind: Database["public"]["Enums"]["movement_kind"]
@@ -751,11 +753,13 @@ export type Database = {
         }
         Insert: {
           account_id: string
+          allocation?: Database["public"]["Enums"]["movement_allocation"]
           amount: number
           category_id: string
           created_at?: string
           created_by?: string | null
           description: string
+          fraction_id?: string | null
           id?: string
           incurred_on: string
           kind?: Database["public"]["Enums"]["movement_kind"]
@@ -768,11 +772,13 @@ export type Database = {
         }
         Update: {
           account_id?: string
+          allocation?: Database["public"]["Enums"]["movement_allocation"]
           amount?: number
           category_id?: string
           created_at?: string
           created_by?: string | null
           description?: string
+          fraction_id?: string | null
           id?: string
           incurred_on?: string
           kind?: Database["public"]["Enums"]["movement_kind"]
@@ -796,6 +802,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "expense_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
             referencedColumns: ["id"]
           },
           {
@@ -2169,11 +2182,13 @@ export type Database = {
         Args: { motivo: string; movimiento: string }
         Returns: {
           account_id: string
+          allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
           category_id: string
           created_at: string
           created_by: string | null
           description: string
+          fraction_id: string | null
           id: string
           incurred_on: string
           kind: Database["public"]["Enums"]["movement_kind"]
@@ -2479,6 +2494,7 @@ export type Database = {
       category_scope: "property" | "platform"
       commission_kind: "fixed" | "percentage"
       fraction_status: "available" | "reserved" | "sold"
+      movement_allocation: "prorated" | "single_fraction"
       movement_kind: "expense" | "income"
       payment_event_kind: "payment_completed" | "purchase_voided"
       property_media_kind: "photo" | "video" | "floor_plan" | "floor_plan_2d"
@@ -2623,6 +2639,7 @@ export const Constants = {
       category_scope: ["property", "platform"],
       commission_kind: ["fixed", "percentage"],
       fraction_status: ["available", "reserved", "sold"],
+      movement_allocation: ["prorated", "single_fraction"],
       movement_kind: ["expense", "income"],
       payment_event_kind: ["payment_completed", "purchase_voided"],
       property_media_kind: ["photo", "video", "floor_plan", "floor_plan_2d"],

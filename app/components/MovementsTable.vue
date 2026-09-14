@@ -63,9 +63,21 @@ const columnas = computed<TableColumn<MovimientoListado>[]>(() => [
       </template>
 
       <template #concepto-cell="{ row }">
-        <div class="flex flex-col">
+        <div class="flex flex-col gap-1">
           <span :class="row.original.voidedAt ? 'text-muted line-through' : ''">{{ row.original.description }}</span>
-          <span class="text-xs text-muted">{{ row.original.categoryName }}</span>
+          <span class="flex flex-wrap items-center gap-1 text-xs text-muted">
+            {{ row.original.categoryName }}
+            <!-- RF-23.8 · D-41 · el reparto se ve: quién carga con el gasto no es un detalle. -->
+            <UBadge
+              :color="row.original.allocation === 'single_fraction' ? 'warning' : 'neutral'"
+              variant="subtle"
+              size="xs"
+              :label="row.original.allocation === 'single_fraction'
+                ? t('finance.allocation.badgeSingle', { number: row.original.fractionNumber ?? '' })
+                : t('finance.allocation.badgeProrated')"
+              :data-test="`reparto-${row.original.id}`"
+            />
+          </span>
         </div>
       </template>
 

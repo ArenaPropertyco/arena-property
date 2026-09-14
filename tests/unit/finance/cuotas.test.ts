@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { pesos, sumarTodos } from '#shared/money/importe'
-import { generarCuotas, pagadorDe } from '#shared/finance/cuotas'
+import { cuotaDirecta, generarCuotas, pagadorDe, repartirGasto } from '#shared/finance/cuotas'
 import type { FraccionParaCuota } from '#shared/finance/cuotas'
 
 /**
@@ -129,5 +129,46 @@ describe('RF-09.3 · el prorrateo exige las 8 fracciones', () => {
 
     expect(cuotas.map(cuota => cuota.fraction)).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
     expect(cuotas.filter(cuota => cuota.hasRemainder).map(cuota => cuota.fraction)).toEqual([1, 2, 3])
+  })
+})
+
+describe('CA-23.8 · un gasto imputado a una fracción genera una sola cuota íntegra (D-41)', () => {
+  it('CA-23.8 · $150.000 a la 3/8 vendida: una cuota de $150.000 a cargo de su Propietario, sin residuo', () => {
+    const cuotas = repartirGasto(pesos(150_000), conActivas([3]), CAUSACION, 'single_fraction', 3)
+
+    expect(cuotas).toEqual([{ fraction: 3, amount: 150_000, hasRemainder: false, payer: 'owner', payerId: 'titular-3' }])
+  })
+
+  it('CA-23.8 · ninguna cuota para las otras siete', () => {
+    const cuotas = repartirGasto(pesos(150_000), conActivas([3, 5]), CAUSACION, 'single_fraction', 3)
+
+    expect(cuotas.map(cuota => cuota.fraction)).toEqual([3])
+  })
+
+  it('RF-23.9 · D-31 · la imputación no depende del interruptor de calendario: vendida e inactiva paga igual', () => {
+    const vendidaInactiva: FraccionParaCuota = {
+      number: 4,
+      status: 'sold',
+      ownerId: 'titular-4',
+      calendarActive: false,
+      calendarActivatedAt: null,
+    }
+
+    expect(cuotaDirecta(pesos(90_000), vendidaInactiva)).toEqual({ fraction: 4, amount: 90_000, hasRemainder: false, payer: 'owner', payerId: 'titular-4' })
+  })
+
+  it('CA-23.9 · a una fracción sin vender no se le imputa: no hay a quién', () => {
+    expect(() => cuotaDirecta(pesos(90_000), sinVender()[0]!)).toThrow(/vendida/)
+    expect(() => repartirGasto(pesos(90_000), sinVender(), CAUSACION, 'single_fraction', 2)).toThrow(/vendida/)
+  })
+
+  it('CA-23.9 · sin número de fracción, o con uno que no está en la propiedad, no hay reparto directo', () => {
+    expect(() => repartirGasto(pesos(90_000), conActivas([3]), CAUSACION, 'single_fraction', null)).toThrow(/fracci/)
+    expect(() => repartirGasto(pesos(90_000), conActivas([3]), CAUSACION, 'single_fraction', 9)).toThrow(/fracci/)
+  })
+
+  it('RF-23.8 · el reparto prorrateado sigue siendo el de siempre', () => {
+    expect(repartirGasto(pesos(100_000), sinVender(), CAUSACION, 'prorated', null))
+      .toEqual(generarCuotas(pesos(100_000), sinVender(), CAUSACION))
   })
 })
