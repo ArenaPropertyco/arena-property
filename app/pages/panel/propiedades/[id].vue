@@ -38,6 +38,7 @@ const { administradores: cuentasAdministradoras } = useAdministradores()
 const esSuperadmin = computed(() => roles.value.includes('superadmin'))
 const puedeGestionar = computed(() => puede(roles.value, 'gestionar_propiedades', { escritura: true }))
 const puedeVerFinanzas = computed(() => puede(roles.value, 'ver_finanzas'))
+const puedeGestionarCalendario = computed(() => puede(roles.value, 'gestionar_calendario'))
 
 const editando = ref(false)
 const fraccionando = ref(false)
@@ -225,6 +226,17 @@ function abrirPlan(plan: string) {
             :label="t('properties.edit')"
             data-test="editar-propiedad"
             @click="editando = true"
+          />
+
+          <!-- HU-39 · HU-40 · la renta a terceros y su ingreso, por año. -->
+          <UButton
+            v-if="puedeGestionarCalendario && ficha.fractionCount === 8"
+            variant="outline"
+            size="sm"
+            icon="i-lucide-bed-double"
+            :to="localePath(`/panel/rentas/${id}`)"
+            :label="t('rentals.open')"
+            data-test="abrir-rentas"
           />
 
           <!-- HU-23 · los gastos comunes viven en su propia pantalla, con sus 8 cuotas. -->

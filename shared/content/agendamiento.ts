@@ -1,13 +1,13 @@
 /**
- * HU-43 · RF-43.1…RF-43.4 · D-32 · D-33 · D-36 — manifiesto de la página del
+ * HU-43 · RF-43.1…RF-43.4 · D-32 · D-36 · D-42 — manifiesto de la página del
  * sistema de agendamiento.
  *
  * La página pública no puede prometer algo distinto al motor (CA-43.2): la tabla
  * de temporadas se **deriva** del criterio por defecto de HU-12, no se escribe a
  * mano. Seis semanas al año por fracción, que son 42 noches: 1/1/1/3 semanas, o
- * 7/7/7/21 noches. Con D-33 la unidad de uso es la semana completa, así que la
- * estadía mínima publicada es la semana; la reserva por noches y sus mínimos
- * (D-11, D-29) quedan suspendidos y no se publican.
+ * 7/7/7/21 noches. Con D-42 la semana completa es la única unidad de uso, así que
+ * la página no publica ninguna menor: la reserva por noches (D-11) y los mínimos
+ * por temporada (D-29) quedaron derogados.
  */
 
 import { CRITERIO_POR_DEFECTO, cupoDeNoches } from '../scheduling/criterio'
@@ -23,17 +23,17 @@ export type IdDeAgendamiento = typeof IDS_DE_AGENDAMIENTO[number]
 
 export type SeccionDeAgendamiento = SeccionDePagina<IdDeAgendamiento>
 
-/** D-33 · la unidad de uso que el motor aplica hoy. */
+/** D-42 · la única unidad de uso que el motor conoce. */
 export const UNIDAD_DE_USO = 'week' as const
 
-/** D-33 · sin estadías por noches, lo mínimo que se usa es la semana entera. */
-export const ESTADIA_MINIMA_NOCHES = NOCHES_POR_SEMANA
+/** D-42 · cuántas noches ocupa esa unidad; no existe ninguna forma de usar menos. */
+export const NOCHES_DE_LA_UNIDAD_DE_USO = NOCHES_POR_SEMANA
 
 export interface TemporadaPublicada {
   id: Temporada
   semanas: number
   noches: number
-  estadiaMinimaNoches: number
+  unidadDeUsoNoches: number
 }
 
 const cupo = cupoDeNoches(CRITERIO_POR_DEFECTO)
@@ -43,7 +43,7 @@ export const TEMPORADAS_PUBLICADAS: readonly TemporadaPublicada[] = TEMPORADAS.m
   id: temporada,
   semanas: CRITERIO_POR_DEFECTO[temporada],
   noches: cupo[temporada],
-  estadiaMinimaNoches: ESTADIA_MINIMA_NOCHES,
+  unidadDeUsoNoches: NOCHES_DE_LA_UNIDAD_DE_USO,
 }))
 
 /** El total anual por fracción, en las dos unidades. */

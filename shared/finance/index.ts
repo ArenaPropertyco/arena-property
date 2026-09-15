@@ -4,6 +4,8 @@
  */
 
 export * from './cuotas'
+export * from './detalle'
+export * from './ingresos'
 export * from './maestra'
 export * from './movimientos'
 export * from './vistas'

@@ -101,6 +101,20 @@ describe('CA-13.2 · las semanas ajenas muestran nombre y fracción, nunca conta
   it('RF-13.3 · los bloqueos llevan su motivo y no son accionables', () => {
     expect(cell(projectWeeks(input()), 30)).toMatchObject({ type: 'blocked', reason: 'Mantenimiento', actionable: false })
   })
+
+  // D-44 · el mismo titular puede tener dos fracciones; se presentan por separado.
+  it('CA-13.5 · un titular con dos fracciones aparece repetido, una vez por fracción', () => {
+    const projection = projectWeeks(input({
+      ownFraction: 3,
+      coOwners: [{ fraction: 3, name: 'Ana Ruiz' }, { fraction: 5, name: 'Ana Ruiz' }],
+    }))
+
+    expect(cell(projection, 1)).toMatchObject({ type: 'other', fraction: 5, ownerName: 'Ana Ruiz' })
+    expect(cell(projection, 9)).toMatchObject({ type: 'other', fraction: 5, ownerName: 'Ana Ruiz' })
+    // La semana propia sigue siendo propia: la fracción manda, no el nombre.
+    expect(cell(projection, 0).type).toBe('own')
+    expect(cell(projection, 8).type).toBe('own')
+  })
 })
 
 describe('RF-13.1b · D-31 · con el calendario inactivo la vista es de solo lectura', () => {

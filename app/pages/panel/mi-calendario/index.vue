@@ -75,6 +75,17 @@ const eligiendo = ref(false)
 const solicitando = ref(false)
 const reubicando = ref(false)
 
+/**
+ * HU-14 · RF-14.7b · D-39 — liberar tiene consecuencia económica, así que no se
+ * dispara desde el calendario: primero se explica y luego se confirma.
+ */
+const liberando = ref<number | null>(null)
+
+async function confirmarLiberacion(week: number) {
+  await operar('release', week, 'calendar.weeks.released')
+  liberando.value = null
+}
+
 async function operar(accion: 'confirm' | 'cancel' | 'release', week: number, exito: string) {
   busyWeek.value = week
   const resultado = await semanas[accion](week)
@@ -198,7 +209,7 @@ async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string 
               :busy-week="busyWeek"
               @confirm="operar('confirm', $event, 'calendar.weeks.confirmed')"
               @cancel="operar('cancel', $event, 'calendar.weeks.cancelled')"
-              @release="operar('release', $event, 'calendar.weeks.released')"
+              @release="liberando = $event"
             />
           </section>
 
@@ -248,5 +259,20 @@ async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string 
         </template>
       </template>
     </div>
+
+    <UModal
+      :open="liberando !== null"
+      :title="t('calendar.weeks.releaseTitle')"
+      @update:open="liberando = null"
+    >
+      <template #body>
+        <ReleaseWeekNotice
+          v-if="liberando !== null"
+          :week="liberando"
+          :enviando="busyWeek === liberando"
+          @confirmar="confirmarLiberacion"
+        />
+      </template>
+    </UModal>
   </PanelPage>
 </template>

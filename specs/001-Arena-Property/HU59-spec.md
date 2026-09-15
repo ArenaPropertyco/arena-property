@@ -2,9 +2,10 @@
 
 Épica E4 · Sprint 2 · SP 8 · Prioridad **Must** · Rol: Propietario / Administrador / Superadmin
 Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md). Implementa [D-28](../../docs/decisions.md) y [D-36](../../docs/decisions.md).
-🆕 Historia nueva: nace de la decisión de reservar por noches individuales.
+🆕 Historia nueva: nació de la reserva por noches individuales y sobrevive a su derogación, ya por semanas completas (D-42).
 
-> **Revisada el 2026-09-09 (D-33, D-36):** la reubicación es **por semanas completas**. Cada Propietario mueve, durante su turno de la ventana anual, una semana elegida (HU-12) a otra libre de la **misma temporada**. Las estadías por noches, los mínimos (D-29) y las Fechas Especiales (RF-59.7, HU-60) siguen aplazados.
+> **Revisada el 2026-09-09 (D-33, D-36):** la reubicación es **por semanas completas**. Cada Propietario mueve, durante su turno de la ventana anual, una semana elegida (HU-12) a otra libre de la **misma temporada**.
+> **Revisada el 2026-09-15 (D-42):** las estadías por noches, los mínimos de D-29 y las Fechas Especiales quedan **derogados**, no aplazados: RF-59.7 desaparece y HU-60 se elimina.
 
 ## Historia
 Como Propietario, quiero mover alguna de mis semanas elegidas a otra fecha libre de la misma temporada dentro de una ventana anual con turnos, para adaptar mi cupo a mis planes sin que nadie acapare las mejores fechas.
@@ -15,8 +16,7 @@ Como Propietario, quiero mover alguna de mis semanas elegidas a otra fecha libre
 - **RF-59.3** — Durante su turno, el Propietario **con calendario activo** (D-31) puede mover una semana propia **elegida y todavía sin confirmar** a otra semana **libre** del calendario. Una fracción con calendario inactivo conserva su turno pero no puede operar en él. El Administrador asignado puede reubicar por cualquier fracción mientras la ventana esté abierta (HU-17).
 - **RF-59.4** — **Regla dura de temporada:** una semana solo se reubica dentro de **su misma temporada** (una baja no se convierte en alta). El cupo por temporada es invariante: antes y después de reubicar, la fracción conserva 1/1/1/3.
 - **RF-59.5** — Toda reubicación respeta las ocupaciones: la semana de destino no puede estar elegida por otra fracción, bloqueada (HU-15) ni en la bolsa de renta (HU-39), ni ser una semana ya pasada.
-- **RF-59.6** — Fuera de su turno, el Propietario ve la ventana en modo lectura. Terminados todos los turnos y hasta el cierre, la ventana queda abierta **por orden de llegada** para cualquier fracción con calendario activo. Cerrada la ventana —por el Superadmin, el Administrador o la tarea programada al vencer— las semanas no reubicadas quedan en sus fechas y las semanas liberadas por las reubicaciones figuran disponibles en la bolsa del Administrador y para la renta (HU-39).
-- **RF-59.7** — *(Aplazado con HU-60, D-33.)* La fracción que tenga asignada la bolsa de Fechas Especiales elegirá durante su turno las fechas concretas de sus estadías comodín.
+- **RF-59.6** — Fuera de su turno, el Propietario ve la ventana en modo lectura. Terminados todos los turnos y hasta el cierre, la ventana queda abierta **por orden de llegada** para cualquier fracción con calendario activo. Cerrada la ventana —por el Superadmin, el Administrador o la tarea programada al vencer— las semanas no reubicadas quedan en sus fechas y las semanas liberadas por las reubicaciones figuran disponibles en la bolsa de renta con su motivo `reubicada` (HU-39), que se prorratea entre las ocho porque no es liberación voluntaria (D-39).
 - **RF-59.8** — El motor de validación de reubicación es una función pura (entrada: semanas de la fracción, calendario ocupado, turno y movimiento propuesto; salida: aceptado o motivo de rechazo). Cada movimiento se audita con motivo (TR-01) y se notifica al Propietario (TR-03).
 
 ## Criterios de aceptación (base de las pruebas unitarias)
@@ -29,4 +29,4 @@ Como Propietario, quiero mover alguna de mis semanas elegidas a otra fecha libre
 - **CA-59.7** — Cerrada la ventana, entonces ninguna reubicación se acepta, las semanas no reubicadas siguen asignadas a su fracción y las semanas liberadas figuran disponibles.
 
 ## Dependencias
-- TR-01, TR-03 (habilitadores) · HU-12 (selección por turnos e intercambios) · HU-14 (confirmación de semanas) · HU-15 (bloqueos) · HU-39 (bolsa de renta) · HU-60 (aplazada).
+- TR-01, TR-03 (habilitadores) · HU-12 (selección por turnos e intercambios) · HU-14 (confirmación de semanas) · HU-15 (bloqueos) · HU-39 (bolsa de renta).

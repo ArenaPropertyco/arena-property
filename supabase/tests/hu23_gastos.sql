@@ -206,7 +206,7 @@ select is(
 
 insert into public.movements (id, property_id, amount, category_id, payment_method_id, account_id, incurred_on, description)
 values ('e2300000-0000-4000-8000-000000000004', 'a2300000-0000-4000-8000-000000000001', 80000,
-        (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date - 1, 'Causado antes de activar');
+        (select categoria from ctx), (select medio from ctx), (select cuenta from ctx), current_date - 3, 'Causado antes de activar');
 select is(
   (select payer::text from public.movement_shares where movement_id = 'e2300000-0000-4000-8000-000000000004' and fraction_number = 4),
   'inventory_holder', 'CA-23.7 · RF-23.7 · una causación anterior a la activación sigue siendo del inventario');

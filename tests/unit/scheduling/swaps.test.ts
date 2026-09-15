@@ -56,6 +56,24 @@ describe('CA-12.10 · intercambio entre fracciones', () => {
   })
 })
 
+describe('CA-12.12 · el intercambio no mira quién es el titular (D-44)', () => {
+  // Supóngase que las fracciones 1 y 3 son de la misma persona: el motor no tiene
+  // por qué saberlo. La unidad que intercambia es la fracción, no el dueño.
+  it('CA-12.12 · dos fracciones del mismo titular se intercambian como cualquier otra pareja', () => {
+    expect(validateSwapRequest({ fraction: 1, offeredWeek: 0, targetFraction: 3, requestedWeek: 2 }, { allocations })).toEqual([])
+    expect(validateSwap({ from: { fraction: 1, week: 0 }, to: { fraction: 3, week: 2 } }, { allocations, reason: 'Junta sus dos fracciones', requireReason: true })).toEqual([])
+  })
+
+  it('CA-12.12 · lo único que sigue prohibido es la fracción consigo misma', () => {
+    expect(validateSwap({ from: { fraction: 1, week: 0 }, to: { fraction: 1, week: 24 } }, { allocations }))
+      .toEqual([{ message: 'calendar.swaps.validation.same_fraction' }])
+  })
+
+  it('CA-12.12 · el selector ofrece todas las semanas de la temporada, sean de quien sean', () => {
+    expect(swappableWeeksFor(0, allocations).map(a => a.week)).toEqual([1, 2])
+  })
+})
+
 describe('CA-12.11 · solicitud de intercambio del Propietario', () => {
   it('CA-12.11 · solo ofrece una semana propia por una ajena de la misma temporada', () => {
     expect(validateSwapRequest({ fraction: 1, offeredWeek: 0, targetFraction: 3, requestedWeek: 2 }, { allocations })).toEqual([])

@@ -15,7 +15,7 @@ Como Administrador de Propiedad, quiero registrar los abonos que hace un comprad
 - **RF-58.5** — Un abono no se elimina: se anula con motivo, lo que recalcula el estado derivado y queda auditado (TR-01).
 - **RF-58.6** — Al alcanzarse `Pago completado` se emite **una sola vez** el evento de pago completado que consumen HU-06 y HU-54; la emisión es idempotente aunque el estado se recalcule muchas veces.
 - **RF-58.7** — **Interruptor de calendario (D-31):** el derecho de uso de la fracción es un estado **derivado** del plan, nunca marcado a mano: `inactivo` mientras el plan no esté en `Pago completado`, `activo` en cuanto lo derive. La activación es idempotente, se audita (TR-01) y se notifica al Propietario (TR-03).
-- **RF-58.8** — **Anulación de la compra:** el Superadmin puede anular una compra con motivo; el calendario se desactiva, la titularidad se revierte, la fracción vuelve a `disponible`, sus estadías futuras se cancelan y sus noches pasan a la bolsa de renta (HU-39). El plan queda anulado y se emite el evento de reversa que consume HU-54 (dentro de la gracia revierte la comisión; fuera de ella, no — D-02).
+- **RF-58.8** — **Anulación de la compra:** el Superadmin puede anular una compra con motivo; el calendario se desactiva, la titularidad se revierte, la fracción vuelve a `disponible`, sus semanas futuras se cancelan y pasan enteras a la bolsa de renta (HU-39), prorrateables porque una anulación no es liberación voluntaria (D-39). El plan queda anulado y se emite el evento de reversa que consume HU-54 (dentro de la gracia revierte la comisión; fuera de ella, no — D-02).
 - **RF-58.9** — El Propietario ve su propio plan de pagos y sus abonos en modo lectura desde su dashboard (HU-18), con el saldo pendiente y qué falta para activar su calendario; el Superadmin los ve todos.
 
 ## Criterios de aceptación (base de las pruebas unitarias)
@@ -25,7 +25,7 @@ Como Administrador de Propiedad, quiero registrar los abonos que hace un comprad
 - **CA-58.4** — Dado que el estado se recalcula tres veces sobre un plan ya completado, entonces el evento de pago completado se emite una sola vez.
 - **CA-58.5** — Dado un cambio posterior del precio de lista de la fracción, entonces el precio pactado del plan no cambia.
 - **CA-58.6** — Dado un abono sin comprobante, entonces se rechaza.
-- **CA-58.7** — Dada la anulación de una compra, entonces el calendario queda inactivo, la fracción vuelve a `disponible`, sus estadías futuras se cancelan, el plan queda anulado y se emite exactamente un evento de reversa.
+- **CA-58.7** — Dada la anulación de una compra, entonces el calendario queda inactivo, la fracción vuelve a `disponible`, sus semanas futuras se cancelan, el plan queda anulado y se emite exactamente un evento de reversa.
 - **CA-58.8** — Dado un plan que pasa a `Pago completado`, entonces el calendario de la fracción queda `activo`; dado un abono anulado que lo devuelve a `En proceso de pago`, el calendario vuelve a `inactivo`.
 - **CA-58.9** — Dado el mismo plan recalculado varias veces estando completo, entonces la activación se emite una sola vez.
 

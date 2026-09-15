@@ -1,5 +1,5 @@
 import { validarRejillaParaCriterio, CRITERIO_POR_DEFECTO } from '#shared/scheduling/criterio'
-import { fechasEspecialesDelAnio, rejillaDelAnio } from '#shared/scheduling/rejilla'
+import { nochesDeLaBolsaDelAdministrador, rejillaDelAnio } from '#shared/scheduling/rejilla'
 import { clasificacionSugerida, TEMPORADAS } from '#shared/scheduling/temporadas'
 import type { BloquePico, SemanaClasificada, Temporada } from '#shared/scheduling/temporadas'
 import type { Database } from '#shared/types/database.types'
@@ -26,7 +26,7 @@ export function useCalendario(propertyId: Ref<string | null>, anio: Ref<number>)
   const { t } = useI18n()
 
   const rejilla = computed(() => rejillaDelAnio(anio.value))
-  const fechasEspeciales = computed(() => fechasEspecialesDelAnio(anio.value))
+  const nochesEnBolsa = computed(() => nochesDeLaBolsaDelAdministrador(anio.value))
 
   const consulta = useAsyncData<CalendarioGuardado | null>(
     () => `calendario-${propertyId.value}-${anio.value}`,
@@ -111,7 +111,7 @@ export function useCalendario(propertyId: Ref<string | null>, anio: Ref<number>)
   return {
     id: computed(() => guardado.value?.id ?? null),
     rejilla,
-    fechasEspeciales,
+    nochesEnBolsa,
     clasificacion,
     errorDeRejilla,
     publicadoEl: computed(() => guardado.value?.publicadoEl ?? null),

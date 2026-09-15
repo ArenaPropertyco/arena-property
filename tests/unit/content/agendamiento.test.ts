@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   CUPO_PUBLICADO,
-  ESTADIA_MINIMA_NOCHES,
+  NOCHES_DE_LA_UNIDAD_DE_USO,
   IDS_DE_AGENDAMIENTO,
   REGLAS_PUBLICADAS,
   SECCIONES_DE_AGENDAMIENTO,
@@ -15,8 +15,9 @@ import { NOCHES_POR_SEMANA } from '#shared/scheduling/rejilla'
 import { BLOQUES_PICO, TEMPORADAS } from '#shared/scheduling/temporadas'
 
 /**
- * HU-43 · RF-43.1…RF-43.4 · D-32 · D-33 — la página pública no puede prometer
- * algo distinto al motor: el cupo publicado se deriva del criterio de HU-12.
+ * HU-43 · RF-43.1…RF-43.4 · D-32 · D-42 — la página pública no puede prometer
+ * algo distinto al motor: el cupo publicado se deriva del criterio de HU-12 y no
+ * ofrece ninguna unidad de uso menor que la semana.
  */
 
 describe('CA-43.1 · el manifiesto declara las 4 temporadas y el cupo 7/7/7/21', () => {
@@ -33,7 +34,7 @@ describe('CA-43.1 · el manifiesto declara las 4 temporadas y el cupo 7/7/7/21',
   })
 })
 
-describe('CA-43.2 · coherencia con el motor de HU-12 y con D-33', () => {
+describe('CA-43.2 · coherencia con el motor de HU-12 y con D-42', () => {
   it('CA-43.2 · las semanas y noches publicadas son las del criterio por defecto', () => {
     const cupo = cupoDeNoches(CRITERIO_POR_DEFECTO)
     for (const temporada of TEMPORADAS_PUBLICADAS) {
@@ -44,11 +45,11 @@ describe('CA-43.2 · coherencia con el motor de HU-12 y con D-33', () => {
     expect(CUPO_PUBLICADO.noches).toBe(cupo.total)
   })
 
-  it('CA-43.2 · D-33 · la unidad de uso es la semana completa: la estadía mínima publicada es la semana', () => {
+  it('CA-43.2 · D-42 · la unidad de uso publicada es la semana completa y no hay ninguna menor', () => {
     expect(UNIDAD_DE_USO).toBe('week')
-    expect(ESTADIA_MINIMA_NOCHES).toBe(NOCHES_POR_SEMANA)
+    expect(NOCHES_DE_LA_UNIDAD_DE_USO).toBe(NOCHES_POR_SEMANA)
     for (const temporada of TEMPORADAS_PUBLICADAS) {
-      expect(temporada.estadiaMinimaNoches).toBe(NOCHES_POR_SEMANA)
+      expect(temporada.unidadDeUsoNoches).toBe(NOCHES_POR_SEMANA)
     }
   })
 

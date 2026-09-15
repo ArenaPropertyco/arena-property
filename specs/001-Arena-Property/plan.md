@@ -54,7 +54,7 @@ arena-property/
 | `notifications` | TR-03, HU-16, HU-29, HU-30, HU-31, HU-57 | RF-N.1…RF-N.6 |
 | `permissions` | HU-07, HU-05, HU-10, HU-33 | RF-07.2, RF-07.2b |
 | `sales` | HU-06, HU-58, HU-09 (traspaso) | RF-06.2, RF-58.3, RF-58.7 |
-| `scheduling` | HU-12, HU-13, HU-14, HU-15, HU-17, HU-39, HU-59, HU-60 | RF-12.1…12.9, RF-14.1…14.10, RF-59.1…59.8, RF-60.1…60.8 |
+| `scheduling` | HU-12, HU-13, HU-14, HU-15, HU-17, HU-39, HU-59 | RF-12.1…12.9, RF-14.1…14.10, RF-39.1…39.6, RF-59.1…59.8 |
 | `finance` | HU-19, HU-23, HU-24, HU-25, HU-27, HU-40 | RF-23.1…23.7, RF-25.1…25.5 |
 | `referrals` | HU-49…HU-57 | RF-51.1…51.7, RF-52.1…52.5, RF-54.1…54.7 |
 | `content` | HU-00, HU-41, HU-42, HU-43, HU-44, HU-48 | RF-00.2, RF-41.4, RF-43.4, RF-44.4 |
@@ -101,25 +101,24 @@ El estado comercial derivado (D-18) se calcula en `shared/` y se expone por vist
 **Cubre:** RF-06.1…06.5, RF-58.1…58.9. El estado del plan y el interruptor `calendar_active` se **derivan**
 de la suma de abonos por función de base de datos; ninguna ruta permite marcarlos a mano (RF-58.3, RF-58.7).
 
-### 2.4 Agendamiento — HU-12…HU-17, HU-39, HU-59, HU-60
+### 2.4 Agendamiento — HU-12…HU-17, HU-39, HU-59
 
 | Tabla | Propósito | Campos relevantes | RLS |
 |---|---|---|---|
 | `season_calendars` | Calendario por propiedad y año | propiedad, año, parámetros vigentes (schedule.md §2), publicado | Admin asignado; propietarios leen |
 | `calendar_weeks` | Rejilla sábado→sábado | calendario, índice, rango de fechas, temporada, `is_peak`, bloque pico | Igual |
-| `night_pool` | Fechas Especiales (D-30) | calendario, rango de noches, temporada heredada, fracción asignada del año | Igual |
-| `allocations` | Reparto anual por fracción | calendario, fracción, semana, tipo (regular / comodín) | Igual |
-| `stays` | Estadías del propietario | fracción, `daterange` de noches, temporada(s), estado, origen | Titular escribe; copropietarios ven nombre y fracción (D-16) |
-| `blocks` | Bloqueos del administrador | propiedad, `daterange`, motivo | Admin escribe; todos leen |
+| `allocations` | Reparto anual por fracción | calendario, fracción, semana, confirmación, liberación y su motivo | Igual |
+| `week_blocks` | Bloqueos del administrador | calendario, semana, motivo, levantado en | Admin escribe; todos leen |
 | `third_parties` | Terceros no propietarios | datos personales, consentimiento, fecha de anonimización (D-25) | Solo admin y Superadmin |
-| `third_party_bookings` | Renta a terceros | propiedad, tercero, `daterange`, ingreso asociado | Admin escribe; propietarios ven ocupación |
+| `third_party_bookings` | Renta a terceros | calendario, semana, tercero, motivo y fracción de origen (D-39), ingreso asociado | Admin escribe; propietarios ven ocupación |
 | `selection_windows` | Ventana anual y turnos | calendario, apertura, duración, orden de turno del año | Admin; propietarios leen |
 
-**Invariante clave:** `stays`, `blocks` y `third_party_bookings` comparten una **restricción de exclusión GIST**
-sobre `(propiedad, daterange)` que hace imposible en la base de datos que dos ocupaciones compartan una noche
-(RF-14.10, I-04 de `schedule.md`).
+**Invariante clave:** la ocupación es **por semana** (D-42). `allocations`, `week_blocks` y `third_party_bookings`
+garantizan con índices únicos por semana que una semana tenga a lo sumo una fracción, un bloqueo vigente y una
+reserva confirmada (RF-14.10, I-04 de `schedule.md`). La restricción de exclusión GIST sobre rangos de noches
+dejó de tener objeto cuando desapareció la reserva por noches, y con ella las tablas `stays` y `blocks`.
 
-**Cubre:** RF-12.1…12.9, RF-13.1…13.4, RF-14.1…14.10, RF-15.1…15.5, RF-17.1…17.4, RF-39.1…39.5, RF-59.1…59.8, RF-60.1…60.8.
+**Cubre:** RF-12.1…12.9, RF-13.1…13.4, RF-14.1…14.10, RF-15.1…15.5, RF-17.1…17.5, RF-39.1…39.6, RF-59.1…59.8.
 
 ### 2.5 Finanzas — HU-19, HU-23…HU-25, HU-27, HU-40
 
@@ -192,9 +191,9 @@ Se respeta el plan de [specs.md](./specs.md). Dentro de cada sprint el orden es 
 |---|---|---|---|
 | 1 | Maestra contable y prorrateo | HU-23 | Base de todo el resto de finanzas |
 | 2 | Detalle de prorrateo e ingresos por renta | HU-24, HU-40, HU-39 | Consumen la maestra |
-| 3 | Fechas Especiales | HU-60 | Cierra el calendario; usa HU-59 |
+| 3 | La semana liberada llega al Administrador | HU-14, HU-16, HU-17, HU-21, HU-39, HU-40 | Cierra el circuito de D-43 |
 | 4 | Operación del administrador | HU-16, HU-17, HU-21 | Requiere calendario y notificaciones |
-| 5 | Dashboard del propietario | HU-18, HU-19, HU-20 | Requiere finanzas y estadías |
+| 5 | Dashboard del propietario | HU-18, HU-19, HU-20 | Requiere finanzas y uso de semanas |
 | 6 | Motor de comisiones | HU-53, HU-54 | Requiere HU-58, HU-52 y el libro de plataforma |
 
 ### Sprint 4 — Inventario, comunicación, panel y billetera · 66 SP
@@ -243,7 +242,7 @@ Cumple el principio 4: **cada `CA` tiene un test que lo cita por identificador**
 ### Reglas de la suite
 
 1. **Trazabilidad:** el nombre de cada test empieza por su criterio (`CA-12.4 …`). Un informe cruza `CA` declarados contra `CA` probados y falla si falta alguno.
-2. **Invariantes sobre ciclos completos:** la equidad no se prueba en un año sino en **ocho** (`CA-12.5`, `CA-60.4`).
+2. **Invariantes sobre ciclos completos:** la equidad no se prueba en un año sino en **ocho** (`CA-12.6`, `CA-59.6`).
 3. **Exactitud del dinero:** todo test de prorrateo verifica que la suma de las cuotas iguala el original, incluidos montos no divisibles (`CA-23.2`, `CA-D.2`, `CA-D.3`).
 4. **Idempotencia:** todo evento que acredita, notifica o activa se procesa dos veces en el test y debe producir un solo efecto (`CA-54.3`, `CA-58.9`, `CA-N.3`).
 5. **Seguridad:** cada tabla tiene al menos un test negativo por rol que no debe acceder; el `audit_log` tiene test de UPDATE y DELETE rechazados (`CA-A.2`).
@@ -281,7 +280,7 @@ Cumple el principio 4: **cada `CA` tiene un test que lo cita por identificador**
 | HU-47 | `properties` + `notifications` | `waitlist_entries` | 2 |
 | HU-49…HU-53 | `referrals` | `ambassadors`, `referral_codes`, `attributions`, `commission_rates` | 2 y 3 |
 | HU-54…HU-57 | `referrals` | `commissions`, `wallet_movements`, `withdrawal_requests` | 3 y 4 |
-| HU-59, HU-60 | `scheduling` | `selection_windows`, `night_pool` | 2 y 3 |
+| HU-59 | `scheduling` | `selection_windows` | 2 |
 
 **Verificación de cobertura:** las 55 historias y los 3 requisitos transversales aparecen en esta tabla; ninguna queda sin módulo, sin tabla y sin sprint.
 

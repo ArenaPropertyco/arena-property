@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
 import type { SeccionDeLaHome } from '#shared/content/home'
-import { DATOS_DEL_HERO, FONDO_DEL_HERO } from '#shared/content/home'
+import { FONDO_DEL_HERO } from '#shared/content/home'
 import { RUTAS_PUBLICAS } from '#shared/content/rutas'
 
 /**
@@ -128,23 +128,6 @@ function revelado(posicion: number) {
           />
         </div>
       </div>
-
-      <dl
-        v-bind="revelado(4)"
-        class="mt-14 grid max-w-2xl grid-cols-3 gap-6 border-t border-ink-50/15 pt-6"
-      >
-        <div
-          v-for="dato in DATOS_DEL_HERO"
-          :key="dato"
-        >
-          <dt class="text-[11px] uppercase tracking-[0.2em] text-ink-100/60">
-            {{ t(`home.hero.facts.${dato}.label`) }}
-          </dt>
-          <dd class="mt-1 font-mono text-xl text-arena-300 sm:text-2xl">
-            {{ t(`home.hero.facts.${dato}.value`) }}
-          </dd>
-        </div>
-      </dl>
     </UContainer>
   </section>
 </template>

@@ -14,6 +14,8 @@ import { sumarTodos } from '#shared/money/importe'
  */
 const props = defineProps<{ cuotas: CuotaListada[] }>()
 
+defineEmits<{ detalle: [string] }>()
+
 const { t, locale } = useI18n()
 
 const ordenadas = computed(() => [...props.cuotas].sort((a, b) => a.fraction - b.fraction))
@@ -29,6 +31,7 @@ const columnas = computed<TableColumn<CuotaListada>[]>(() => [
   { id: 'monto', header: t('finance.shares.amount') },
   { id: 'pagador', header: t('finance.shares.payer') },
   { id: 'estado', header: '' },
+  { id: 'acciones', header: '' },
 ])
 </script>
 
@@ -85,6 +88,19 @@ const columnas = computed<TableColumn<CuotaListada>[]>(() => [
               size="sm"
               :label="t('finance.shares.reversed')"
               :data-test="`revertida-${row.original.fraction}`"
+            />
+          </div>
+        </template>
+
+        <template #acciones-cell="{ row }">
+          <div class="flex justify-end">
+            <UButton
+              variant="ghost"
+              size="xs"
+              icon="i-lucide-calculator"
+              :label="t('finance.detail.view')"
+              :data-test="`detalle-${row.original.fraction}`"
+              @click="$emit('detalle', row.original.id)"
             />
           </div>
         </template>

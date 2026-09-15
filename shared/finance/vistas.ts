@@ -24,6 +24,12 @@ export interface MovimientoListado {
   allocation: Reparto
   /** RF-23.9 · número de la fracción imputada; `null` si se prorrateó. */
   fractionNumber: number | null
+  /** RF-40.4 · comisión de gestión del ingreso atribuido; `null` en los demás. */
+  commissionBasisPoints: number | null
+  commissionAmount: CopAmount | null
+  /** RF-24.2b · la semana rentada que originó el ingreso. */
+  weekIndex: number | null
+  weekStartsOn: string | null
   createdAt: string
   voidedAt: string | null
   voidReason: string | null

@@ -1,7 +1,9 @@
 # HU-40 — Ingreso por reserva a terceros
 
 Épica E7 · Sprint 3 · SP 5 · Prioridad **Should** · Rol: Administrador de Propiedad
-Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md).
+Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md). Implementa [D-39](../../docs/decisions.md) y [D-43](../../docs/decisions.md).
+
+> **Revisión 2026-09-15 (D-43):** el derecho del Propietario que liberó nace con la reserva a tercero, no con la liberación.
 
 ## Historia
 Como Administrador de Propiedad, quiero registrar el ingreso generado por una reserva a terceros, para llevar el registro financiero de esa renta adicional.
@@ -15,6 +17,7 @@ Como Administrador de Propiedad, quiero registrar el ingreso generado por una re
 - **RF-40.4** — **Comisión de gestión (D-39).** Sobre el ingreso de una semana liberada se aplica un porcentaje declarado que configura el Superadmin **por propiedad**. El neto de la fracción es el bruto menos la comisión, truncando al peso según TR-02, y la comisión es ingreso de plataforma de Arena: se registra en el libro de HU-25 y **nunca** se prorratea entre las fracciones (simétrico a RF-23.5).
 - **RF-40.5** — **Sin porcentaje configurado no hay registro.** Si la propiedad no tiene definida su comisión de gestión, el ingreso de una semana liberada se rechaza con motivo traducido, en lugar de inventar un reparto. La propiedad puede seguir registrando ingresos de las demás semanas, que no dependen de ese dato.
 - **RF-40.6** — El ingreso alimenta HU-18, HU-19, HU-24 y HU-25 con su naturaleza explícita: prorrateado o atribuido a una fracción. Ninguna vista presenta como prorrateada una cuota que no lo es (RT-08, P-09).
+- **RF-40.7** — **Sin renta no hay ingreso (D-43).** Liberar no genera por sí solo ningún movimiento: mientras la semana liberada no se rente, la fracción no tiene ingreso ni cuota, y ninguna vista le anticipa un importe estimado. El derecho de RF-40.2 nace **con la reserva a tercero**, no con la liberación.
 
 ## Criterios de aceptación (base de las pruebas unitarias)
 - **CA-40.1** — Dado un ingreso de $800.000 sobre una semana **cancelada**, entonces cada fracción recibe $100.000 y la suma es exacta.
@@ -24,6 +27,7 @@ Como Administrador de Propiedad, quiero registrar el ingreso generado por una re
 - **CA-40.5** — Dada una semana liberada en una propiedad **sin comisión configurada**, cuando se intenta registrar su ingreso, entonces se rechaza con motivo traducido y no se crea ninguna cuota.
 - **CA-40.6** — Dado un bruto que no divide exacto con la comisión, entonces el neto se trunca al peso y comisión + neto siguen sumando el bruto sin perder ni un peso (TR-02 RF-D.1).
 - **CA-40.7** — Dada la anulación del ingreso de una semana liberada, entonces se revierten tanto la cuota de su fracción como la comisión de plataforma, de forma auditable.
+- **CA-40.8** — Dada una semana liberada por la fracción 3/8 que nadie renta, entonces no existe movimiento ni cuota alguna para esa fracción y su estado de cuenta no muestra importe por esa semana.
 
 ## Dependencias
-- HU-39 (reserva a tercero y origen de la semana) · HU-14 (liberación voluntaria) · HU-23 (maestra y prorrateo) · TR-02 (dinero entero y truncado) · D-39.
+- HU-39 (reserva a tercero y origen de la semana) · HU-14 (liberación voluntaria) · HU-23 (maestra y prorrateo) · TR-02 (dinero entero y truncado) · D-39, D-43.

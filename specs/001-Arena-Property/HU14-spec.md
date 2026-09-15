@@ -1,8 +1,9 @@
 # HU-14 — Uso de semanas: confirmar, cancelar y liberar
 
 Épica E4 · Sprint 2 · SP 8 · Prioridad **Must** · Rol: Propietario
-Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md). Implementa [D-33](../../docs/decisions.md), [D-14](../../docs/decisions.md) y [D-15](../../docs/decisions.md).
+Aplican los requisitos transversales RT-01…RT-12 de [specs.md](./specs.md). Implementa [D-33](../../docs/decisions.md), [D-14](../../docs/decisions.md), [D-15](../../docs/decisions.md), [D-42](../../docs/decisions.md) y [D-43](../../docs/decisions.md).
 > **Revisión 2026-09-09 (D-33):** desaparecen las estadías por noches y el mínimo por temporada. La unidad es la semana completa elegida en HU-12.
+> **Revisión 2026-09-15 (D-42, D-43):** la supresión de las estadías cortas es definitiva y HU-60 se elimina; liberar avisa al Administrador y no paga por sí solo.
 
 ## Historia
 Como Propietario, quiero confirmar las semanas que voy a usar, cancelar las que no y liberar las que no necesito, para que mi cupo se aproveche y las semanas sobrantes puedan rentarse.
@@ -11,14 +12,16 @@ Como Propietario, quiero confirmar las semanas que voy a usar, cancelar las que 
 - **RF-14.1** — El Propietario **confirma** como uso propio cada semana que eligió (HU-12), una a una. Confirmar consume la semana de su temporada; no se confirma una semana que no sea suya, ya pasada, bloqueada (HU-15) o ya liberada.
 - **RF-14.1b** — **Requiere calendario activo (D-31):** una fracción con el calendario inactivo no puede confirmar, cancelar ni liberar; sus semanas siguen su curso y pasan a la bolsa de renta a los 60 días si nadie las confirma. La validación es de servidor, no solo de UI.
 - **RF-14.1c** — **Primer año tras la activación (D-31):** al activarse a mitad de año, el Propietario solo puede confirmar las semanas elegidas cuyo sábado de entrada sea **posterior a la activación**; las anteriores no se compensan.
-- **RF-14.2** — **Sin mínimo por temporada (D-33):** la semana completa es la unidad; la regla de estadía mínima (D-29) queda suspendida.
+- **RF-14.2** — **Sin estadías cortas (D-42):** la semana completa es la única unidad de uso. No hay reservas por noches ni mínimos por temporada: D-29 queda derogada, no suspendida.
 - **RF-14.3** — Solo se confirman semanas elegidas por la propia fracción en la selección de HU-12 o recibidas por intercambio (RF-12.6).
 - **RF-14.4** — Validación de cero solapamiento a nivel de **semana**: una semana pertenece a lo sumo a una fracción, y una semana bloqueada (HU-15), de la bolsa del Administrador o ya en renta (HU-39) no se confirma.
 - **RF-14.5** — La composición 1 alta, 1 media-alta, 1 media y 3 bajas es invariante de la selección (HU-12 RF-12.3), no una validación de esta historia.
 - **RF-14.6** — **Cancelación (D-14):** una semana confirmada se cancela hasta **30 días antes** de su sábado de entrada y pasa a la bolsa de renta; dentro de los 30 días se rechaza. No hay cancelación parcial: la semana es indivisible.
 - **RF-14.7** — **Liberación y caducidad (D-15, D-33):** el Propietario puede liberar cualquier semana suya en cualquier momento antes de su entrada, y la semana elegida que siga **sin confirmar a 60 días** de su entrada pasa automáticamente a la bolsa de renta, previo aviso (TR-03). Una semana liberada o caducada no vuelve a la fracción.
 - **RF-14.7b** — **Liberar tiene consecuencia económica (D-39).** La semana liberada voluntariamente guarda la fracción de la que salía y ese motivo. Si el Administrador la renta a un tercero, el ingreso es de esa fracción y no se prorratea (HU-40 RF-40.2). Lo cancelado (RF-14.6) y lo caducado a 60 días (RF-14.7) no dan ese derecho: se prorratean entre las ocho. La pantalla lo dice al liberar, para que la decisión se tome informada y no se descubra después en el estado de cuenta.
-- **RF-14.8** — Las Fechas Especiales (HU-60) quedan aplazadas (D-33): mientras tanto esas noches son de la bolsa del Administrador.
+- **RF-14.7c** — **Liberar avisa al Administrador (D-43).** Al liberar, la semana entra a la bolsa de renta con su fracción de origen y su motivo, y se emite el aviso al **Administrador de la propiedad** —al Superadmin si no hay ninguno asignado— con la propiedad, la semana, su temporada y la fracción que la soltó (TR-03, HU-16 RF-16.5). El aviso es parte de la operación de liberar, no un extra posterior: sin él nadie sabe que hay una semana colocable.
+- **RF-14.7d** — **Liberar no paga por sí solo (D-43).** La liberación no devuelve cupo, no se compensa y no genera ningún importe. La única ganancia posible del Propietario es el ingreso de esa semana **si el Administrador la renta a un tercero** (HU-40). Si nadie la renta, no percibe nada y la semana se pierde; la pantalla lo dice antes de confirmar (RF-14.7b).
+- **RF-14.8** — **Sin Fechas Especiales (D-42):** HU-60 queda eliminada y las noches que caen fuera de la rejilla son, de forma permanente, de la bolsa del Administrador. El Propietario no dispone de noches sueltas por ninguna vía.
 - **RF-14.9** — Al confirmar, el sistema **advierte** de las semanas propias que aún faltan por confirmar y de cuándo vence cada una; es información, no un bloqueo.
 - **RF-14.10** — Toda confirmación, cancelación y liberación se audita (TR-01), se notifica (TR-03) y se valida también en el servidor; la unicidad de la semana por fracción la garantiza la base.
 
@@ -35,6 +38,8 @@ Como Propietario, quiero confirmar las semanas que voy a usar, cancelar las que 
 - **CA-14.8** — Dada una semana propia liberada voluntariamente, entonces queda en la bolsa de renta con su motivo y el Propietario tiene constancia.
 - **CA-14.8b** — Dada una semana liberada voluntariamente y otra caducada a 60 días, entonces solo la primera queda marcada como atribuible a su fracción para el ingreso de HU-40.
 - **CA-14.9** — Dadas dos confirmaciones simultáneas de la misma semana, entonces exactamente una queda registrada.
+- **CA-14.10** — Dada una semana liberada voluntariamente, entonces el Administrador de esa propiedad recibe el aviso con la fracción de origen y la semana queda listada como disponible para renta; los copropietarios no reciben ese aviso.
+- **CA-14.11** — Dada una semana liberada que nadie renta, entonces la fracción no recibe importe alguno, no recupera cupo y la semana no vuelve a ser suya.
 
 ## Dependencias
-- TR-01, TR-03 (habilitadores) · HU-12 (selección y cupo) · HU-13 (vista) · HU-15/HU-39 (colisiones y bolsa de renta) · HU-16 (avisos).
+- TR-01, TR-03 (habilitadores) · HU-12 (selección y cupo) · HU-13 (vista) · HU-15/HU-39 (colisiones y bolsa de renta) · HU-16 (avisos, incluido el del Administrador) · HU-17/HU-21 (colocación de la semana liberada) · HU-40 (ingreso atribuido).
