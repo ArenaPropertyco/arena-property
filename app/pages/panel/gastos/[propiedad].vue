@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { detalleDeCuota } from '#shared/finance/detalle'
 import type { NuevoMovimiento } from '#shared/finance/movimientos'
 import { puede } from '#shared/permissions/mapa'
 
@@ -32,6 +33,38 @@ const anulando = ref<string | null>(null)
 const ocupado = ref(false)
 
 const cuotasVisibles = computed(() => viendoCuotas.value ? cuotasDe(viendoCuotas.value) : [])
+
+/**
+ * HU-24 · RF-24.4 · el detalle lo arma la función pura del dominio sobre el
+ * movimiento y la cuota ya persistidos: la pantalla no recalcula el reparto.
+ */
+const detallando = ref<string | null>(null)
+
+const detalle = computed(() => {
+  const cuota = cuotasVisibles.value.find(candidata => candidata.id === detallando.value) ?? null
+  const movimiento = movimientos.value.find(candidato => candidato.id === cuota?.movementId) ?? null
+  if (!cuota || !movimiento || !propiedad.value) {
+    return null
+  }
+
+  return detalleDeCuota({
+    movementId: movimiento.id,
+    kind: movimiento.kind,
+    allocation: movimiento.allocation,
+    amount: movimiento.amount,
+    categoryName: movimiento.categoryName,
+    incurredOn: movimiento.incurredOn,
+    propertyName: propiedad.value.name,
+    description: movimiento.description,
+    fraction: cuota.fraction,
+    shareAmount: cuota.amount,
+    hasRemainder: cuota.hasRemainder,
+    commissionBasisPoints: movimiento.commissionBasisPoints,
+    commissionAmount: movimiento.commissionAmount,
+    weekStartsOn: movimiento.weekStartsOn,
+    weekIndex: movimiento.weekIndex,
+  })
+})
 
 async function ejecutar(
   operacion: () => Promise<{ ok: true } | { ok: false, clave: string }>,
@@ -154,7 +187,23 @@ async function confirmarAnulacion(motivo: string) {
       @update:open="viendoCuotas = null"
     >
       <template #body>
-        <MovementSharesTable :cuotas="cuotasVisibles" />
+        <MovementSharesTable
+          :cuotas="cuotasVisibles"
+          @detalle="detallando = $event"
+        />
+      </template>
+    </UModal>
+
+    <UModal
+      :open="detalle !== null"
+      :title="t('finance.detail.title')"
+      @update:open="detallando = null"
+    >
+      <template #body>
+        <MovementShareDetail
+          v-if="detalle"
+          :detalle="detalle"
+        />
       </template>
     </UModal>
 

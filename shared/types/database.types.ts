@@ -736,7 +736,10 @@ export type Database = {
           account_id: string
           allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          booking_id: string | null
           category_id: string
+          commission_amount: number | null
+          commission_basis_points: number | null
           created_at: string
           created_by: string | null
           description: string
@@ -755,7 +758,10 @@ export type Database = {
           account_id: string
           allocation?: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          booking_id?: string | null
           category_id: string
+          commission_amount?: number | null
+          commission_basis_points?: number | null
           created_at?: string
           created_by?: string | null
           description: string
@@ -774,7 +780,10 @@ export type Database = {
           account_id?: string
           allocation?: Database["public"]["Enums"]["movement_allocation"]
           amount?: number
+          booking_id?: string | null
           category_id?: string
+          commission_amount?: number | null
+          commission_basis_points?: number | null
           created_at?: string
           created_by?: string | null
           description?: string
@@ -795,6 +804,13 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "ledger_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "third_party_bookings"
             referencedColumns: ["id"]
           },
           {
@@ -1169,6 +1185,73 @@ export type Database = {
           },
         ]
       }
+      platform_ledger: {
+        Row: {
+          accrued_on: string
+          amount: number
+          category_id: string
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          note: string | null
+          property_id: string | null
+          reverse_reason: string | null
+          reversed_at: string | null
+          source_id: string | null
+          source_type: string
+        }
+        Insert: {
+          accrued_on: string
+          amount: number
+          category_id: string
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          note?: string | null
+          property_id?: string | null
+          reverse_reason?: string | null
+          reversed_at?: string | null
+          source_id?: string | null
+          source_type: string
+        }
+        Update: {
+          accrued_on?: string
+          amount?: number
+          category_id?: string
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["movement_kind"]
+          note?: string | null
+          property_id?: string | null
+          reverse_reason?: string | null
+          reversed_at?: string | null
+          source_id?: string | null
+          source_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_ledger_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "expense_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_ledger_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_ledger_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -1238,6 +1321,7 @@ export type Database = {
           name: string
           parking_spots: number
           region: string
+          rental_commission_basis_points: number | null
           slug: string
           updated_at: string
           video_url: string | null
@@ -1259,6 +1343,7 @@ export type Database = {
           name: string
           parking_spots?: number
           region: string
+          rental_commission_basis_points?: number | null
           slug?: string
           updated_at?: string
           video_url?: string | null
@@ -1280,6 +1365,7 @@ export type Database = {
           name?: string
           parking_spots?: number
           region?: string
+          rental_commission_basis_points?: number | null
           slug?: string
           updated_at?: string
           video_url?: string | null
@@ -1735,6 +1821,166 @@ export type Database = {
           },
         ]
       }
+      third_parties: {
+        Row: {
+          anonymize_after: string
+          anonymized_at: string | null
+          consent_accepted_at: string
+          consent_version: string
+          created_at: string
+          created_by: string | null
+          document_kind: Database["public"]["Enums"]["third_party_document"]
+          document_number: string
+          email: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          property_id: string
+          updated_at: string
+        }
+        Insert: {
+          anonymize_after?: string
+          anonymized_at?: string | null
+          consent_accepted_at?: string
+          consent_version?: string
+          created_at?: string
+          created_by?: string | null
+          document_kind: Database["public"]["Enums"]["third_party_document"]
+          document_number: string
+          email?: string | null
+          full_name: string
+          id?: string
+          phone?: string | null
+          property_id: string
+          updated_at?: string
+        }
+        Update: {
+          anonymize_after?: string
+          anonymized_at?: string | null
+          consent_accepted_at?: string
+          consent_version?: string
+          created_at?: string
+          created_by?: string | null
+          document_kind?: Database["public"]["Enums"]["third_party_document"]
+          document_number?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          property_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "third_parties_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "third_parties_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      third_party_bookings: {
+        Row: {
+          calendar_id: string
+          cancel_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          origin_fraction_id: string | null
+          origin_reason: Database["public"]["Enums"]["week_origin"]
+          property_id: string
+          status: string
+          third_party_id: string
+          updated_at: string
+          week_id: string
+        }
+        Insert: {
+          calendar_id: string
+          cancel_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          origin_fraction_id?: string | null
+          origin_reason: Database["public"]["Enums"]["week_origin"]
+          property_id: string
+          status?: string
+          third_party_id: string
+          updated_at?: string
+          week_id: string
+        }
+        Update: {
+          calendar_id?: string
+          cancel_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          origin_fraction_id?: string | null
+          origin_reason?: Database["public"]["Enums"]["week_origin"]
+          property_id?: string
+          status?: string
+          third_party_id?: string
+          updated_at?: string
+          week_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "third_party_bookings_calendar_id_fkey"
+            columns: ["calendar_id"]
+            isOneToOne: false
+            referencedRelation: "season_calendars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "third_party_bookings_origin_fraction_id_fkey"
+            columns: ["origin_fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "third_party_bookings_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "third_party_bookings_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "third_party_bookings_third_party_id_fkey"
+            columns: ["third_party_id"]
+            isOneToOne: false
+            referencedRelation: "third_parties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "third_party_bookings_week_id_fkey"
+            columns: ["week_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_weeks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           granted_at: string
@@ -2129,6 +2375,7 @@ export type Database = {
         Args: { momento?: string }
         Returns: number
       }
+      anonimizar_terceros: { Args: { hoy?: string }; Returns: number }
       anular_abono: {
         Args: { abono: string; motivo: string }
         Returns: {
@@ -2184,7 +2431,10 @@ export type Database = {
           account_id: string
           allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          booking_id: string | null
           category_id: string
+          commission_amount: number | null
+          commission_basis_points: number | null
           created_at: string
           created_by: string | null
           description: string
@@ -2229,6 +2479,31 @@ export type Database = {
       cancel_week: {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
+      }
+      cancelar_reserva_a_tercero: {
+        Args: { motivo: string; reserva: string }
+        Returns: {
+          calendar_id: string
+          cancel_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          origin_fraction_id: string | null
+          origin_reason: Database["public"]["Enums"]["week_origin"]
+          property_id: string
+          status: string
+          third_party_id: string
+          updated_at: string
+          week_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "third_party_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       cerrar_compra: {
         Args: { invitacion: string; precio_pactado?: number }
@@ -2346,6 +2621,37 @@ export type Database = {
         Args: { days?: number; today?: string }
         Returns: number
       }
+      fijar_comision_de_renta: {
+        Args: { propiedad: string; puntos_basicos: number }
+        Returns: {
+          address: string | null
+          amenities: string[]
+          area_m2: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          coming_soon: boolean
+          country: string
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          name: string
+          parking_spots: number
+          region: string
+          rental_commission_basis_points: number | null
+          slug: string
+          updated_at: string
+          video_url: string | null
+          visibility: Database["public"]["Enums"]["property_visibility"]
+        }
+        SetofOptions: {
+          from: "*"
+          to: "properties"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       fraccionar_propiedad: {
         Args: { precios: number[]; propiedad: string }
         Returns: {
@@ -2391,6 +2697,78 @@ export type Database = {
         Args: { referral_code: string; visitor: string }
         Returns: undefined
       }
+      registrar_ingreso_de_renta: {
+        Args: {
+          categoria: string
+          causacion?: string
+          cuenta: string
+          descripcion?: string
+          medio: string
+          monto: number
+          reserva: string
+        }
+        Returns: {
+          account_id: string
+          allocation: Database["public"]["Enums"]["movement_allocation"]
+          amount: number
+          booking_id: string | null
+          category_id: string
+          commission_amount: number | null
+          commission_basis_points: number | null
+          created_at: string
+          created_by: string | null
+          description: string
+          fraction_id: string | null
+          id: string
+          incurred_on: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          payment_method_id: string
+          property_id: string
+          updated_at: string
+          void_reason: string | null
+          voided_at: string | null
+          voided_by: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "movements"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      registrar_tercero: {
+        Args: {
+          consentimiento?: boolean
+          correo?: string
+          documento: string
+          nombre: string
+          propiedad: string
+          telefono?: string
+          tipo_documento: Database["public"]["Enums"]["third_party_document"]
+        }
+        Returns: {
+          anonymize_after: string
+          anonymized_at: string | null
+          consent_accepted_at: string
+          consent_version: string
+          created_at: string
+          created_by: string | null
+          document_kind: Database["public"]["Enums"]["third_party_document"]
+          document_number: string
+          email: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          property_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "third_parties"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       release_week: {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
@@ -2407,6 +2785,31 @@ export type Database = {
       rename_commission_type: {
         Args: { commission_type: string; name: string }
         Returns: undefined
+      }
+      rentar_semana: {
+        Args: { calendario: string; indice_de_semana: number; tercero: string }
+        Returns: {
+          calendar_id: string
+          cancel_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          origin_fraction_id: string | null
+          origin_reason: Database["public"]["Enums"]["week_origin"]
+          property_id: string
+          status: string
+          third_party_id: string
+          updated_at: string
+          week_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "third_party_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       request_week_swap: {
         Args: {
@@ -2503,6 +2906,8 @@ export type Database = {
       referral_stage: "registered" | "payment_in_progress" | "paid"
       share_payer: "owner" | "inventory_holder"
       suspension_kind: "administrative" | "breach_or_fraud"
+      third_party_document: "cc" | "ce" | "passport" | "nit"
+      week_origin: "voluntary" | "cancelled" | "expired" | "relocated" | "pool"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2648,6 +3053,8 @@ export const Constants = {
       referral_stage: ["registered", "payment_in_progress", "paid"],
       share_payer: ["owner", "inventory_holder"],
       suspension_kind: ["administrative", "breach_or_fraud"],
+      third_party_document: ["cc", "ce", "passport", "nit"],
+      week_origin: ["voluntary", "cancelled", "expired", "relocated", "pool"],
     },
   },
 } as const

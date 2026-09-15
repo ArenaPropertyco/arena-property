@@ -28,7 +28,7 @@ export function useMovimientos(propiedadId: Ref<string>) {
         client.from('fractions').select('id, number, status, owner_id').eq('property_id', propiedadId.value).order('number'),
         client
           .from('movements')
-          .select('*, expense_categories(name), payment_methods(name), ledger_accounts(name), fractions(number)')
+          .select('*, expense_categories(name), payment_methods(name), ledger_accounts(name), fractions(number), third_party_bookings(calendar_weeks(index, starts_on))')
           .eq('property_id', propiedadId.value)
           .order('incurred_on', { ascending: false })
           .order('created_at', { ascending: false }),
@@ -77,6 +77,10 @@ export function useMovimientos(propiedadId: Ref<string>) {
           description: fila.description,
           allocation: fila.allocation,
           fractionNumber: fila.fractions?.number ?? null,
+          commissionBasisPoints: fila.commission_basis_points,
+          commissionAmount: fila.commission_amount as CopAmount | null,
+          weekIndex: fila.third_party_bookings?.calendar_weeks?.index ?? null,
+          weekStartsOn: fila.third_party_bookings?.calendar_weeks?.starts_on ?? null,
           createdAt: fila.created_at,
           voidedAt: fila.voided_at,
           voidReason: fila.void_reason,

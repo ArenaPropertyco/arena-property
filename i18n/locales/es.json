@@ -996,7 +996,10 @@
       "inactive": "Tu calendario está inactivo: ves tus semanas y las de tus copropietarios, pero no puedes confirmar, cancelar ni liberar hasta completar el plan de pagos.",
       "inactiveBalance": "Saldo pendiente: {amount}.",
       "viewPlan": "Ver plan de pagos",
-      "weeksCount": "{n} semanas"
+      "weeksCount": "{n} semanas",
+      "releaseTitle": "Liberar esta semana",
+      "releaseWarning": "Liberar tiene consecuencia económica: si el Administrador renta esta semana a un tercero, el ingreso es de tu fracción, descontada la comisión de gestión. Cancelar a última hora o dejarla caducar no da ese derecho: esas se reparten entre las ocho.",
+      "releaseConfirm": "Liberar la semana"
     },
     "blocks": {
       "title": "Bloqueos",
@@ -1792,6 +1795,122 @@
       "noneSold": "Esta propiedad no tiene fracciones vendidas: no hay a quién imputar.",
       "badgeProrated": "8 fracciones",
       "badgeSingle": "Solo {number}/8"
+    },
+    "detail": {
+      "title": "Detalle del cálculo",
+      "view": "Ver detalle",
+      "movement": "Movimiento",
+      "originalAmount": "Monto del movimiento",
+      "formula": "Fórmula aplicada",
+      "share": "Tu cuota",
+      "remainder": "Incluye {amount} de residuo del reparto",
+      "noRemainder": "Sin residuo",
+      "imputed": "Imputado directamente a la fracción {fraction}/8, sin dividir entre las ocho.",
+      "attributed": "Ingreso de una semana que la fracción {fraction}/8 liberó: es suyo, no se divide entre las ocho.",
+      "gross": "Bruto cobrado al tercero",
+      "commission": "Comisión de gestión ({percent})",
+      "net": "Neto de la fracción",
+      "week": "Semana {number}, desde el {from}"
+    }
+  },
+  "rentals": {
+    "title": "Renta a terceros",
+    "subtitle": "Semanas de la bolsa de renta alquiladas a huéspedes no propietarios.",
+    "open": "Renta a terceros",
+    "notFound": "No encontramos esa propiedad, o no tienes acceso a sus rentas.",
+    "rent": "Rentar una semana",
+    "rentTitle": "Rentar una semana a un tercero",
+    "week": "Semana",
+    "weekPlaceholder": "Elige una semana de la bolsa",
+    "weekLabel": "Semana {number} · {from}",
+    "noWeeks": "No hay semanas en la bolsa de renta para este año.",
+    "guest": "Huésped",
+    "guestExisting": "Huésped ya registrado",
+    "guestNew": "Registrar un huésped nuevo",
+    "name": "Nombre completo",
+    "documentKind": "Tipo de documento",
+    "documentNumber": "Número de documento",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "contactHint": "Al menos un correo o un teléfono.",
+    "consent": "El huésped autoriza el tratamiento de sus datos.",
+    "consentHint": "Sus datos se conservan 5 años y después se anonimizan.",
+    "submit": "Crear la reserva",
+    "empty": "Todavía no hay reservas a terceros.",
+    "columns": {
+      "week": "Semana",
+      "guest": "Huésped",
+      "origin": "Origen",
+      "income": "Ingreso"
+    },
+    "documents": {
+      "cc": "Cédula",
+      "ce": "Cédula de extranjería",
+      "passport": "Pasaporte",
+      "nit": "NIT"
+    },
+    "origin": {
+      "voluntary": "Liberada por {fraction}/8",
+      "cancelled": "Cancelada por {fraction}/8",
+      "expired": "Caducada de {fraction}/8",
+      "relocated": "Reubicada de {fraction}/8",
+      "pool": "Sobrante de la rejilla",
+      "attributed": "El ingreso es de la fracción {fraction}/8",
+      "prorated": "El ingreso se reparte entre las 8"
+    },
+    "cancel": "Cancelar reserva",
+    "cancelled": "Cancelada",
+    "cancelTitle": "Cancelar la reserva",
+    "cancelHint": "La reserva no se borra: queda cancelada con este motivo y la semana vuelve a la bolsa.",
+    "confirmCancel": "Cancelar con este motivo",
+    "income": {
+      "register": "Registrar ingreso",
+      "registerTitle": "Ingreso de la renta",
+      "amount": "Valor cobrado",
+      "amountHint": "Bruto en pesos, antes de la comisión de gestión.",
+      "none": "Sin ingreso",
+      "registered": "Registrado",
+      "submit": "Guardar ingreso",
+      "commissionPreview": "Comisión de gestión ({percent}): {amount}. La fracción {fraction}/8 recibe {net}.",
+      "proratedPreview": "Se reparte entre las 8 fracciones, sin comisión de gestión.",
+      "missingCommission": "Esta propiedad no tiene comisión de gestión configurada: el Superadmin debe fijarla antes de registrar el ingreso de una semana liberada."
+    },
+    "commission": {
+      "title": "Comisión de gestión",
+      "hint": "Porcentaje que Arena descuenta del ingreso de una semana liberada voluntariamente. No se aplica a las demás.",
+      "percentage": "Porcentaje",
+      "submit": "Guardar comisión",
+      "unset": "Sin configurar",
+      "current": "Comisión actual: {percent}"
+    },
+    "validation": {
+      "name_required": "Escribe el nombre del huésped.",
+      "document_required": "Escribe el número de documento.",
+      "contact_required": "Deja al menos un correo o un teléfono.",
+      "email_invalid": "Ese correo no tiene un formato válido.",
+      "consent_required": "Sin la autorización del huésped no podemos guardar sus datos.",
+      "week_confirmed": "Esa semana la tiene confirmada su Propietario.",
+      "week_owned": "Esa semana es de la fracción que la eligió.",
+      "week_blocked": "Esa semana está bloqueada por el Administrador.",
+      "week_rented": "Esa semana ya está rentada.",
+      "selection_open": "Los turnos de selección siguen abiertos: todavía puede elegirla un Propietario.",
+      "week_required": "Elige la semana que vas a rentar.",
+      "guest_required": "Elige o registra al huésped.",
+      "amount_not_positive": "El valor cobrado debe ser un entero de pesos mayor que cero.",
+      "percentage_range": "El porcentaje va de 0 a 100."
+    },
+    "errors": {
+      "save_failed": "No pudimos crear la reserva.",
+      "guest_failed": "No pudimos registrar al huésped.",
+      "cancel_failed": "No pudimos cancelar la reserva.",
+      "income_failed": "No pudimos registrar el ingreso.",
+      "commission_failed": "No pudimos guardar la comisión de gestión."
+    },
+    "messages": {
+      "booked": "Semana rentada al huésped.",
+      "cancelled": "Reserva cancelada; la semana vuelve a la bolsa.",
+      "income": "Ingreso registrado.",
+      "commission": "Comisión de gestión actualizada."
     }
   }
 }

@@ -996,7 +996,10 @@
       "inactive": "Your calendar is inactive: you can see your weeks and your co-owners’, but you cannot confirm, cancel or release until the payment plan is complete.",
       "inactiveBalance": "Outstanding balance: {amount}.",
       "viewPlan": "View payment plan",
-      "weeksCount": "{n} weeks"
+      "weeksCount": "{n} weeks",
+      "releaseTitle": "Release this week",
+      "releaseWarning": "Releasing has an economic consequence: if the administrator rents this week to a guest, the income is yours, net of the management fee. Cancelling at the last minute or letting it expire does not grant that right: those are split across the eight.",
+      "releaseConfirm": "Release the week"
     },
     "blocks": {
       "title": "Blocks",
@@ -1792,6 +1795,122 @@
       "noneSold": "This property has no sold fractions: there is nobody to charge.",
       "badgeProrated": "8 fractions",
       "badgeSingle": "Only {number}/8"
+    },
+    "detail": {
+      "title": "Calculation detail",
+      "view": "View detail",
+      "movement": "Movement",
+      "originalAmount": "Movement amount",
+      "formula": "Formula applied",
+      "share": "Your share",
+      "remainder": "Includes {amount} of split remainder",
+      "noRemainder": "No remainder",
+      "imputed": "Charged directly to fraction {fraction}/8, not divided across the eight.",
+      "attributed": "Income from a week released by fraction {fraction}/8: it is theirs, not divided across the eight.",
+      "gross": "Gross charged to the guest",
+      "commission": "Management fee ({percent})",
+      "net": "Fraction net",
+      "week": "Week {number}, from {from}"
+    }
+  },
+  "rentals": {
+    "title": "Third-party rentals",
+    "subtitle": "Rental-pool weeks let to non-owner guests.",
+    "open": "Third-party rentals",
+    "notFound": "We could not find that property, or you do not have access to its rentals.",
+    "rent": "Rent a week",
+    "rentTitle": "Rent a week to a guest",
+    "week": "Week",
+    "weekPlaceholder": "Choose a week from the pool",
+    "weekLabel": "Week {number} · {from}",
+    "noWeeks": "There are no rental-pool weeks for this year.",
+    "guest": "Guest",
+    "guestExisting": "Existing guest",
+    "guestNew": "Register a new guest",
+    "name": "Full name",
+    "documentKind": "Document type",
+    "documentNumber": "Document number",
+    "email": "Email",
+    "phone": "Phone",
+    "contactHint": "At least an email or a phone number.",
+    "consent": "The guest consents to their data being stored.",
+    "consentHint": "Their data is kept for 5 years and anonymised afterwards.",
+    "submit": "Create booking",
+    "empty": "No third-party bookings yet.",
+    "columns": {
+      "week": "Week",
+      "guest": "Guest",
+      "origin": "Origin",
+      "income": "Income"
+    },
+    "documents": {
+      "cc": "ID card",
+      "ce": "Foreign ID",
+      "passport": "Passport",
+      "nit": "Tax ID"
+    },
+    "origin": {
+      "voluntary": "Released by {fraction}/8",
+      "cancelled": "Cancelled by {fraction}/8",
+      "expired": "Expired from {fraction}/8",
+      "relocated": "Relocated from {fraction}/8",
+      "pool": "Left over from the grid",
+      "attributed": "The income belongs to fraction {fraction}/8",
+      "prorated": "The income is split across the 8"
+    },
+    "cancel": "Cancel booking",
+    "cancelled": "Cancelled",
+    "cancelTitle": "Cancel the booking",
+    "cancelHint": "The booking is not deleted: it is cancelled with this reason and the week returns to the pool.",
+    "confirmCancel": "Cancel with this reason",
+    "income": {
+      "register": "Record income",
+      "registerTitle": "Rental income",
+      "amount": "Amount charged",
+      "amountHint": "Gross in pesos, before the management fee.",
+      "none": "No income",
+      "registered": "Recorded",
+      "submit": "Save income",
+      "commissionPreview": "Management fee ({percent}): {amount}. Fraction {fraction}/8 receives {net}.",
+      "proratedPreview": "Split across the 8 fractions, with no management fee.",
+      "missingCommission": "This property has no management fee configured: the superadmin must set it before recording income from a released week."
+    },
+    "commission": {
+      "title": "Management fee",
+      "hint": "Percentage Arena deducts from the income of a voluntarily released week. It does not apply to the others.",
+      "percentage": "Percentage",
+      "submit": "Save fee",
+      "unset": "Not configured",
+      "current": "Current fee: {percent}"
+    },
+    "validation": {
+      "name_required": "Enter the guest name.",
+      "document_required": "Enter the document number.",
+      "contact_required": "Leave at least an email or a phone number.",
+      "email_invalid": "That email is not valid.",
+      "consent_required": "Without the guest consent we cannot store their data.",
+      "week_confirmed": "That week is confirmed by its owner.",
+      "week_owned": "That week belongs to the fraction that chose it.",
+      "week_blocked": "That week is blocked by the administrator.",
+      "week_rented": "That week is already rented.",
+      "selection_open": "Selection turns are still open: an owner may still choose it.",
+      "week_required": "Choose the week you are renting.",
+      "guest_required": "Choose or register the guest.",
+      "amount_not_positive": "The amount charged must be a whole number of pesos greater than zero.",
+      "percentage_range": "The percentage goes from 0 to 100."
+    },
+    "errors": {
+      "save_failed": "We could not create the booking.",
+      "guest_failed": "We could not register the guest.",
+      "cancel_failed": "We could not cancel the booking.",
+      "income_failed": "We could not record the income.",
+      "commission_failed": "We could not save the management fee."
+    },
+    "messages": {
+      "booked": "Week rented to the guest.",
+      "cancelled": "Booking cancelled; the week returns to the pool.",
+      "income": "Income recorded.",
+      "commission": "Management fee updated."
     }
   }
 }
