@@ -502,21 +502,7 @@
       "description": "Sé dueño de un apartamento en el rascacielos más icónico de Bocagrande desde COP $173M.",
       "cta": "Ver propiedades",
       "secondary": "Cómo funciona",
-      "videoLabel": "Video de Invictvs en primera línea de Bocagrande",
-      "facts": {
-        "floors": {
-          "value": "53",
-          "label": "Pisos"
-        },
-        "height": {
-          "value": "188 m",
-          "label": "Altura sobre el mar"
-        },
-        "delivery": {
-          "value": "2029",
-          "label": "Entrega estimada"
-        }
-      }
+      "videoLabel": "Video de Invictvs en primera línea de Bocagrande"
     },
     "model": {
       "headline": "¿Qué es Arena Property?",

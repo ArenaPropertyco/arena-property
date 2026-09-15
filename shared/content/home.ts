@@ -36,9 +36,6 @@ export type Beneficio = typeof BENEFICIOS[number]
 export const FRENTES_DE_ARENA = ['structure', 'commercialize', 'manage'] as const
 export type FrenteDeArena = typeof FRENTES_DE_ARENA[number]
 
-/** Datos duros del hero, sin cifras estimadas (principio 9): pisos, altura, entrega. */
-export const DATOS_DEL_HERO = ['floors', 'height', 'delivery'] as const
-
 /**
  * RF-00.9 · CA-00.6 · la tabla de temporadas de la home **es** la de HU-43: la
  * misma referencia, derivada del criterio de HU-12. Una sola fuente para que la
@@ -63,7 +60,6 @@ export const SECCIONES_DE_LA_HOME: readonly SeccionDeLaHome[] = [
       'home.hero.description',
       'home.hero.secondary',
       'home.hero.videoLabel',
-      ...clavesDe('home.hero.facts', DATOS_DEL_HERO, ['value', 'label']),
     ],
     cta: { labelKey: 'home.hero.cta', destino: RUTAS_PUBLICAS.catalogo },
   },

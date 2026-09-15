@@ -502,21 +502,7 @@
       "description": "Own an apartment in the most iconic tower in Bocagrande from COP $173M.",
       "cta": "View properties",
       "secondary": "How it works",
-      "videoLabel": "Invictvs video on the Bocagrande beachfront",
-      "facts": {
-        "floors": {
-          "value": "53",
-          "label": "Floors"
-        },
-        "height": {
-          "value": "188 m",
-          "label": "Above the sea"
-        },
-        "delivery": {
-          "value": "2029",
-          "label": "Estimated delivery"
-        }
-      }
+      "videoLabel": "Invictvs video on the Bocagrande beachfront"
     },
     "model": {
       "headline": "What is Arena Property?",
