@@ -98,7 +98,8 @@ export function semanaQueContiene(rejilla: readonly SemanaDeRejilla[], dia: Dia)
 /**
  * P-06 · dónde caen los bloques pico este año: Navidad en la semana del 24 de
  * diciembre, Año Nuevo en la del 31 y Semana Santa en la del Viernes Santo. Si
- * la fecha queda fuera de la rejilla (Fechas Especiales), va a la semana vecina.
+ * la fecha queda fuera de la rejilla (bolsa del Administrador, D-42), va a la
+ * semana vecina.
  */
 export function sugerirBloquesPico(anio: number, rejilla: readonly SemanaDeRejilla[]): Record<BloquePico, number> {
   const ultima = rejilla[rejilla.length - 1]!.indice

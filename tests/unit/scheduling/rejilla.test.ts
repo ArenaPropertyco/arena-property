@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   diaDeLaSemana,
   esBisiesto,
-  fechasEspecialesDelAnio,
+  NOCHES_POR_SEMANA,
+  nochesDeLaBolsaDelAdministrador,
   nochesDelAnio,
   primerSabado,
   rejillaDelAnio,
@@ -54,20 +55,43 @@ describe('CA-12.8 · la rejilla tiene 51 o 52 semanas completas dentro del año'
   })
 })
 
-describe('CA-12.9 · rejilla ∪ Fechas Especiales = año completo (D-30, I-01)', () => {
+describe('CA-12.9 · rejilla ∪ bolsa del Administrador = año completo (D-42, I-01)', () => {
   it.each(ANIOS)('CA-12.9 · %i: la unión cubre todas las noches del año sin huecos ni solapamientos', (anio) => {
     const enRejilla = rejillaDelAnio(anio).flatMap(s => s.noches)
-    const especiales = fechasEspecialesDelAnio(anio)
+    const enBolsa = nochesDeLaBolsaDelAdministrador(anio)
     const anioCompleto = nochesDelAnio(anio)
 
-    expect(enRejilla.length + especiales.length).toBe(anioCompleto.length)
-    expect(new Set([...enRejilla, ...especiales])).toEqual(new Set(anioCompleto))
-    expect(especiales.some(noche => enRejilla.includes(noche))).toBe(false)
+    expect(enRejilla.length + enBolsa.length).toBe(anioCompleto.length)
+    expect(new Set([...enRejilla, ...enBolsa])).toEqual(new Set(anioCompleto))
+    expect(enBolsa.some(noche => enRejilla.includes(noche))).toBe(false)
   })
 
-  it.each(ANIOS)('D-30 · %i deja entre 1 y 9 noches fuera de la rejilla', (anio) => {
-    expect(fechasEspecialesDelAnio(anio).length).toBeGreaterThanOrEqual(1)
-    expect(fechasEspecialesDelAnio(anio).length).toBeLessThanOrEqual(9)
+  it.each(ANIOS)('D-42 · %i deja entre 1 y 9 noches fuera de la rejilla, todas del Administrador', (anio) => {
+    expect(nochesDeLaBolsaDelAdministrador(anio).length).toBeGreaterThanOrEqual(1)
+    expect(nochesDeLaBolsaDelAdministrador(anio).length).toBeLessThanOrEqual(9)
+  })
+
+  // D-42 · la semana es la única unidad de uso, así que ninguna semana entera puede
+  // quedarse fuera de la rejilla: los tramos sobrantes de cabeza y de cola nunca
+  // llegan a 7 noches seguidas, o la rejilla habría cabido una semana más.
+  it.each(ANIOS)('D-42 · %i: ningún tramo sobrante alcanza una semana completa', (anio) => {
+    const bolsa = nochesDeLaBolsaDelAdministrador(anio)
+    const tramos: number[] = []
+    for (const [i, noche] of bolsa.entries()) {
+      const anterior = bolsa[i - 1]
+      if (anterior !== undefined && sumarDias(anterior, 1) === noche) {
+        tramos[tramos.length - 1]! += 1
+      }
+      else {
+        tramos.push(1)
+      }
+    }
+
+    expect(tramos.length).toBeGreaterThanOrEqual(1)
+    expect(tramos.length).toBeLessThanOrEqual(2)
+    for (const tramo of tramos) {
+      expect(tramo).toBeLessThan(NOCHES_POR_SEMANA)
+    }
   })
 
   it('el año tiene 365 noches, o 366 si es bisiesto', () => {

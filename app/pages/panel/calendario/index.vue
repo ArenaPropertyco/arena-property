@@ -50,7 +50,7 @@ watch(propiedades, (lista) => {
 
 const anio = ref(new Date().getFullYear() + 1)
 
-const { id: calendarId, rejilla, fechasEspeciales, clasificacion, errorDeRejilla, publicadoEl, pendiente, guardar } = useCalendario(propertyId, anio)
+const { id: calendarId, rejilla, nochesEnBolsa, clasificacion, errorDeRejilla, publicadoEl, pendiente, guardar } = useCalendario(propertyId, anio)
 const { turnos, fracciones, asignaciones, lockedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, resolver } = useSelectionOrder(calendarId, propertyId)
 const { bloqueos, blockedWeeks, crear: crearBloqueo, levantar: levantarBloqueo } = useWeekBlocks(calendarId)
 const { ventana, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, cerrar: cerrarVentana } = useSelectionWindow(calendarId, propertyId)
@@ -193,7 +193,7 @@ async function levantar(id: string, motivo: string) {
           <div>
             <SectionHeading :titulo="t('calendar.grid', { year: anio })" />
             <p class="text-sm text-muted">
-              {{ t('calendar.gridHint', { weeks: rejilla.length, special: fechasEspeciales.length }) }}
+              {{ t('calendar.gridHint', { weeks: rejilla.length, pool: nochesEnBolsa.length }) }}
             </p>
           </div>
           <CalendarStatus :publicado-el="publicadoEl" />

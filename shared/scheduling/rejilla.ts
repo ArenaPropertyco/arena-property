@@ -1,6 +1,6 @@
 /**
- * HU-12 · RF-12.1 · D-11, D-30 — la rejilla anual sábado a sábado y las noches
- * que quedan fuera (Fechas Especiales).
+ * HU-12 · RF-12.1 · D-42 — la rejilla anual sábado a sábado y las noches que
+ * quedan fuera, que son de la bolsa del Administrador.
  *
  * Todo es aritmética de días de calendario en formato `AAAA-MM-DD`, hecha sobre
  * milisegundos UTC para que la zona horaria del navegador no corra ningún día. La
@@ -100,8 +100,14 @@ export function rejillaDelAnio(anio: number): SemanaDeRejilla[] {
   return semanas
 }
 
-/** D-30 · las noches fuera de la rejilla: antes del primer sábado y tras la última semana. */
-export function fechasEspecialesDelAnio(anio: number): Dia[] {
+/**
+ * D-42 · las noches que quedan fuera de la rejilla —antes del primer sábado y tras
+ * la última semana— son de la **bolsa del Administrador**, de forma permanente: no
+ * se reparten entre las fracciones ni se rentan sueltas, porque la única unidad de
+ * uso es la semana completa. Nunca suman una semana seguida, o la rejilla la habría
+ * incluido.
+ */
+export function nochesDeLaBolsaDelAdministrador(anio: number): Dia[] {
   const rejilla = rejillaDelAnio(anio)
   const primera = rejilla[0]!.inicio
   const siguienteALaUltima = rejilla[rejilla.length - 1]!.fin

@@ -453,7 +453,7 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 - [x] **T-181 · Migración de `third_parties` con consentimiento** — `HU-39 · RF-39.1, RF-39.5` · D-25
   Hecho cuando: existe con RLS, evita duplicar por documento y guarda fecha de anonimización.
 - [x] **T-182 · Migración de `third_party_bookings` sobre la bolsa de renta** — `HU-39 · RF-39.2, RF-39.2b, RF-39.3` · D-39
-  Hecho cuando: comparte la restricción de exclusión con `stays` y `blocks`, y guarda la fracción y el motivo de origen de la semana; pasa `CA-39.5`.
+  Hecho cuando: el índice único por semana impide dos reservas confirmadas sobre la misma (la exclusión GIST por noches quedó sin objeto con D-33 y D-42) y guarda la fracción y el motivo de origen de la semana; pasa `CA-39.5`.
 - [x] **T-183 · Validación de renta solo sobre bolsa de renta** — `HU-39 · RF-39.2`
   Hecho cuando: pasan `CA-39.1` y `CA-39.2`.
 - [x] **T-184 · Reutilización de tercero y cancelación** — `HU-39 · RF-39.1, RF-39.4`
@@ -469,22 +469,26 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 - [x] **T-187 · Rechazo de segundo ingreso sobre la misma reserva** — `HU-40 · RF-40.3`
   Hecho cuando: pasa `CA-40.2`.
 
-## Paso 3 · HU-60 — Fechas Especiales
+## Paso 3 · HU-13, HU-14, HU-16, HU-17, HU-21, HU-39, HU-43 — La semana liberada llega al Administrador
 
-- [ ] **T-188 · Cálculo puro de la bolsa fuera de rejilla** — `HU-60 · RF-60.1`
-  Hecho cuando: pasan `CA-60.1` y `CA-60.2`.
-- [ ] **T-189 · Herencia de temporada de las noches de la bolsa** — `HU-60 · RF-60.2`
-  Hecho cuando: pasa `CA-60.3`.
-- [ ] **T-190 · Migración de `night_pool` y asignación anual** — `HU-60 · RF-60.3`
-  Hecho cuando: existe con RLS y pasa `CA-60.4` sobre 8 años.
-- [ ] **T-191 · Reglas de la estadía comodín** — `HU-60 · RF-60.4, RF-60.5` · schedule.md P-09
-  Hecho cuando: pasan `CA-60.5` y `CA-60.6`.
-- [ ] **T-192 · Prohibición de bloque pico ajeno** — `HU-60 · RF-60.6` · D-27
-  Hecho cuando: pasa `CA-60.7`.
-- [ ] **T-193 · Elección en la ventana y caducidad a 60 días** — `HU-60 · RF-60.7` · `HU-59 · RF-59.7`
-  Hecho cuando: pasa `CA-60.8` y la bolsa de una fracción inactiva fluye a renta sin alterar la rotación.
-- [ ] **T-194 · Presentación de la bolsa en el calendario** — `HU-60 · RF-60.8` · `HU-13 · RF-13.2`
-  Hecho cuando: las noches comodín se distinguen del cupo regular e indican la fracción del año.
+> **HU-60 (Fechas Especiales) queda eliminada por D-42** y con ella sus tareas T-188…T-194. Los identificadores no se reutilizan: el hueco es deliberado, para que ninguna referencia antigua apunte a trabajo distinto del que nombraba.
+
+- [x] **T-187b · Derogación de la noche como unidad de reserva** — `HU-12 · RF-12.1` · `HU-14 · RF-14.2, RF-14.8` · `HU-43 · RF-43.1` · D-42
+  Hecho cuando: `shared/scheduling` nombra las noches fuera de rejilla como bolsa del Administrador, ninguna función ofrece una unidad menor que la semana —ningún tramo sobrante alcanza 7 noches seguidas— y pasan `CA-12.9` y `CA-43.2`.
+- [ ] **T-187c · Aviso al Administrador de la semana liberada** — `HU-14 · RF-14.7c` · `HU-16 · RF-16.5` · `TR-03` · D-43
+  Hecho cuando: pasan `CA-14.10` y `CA-16.4`; el aviso lleva propiedad, semana, temporada y fracción de origen, y sin Administrador asignado va al Superadmin.
+- [ ] **T-187d · Liberar no paga por sí solo** — `HU-14 · RF-14.7d` · `HU-40 · RF-40.7` · D-43
+  Hecho cuando: pasan `CA-14.11` y `CA-40.8`; sin reserva a tercero no existe movimiento ni cuota para la fracción, y ninguna vista anticipa un importe.
+- [ ] **T-187e · Bolsa de renta operable del Administrador** — `HU-17 · RF-17.5` · `HU-39 · RF-39.6` · D-43
+  Hecho cuando: pasan `CA-17.5` y `CA-39.6`; la lista muestra motivo y fracción de origen, distingue lo atribuible de lo prorrateable y desde ella se renta.
+- [ ] **T-187f · Alerta de semanas por colocar en el tablero** — `HU-21 · RF-21.1b` · D-43
+  Hecho cuando: pasa `CA-21.4` y la alerta desaparece cuando la semana se renta, se bloquea o pasa su fecha.
+- [ ] **T-187g · Estado de la semana liberada en el calendario del Propietario** — `HU-13 · RF-13.2b` · `HU-20 · RF-20.4` · D-43
+  Hecho cuando: pasa `CA-13.4`; la semana liberada se ve en bolsa o rentada y sin renta no se muestra importe.
+- [x] **T-187i · Intercambio entre fracciones del mismo titular** — `HU-12 · RF-12.6` · `HU-13 · RF-13.3` · D-44
+  Hecho cuando: pasan `CA-12.12` y `CA-13.5`; el Propietario con dos fracciones solicita el intercambio entre ellas, el Administrador o el Superadmin lo aprueban y se aplica en el acto, y el calendario repite el nombre por fracción.
+- [ ] **T-187h · Manifiesto público sin estadías cortas** — `HU-43 · RF-43.1, RF-43.2` · D-42
+  Hecho cuando: pasan `CA-43.1` y `CA-43.2`; el manifiesto publica 6 semanas por fracción y ninguna unidad menor, y desaparece la mención a Fechas Especiales.
 
 ## Paso 4 · HU-16, HU-17, HU-21 — Operación del Administrador
 
@@ -680,8 +684,8 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 |---|---|---|
 | 1 | T-001 … T-091 | RT base, TR-01, TR-02, HU-04, HU-61, HU-05, HU-07, HU-08, HU-09, HU-10, HU-11, HU-06, HU-58, HU-00, HU-01, HU-02, HU-03, HU-46 |
 | 2 | T-092 … T-168 | TR-03, HU-12, HU-13, HU-14, HU-15, HU-59, HU-52, HU-49, HU-50, HU-51, HU-41, HU-42, HU-43, HU-44, HU-47, HU-48 |
-| 3 | T-169 … T-223 | HU-23, HU-24, HU-39, HU-40, HU-60, HU-16, HU-17, HU-21, HU-18, HU-19, HU-20, HU-53, HU-54 |
+| 3 | T-169 … T-223 | HU-23, HU-24, HU-39, HU-40, HU-13, HU-14, HU-16, HU-17, HU-21, HU-18, HU-19, HU-20, HU-43, HU-53, HU-54 |
 | 4 | T-224 … T-267 | HU-26, HU-27, HU-28, HU-29, HU-30, HU-31, HU-25, HU-32, HU-33, HU-22, HU-55, HU-56, HU-57 |
 | Cierre | T-268 … T-272 | Verificación transversal |
 
-**272 tareas. Las 56 historias y los 3 requisitos transversales tienen al menos una tarea; ninguna tarea existe sin HU o RT que la justifique.**
+**272 tareas. Las 55 historias y los 3 requisitos transversales tienen al menos una tarea; ninguna tarea existe sin HU o RT que la justifique.** Los identificadores T-188…T-194 quedaron vacantes al eliminarse HU-60 (D-42) y no se reutilizan.

@@ -812,7 +812,7 @@
     "nextYear": "Año siguiente",
     "noProperties": "No administras ninguna propiedad fraccionada todavía.",
     "grid": "Rejilla de {year}",
-    "gridHint": "{weeks} semanas completas de sábado a sábado; quedan {special} noches de Fechas Especiales fuera de la rejilla.",
+    "gridHint": "{weeks} semanas completas de sábado a sábado; las {pool} noches que quedan fuera son de la bolsa del Administrador y no se rentan sueltas.",
     "week": "Semana {n}",
     "weekRange": "{from} – {to}",
     "seasons": {

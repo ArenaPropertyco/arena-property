@@ -3,7 +3,7 @@
 -- intercambios del Administrador, solicitudes del Propietario y liberación a 60
 -- días. Las reglas puras viven en `shared/scheduling`; la base las repite.
 begin;
-select plan(64);
+select plan(68);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'season_calendars', 'existe season_calendars');
@@ -339,6 +339,45 @@ select is(
 select is(
   (select count(*) from public.audit_log where action = 'selection_turn.creada' and entity_id in (select id from public.selection_turns where calendar_id = (select id from cal))),
   3::bigint, 'RF-12.5 · el orden de turnos queda auditado');
+
+-- ── D-44 · CA-12.12 · intercambio entre dos fracciones del mismo titular ────
+-- La fracción 2 pasa a ser del mismo dueño que la 1. El intercambio no mira quién
+-- es el titular: la unidad que intercambia es la fracción, y el circuito sigue
+-- siendo el de siempre —el Propietario solicita, quien gestiona aprueba y se aplica.
+reset role;
+set local request.jwt.claim.sub = '';
+update public.fractions set owner_id = 'c1200000-0000-4000-8000-000000000003'
+  where property_id = 'a1200000-0000-4000-8000-000000000001' and number = 2;
+insert into auth.users (id, email, raw_user_meta_data) values
+  ('c1200000-0000-4000-8000-000000000009', 'super.cal@arena.co', '{}');
+insert into public.user_roles (user_id, role) values
+  ('c1200000-0000-4000-8000-000000000009', 'superadmin');
+
+set local role authenticated;
+set local request.jwt.claim.sub = 'c1200000-0000-4000-8000-000000000003';
+create temporary table solicitud_propia as
+  select public.request_week_swap((select id from cal), (select id from fr where number = 1), 27, 2, 30,
+                                  'Quiero juntar las dos semanas de mis fracciones') as id;
+grant select on solicitud_propia to authenticated;
+select isnt(
+  (select id from solicitud_propia), null,
+  'CA-12.12 · el Propietario solicita el intercambio entre sus dos fracciones');
+
+-- El Superadmin resuelve aunque la propiedad no esté asignada a él (D-40).
+set local request.jwt.claim.sub = 'c1200000-0000-4000-8000-000000000009';
+select lives_ok(
+  $$ select public.resolve_swap_request((select id from solicitud_propia), true, 'Aprobado') $$,
+  'CA-12.12 · el Superadmin aprueba la solicitud');
+select is(
+  (select f.number from public.allocations a join public.calendar_weeks w on w.id = a.week_id
+     join public.fractions f on f.id = a.fraction_id
+    where a.calendar_id = (select id from cal) and w.index = 27),
+  2::smallint, 'CA-12.12 · aprobada, la semana 27 quedó en la fracción 2');
+select is(
+  (select f.number from public.allocations a join public.calendar_weeks w on w.id = a.week_id
+     join public.fractions f on f.id = a.fraction_id
+    where a.calendar_id = (select id from cal) and w.index = 30),
+  1::smallint, 'CA-12.12 · y la semana 30 en la fracción 1');
 
 select * from finish();
 rollback;

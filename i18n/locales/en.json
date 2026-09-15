@@ -812,7 +812,7 @@
     "nextYear": "Next year",
     "noProperties": "You don't manage any fractioned property yet.",
     "grid": "{year} grid",
-    "gridHint": "{weeks} full Saturday-to-Saturday weeks; {special} Special Dates nights fall outside the grid.",
+    "gridHint": "{weeks} full Saturday-to-Saturday weeks; the {pool} nights left outside belong to the Administrator's pool and are never rented on their own.",
     "week": "Week {n}",
     "weekRange": "{from} – {to}",
     "seasons": {
