@@ -93,6 +93,7 @@ export function usePropiedad(id: Ref<string>) {
         adminLabels: administradores.map(cuenta => etiquetaPorCuenta.get(cuenta) ?? cuenta),
         fractionCount: (fracciones.data ?? []).length,
         availableFractions: (fracciones.data ?? []).filter(f => f.status === 'available').length,
+        soldFractions: (fracciones.data ?? []).filter(f => f.status === 'sold').length,
         description: propiedad.data.description,
         areaM2: Number(propiedad.data.area_m2),
         bedrooms: propiedad.data.bedrooms,

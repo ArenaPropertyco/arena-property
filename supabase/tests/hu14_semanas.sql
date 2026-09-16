@@ -147,7 +147,8 @@ select is(
   1::bigint, 'CA-14.10 · el Administrador de la propiedad recibe el aviso de la semana liberada');
 select is(
   (select n.payload->>'fraction_number' || ':' || (n.payload->>'week_index')
-     from public.notifications n where n.entity_type = 'week_release_pool'),
+     from public.notifications n
+    where n.entity_type = 'week_release_pool' and n.property_id = 'a1400000-0000-4000-8000-000000000001'),
   '1:41', 'CA-14.10 · el aviso lleva la fracción de origen y la semana');
 select is(
   (select count(*) from public.notification_recipients r join public.notifications n on n.id = r.notification_id

@@ -18,6 +18,8 @@ export interface PropiedadDelPanel extends PropiedadListada {
   adminLabel: string | null
   fractionCount: number
   availableFractions: number
+  /** HU-21 · RF-21.2 · fracciones `vendida`, para el porcentaje del tablero. */
+  soldFractions: number
 }
 
 /** Ficha completa de una propiedad, para la pantalla de detalle. */

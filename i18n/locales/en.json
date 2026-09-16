@@ -1093,6 +1093,36 @@
         "close_failed": "We could not close the window.",
         "relocate_failed": "We could not move the week."
       }
+    },
+    "reassignment": {
+      "title": "Reassignments",
+      "subtitle": "Move a fraction's week to another free week: to get it out from under a block or to honour an owner's request. The confirmation travels with the week, the owner is notified and the change is audited with its reason.",
+      "from": "Week to move",
+      "to": "Target week",
+      "week": "Week {n} · {date} · {season} · fraction {fraction}",
+      "target": "Week {n} · {date} · {season}",
+      "targetOtherSeason": "Week {n} · {date} · {season} · changes season",
+      "reason": "Reason",
+      "reasonHint": "Kept in the audit log and in the notice to the owner.",
+      "overrideSeason": "I authorise the season change as an exception",
+      "overrideHint": "Only when the reason justifies it: the exception is recorded with both seasons.",
+      "submit": "Reassign",
+      "done": "Week reassigned. The owner has been notified.",
+      "validation": {
+        "reason_required": "The reassignment needs a reason.",
+        "same_week": "The target week must be different.",
+        "week_not_owned": "That week does not belong to the given fraction.",
+        "week_released": "That week is already in the rental pool and cannot be reassigned.",
+        "target_unknown": "The target week is not on the grid.",
+        "target_in_the_past": "The target week is already past.",
+        "target_taken": "Week {weeks} already belongs to another fraction: it would overlap.",
+        "target_blocked": "Week {weeks} is blocked.",
+        "target_rented": "Week {weeks} is rented to a third party.",
+        "season_override_required": "Moving from {from} to {to} is an exception to the season rule: tick it and explain why."
+      },
+      "errors": {
+        "reassign_failed": "We could not reassign the week."
+      }
     }
   },
   "referrals": {
@@ -1918,5 +1948,22 @@
       "income": "Income recorded.",
       "commission": "Management fee updated."
     }
+  },
+  "dashboard": {
+    "title": "My properties",
+    "subtitle": "Occupancy, upcoming stays and what awaits your decision in every property you manage.",
+    "sold": "{sold} of {total} fractions sold",
+    "upcoming": "Upcoming stays",
+    "upcomingLine": "Fraction {fraction}/8 · week {week} · {from}",
+    "noUpcoming": "No upcoming stays.",
+    "alerts": "Alerts",
+    "conflicts": "{n} block conflicts",
+    "swapRequests": "{n} swap requests",
+    "weeksToPlace": "{n} weeks to place",
+    "noAlerts": "Nothing pending.",
+    "openCalendar": "Open calendar",
+    "openRentals": "Rental pool",
+    "empty": "You do not manage any property yet.",
+    "loading": "Loading properties…"
   }
 }

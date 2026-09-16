@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  destinatariosDeCalendario,
   destinatariosDeEmbajador,
   destinatariosDeFraccion,
   destinatariosDePropiedad,
@@ -78,5 +79,28 @@ describe('RF-N.3 · segmento de comunicado (HU-31) y embajador (HU-54, HU-57)', 
   it('sin el contexto que su alcance exige, no hay destinatarios: mejor nada que a todos', () => {
     expect(resolverDestinatarios({ kind: 'calendar_activated', entityType: 'payment_plan', entityId: 'p1', propertyId: 'x', payload: {} }, {}))
       .toEqual([])
+  })
+})
+
+describe('CA-16.1 · CA-16.2 · HU-16 · RF-16.3 · el evento de calendario solo llega al titular de la fracción tocada', () => {
+  const numeradas = fracciones.map((fraccion, indice) => ({ ...fraccion, number: indice + 1 }))
+
+  it('CA-16.1 · un evento sobre la fracción 2/8 tiene como destinatario exactamente al titular de 2/8', () => {
+    expect(destinatariosDeCalendario([2], numeradas)).toEqual(['ana'])
+  })
+
+  it('CA-16.2 · un evento sobre la fracción 5/8 no notifica al titular de 2/8', () => {
+    const destinatarios = destinatariosDeCalendario([5], numeradas)
+
+    expect(destinatarios).toEqual(['pedro'])
+    expect(destinatarios).not.toContain('ana')
+  })
+
+  it('D-44 · un titular con dos fracciones afectadas recibe el aviso una sola vez', () => {
+    expect(destinatariosDeCalendario([1, 2, 3], numeradas)).toEqual(['ana', 'luis'])
+  })
+
+  it('RF-16.2 · una fracción sin titular o desconocida no suma destinatarios', () => {
+    expect(destinatariosDeCalendario([7, 9], numeradas)).toEqual([])
   })
 })

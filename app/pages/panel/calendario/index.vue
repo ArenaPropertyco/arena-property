@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { hoy as hoyDe } from '#shared/dates/formato'
 import { propiedadesGestionadas } from '#shared/properties/asignaciones'
+import type { ReassignmentProposal } from '#shared/scheduling/reassignment'
 import type { RelocationWindowConfig } from '#shared/scheduling/relocation'
 import type { SwapProposal } from '#shared/scheduling/swaps'
 
 /**
  * HU-12 · RF-12.2, RF-12.4…RF-12.7 · D-32 — configuración del calendario.
  * HU-15 · RF-15.1…RF-15.5 · D-33 — bloqueos del Administrador por semanas.
+ * HU-17 · RF-17.1, RF-17.3 · D-42 — la reasignación de una semana a otra libre.
  * HU-59 · RF-59.1, RF-59.2, RF-59.6 · D-36 — la ventana de reubicación.
  *
  * La página orquesta: elige propiedad y año, deja al Administrador clasificar la
  * rejilla, fijar el orden de turnos y abrir la selección; abierta, muestra el
- * avance de cada fracción, permite intercambiar semanas y resolver solicitudes,
- * y deja al Superadmin configurar la ventana de reubicación (que el Administrador
- * ve y puede cerrar). Debajo, los bloqueos de la propiedad.
+ * avance de cada fracción, permite intercambiar semanas, reasignarlas y resolver
+ * solicitudes, y deja al Superadmin configurar la ventana de reubicación (que el
+ * Administrador ve y puede cerrar). Debajo, los bloqueos de la propiedad.
+ *
+ * Llega con `?propiedad=` desde el tablero (HU-21): se abre en esa propiedad si
+ * quien mira la gestiona; si no, en la primera de las suyas.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_calendario' } })
 
@@ -39,19 +44,22 @@ const propiedades = computed(() => propiedadesGestionadas(todas.value, {
   .filter(propiedad => propiedad.fractionCount === 8)
   .map(propiedad => ({ id: propiedad.id, label: propiedad.name })))
 
+const route = useRoute()
+const pedida = typeof route.query.propiedad === 'string' ? route.query.propiedad : null
 const propertyId = ref<string | null>(null)
 watch(propiedades, (lista) => {
-  // Si la lista cambia y la elegida ya no está, se vuelve a la primera: quedarse
-  // en una propiedad que dejó de gestionarse pediría datos que la RLS no da.
+  // Si la lista cambia y la elegida ya no está, se vuelve a la pedida o a la
+  // primera: quedarse en una propiedad que dejó de gestionarse pediría datos que
+  // la RLS no da.
   if (!lista.some(propiedad => propiedad.id === propertyId.value)) {
-    propertyId.value = lista[0]?.id ?? null
+    propertyId.value = lista.find(propiedad => propiedad.id === pedida)?.id ?? lista[0]?.id ?? null
   }
 }, { immediate: true })
 
 const anio = ref(new Date().getFullYear() + 1)
 
 const { id: calendarId, rejilla, nochesEnBolsa, clasificacion, errorDeRejilla, publicadoEl, pendiente, guardar } = useCalendario(propertyId, anio)
-const { turnos, fracciones, asignaciones, lockedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, resolver } = useSelectionOrder(calendarId, propertyId)
+const { turnos, fracciones, asignaciones, lockedWeeks, releasedWeeks, rentedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, reasignar, resolver } = useSelectionOrder(calendarId, propertyId)
 const { bloqueos, blockedWeeks, crear: crearBloqueo, levantar: levantarBloqueo } = useWeekBlocks(calendarId)
 const { ventana, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, cerrar: cerrarVentana } = useSelectionWindow(calendarId, propertyId)
 const hoy = computed(() => hoyDe())
@@ -59,6 +67,7 @@ const hoy = computed(() => hoyDe())
 const ocupado = ref(false)
 const abriendo = ref(false)
 const intercambiando = ref(false)
+const reasignando = ref(false)
 const resolviendo = ref<string | null>(null)
 const bloqueando = ref(false)
 const levantando = ref<string | null>(null)
@@ -118,6 +127,13 @@ async function aplicarIntercambio(propuesta: SwapProposal, motivo: string) {
   const resultado = await intercambiar(propuesta, motivo)
   intercambiando.value = false
   toast.add(resultado.ok ? { title: t('calendar.swaps.done'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
+}
+
+async function aplicarReasignacion(propuesta: ReassignmentProposal) {
+  reasignando.value = true
+  const resultado = await reasignar(propuesta)
+  reasignando.value = false
+  toast.add(resultado.ok ? { title: t('calendar.reassignment.done'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
 }
 
 async function resolverSolicitud(id: string, aprobar: boolean, motivo: string | null) {
@@ -289,6 +305,28 @@ async function levantar(id: string, motivo: string) {
             @resolver="resolverSolicitud"
           />
         </template>
+      </section>
+
+      <section
+        v-if="publicadoEl"
+        class="space-y-4"
+        data-test="seccion-reasignacion"
+      >
+        <SectionHeading :titulo="t('calendar.reassignment.title')" />
+        <p class="text-sm text-muted">
+          {{ t('calendar.reassignment.subtitle') }}
+        </p>
+        <WeekReassignmentForm
+          :allocations="asignaciones"
+          :released-weeks="releasedWeeks"
+          :blocked-weeks="blockedWeeks"
+          :rented-weeks="rentedWeeks"
+          :rejilla="rejilla"
+          :classification="clasificacion"
+          :today="hoy"
+          :enviando="reasignando"
+          @submit="aplicarReasignacion"
+        />
       </section>
 
       <section

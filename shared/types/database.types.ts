@@ -2693,6 +2693,17 @@ export type Database = {
         Args: { calendar: string; fraction_order?: number[] }
         Returns: number[]
       }
+      reassign_week: {
+        Args: {
+          calendar: string
+          fraction: number
+          from_week: number
+          override_season?: boolean
+          reason: string
+          to_week: number
+        }
+        Returns: undefined
+      }
       record_referral_click: {
         Args: { referral_code: string; visitor: string }
         Returns: undefined

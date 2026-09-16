@@ -8,7 +8,8 @@ import type { SemanaPorColocar } from '~/composables/useSemanasPorColocar'
  * del día a día del Administrador.
  *
  * Van por cercanía de su entrada, porque lo que urge colocar es lo que primero se
- * va a perder. Las liberadas voluntariamente se marcan: su renta no es de la
+ * va a perder. La lista se anima con auto-animate al cambiar (RT-12): una semana
+ * que se coloca sale sin salto de layout. Las liberadas voluntariamente se marcan: su renta no es de la
  * propiedad sino de la fracción que las soltó (D-39), y eso cambia a quién se le
  * responde si nadie las coloca.
  */
@@ -47,6 +48,7 @@ function destino(semana: SemanaPorColocar): string {
 
     <ul
       v-else
+      v-auto-animate
       class="space-y-3"
     >
       <li

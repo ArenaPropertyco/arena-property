@@ -39,6 +39,24 @@ export function destinatariosDeFraccion(fraccion: FraccionConTitular): string[] 
   return fraccion.ownerId ? [fraccion.ownerId] : []
 }
 
+/** Una fracción con su número, para resolver eventos que nombran fracciones (HU-16). */
+export interface FraccionNumerada extends FraccionConTitular {
+  number: number
+}
+
+/**
+ * CA-16.1 · CA-16.2 · HU-16 · RF-16.3 · los titulares de las fracciones que un
+ * evento de calendario toca, y nadie más. Un titular con dos fracciones afectadas
+ * (D-44) cuenta una vez; una fracción sin titular o desconocida, ninguna.
+ */
+export function destinatariosDeCalendario(fraccionesAfectadas: readonly number[], fracciones: readonly FraccionNumerada[]): string[] {
+  const afectadas = new Set(fraccionesAfectadas)
+  return unicos([...fracciones]
+    .sort((a, b) => a.number - b.number)
+    .filter(fraccion => afectadas.has(fraccion.number))
+    .flatMap(fraccion => destinatariosDeFraccion(fraccion)))
+}
+
 /** CA-N.2 · HU-29 · todos los titulares de la propiedad, una vez cada uno. */
 export function destinatariosDePropiedad(fracciones: readonly FraccionConTitular[]): string[] {
   return unicos(fracciones.map(fraccion => fraccion.ownerId).filter((id): id is string => id !== null))
