@@ -49,14 +49,19 @@ const secciones = computed<NavigationMenuItem[]>(() => [
   ...(puede(roles.value, 'gestionar_propiedades')
     ? [{ label: t('nav.properties'), icon: 'i-lucide-building-2', to: localePath('/panel/propiedades') }]
     : []),
-  // HU-13 · el Propietario tiene su calendario por noches; el Administrador, la configuración (HU-12).
+  // HU-13 · el Propietario tiene su calendario por semanas; el Administrador, la configuración (HU-12).
+  // HU-19 · HU-20 · su estado de cuenta y su historial de semanas son suyos: el
+  // Administrador lleva las finanzas desde cada propiedad (HU-23).
   ...(roles.value.includes('owner')
-    ? [{ label: t('nav.myCalendar'), icon: 'i-lucide-calendar-heart', to: localePath('/panel/mi-calendario') }]
+    ? [
+        { label: t('nav.myCalendar'), icon: 'i-lucide-calendar-heart', to: localePath('/panel/mi-calendario') },
+        { label: t('nav.weekHistory'), icon: 'i-lucide-history', to: localePath('/panel/mis-semanas') },
+        { label: t('nav.finance'), icon: 'i-lucide-wallet', to: localePath('/panel/finanzas') },
+      ]
     : []),
   ...(puede(roles.value, 'gestionar_calendario')
     ? [{ label: t('nav.calendar'), icon: 'i-lucide-calendar-days', to: localePath('/panel/calendario') }]
     : []),
-  { label: t('nav.finance'), icon: 'i-lucide-wallet', to: localePath('/panel/finanzas') },
   {
     label: t('nav.inbox'),
     icon: 'i-lucide-bell',

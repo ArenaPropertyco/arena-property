@@ -27,6 +27,19 @@ export function formatearDia(dia: string, idioma: Idioma): string {
   }).format(new Date(`${dia}T12:00:00-05:00`))
 }
 
+/** `2026-09` → «sept 2026» / «Sep 2026». Devuelve el texto tal cual si no es un mes. */
+export function formatearMes(mes: string, idioma: Idioma): string {
+  if (!/^\d{4}-\d{2}$/.test(mes)) {
+    return mes
+  }
+
+  return new Intl.DateTimeFormat(regionDe(idioma), {
+    timeZone: ZONA_HORARIA,
+    year: 'numeric',
+    month: 'short',
+  }).format(new Date(`${mes}-15T12:00:00-05:00`))
+}
+
 /** Instante ISO → fecha y hora en la zona del negocio. */
 export function formatearInstante(iso: string, idioma: Idioma): string {
   const fecha = new Date(iso)

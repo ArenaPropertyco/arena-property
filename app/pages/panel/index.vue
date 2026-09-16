@@ -1,8 +1,11 @@
 <script setup lang="ts">
 /**
- * Panel de entrada. El dashboard completo es HU-18; desde ya, el Propietario ve
- * sus planes de pago en lectura (HU-58 · RF-58.9): saldo pendiente y qué falta
- * para activar el calendario de cada fracción. Exige sesión verificada (RF-04.2).
+ * Panel de entrada. Exige sesión verificada (RF-04.2).
+ *
+ * HU-18 · RF-18.1…RF-18.5 · el Propietario ve su portafolio: una tarjeta por
+ * fracción con su próxima estadía, su saldo del periodo, lo que produjo la renta a
+ * terceros, el plan de pagos mientras no esté completo (HU-58 · RF-58.9) y sus
+ * copropietarios.
  *
  * HU-21 · RF-21.1…RF-21.3 · quien administra propiedades ve un resumen de cada una
  * —ocupación, próximas reservas y alertas— y, aparte, las semanas de la bolsa que
@@ -13,7 +16,7 @@ definePageMeta({ layout: 'dashboard', acceso: { privada: true } })
 
 const { t } = useI18n()
 const { roles } = useCuenta()
-const { planes, pendiente } = usePlanesPropios()
+const { tarjetas, pendiente: cargandoPortafolio } = usePortafolio()
 
 const esPropietario = computed(() => roles.value.includes('owner'))
 const gestiona = computed(() => roles.value.includes('property_admin') || roles.value.includes('superadmin'))
@@ -52,13 +55,13 @@ const { resumenes, pendiente: cargandoTablero } = useTablero()
       v-if="esPropietario"
       class="space-y-4"
     >
-      <SectionHeading :titulo="t('owner.title')" />
+      <SectionHeading :titulo="t('portfolio.title')" />
       <p class="text-sm text-muted">
-        {{ t('owner.subtitle') }}
+        {{ t('portfolio.subtitle') }}
       </p>
-      <OwnerPlansList
-        :planes="planes"
-        :pendiente="pendiente"
+      <OwnerFractionsList
+        :tarjetas="tarjetas"
+        :pendiente="cargandoPortafolio"
       />
     </section>
   </PanelPage>
