@@ -492,23 +492,23 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 4 · HU-16, HU-17, HU-21 — Operación del Administrador
 
-- [ ] **T-195 · Acotamiento de la notificación a la fracción propia** — `HU-16 · RF-16.1, RF-16.2, RF-16.3`
+- [x] **T-195 · Acotamiento de la notificación a la fracción propia** — `HU-16 · RF-16.1, RF-16.2, RF-16.3`
   Hecho cuando: pasan `CA-16.1` y `CA-16.2`.
-- [ ] **T-196 · Emisión única por evento de calendario** — `HU-16 · RF-16.4` · `TR-03`
+- [x] **T-196 · Emisión única por evento de calendario** — `HU-16 · RF-16.4` · `TR-03`
   Hecho cuando: pasa `CA-16.3`.
-- [ ] **T-197 · Acciones administrativas sobre el calendario** — `HU-17 · RF-17.1`
+- [x] **T-197 · Acciones administrativas sobre el calendario** — `HU-17 · RF-17.1`
   Hecho cuando: pasa `CA-17.4` y ninguna acción procede sobre propiedad no asignada.
-- [ ] **T-198 · Aviso previo obligatorio al Propietario afectado** — `HU-17 · RF-17.2`
+- [x] **T-198 · Aviso previo obligatorio al Propietario afectado** — `HU-17 · RF-17.2`
   Hecho cuando: pasa `CA-17.1`.
-- [ ] **T-199 · Invariantes en la reasignación** — `HU-17 · RF-17.3`
+- [x] **T-199 · Invariantes en la reasignación** — `HU-17 · RF-17.3`
   Hecho cuando: pasan `CA-17.2` y `CA-17.3`.
-- [ ] **T-200 · Auditoría de las acciones de calendario** — `HU-17 · RF-17.4` · `TR-01`
+- [x] **T-200 · Auditoría de las acciones de calendario** — `HU-17 · RF-17.4` · `TR-01`
   Hecho cuando: cada acción registra acción, motivo, estadía afectada, autor y fecha.
-- [ ] **T-201 · Indicadores del dashboard del Administrador** — `HU-21 · RF-21.1, RF-21.2`
+- [x] **T-201 · Indicadores del dashboard del Administrador** — `HU-21 · RF-21.1, RF-21.2`
   Hecho cuando: pasan `CA-21.1` y `CA-21.2`.
-- [ ] **T-202 · Alcance del dashboard a propiedades asignadas** — `HU-21 · RF-21.3`
+- [x] **T-202 · Alcance del dashboard a propiedades asignadas** — `HU-21 · RF-21.3`
   Hecho cuando: pasa `CA-21.3`.
-- [ ] **T-203 · Transiciones de lista con `@formkit/auto-animate`** — `HU-21` · `RT-12`
+- [x] **T-203 · Transiciones de lista con `@formkit/auto-animate`** — `HU-21` · `RT-12`
   Hecho cuando: los listados del dashboard animan altas y bajas sin salto de layout.
 
 ## Paso 5 · HU-18, HU-19, HU-20 — Dashboard del Propietario

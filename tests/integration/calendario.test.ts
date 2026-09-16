@@ -7,6 +7,7 @@ import SelectionOrderEditor from '~/components/SelectionOrderEditor.vue'
 import SelectedWeeksList from '~/components/SelectedWeeksList.vue'
 import SelectionProgress from '~/components/SelectionProgress.vue'
 import SwapRequestsList from '~/components/SwapRequestsList.vue'
+import WeekReassignmentForm from '~/components/WeekReassignmentForm.vue'
 import WeekSelectionForm from '~/components/WeekSelectionForm.vue'
 import WeekSwapForm from '~/components/WeekSwapForm.vue'
 import { formatearDia } from '#shared/dates/formato'
@@ -217,6 +218,64 @@ describe('WeekSwapForm', () => {
     await flushPromises()
     expect(formulario.find('[data-test="errores-intercambio"]').exists()).toBe(true)
     expect(formulario.emitted('submit')).toBeUndefined()
+  })
+})
+
+describe('WeekReassignmentForm', () => {
+  const allocations: AllocationEntry[] = [
+    { fraction: 1, week: 0, season: 'alta' },
+    { fraction: 1, week: 24, season: 'baja' },
+    { fraction: 2, week: 25, season: 'baja' },
+  ]
+  const clasificacion = clasificacionValida()
+
+  async function formulario() {
+    return mountSuspended(WeekReassignmentForm, {
+      props: { allocations, releasedWeeks: [], blockedWeeks: [30], rentedWeeks: [], rejilla, classification: clasificacion, today: `${ANIO}-01-01`, enviando: false },
+    })
+  }
+
+  it('RF-17.4 · sin semana ni motivo no reasigna y lo explica', async () => {
+    const form = await formulario()
+
+    await form.find('form').trigger('submit')
+    await flushPromises()
+    expect(form.find('[data-test="errores-reasignacion"]').exists()).toBe(true)
+    expect(form.emitted('submit')).toBeUndefined()
+  })
+
+  it('CA-17.2 · los destinos ofrecidos son solo semanas libres: la 25 de la fracción 2 y la 30 bloqueada no aparecen', async () => {
+    const form = await formulario()
+    const [origen, destino] = form.findAllComponents({ name: 'USelect' })
+
+    await origen!.vm.$emit('update:modelValue', 24)
+    await flushPromises()
+    const semanas = (destino!.props('items') as { value: number }[]).map(o => o.value)
+
+    expect(semanas).not.toContain(24)
+    expect(semanas).not.toContain(25)
+    expect(semanas).not.toContain(30)
+    expect(semanas).toContain(26)
+  })
+
+  it('CA-17.3 · cruzar de temporada sin marcar la excepción se rechaza; marcada y con motivo, emite la propuesta', async () => {
+    const form = await formulario()
+    const [origen, destino] = form.findAllComponents({ name: 'USelect' })
+
+    await origen!.vm.$emit('update:modelValue', 24)
+    await flushPromises()
+    await destino!.vm.$emit('update:modelValue', 3)
+    await form.find('[data-test="motivo-reasignacion"]').setValue('Obra en la cubierta')
+    await form.find('form').trigger('submit')
+    await flushPromises()
+    expect(form.find('[data-test="error-season_override_required"]').exists()).toBe(true)
+    expect(form.emitted('submit')).toBeUndefined()
+
+    form.findComponent({ name: 'UCheckbox' }).vm.$emit('update:modelValue', true)
+    await flushPromises()
+    await form.find('form').trigger('submit')
+    await flushPromises()
+    expect(form.emitted('submit')).toEqual([[{ fraction: 1, fromWeek: 24, toWeek: 3, reason: 'Obra en la cubierta', overrideSeason: true }]])
   })
 })
 

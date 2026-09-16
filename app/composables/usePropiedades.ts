@@ -60,6 +60,7 @@ export function usePropiedades() {
         adminLabel: admins.map(id => etiquetaPorAdmin.get(id)).find(Boolean) ?? null,
         fractionCount: Number(fila.fraction_count ?? 0),
         availableFractions: Number(fila.available_fractions ?? 0),
+        soldFractions: Number(fila.sold_fractions ?? 0),
       }
     })
   })

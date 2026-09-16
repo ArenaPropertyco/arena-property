@@ -1093,6 +1093,36 @@
         "close_failed": "No pudimos cerrar la ventana.",
         "relocate_failed": "No pudimos mover la semana."
       }
+    },
+    "reassignment": {
+      "title": "Reasignaciones",
+      "subtitle": "Mueve una semana de una fracción a otra semana libre: para sacarla de debajo de un bloqueo o atender una petición del titular. La confirmación viaja con la semana, el titular recibe aviso y el cambio queda auditado con su motivo.",
+      "from": "Semana a mover",
+      "to": "Semana de destino",
+      "week": "Semana {n} · {date} · {season} · fracción {fraction}",
+      "target": "Semana {n} · {date} · {season}",
+      "targetOtherSeason": "Semana {n} · {date} · {season} · cambia de temporada",
+      "reason": "Motivo",
+      "reasonHint": "Queda en la auditoría y en el aviso al titular.",
+      "overrideSeason": "Autorizo el cambio de temporada como excepción",
+      "overrideHint": "Solo cuando el motivo lo justifique: la excepción queda registrada con las dos temporadas.",
+      "submit": "Reasignar",
+      "done": "Semana reasignada. El titular recibió el aviso.",
+      "validation": {
+        "reason_required": "La reasignación necesita un motivo.",
+        "same_week": "La semana de destino debe ser distinta.",
+        "week_not_owned": "Esa semana no es de la fracción indicada.",
+        "week_released": "Esa semana ya está en la bolsa de renta y no se reasigna.",
+        "target_unknown": "La semana de destino no está en la rejilla.",
+        "target_in_the_past": "La semana de destino ya pasó.",
+        "target_taken": "La semana {weeks} ya pertenece a otra fracción: habría solapamiento.",
+        "target_blocked": "La semana {weeks} está bloqueada.",
+        "target_rented": "La semana {weeks} está rentada a un tercero.",
+        "season_override_required": "Cambiar de {from} a {to} es una excepción a la regla de temporada: márcala y explica el motivo."
+      },
+      "errors": {
+        "reassign_failed": "No pudimos reasignar la semana."
+      }
     }
   },
   "referrals": {
@@ -1918,5 +1948,22 @@
       "income": "Ingreso registrado.",
       "commission": "Comisión de gestión actualizada."
     }
+  },
+  "dashboard": {
+    "title": "Mis propiedades",
+    "subtitle": "Ocupación, próximas reservas y lo que espera tu decisión en cada propiedad que administras.",
+    "sold": "{sold} de {total} fracciones vendidas",
+    "upcoming": "Próximas reservas",
+    "upcomingLine": "Fracción {fraction}/8 · semana {week} · {from}",
+    "noUpcoming": "Sin reservas próximas.",
+    "alerts": "Alertas",
+    "conflicts": "{n} conflictos de bloqueo",
+    "swapRequests": "{n} solicitudes de intercambio",
+    "weeksToPlace": "{n} semanas por colocar",
+    "noAlerts": "Nada pendiente.",
+    "openCalendar": "Abrir calendario",
+    "openRentals": "Bolsa de renta",
+    "empty": "Todavía no administras ninguna propiedad.",
+    "loading": "Cargando propiedades…"
   }
 }

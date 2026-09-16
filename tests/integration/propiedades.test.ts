@@ -302,6 +302,7 @@ describe('PropertiesTable', () => {
       adminIds: ['admin-1'],
       adminLabel: 'admin1@arena.co',
       availableFractions: 5,
+      soldFractions: 3,
       fractionCount: 8,
     },
   ]

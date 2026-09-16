@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { claveDeEvento, crearRegistroDeEmisiones } from '#shared/notifications/emision'
+import { REQUIERE_CORREO } from '#shared/notifications/tipos'
 
 /**
  * TR-03 · RF-N.4 — cada evento de negocio genera como máximo una notificación por
@@ -37,5 +38,21 @@ describe('CA-N.3 · idempotencia de emisión', () => {
     const registro = crearRegistroDeEmisiones()
 
     expect(registro.emitir(evento, ['ana', 'ana'])).toEqual(['ana'])
+  })
+})
+
+describe('CA-16.3 · HU-16 · RF-16.4 · una reserva confirmada se emite una sola vez por los dos canales', () => {
+  const confirmada = { kind: 'stay_confirmed' as const, entityType: 'week_confirmation', entityId: 'alloc-1', propertyId: 'x', payload: { week_index: 24 } }
+
+  it('CA-16.3 · el tipo exige correo además de la bandeja', () => {
+    expect(REQUIERE_CORREO.stay_confirmed).toBe(true)
+  })
+
+  it('CA-16.3 · reprocesar la confirmación no produce una segunda notificación al titular', () => {
+    const registro = crearRegistroDeEmisiones()
+
+    expect(registro.emitir(confirmada, ['luis'])).toEqual(['luis'])
+    expect(registro.emitir(confirmada, ['luis'])).toEqual([])
+    expect(registro.destinatariosDe(confirmada)).toEqual(['luis'])
   })
 })
