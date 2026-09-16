@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ZONA_HORARIA, formatearDia, formatearInstante, hoy } from '#shared/dates/formato'
+import { ZONA_HORARIA, formatearDia, formatearInstante, hoy, formatearMes } from '#shared/dates/formato'
 
 /**
  * DT-12 · las fechas se formatean en la zona del negocio, sin depender de la del
@@ -27,5 +27,17 @@ describe('DT-12 · formato de fechas', () => {
 
   it('«hoy» es un día de calendario en Bogotá, no en UTC', () => {
     expect(hoy(new Date('2026-09-04T03:30:00Z'))).toBe('2026-09-03')
+  })
+})
+
+describe('HU-19 · RF-19.2 · el mes del histórico se presenta en el idioma de quien mira', () => {
+  it('«2026-09» sale como mes abreviado y año, en español y en inglés', () => {
+    expect(formatearMes('2026-09', 'es')).toMatch(/sep/i)
+    expect(formatearMes('2026-09', 'es')).toContain('2026')
+    expect(formatearMes('2026-09', 'en')).toBe('Sep 2026')
+  })
+
+  it('lo que no es un mes se devuelve tal cual', () => {
+    expect(formatearMes('septiembre', 'es')).toBe('septiembre')
   })
 })

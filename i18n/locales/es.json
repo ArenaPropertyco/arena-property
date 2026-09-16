@@ -22,7 +22,8 @@
     "myCalendar": "Mi calendario",
     "commission": "Comisión",
     "ambassadors": "Embajadores",
-    "referralProgram": "Programa de Referidos"
+    "referralProgram": "Programa de Referidos",
+    "weekHistory": "Mis semanas"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -1965,5 +1966,85 @@
     "openRentals": "Bolsa de renta",
     "empty": "Todavía no administras ninguna propiedad.",
     "loading": "Cargando propiedades…"
+  },
+  "portfolio": {
+    "title": "Mis fracciones",
+    "subtitle": "Cada fracción con su próxima estadía, su estado de cuenta, lo que produjo la renta a terceros y quiénes son tus copropietarios.",
+    "empty": "Todavía no eres titular de ninguna fracción.",
+    "loading": "Cargando tus fracciones…",
+    "calendarActive": "Calendario activo",
+    "calendarInactive": "Calendario inactivo",
+    "nextStay": "Próxima estadía",
+    "nextStayLine": "Semana {week} · {from} – {to}",
+    "noNextStay": "Sin estadías próximas.",
+    "balance": "Saldo de {month}",
+    "rentalIncome": "Ingresos por renta a terceros",
+    "rentalProrated": "Prorrateado (1/8 de semanas sin dueño)",
+    "rentalAttributed": "Atribuido por semanas que liberaste, neto de comisión",
+    "plan": "Plan de pagos",
+    "coOwners": "Copropietarios",
+    "noCoOwners": "Todavía no hay otros copropietarios.",
+    "coOwnerLine": "{name} · fracción {fraction}/8",
+    "openCalendar": "Mi calendario",
+    "openStatement": "Estado de cuenta",
+    "openPlan": "Ver plan de pagos"
+  },
+  "statement": {
+    "title": "Estado de cuenta",
+    "subtitle": "Lo que te toca de cada gasto y de cada ingreso de tus propiedades, mes a mes, con el detalle de cómo se calculó.",
+    "empty": "Todavía no tienes fracciones: no hay estado de cuenta que mostrar.",
+    "historyTitle": "Histórico mensual de {year}",
+    "historyHint": "Elige un mes para ver su desglose por categoría.",
+    "breakdownTitle": "Desglose de {month}",
+    "breakdownHint": "Cada línea dice qué es: cuota prorrateada, ingreso atribuido o gasto imputado. Toca «Ver detalle» para el cálculo.",
+    "noLines": "Sin movimientos en este mes.",
+    "columns": {
+      "month": "Mes",
+      "income": "Ingresos",
+      "expenses": "Gastos",
+      "net": "Neto",
+      "movements": "Movimientos",
+      "date": "Causación",
+      "concept": "Concepto",
+      "share": "Tu parte"
+    },
+    "nature": {
+      "prorated": "Cuota prorrateada (1/8)",
+      "attributed": "Ingreso atribuido",
+      "imputed": "Gasto imputado"
+    },
+    "groupTotal": "Total",
+    "viewMonth": "Ver mes",
+    "selected": "Seleccionado"
+  },
+  "history": {
+    "title": "Mis semanas",
+    "subtitle": "Todas tus semanas, pasadas y futuras, por propiedad: qué elegiste, qué confirmaste y qué pasó con las que soltaste.",
+    "empty": "No hay semanas que coincidan con el filtro.",
+    "filters": {
+      "property": "Propiedad",
+      "allProperties": "Todas las propiedades",
+      "from": "Entrada desde",
+      "to": "Entrada hasta",
+      "clear": "Limpiar filtros"
+    },
+    "columns": {
+      "week": "Semana",
+      "season": "Temporada",
+      "state": "Estado",
+      "income": "Ingreso de tu fracción"
+    },
+    "weekLine": "Semana {week} · {from} – {to}",
+    "fractionLine": "{property} · fracción {fraction}/8",
+    "states": {
+      "elected": "Por confirmar",
+      "confirmed": "Confirmada",
+      "used": "Usada",
+      "cancelled": "Cancelada",
+      "released": "Liberada, en bolsa de renta",
+      "expired": "Caducada",
+      "rented": "Rentada a un tercero"
+    },
+    "noIncome": "—"
   }
 }

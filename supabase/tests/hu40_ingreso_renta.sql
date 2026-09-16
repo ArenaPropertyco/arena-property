@@ -248,7 +248,8 @@ select is(
   0::bigint, 'D-01 · el Administrador no ve lo que gana Arena: no es dinero de la propiedad');
 set local request.jwt.claim.sub = 'c4000000-0000-4000-8000-00000000000a';
 select is(
-  (select count(*) from public.platform_ledger where source_type = 'rental_commission'),
+  (select count(*) from public.platform_ledger
+    where source_type = 'rental_commission' and property_id = 'a4000000-0000-4000-8000-000000000001'),
   3::bigint, 'D-01 · el Superadmin sí ve las tres comisiones de gestión devengadas');
 
 -- ── CA-40.3 · el ingreso llega al estado de cuenta del Propietario y al de Arena ─
@@ -262,7 +263,8 @@ select is(
 set local request.jwt.claim.sub = 'c4000000-0000-4000-8000-00000000000a';
 select is(
   (select count(*) from public.platform_ledger
-    where source_type = 'rental_commission' and reversed_at is null and accrued_on = current_date),
+    where source_type = 'rental_commission' and reversed_at is null and accrued_on = current_date
+      and property_id = 'a4000000-0000-4000-8000-000000000001'),
   2::bigint, 'CA-40.3 · D-09 · y Arena ve las comisiones vigentes devengadas en el mismo periodo');
 
 -- ── CA-24.3 · RF-24.3 · el detalle solo sobre la fracción propia ────────────

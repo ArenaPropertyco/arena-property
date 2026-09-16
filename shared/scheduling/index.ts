@@ -7,6 +7,7 @@
 
 export * from './bolsa'
 export * from './criterio'
+export * from './historial'
 export * from './reassignment'
 export * from './rejilla'
 export * from './relocation'

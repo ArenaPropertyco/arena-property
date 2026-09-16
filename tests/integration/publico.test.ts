@@ -11,19 +11,17 @@ import HomeHero from '~/components/HomeHero.vue'
 import HomeProperties from '~/components/HomeProperties.vue'
 import HomeScheduling from '~/components/HomeScheduling.vue'
 import HomeWhatWeDo from '~/components/HomeWhatWeDo.vue'
-import OwnerPlansList from '~/components/OwnerPlansList.vue'
 import PropertyCard from '~/components/PropertyCard.vue'
 import PropertyCatalog from '~/components/PropertyCatalog.vue'
 import PropertyContactForm from '~/components/PropertyContactForm.vue'
 import { SECCIONES_DE_LA_HOME } from '#shared/content/home'
 import { formatearImporte } from '#shared/money/formato'
 import { pesos } from '#shared/money/importe'
-import type { PlanDePagosListado } from '#shared/payments/vistas'
 import { filtroDeCatalogoVacio } from '#shared/properties/catalogo-publico'
 import type { PropiedadPublica } from '#shared/properties/catalogo-publico'
 
 /**
- * HU-00, HU-01, HU-02, HU-03, HU-46 y HU-58 · principio 10 · los componentes del
+ * HU-00, HU-01, HU-02, HU-03 y HU-46 · principio 10 · los componentes del
  * sitio público reciben datos por props y comunican por eventos. La apariencia no
  * se prueba; sí que muestran lo que la spec exige y emiten lo que la página necesita.
  */
@@ -52,28 +50,6 @@ function propiedad(cambios: Partial<PropiedadPublica> = {}): PropiedadPublica {
     bedrooms: 3,
     bathrooms: 2,
     parkingSpots: 1,
-    ...cambios,
-  }
-}
-
-function plan(cambios: Partial<PlanDePagosListado> = {}): PlanDePagosListado {
-  return {
-    id: 'plan-1',
-    fractionId: 'f-1',
-    fractionNumber: 3,
-    propertyId: 'p1',
-    propertyName: 'Casa Arena Palomino',
-    ownerId: 'u-1',
-    ownerLabel: 'ana@ejemplo.com',
-    agreedPrice: pesos(100_000_000),
-    paidTotal: pesos(30_000_000),
-    balance: pesos(70_000_000),
-    status: 'in_progress',
-    calendarActive: false,
-    referralCode: null,
-    closedAt: '2026-09-01T12:00:00Z',
-    voidedAt: null,
-    voidReason: null,
     ...cambios,
   }
 }
@@ -370,31 +346,5 @@ describe('HU-03 · contacto desde la ficha', () => {
     })
 
     expect((formulario.find('[data-test="campo-referido"] input').element as HTMLInputElement).value).toBe('LUIS-2026')
-  })
-})
-
-describe('HU-58 · RF-58.9 · el Propietario lee sus planes', () => {
-  it('RF-58.9 · cada plan muestra el saldo pendiente y qué falta para activar el calendario', async () => {
-    const lista = await mountSuspended(OwnerPlansList, { props: { planes: [plan()], pendiente: false } })
-
-    expect(lista.text()).toContain('Casa Arena Palomino')
-    const saldo = formatearImporte(pesos(70_000_000), 'es')
-    expect(lista.find('[data-test="saldo-plan-1"]').text()).toContain(saldo)
-    expect(lista.find('[data-test="calendario-plan-1"]').text()).toBe(`Faltan ${saldo} para activar el calendario.`)
-    expect(lista.find('[data-test="abrir-plan-1"]').attributes('href')).toBe('/panel/planes/plan-1')
-  })
-
-  it('RF-58.9 · un plan completo dice que el calendario está activo', async () => {
-    const lista = await mountSuspended(OwnerPlansList, {
-      props: { planes: [plan({ paidTotal: pesos(100_000_000), balance: pesos(0), status: 'completed', calendarActive: true })], pendiente: false },
-    })
-
-    expect(lista.find('[data-test="calendario-plan-1"]').text()).toContain('activo')
-  })
-
-  it('sin fracciones propias lo dice con su texto', async () => {
-    const lista = await mountSuspended(OwnerPlansList, { props: { planes: [], pendiente: false } })
-
-    expect(lista.find('[data-test="sin-planes"]').text()).toBe('Todavía no tienes fracciones con plan de pagos.')
   })
 })

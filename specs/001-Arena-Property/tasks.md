@@ -513,23 +513,23 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 5 · HU-18, HU-19, HU-20 — Dashboard del Propietario
 
-- [ ] **T-204 · Armado puro del resumen por fracción** — `HU-18 · RF-18.1, RF-18.3`
+- [x] **T-204 · Armado puro del resumen por fracción** — `HU-18 · RF-18.1, RF-18.3`
   Hecho cuando: pasan `CA-18.1` y `CA-18.2`.
-- [ ] **T-205 · Detalle de ingresos por renta en la tarjeta** — `HU-18 · RF-18.2`
+- [x] **T-205 · Detalle de ingresos por renta en la tarjeta** — `HU-18 · RF-18.2`
   Hecho cuando: pasa `CA-18.3`.
-- [ ] **T-206 · Estado de plan de pagos e interruptor en la tarjeta** — `HU-18 · RF-18.5` · D-31
+- [x] **T-206 · Estado de plan de pagos e interruptor en la tarjeta** — `HU-18 · RF-18.5` · D-31
   Hecho cuando: muestra saldo pendiente, qué falta para activar y los copropietarios con nombre y fracción.
-- [ ] **T-207 · RLS del dashboard a fracciones propias** — `HU-18 · RF-18.4`
+- [x] **T-207 · RLS del dashboard a fracciones propias** — `HU-18 · RF-18.4`
   Hecho cuando: un Propietario con fracciones en dos propiedades ve exactamente esas dos.
-- [ ] **T-208 · Desglose de gastos e ingresos prorrateados** — `HU-19 · RF-19.1`
+- [x] **T-208 · Desglose de gastos e ingresos prorrateados** — `HU-19 · RF-19.1`
   Hecho cuando: pasa `CA-19.2`.
-- [ ] **T-209 · Agregación mensual pura** — `HU-19 · RF-19.2`
+- [x] **T-209 · Agregación mensual pura** — `HU-19 · RF-19.2`
   Hecho cuando: pasan `CA-19.1` y `CA-19.3`.
-- [ ] **T-210 · Enlace de cada línea al detalle de prorrateo** — `HU-19 · RF-19.3`
+- [x] **T-210 · Enlace de cada línea al detalle de prorrateo** — `HU-19 · RF-19.3`
   Hecho cuando: cada línea abre el detalle de `HU-24` de esa cuota.
-- [ ] **T-211 · Formato monetario del desglose** — `HU-19 · RF-19.4` · `TR-02`
+- [x] **T-211 · Formato monetario del desglose** — `HU-19 · RF-19.4` · `TR-02`
   Hecho cuando: los importes usan IBM Plex Mono y el formato de `RF-D.5`.
-- [ ] **T-212 · Historial de estadías con filtros** — `HU-20 · RF-20.1, RF-20.2, RF-20.3`
+- [x] **T-212 · Historial de estadías con filtros** — `HU-20 · RF-20.1, RF-20.2, RF-20.3`
   Hecho cuando: pasan `CA-20.1`, `CA-20.2` y `CA-20.3`.
 
 ## Paso 6 · HU-53, HU-54 — Motor de comisiones

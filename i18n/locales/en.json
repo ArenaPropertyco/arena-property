@@ -22,7 +22,8 @@
     "myCalendar": "My calendar",
     "commission": "Commission",
     "ambassadors": "Ambassadors",
-    "referralProgram": "Referral Program"
+    "referralProgram": "Referral Program",
+    "weekHistory": "My weeks"
   },
   "actions": {
     "login": "Log in",
@@ -1965,5 +1966,85 @@
     "openRentals": "Rental pool",
     "empty": "You do not manage any property yet.",
     "loading": "Loading properties…"
+  },
+  "portfolio": {
+    "title": "My fractions",
+    "subtitle": "Each fraction with its next stay, its account statement, what third-party rentals produced and who your co-owners are.",
+    "empty": "You do not own any fraction yet.",
+    "loading": "Loading your fractions…",
+    "calendarActive": "Calendar active",
+    "calendarInactive": "Calendar inactive",
+    "nextStay": "Next stay",
+    "nextStayLine": "Week {week} · {from} – {to}",
+    "noNextStay": "No upcoming stays.",
+    "balance": "Balance for {month}",
+    "rentalIncome": "Income from third-party rentals",
+    "rentalProrated": "Prorated (1/8 of weeks with no owner)",
+    "rentalAttributed": "Attributed for weeks you released, net of commission",
+    "plan": "Payment plan",
+    "coOwners": "Co-owners",
+    "noCoOwners": "No other co-owners yet.",
+    "coOwnerLine": "{name} · fraction {fraction}/8",
+    "openCalendar": "My calendar",
+    "openStatement": "Account statement",
+    "openPlan": "View payment plan"
+  },
+  "statement": {
+    "title": "Account statement",
+    "subtitle": "Your share of every expense and income of your properties, month by month, with the detail of how it was calculated.",
+    "empty": "You have no fractions yet: there is no statement to show.",
+    "historyTitle": "Monthly history for {year}",
+    "historyHint": "Pick a month to see its breakdown by category.",
+    "breakdownTitle": "Breakdown for {month}",
+    "breakdownHint": "Each line says what it is: prorated share, attributed income or imputed expense. Tap “View detail” for the calculation.",
+    "noLines": "No movements this month.",
+    "columns": {
+      "month": "Month",
+      "income": "Income",
+      "expenses": "Expenses",
+      "net": "Net",
+      "movements": "Movements",
+      "date": "Incurred",
+      "concept": "Concept",
+      "share": "Your share"
+    },
+    "nature": {
+      "prorated": "Prorated share (1/8)",
+      "attributed": "Attributed income",
+      "imputed": "Imputed expense"
+    },
+    "groupTotal": "Total",
+    "viewMonth": "View month",
+    "selected": "Selected"
+  },
+  "history": {
+    "title": "My weeks",
+    "subtitle": "All your weeks, past and future, by property: what you chose, what you confirmed and what happened to the ones you let go.",
+    "empty": "No weeks match the filter.",
+    "filters": {
+      "property": "Property",
+      "allProperties": "All properties",
+      "from": "Check-in from",
+      "to": "Check-in until",
+      "clear": "Clear filters"
+    },
+    "columns": {
+      "week": "Week",
+      "season": "Season",
+      "state": "Status",
+      "income": "Your fraction's income"
+    },
+    "weekLine": "Week {week} · {from} – {to}",
+    "fractionLine": "{property} · fraction {fraction}/8",
+    "states": {
+      "elected": "To confirm",
+      "confirmed": "Confirmed",
+      "used": "Used",
+      "cancelled": "Cancelled",
+      "released": "Released, in the rental pool",
+      "expired": "Expired",
+      "rented": "Rented to a third party"
+    },
+    "noIncome": "—"
   }
 }
