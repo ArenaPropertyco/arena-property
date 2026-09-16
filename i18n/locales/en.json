@@ -931,7 +931,8 @@
         "own": "My weeks",
         "other": "Another fraction",
         "blocked": "Blocked",
-        "rented": "Rental pool",
+        "released": "In the rental pool",
+        "rented": "Rented to a guest",
         "pool": "Administrator pool",
         "free": "Unpicked"
       },
@@ -953,6 +954,8 @@
       "ownerLine": "Fraction {n}/8 · {name}",
       "blockedLine": "Blocked: {reason}",
       "rentedLine": "In the rental pool ({reason})",
+      "releasedLine": "In the rental pool, not placed yet. If the Administrator rents it, the income goes to your fraction.",
+      "incomeLine": "Income for your fraction: {amount}",
       "pendingTitle": "Weeks to confirm",
       "pendingHint": "You still have {count} weeks to confirm. The nearest one is due on {date}: if you do not confirm it, it goes to the rental pool.",
       "allConfirmed": "All your weeks are confirmed or settled.",
@@ -1467,16 +1470,24 @@
         "description": "The picking order rotates every year: whoever picked first goes last. Nobody repeats an advantage."
       },
       "peaks": {
-        "title": "Peak blocks with strict rotation",
-        "description": "Christmas, New Year and Holy Week are peak blocks within the high season and rotate among the eight fractions with the same discipline."
+        "title": "Peak blocks, as information",
+        "description": "Christmas, New Year and Holy Week are flagged as peak blocks within the high season so you know which dates are most contested before you choose. They are not handed out by rotation: you pick them like any other week, on your turn."
       },
       "relocation": {
         "title": "Yearly relocation window",
         "description": "Every year a window opens, by turns, to move a picked and unconfirmed week to another free week of the same season."
       },
       "confirmation": {
-        "title": "Confirmation and rental",
-        "description": "You confirm each week up to 60 days before its check-in Saturday. A week left unconfirmed goes to the rental pool and the income is shared with your fraction."
+        "title": "Confirm up to 60 days ahead",
+        "description": "You confirm each week up to 60 days before its Saturday check-in. A week left unconfirmed goes to the rental pool and its income is split across the eight fractions."
+      },
+      "cancellation": {
+        "title": "Cancel up to 30 days ahead",
+        "description": "A confirmed week can be cancelled up to 30 days before check-in, not later. A cancelled week goes to the rental pool and its income is likewise split across the eight."
+      },
+      "released_rent": {
+        "title": "The week you release is yours if it rents",
+        "description": "If you give notice early and voluntarily release a week, and the Administrator manages to rent it to a guest, that income belongs to your fraction, net of the management fee. If nobody rents it you receive nothing: releasing is offering, not charging."
       }
     },
     "cta": {
@@ -1827,7 +1838,8 @@
       "week": "Week",
       "guest": "Guest",
       "origin": "Origin",
-      "income": "Income"
+      "income": "Income",
+      "season": "Season"
     },
     "documents": {
       "cc": "ID card",
@@ -1843,6 +1855,14 @@
       "pool": "Left over from the grid",
       "attributed": "The income belongs to fraction {fraction}/8",
       "prorated": "The income is split across the 8"
+    },
+    "pool": {
+      "title": "Rental pool",
+      "summary": "{n} weeks available to place.",
+      "empty": "No weeks are available to rent this year.",
+      "alertTitle": "Weeks awaiting a guest",
+      "alertLine": "{property} · week {week} · {from}",
+      "alertEmpty": "No weeks are waiting for a guest."
     },
     "cancel": "Cancel booking",
     "cancelled": "Cancelled",

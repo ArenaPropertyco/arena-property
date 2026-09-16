@@ -2,7 +2,7 @@
 -- y a quién pertenece: prorrateado entre las ocho o atribuido a quien la liberó.
 -- HU-24 · RF-24.3 — el detalle solo se ve sobre la fracción propia.
 begin;
-select plan(48);
+select plan(52);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'platform_ledger', 'D-01 · existe el libro de plataforma');
@@ -289,5 +289,34 @@ select is(
   0::bigint, 'D-01 · y el Propietario tampoco ve el libro de plataforma');
 
 reset role;
+-- ── CA-40.8 · D-43 · sin renta no hay ingreso ──────────────────────────────
+-- Liberar es ofrecer, no cobrar: mientras nadie coloque la semana, la fracción no
+-- tiene ni movimiento ni cuota por ella, y ninguna vista puede anticiparle nada.
+reset role;
+set local request.jwt.claim.sub = '';
+create temporary table antes40 as
+  select (select count(*) from public.movements where property_id = 'a4000000-0000-4000-8000-000000000001') as movimientos,
+         (select count(*) from public.movement_shares where fraction_id = (select f3 from ctx40)) as cuotas;
+grant select on antes40 to authenticated;
+
+set local role authenticated;
+set local request.jwt.claim.sub = 'c4000000-0000-4000-8000-000000000003';
+select lives_ok(
+  $$ select public.release_week((select cal from ctx40), (select f3 from ctx40), 41) $$,
+  'CA-40.8 · la fracción 3/8 libera su semana 41 y nadie la renta');
+
+reset role;
+set local request.jwt.claim.sub = '';
+select is(
+  (select count(*) from public.third_party_bookings b join public.calendar_weeks w on w.id = b.week_id
+    where b.calendar_id = (select cal from ctx40) and w.index = 41),
+  0::bigint, 'CA-40.8 · la semana queda en la bolsa, sin tercero');
+select is(
+  (select count(*) from public.movements where property_id = 'a4000000-0000-4000-8000-000000000001'),
+  (select movimientos from antes40), 'CA-40.8 · liberar no crea ningún movimiento');
+select is(
+  (select count(*) from public.movement_shares where fraction_id = (select f3 from ctx40)),
+  (select cuotas from antes40), 'CA-40.8 · ni ninguna cuota para la fracción que la soltó');
+
 select * from finish();
 rollback;

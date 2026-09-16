@@ -475,19 +475,19 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 - [x] **T-187b · Derogación de la noche como unidad de reserva** — `HU-12 · RF-12.1` · `HU-14 · RF-14.2, RF-14.8` · `HU-43 · RF-43.1` · D-42
   Hecho cuando: `shared/scheduling` nombra las noches fuera de rejilla como bolsa del Administrador, ninguna función ofrece una unidad menor que la semana —ningún tramo sobrante alcanza 7 noches seguidas— y pasan `CA-12.9` y `CA-43.2`.
-- [ ] **T-187c · Aviso al Administrador de la semana liberada** — `HU-14 · RF-14.7c` · `HU-16 · RF-16.5` · `TR-03` · D-43
+- [x] **T-187c · Aviso al Administrador de la semana liberada** — `HU-14 · RF-14.7c` · `HU-16 · RF-16.5` · `TR-03` · D-43
   Hecho cuando: pasan `CA-14.10` y `CA-16.4`; el aviso lleva propiedad, semana, temporada y fracción de origen, y sin Administrador asignado va al Superadmin.
-- [ ] **T-187d · Liberar no paga por sí solo** — `HU-14 · RF-14.7d` · `HU-40 · RF-40.7` · D-43
+- [x] **T-187d · Liberar no paga por sí solo** — `HU-14 · RF-14.7d` · `HU-40 · RF-40.7` · D-43
   Hecho cuando: pasan `CA-14.11` y `CA-40.8`; sin reserva a tercero no existe movimiento ni cuota para la fracción, y ninguna vista anticipa un importe.
-- [ ] **T-187e · Bolsa de renta operable del Administrador** — `HU-17 · RF-17.5` · `HU-39 · RF-39.6` · D-43
+- [x] **T-187e · Bolsa de renta operable del Administrador** — `HU-17 · RF-17.5` · `HU-39 · RF-39.6` · D-43
   Hecho cuando: pasan `CA-17.5` y `CA-39.6`; la lista muestra motivo y fracción de origen, distingue lo atribuible de lo prorrateable y desde ella se renta.
-- [ ] **T-187f · Alerta de semanas por colocar en el tablero** — `HU-21 · RF-21.1b` · D-43
+- [x] **T-187f · Alerta de semanas por colocar en el tablero** — `HU-21 · RF-21.1b` · D-43
   Hecho cuando: pasa `CA-21.4` y la alerta desaparece cuando la semana se renta, se bloquea o pasa su fecha.
-- [ ] **T-187g · Estado de la semana liberada en el calendario del Propietario** — `HU-13 · RF-13.2b` · `HU-20 · RF-20.4` · D-43
+- [x] **T-187g · Estado de la semana liberada en el calendario del Propietario** — `HU-13 · RF-13.2b` · `HU-20 · RF-20.4` · D-43
   Hecho cuando: pasa `CA-13.4`; la semana liberada se ve en bolsa o rentada y sin renta no se muestra importe.
 - [x] **T-187i · Intercambio entre fracciones del mismo titular** — `HU-12 · RF-12.6` · `HU-13 · RF-13.3` · D-44
   Hecho cuando: pasan `CA-12.12` y `CA-13.5`; el Propietario con dos fracciones solicita el intercambio entre ellas, el Administrador o el Superadmin lo aprueban y se aplica en el acto, y el calendario repite el nombre por fracción.
-- [ ] **T-187h · Manifiesto público sin estadías cortas** — `HU-43 · RF-43.1, RF-43.2` · D-42
+- [x] **T-187h · Manifiesto público sin estadías cortas** — `HU-43 · RF-43.1, RF-43.2` · D-42
   Hecho cuando: pasan `CA-43.1` y `CA-43.2`; el manifiesto publica 6 semanas por fracción y ninguna unidad menor, y desaparece la mención a Fechas Especiales.
 
 ## Paso 4 · HU-16, HU-17, HU-21 — Operación del Administrador

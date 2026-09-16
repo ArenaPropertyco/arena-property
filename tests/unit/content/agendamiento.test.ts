@@ -54,7 +54,7 @@ describe('CA-43.2 · coherencia con el motor de HU-12 y con D-42', () => {
   })
 
   it('RF-43.2 · las reglas publicadas son las que el motor aplica hoy: semanas completas, turnos, rotación, bloques pico, reubicación y confirmación', () => {
-    expect([...REGLAS_PUBLICADAS]).toEqual(['whole_weeks', 'turns', 'rotation', 'peaks', 'relocation', 'confirmation'])
+    expect([...REGLAS_PUBLICADAS]).toEqual(['whole_weeks', 'turns', 'rotation', 'peaks', 'relocation', 'confirmation', 'cancellation', 'released_rent'])
     expect(BLOQUES_PICO).toEqual(['christmas', 'new_year', 'holy_week'])
   })
 })

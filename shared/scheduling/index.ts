@@ -5,6 +5,7 @@
  * D-33, D-36).
  */
 
+export * from './bolsa'
 export * from './criterio'
 export * from './rejilla'
 export * from './relocation'

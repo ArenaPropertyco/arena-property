@@ -7,6 +7,10 @@ import RentalIncomeForm from '~/components/RentalIncomeForm.vue'
 import ThirdPartyBookingForm from '~/components/ThirdPartyBookingForm.vue'
 import ThirdPartyBookingsTable from '~/components/ThirdPartyBookingsTable.vue'
 import ReleaseWeekNotice from '~/components/ReleaseWeekNotice.vue'
+import RentalPoolTable from '~/components/RentalPoolTable.vue'
+import RentalPoolAlert from '~/components/RentalPoolAlert.vue'
+import type { SemanaDeLaBolsa } from '#shared/scheduling/bolsa'
+import type { SemanaPorColocar } from '~/composables/useSemanasPorColocar'
 import { detalleDeCuota } from '#shared/finance/detalle'
 import type { CuotaConMovimiento } from '#shared/finance/detalle'
 import type { ReservaListada, SemanaDeBolsa } from '#shared/scheduling/vistas-renta'
@@ -31,6 +35,14 @@ function semana(cambios: Partial<SemanaDeBolsa> = {}): SemanaDeBolsa {
     originFraction: 3,
     ...cambios,
   }
+}
+
+function enBolsa(cambios: Partial<SemanaDeLaBolsa> = {}): SemanaDeLaBolsa {
+  return { ...semana(), season: 'alta', attributable: true, ...cambios }
+}
+
+function porColocar(cambios: Partial<SemanaPorColocar> = {}): SemanaPorColocar {
+  return { ...enBolsa(), propertyId: 'prop-1', propertyName: 'Invictvs 1201', year: 2031, ...cambios }
 }
 
 function reserva(cambios: Partial<ReservaListada> = {}): ReservaListada {
@@ -252,6 +264,59 @@ describe('RentalCommissionForm', () => {
     const formulario = await mountSuspended(RentalCommissionForm, { props: { puntosBasicos: null, enviando: false } })
 
     expect(formulario.find('[data-test="comision-actual"]').text()).toContain('Sin configurar')
+  })
+})
+
+describe('RentalPoolTable', () => {
+  it('CA-17.5 · cada semana de la bolsa dice su origen y adónde irá su ingreso', async () => {
+    const tabla = await mountSuspended(RentalPoolTable, {
+      props: {
+        semanas: [
+          enBolsa({ week: 17, originReason: 'voluntary', originFraction: 3, attributable: true }),
+          enBolsa({ week: 30, originReason: 'expired', originFraction: 5, attributable: false }),
+        ],
+        puedeGestionar: true,
+      },
+    })
+
+    expect(tabla.find('[data-test="bolsa-origen-17"]').text()).toContain('3/8')
+    expect(tabla.find('[data-test="bolsa-destino-17"]').text()).toContain('fracción 3/8')
+    expect(tabla.find('[data-test="bolsa-destino-30"]').text()).toContain('entre las 8')
+  })
+
+  it('CA-39.6 · desde la bolsa se renta, y sin permiso de gestión no se ofrece', async () => {
+    const tabla = await mountSuspended(RentalPoolTable, { props: { semanas: [enBolsa()], puedeGestionar: true } })
+    await tabla.find('[data-test="rentar-17"]').trigger('click')
+    expect(tabla.emitted('rentar')).toEqual([[17]])
+
+    const soloLectura = await mountSuspended(RentalPoolTable, { props: { semanas: [enBolsa()], puedeGestionar: false } })
+    expect(soloLectura.find('[data-test="rentar-17"]').exists()).toBe(false)
+  })
+
+  it('CA-39.6 · sin semanas disponibles lo dice, en vez de una tabla vacía', async () => {
+    const tabla = await mountSuspended(RentalPoolTable, { props: { semanas: [], puedeGestionar: true } })
+
+    expect(tabla.find('[data-test="tabla-bolsa"]').exists()).toBe(false)
+    expect(tabla.find('[data-test="bolsa-resumen"]').text()).toContain('No hay semanas disponibles')
+  })
+})
+
+describe('RentalPoolAlert', () => {
+  it('CA-21.4 · las semanas por colocar se listan con su propiedad y su enlace', async () => {
+    const alerta = await mountSuspended(RentalPoolAlert, {
+      props: { semanas: [porColocar({ week: 17 }), porColocar({ week: 30, startsOn: '2031-07-26', attributable: false })] },
+    })
+
+    expect(alerta.findAll('[data-test^="por-colocar-"]')).toHaveLength(2)
+    expect(alerta.find('[data-test="por-colocar-17"]').text()).toContain('Invictvs 1201')
+    expect(alerta.find('[data-test="colocar-17"]').attributes('href')).toContain('/panel/rentas/prop-1')
+  })
+
+  it('CA-21.4 · sin semanas esperando tercero, la alerta lo dice y no lista nada', async () => {
+    const alerta = await mountSuspended(RentalPoolAlert, { props: { semanas: [] } })
+
+    expect(alerta.find('[data-test="por-colocar-vacia"]').exists()).toBe(true)
+    expect(alerta.findAll('[data-test^="por-colocar-1"]')).toHaveLength(0)
   })
 })
 

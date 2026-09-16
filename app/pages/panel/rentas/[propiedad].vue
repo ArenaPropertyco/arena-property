@@ -12,6 +12,9 @@ import type { SolicitudDeReserva } from '~/composables/useRentas'
  * ya resuelto, monta los componentes y traduce cada resultado en un aviso. Rentar,
  * cancelar y registrar el ingreso son del Administrador de la propiedad; fijar la
  * comisión de gestión, solo del Superadmin (RF-40.4).
+ *
+ * RF-17.5 · D-43 · la bolsa se lista antes que las reservas: es lo que hay por
+ * hacer, frente a lo que ya se hizo.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_calendario' } })
 
@@ -134,6 +137,15 @@ async function guardarComision(puntos: number) {
           :puntos-basicos="propiedad.comisionPuntosBasicos"
           :enviando="ocupado"
           @submit="guardarComision"
+        />
+      </section>
+
+      <section class="space-y-4">
+        <SectionHeading :titulo="t('rentals.pool.title')" />
+        <RentalPoolTable
+          :semanas="semanas"
+          :puede-gestionar="puedeGestionar"
+          @rentar="rentando = true"
         />
       </section>
 

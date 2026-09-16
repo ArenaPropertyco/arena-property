@@ -52,8 +52,12 @@ export const CUPO_PUBLICADO = {
   noches: cupo.total,
 } as const
 
-/** RF-43.2 · las reglas visibles al comprador, las que el motor aplica hoy. */
-export const REGLAS_PUBLICADAS = ['whole_weeks', 'turns', 'rotation', 'peaks', 'relocation', 'confirmation'] as const
+/**
+ * RF-43.2 · las reglas visibles al comprador, las que el motor aplica hoy: nada de
+ * lo que se publica aquí puede diferir de lo que reparte HU-12 ni de a quién paga
+ * HU-40 (CA-43.2, P-09).
+ */
+export const REGLAS_PUBLICADAS = ['whole_weeks', 'turns', 'rotation', 'peaks', 'relocation', 'confirmation', 'cancellation', 'released_rent'] as const
 export type ReglaPublicada = typeof REGLAS_PUBLICADAS[number]
 
 /** Los tres bloques pico, en el orden fijo que usa la rotación. */

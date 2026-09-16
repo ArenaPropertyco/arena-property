@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatearDia } from '#shared/dates/formato'
-import { regionDe } from '#shared/money/formato'
+import { formatearImporte, regionDe } from '#shared/money/formato'
 import type { Idioma } from '#shared/money/formato'
 import type { WeekCell } from '#shared/scheduling/week-projection'
 import { validateCancellation, validateConfirmation, validateRelease } from '#shared/scheduling/week-usage'
@@ -91,6 +91,8 @@ function descripcion(cell: WeekCell): string {
       return t('calendar.weeks.ownerLine', { n: cell.fraction ?? '', name: cell.ownerName ?? '' })
     case 'blocked':
       return t('calendar.weeks.blockedLine', { reason: cell.reason ?? '' })
+    case 'released':
+      return t('calendar.weeks.releasedLine')
     case 'rented':
       return t('calendar.weeks.rentedLine', { reason: t('calendar.weeks.reasons.voluntary') })
     default:
@@ -149,6 +151,15 @@ function showActions(cell: WeekCell): boolean {
                 size="sm"
                 :label="t(`calendar.weeks.states.${cell.state}`)"
                 :data-test="`estado-${cell.week}`"
+              />
+              <!-- RF-13.2b · D-43 · solo la semana ya rentada cuyo ingreso es de esta fracción. -->
+              <UBadge
+                v-if="cell.income !== null"
+                color="success"
+                variant="subtle"
+                size="sm"
+                :label="t('calendar.weeks.incomeLine', { amount: formatearImporte(cell.income, idioma) })"
+                :data-test="`ingreso-${cell.week}`"
               />
             </p>
             <p

@@ -1,9 +1,11 @@
 import type { CopAmount } from '#shared/money/importe'
-import { origenDeSemanaRentada, puedeRentarseAUnTercero } from '#shared/scheduling/terceros'
-import type { EstadoDeSemanaParaRenta, NuevoTercero } from '#shared/scheduling/terceros'
+import { bolsaDeRenta } from '#shared/scheduling/bolsa'
+import type { SemanaCandidata, SemanaDeLaBolsa } from '#shared/scheduling/bolsa'
+import type { NuevoTercero } from '#shared/scheduling/terceros'
+import type { Temporada } from '#shared/scheduling/temporadas'
 import type { OrigenDeSemana } from '#shared/finance/ingresos'
 import type { ReleaseReason } from '#shared/scheduling/week-usage'
-import type { HuespedRegistrado, ReservaListada, SemanaDeBolsa } from '#shared/scheduling/vistas-renta'
+import type { HuespedRegistrado, ReservaListada } from '#shared/scheduling/vistas-renta'
 import type { Database } from '#shared/types/database.types'
 import type { ResultadoDeEscritura } from './usePropiedades'
 
@@ -11,10 +13,11 @@ import type { ResultadoDeEscritura } from './usePropiedades'
  * HU-39 · RF-39.1…RF-39.5 · HU-40 · RF-40.1, RF-40.4 · D-39 — la renta a terceros
  * de una propiedad en un año.
  *
- * Orquesta, no decide. Qué semana está en la bolsa y con qué origen lo resuelve
- * `shared/scheduling/terceros` sobre lo que la base devuelve, y la base lo vuelve a
- * comprobar al escribir (CA-39.1, CA-39.5). El reparto del ingreso no se toca
- * desde aquí: se manda el bruto y el disparador decide (RF-40.2).
+ * Orquesta, no decide. Qué semana está en la bolsa, con qué origen y si su renta
+ * será atribuible lo resuelve `shared/scheduling/bolsa` sobre lo que la base
+ * devuelve, y la base lo vuelve a comprobar al escribir (CA-39.1, CA-39.5). El
+ * reparto del ingreso no se toca desde aquí: se manda el bruto y el disparador
+ * decide (RF-40.2).
  */
 export interface SolicitudDeReserva {
   week: number
@@ -49,14 +52,14 @@ export function useRentas(propiedadId: Ref<string>, anio: Ref<number>) {
             name: propiedad.data.name,
             comisionPuntosBasicos: propiedad.data.rental_commission_basis_points,
           },
-          semanas: [] as SemanaDeBolsa[],
+          semanas: [] as SemanaDeLaBolsa[],
           reservas: [] as ReservaListada[],
           huespedes: [] as HuespedRegistrado[],
         }
       }
 
       const [semanas, asignaciones, bloqueos, turnos, copropietarios, reservas, huespedes] = await Promise.all([
-        client.from('calendar_weeks').select('id, index, starts_on, ends_on').eq('calendar_id', calendarId).order('index'),
+        client.from('calendar_weeks').select('id, index, starts_on, ends_on, season').eq('calendar_id', calendarId).order('index'),
         client.from('allocations').select('confirmed_at, released_at, release_reason, calendar_weeks(index), fractions(number)').eq('calendar_id', calendarId),
         client.from('week_blocks').select('calendar_weeks(index)').eq('calendar_id', calendarId).is('lifted_at', null),
         client.from('selection_turns').select('fractions(number)').eq('calendar_id', calendarId),
@@ -105,12 +108,14 @@ export function useRentas(propiedadId: Ref<string>, anio: Ref<number>) {
         .map(fila => (fila.calendar_weeks as unknown as { index: number } | null)?.index)
         .filter((indice): indice is number => indice !== undefined))
 
-      // RF-39.2 · CA-39.1 · la bolsa, decidida por el dominio y no por la vista.
-      const disponibles = (semanas.data ?? []).flatMap<SemanaDeBolsa>((fila) => {
+      // RF-39.2 · RF-17.5 · CA-39.1 · la bolsa la arma el dominio, no la vista.
+      const candidatas = (semanas.data ?? []).map<SemanaCandidata>((fila) => {
         const estado = estados.get(fila.index) ?? null
-        const contexto: EstadoDeSemanaParaRenta = {
+        return {
           week: fila.index,
           startsOn: fila.starts_on,
+          endsOn: fila.ends_on,
+          season: (fila.season ?? null) as Temporada | null,
           fraction: estado?.fraction ?? null,
           confirmedAt: estado?.confirmedAt ?? null,
           releasedAt: estado?.releasedAt ?? null,
@@ -119,20 +124,8 @@ export function useRentas(propiedadId: Ref<string>, anio: Ref<number>) {
           alreadyRented: rentadas.has(fila.index),
           selectionComplete,
         }
-
-        if (!puedeRentarseAUnTercero(contexto).ok) {
-          return []
-        }
-
-        const origen = origenDeSemanaRentada(contexto)
-        return [{
-          week: fila.index,
-          startsOn: fila.starts_on,
-          endsOn: fila.ends_on,
-          originReason: origen.reason,
-          originFraction: origen.fraction,
-        }]
       })
+      const disponibles = bolsaDeRenta(candidatas)
 
       // HU-40 · el ingreso vigente de cada reserva, tal como la base lo repartió.
       const ids = (reservas.data ?? []).map(fila => fila.id)

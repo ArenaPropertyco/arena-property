@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import type { CopAmount } from '#shared/money/importe'
 import { rejillaDelAnio } from '#shared/scheduling/rejilla'
 import { clasificacionBase } from '#shared/scheduling/temporadas'
 import type { SemanaClasificada } from '#shared/scheduling/temporadas'
@@ -60,7 +61,7 @@ describe('CA-13.1 · solo las semanas propias son accionables y el cupo es corre
     const projection = projectWeeks(input())
     expect(cell(projection, 0)).toMatchObject({ type: 'own', state: 'confirmed', actionable: true })
     expect(cell(projection, 8)).toMatchObject({ type: 'own', state: 'elected', deadline: '2026-12-29', actionable: true })
-    expect(cell(projection, 24)).toMatchObject({ type: 'rented', state: 'released', fraction: 3, actionable: false })
+    expect(cell(projection, 24)).toMatchObject({ type: 'released', state: 'released', fraction: 3, actionable: false })
     expect(projection.cells.filter(c => c.actionable).map(c => c.week)).toEqual([0, 8, 16, 25, 26])
   })
 
@@ -100,6 +101,42 @@ describe('CA-13.2 · las semanas ajenas muestran nombre y fracción, nunca conta
 
   it('RF-13.3 · los bloqueos llevan su motivo y no son accionables', () => {
     expect(cell(projectWeeks(input()), 30)).toMatchObject({ type: 'blocked', reason: 'Mantenimiento', actionable: false })
+  })
+
+  // D-43 · liberar no paga por sí solo: el importe aparece cuando alguien la renta.
+  it('CA-13.4 · la semana liberada y sin colocar se ve en la bolsa y sin importe', () => {
+    const celda = cell(projectWeeks(input()), 24)
+
+    expect(celda).toMatchObject({ type: 'released', state: 'released', fraction: 3 })
+    expect(celda.income).toBeNull()
+  })
+
+  it('CA-13.4 · rentada a un tercero, se ve como rentada y con el ingreso de su fracción', () => {
+    const celda = cell(projectWeeks(input({
+      rentals: [{ week: 24, attributedFraction: 3, income: 640000 as CopAmount }],
+    })), 24)
+
+    expect(celda).toMatchObject({ type: 'rented', state: 'released', fraction: 3 })
+    expect(celda.income).toBe(640000)
+  })
+
+  it('CA-13.4 · el ingreso prorrateado no se presenta como importe de la fracción', () => {
+    const celda = cell(projectWeeks(input({
+      rentals: [{ week: 24, attributedFraction: null, income: 800000 as CopAmount }],
+    })), 24)
+
+    expect(celda.type).toBe('rented')
+    expect(celda.income).toBeNull()
+  })
+
+  it('CA-13.4 · el ingreso de la semana liberada por otra fracción no es asunto de quien mira', () => {
+    const celda = cell(projectWeeks(input({
+      ownFraction: 5,
+      rentals: [{ week: 24, attributedFraction: 3, income: 640000 as CopAmount }],
+    })), 24)
+
+    expect(celda.type).toBe('rented')
+    expect(celda.income).toBeNull()
   })
 
   // D-44 · el mismo titular puede tener dos fracciones; se presentan por separado.
