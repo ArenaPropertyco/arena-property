@@ -70,7 +70,7 @@ describe('WeekCalendar', () => {
     expect(calendario.find('[data-test="semana-1"]').text()).toContain('Luis Mora')
     expect(calendario.find('[data-test="semana-30"]').attributes('data-tipo')).toBe('blocked')
     expect(calendario.find('[data-test="semana-30"]').text()).toContain('Mantenimiento')
-    expect(calendario.find('[data-test="semana-24"]').attributes('data-tipo')).toBe('rented')
+    expect(calendario.find('[data-test="semana-24"]').attributes('data-tipo')).toBe('released')
     expect(calendario.find('[data-test="semana-40"]').attributes('data-tipo')).toBe('pool')
   })
 

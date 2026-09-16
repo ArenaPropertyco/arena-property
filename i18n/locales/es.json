@@ -931,7 +931,8 @@
         "own": "Mis semanas",
         "other": "De otra fracción",
         "blocked": "Bloqueada",
-        "rented": "Bolsa de renta",
+        "released": "En bolsa de renta",
+        "rented": "Rentada a un tercero",
         "pool": "Bolsa del Administrador",
         "free": "Sin elegir"
       },
@@ -953,6 +954,8 @@
       "ownerLine": "Fracción {n}/8 · {name}",
       "blockedLine": "Bloqueada: {reason}",
       "rentedLine": "En la bolsa de renta ({reason})",
+      "releasedLine": "En la bolsa de renta, todavía sin colocar. Si el Administrador la renta, el ingreso será de tu fracción.",
+      "incomeLine": "Ingreso de tu fracción: {amount}",
       "pendingTitle": "Semanas por confirmar",
       "pendingHint": "Te faltan {count} semanas por confirmar. La más próxima vence el {date}: si no la confirmas, pasa a la bolsa de renta.",
       "allConfirmed": "Todas tus semanas están confirmadas o resueltas.",
@@ -1467,16 +1470,24 @@
         "description": "El orden de elección rota cada año: quien eligió primero pasa al final. Nadie repite ventaja."
       },
       "peaks": {
-        "title": "Bloques pico con rotación estricta",
-        "description": "Navidad, Año Nuevo y Semana Santa son bloques pico dentro de la temporada alta y rotan entre las ocho fracciones con la misma disciplina."
+        "title": "Bloques pico, como información",
+        "description": "Navidad, Año Nuevo y Semana Santa se marcan como bloques pico dentro de la temporada alta para que sepas cuáles son las fechas más disputadas antes de elegir. No se asignan por rotación: se eligen como cualquier otra semana, en tu turno."
       },
       "relocation": {
         "title": "Ventana anual de reubicación",
         "description": "Cada año se abre una ventana por turnos para mover una semana elegida y sin confirmar a otra libre de la misma temporada."
       },
       "confirmation": {
-        "title": "Confirmación y renta",
-        "description": "Confirmas cada semana hasta 60 días antes de su sábado de entrada. La que sigue sin confirmar pasa a la bolsa de renta y el ingreso se reparte a tu fracción."
+        "title": "Confirmación hasta 60 días antes",
+        "description": "Confirmas cada semana hasta 60 días antes de su sábado de entrada. La que sigue sin confirmar pasa a la bolsa de renta y su ingreso se reparte entre las ocho fracciones."
+      },
+      "cancellation": {
+        "title": "Cancelación hasta 30 días antes",
+        "description": "Una semana ya confirmada se cancela hasta 30 días antes de su entrada; dentro de ese plazo, no. La cancelada pasa a la bolsa de renta y su ingreso también se reparte entre las ocho."
+      },
+      "released_rent": {
+        "title": "La semana que liberas, si se renta, es tuya",
+        "description": "Si avisas con tiempo y liberas voluntariamente una semana, y el Administrador consigue rentarla a un tercero, ese ingreso es de tu fracción, descontada la comisión de gestión. Si nadie la renta, no recibes nada: liberar es ofrecer, no cobrar."
       }
     },
     "cta": {
@@ -1827,7 +1838,8 @@
       "week": "Semana",
       "guest": "Huésped",
       "origin": "Origen",
-      "income": "Ingreso"
+      "income": "Ingreso",
+      "season": "Temporada"
     },
     "documents": {
       "cc": "Cédula",
@@ -1843,6 +1855,14 @@
       "pool": "Sobrante de la rejilla",
       "attributed": "El ingreso es de la fracción {fraction}/8",
       "prorated": "El ingreso se reparte entre las 8"
+    },
+    "pool": {
+      "title": "Bolsa de renta",
+      "summary": "{n} semanas disponibles para colocar.",
+      "empty": "No hay semanas disponibles para rentar en este año.",
+      "alertTitle": "Semanas por colocar",
+      "alertLine": "{property} · semana {week} · {from}",
+      "alertEmpty": "No hay semanas esperando tercero."
     },
     "cancel": "Cancelar reserva",
     "cancelled": "Cancelada",

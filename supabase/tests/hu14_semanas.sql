@@ -3,7 +3,7 @@
 -- cancelación hasta 30, liberación, caducidad, auditoría y aviso una sola vez,
 -- unicidad de la confirmación y lecturas por RLS (D-16).
 begin;
-select plan(43);
+select plan(49);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select hasnt_table('public', 'stays', 'D-33 · las estadías por noches desaparecieron');
@@ -134,6 +134,34 @@ select throws_like(
 select throws_like(
   $$ select public.release_week((select id from cal28), (select id from f1), 41) $$,
   '%CA-14.8%', 'RF-14.7 · una semana liberada no se libera dos veces');
+
+-- ── CA-14.10 · D-43 · quien tiene que colocarla se entera ───────────────────
+-- El Administrador que creó la propiedad quedó asignado a ella (HU-05), así que
+-- es el destinatario del aviso; los copropietarios no lo son. Las lecturas van sin
+-- sesión: la RLS de TR-03 solo deja ver a cada quien sus propios avisos.
+reset role;
+set local request.jwt.claim.sub = '';
+select is(
+  (select count(*) from public.notification_recipients r join public.notifications n on n.id = r.notification_id
+    where n.entity_type = 'week_release_pool' and r.recipient_id = 'c1400000-0000-4000-8000-000000000001'),
+  1::bigint, 'CA-14.10 · el Administrador de la propiedad recibe el aviso de la semana liberada');
+select is(
+  (select n.payload->>'fraction_number' || ':' || (n.payload->>'week_index')
+     from public.notifications n where n.entity_type = 'week_release_pool'),
+  '1:41', 'CA-14.10 · el aviso lleva la fracción de origen y la semana');
+select is(
+  (select count(*) from public.notification_recipients r join public.notifications n on n.id = r.notification_id
+    where n.entity_type = 'week_release_pool' and r.recipient_id = 'c1400000-0000-4000-8000-000000000004'),
+  0::bigint, 'CA-14.10 · el copropietario de otra fracción no recibe ese aviso');
+
+-- ── CA-14.11 · D-43 · liberar no paga por sí solo ───────────────────────────
+-- La semana está en la bolsa; mientras nadie la rente, no hay dinero de por medio.
+select is(
+  (select count(*) from public.movements m
+    where m.property_id = 'a1400000-0000-4000-8000-000000000001'),
+  0::bigint, 'CA-14.11 · liberar no crea movimiento ni cuota: sin renta no hay ingreso');
+set local role authenticated;
+set local request.jwt.claim.sub = 'c1400000-0000-4000-8000-000000000003';
 
 -- ── CA-14.5 · cancelación hasta 30 días antes, relativo a hoy ───────────────
 -- Un calendario del año en curso (y del siguiente si hace falta) con criterio de
@@ -288,6 +316,29 @@ select is(
 select throws_like(
   $$ select * from public.copropietarios_de('a1400000-0000-4000-8000-000000000001') $$,
   '%CA-13.3%', 'CA-13.3 · ni a los copropietarios');
+
+-- ── CA-16.4 · sin Administrador asignado, el aviso va al Superadmin ─────────
+-- D-40 · una propiedad sin Administrador no puede quedarse sin nadie que sepa que
+-- hay una semana colocable.
+reset role;
+set local request.jwt.claim.sub = '';
+update public.property_admins set revoked_at = now()
+  where property_id = 'a1400000-0000-4000-8000-000000000001' and revoked_at is null;
+insert into auth.users (id, email, raw_user_meta_data) values
+  ('c1400000-0000-4000-8000-000000000009', 'super.sem@arena.co', '{}');
+insert into public.user_roles (user_id, role) values
+  ('c1400000-0000-4000-8000-000000000009', 'superadmin');
+set local role authenticated;
+set local request.jwt.claim.sub = 'c1400000-0000-4000-8000-000000000003';
+select lives_ok(
+  $$ select public.release_week((select id from cal28), (select id from f1), 17) $$,
+  'CA-16.4 · el titular libera otra semana con la propiedad sin Administrador asignado');
+reset role;
+set local request.jwt.claim.sub = '';
+select is(
+  (select count(*) from public.notification_recipients r join public.notifications n on n.id = r.notification_id
+    where n.entity_type = 'week_release_pool' and r.recipient_id = 'c1400000-0000-4000-8000-000000000009'),
+  1::bigint, 'CA-16.4 · sin Administrador asignado el aviso va al Superadmin');
 
 select * from finish();
 rollback;

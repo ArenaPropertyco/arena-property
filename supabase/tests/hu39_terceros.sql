@@ -2,7 +2,7 @@
 -- origen que la reserva conserva.
 -- Nivel N2: lo que garantiza el motor, no la disciplina de código.
 begin;
-select plan(44);
+select plan(45);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'third_parties', 'RF-39.1 · existe third_parties');
@@ -211,8 +211,18 @@ select throws_like(
 -- ── RF-39.5 · D-25 · anonimización a los 5 años ─────────────────────────────
 reset role;
 set local request.jwt.claim.sub = '';
-select is(public.anonimizar_terceros(current_date), 0, 'D-25 · hoy no hay ningún tercero que anonimizar');
-select is(public.anonimizar_terceros(current_date + 1900), 2, 'RF-39.5 · D-25 · pasados los 5 años se anonimizan los dos terceros');
+-- La tarea barre toda la base, así que lo que se comprueba es el efecto sobre los
+-- terceros de esta propiedad: contar cuántos devuelve ataría la prueba a las filas
+-- que hubiera ya en el entorno.
+select is(
+  (select count(*) from public.third_parties
+    where property_id = 'a3900000-0000-4000-8000-000000000001' and anonymized_at is not null),
+  0::bigint, 'D-25 · hoy no hay ningún tercero que anonimizar');
+select ok(public.anonimizar_terceros(current_date + 1900) >= 2, 'RF-39.5 · D-25 · pasados los 5 años la tarea anonimiza');
+select is(
+  (select count(*) from public.third_parties
+    where property_id = 'a3900000-0000-4000-8000-000000000001' and anonymized_at is not null),
+  2::bigint, 'RF-39.5 · D-25 · los dos terceros de la propiedad quedan anonimizados');
 select is(
   (select full_name from public.third_parties where id = (select tercero from ctx39)),
   'Tercero anonimizado', 'D-25 · el nombre desaparece');

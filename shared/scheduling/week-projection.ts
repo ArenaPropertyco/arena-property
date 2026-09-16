@@ -8,15 +8,29 @@
  * acción. La interfaz solo pinta lo que sale de aquí.
  *
  * Con calendario inactivo (D-31) todo se ve y nada es accionable (RF-13.1b).
+ *
+ * D-43 · una semana liberada y una rentada no son lo mismo y no se pintan igual:
+ * la primera sigue en la bolsa esperando quien la coloque, la segunda ya tiene
+ * tercero. Solo la segunda puede llevar importe, y solo si ese ingreso es de la
+ * fracción de quien mira: liberar no paga por sí solo (RF-40.7).
  */
 
+import type { CopAmount } from '../money/importe'
 import type { Dia, SemanaDeRejilla } from './rejilla'
 import type { SemanaClasificada, Temporada } from './temporadas'
 import { confirmationDeadline, pendingConfirmations, quotaByState, weekState } from './week-usage'
 import type { OwnedWeek, ReleaseReason, SeasonQuota, WeekUsageState } from './week-usage'
 
-export type WeekCellType = 'own' | 'other' | 'blocked' | 'rented' | 'pool' | 'free'
-export const WEEK_CELL_TYPES: readonly WeekCellType[] = ['own', 'other', 'blocked', 'rented', 'pool', 'free']
+export type WeekCellType = 'own' | 'other' | 'blocked' | 'released' | 'rented' | 'pool' | 'free'
+export const WEEK_CELL_TYPES: readonly WeekCellType[] = ['own', 'other', 'blocked', 'released', 'rented', 'pool', 'free']
+
+/** D-43 · una semana de la bolsa que ya tiene tercero, con el reparto de su ingreso. */
+export interface RentedWeek {
+  week: number
+  /** Fracción a la que se acredita el ingreso; `null` si se prorrateó (D-39). */
+  attributedFraction: number | null
+  income: CopAmount | null
+}
 
 export interface AllocationState {
   fraction: number
@@ -40,6 +54,8 @@ export interface WeekProjectionInput {
   selectionComplete: boolean
   /** D-16 · lo único que se sabe de los copropietarios: nombre y fracción. */
   coOwners: readonly { fraction: number, name: string | null }[]
+  /** D-43 · las semanas ya colocadas a un tercero; el resto de la bolsa sigue libre. */
+  rentals?: readonly RentedWeek[]
 }
 
 export interface WeekCell {
@@ -56,6 +72,12 @@ export interface WeekCell {
   /** RF-14.7 · último día para confirmar, solo en semanas propias elegidas. */
   deadline: Dia | null
   actionable: boolean
+  /**
+   * RF-13.2b · D-43 · el ingreso de esta semana **cuando es de quien mira**: solo
+   * en una semana rentada cuyo ingreso se atribuyó a su fracción. En cualquier otro
+   * caso es `null`, porque una semana en la bolsa no promete importe alguno.
+   */
+  income: CopAmount | null
 }
 
 export interface WeekProjection {
@@ -92,6 +114,7 @@ export function projectWeeks(input: WeekProjectionInput): WeekProjection {
   const seasonOf = new Map(input.classification.map(s => [s.indice, s.temporada]))
   const allocationOf = new Map(input.allocations.map(a => [a.week, a]))
   const blockOf = new Map(input.blocks.map(b => [b.week, b]))
+  const rentalOf = new Map((input.rentals ?? []).map(r => [r.week, r]))
   const nameOf = new Map(input.coOwners.map(c => [c.fraction, c.name]))
 
   const cells = [...input.rejilla].sort((a, b) => a.indice - b.indice).map<WeekCell>((grid) => {
@@ -107,6 +130,7 @@ export function projectWeeks(input: WeekProjectionInput): WeekProjection {
       reason: null,
       deadline: null,
       actionable: false,
+      income: null,
     }
     const block = blockOf.get(grid.indice)
     if (block) {
@@ -126,7 +150,16 @@ export function projectWeeks(input: WeekProjectionInput): WeekProjection {
       const state = weekState(week, input.today)
       const own = allocation.fraction === input.ownFraction
       if (state === 'released') {
-        return { ...base, type: 'rented', state, fraction: allocation.fraction, ownerName: nameOf.get(allocation.fraction) ?? null }
+        const rental = rentalOf.get(grid.indice)
+        const propio = allocation.fraction === input.ownFraction
+        return {
+          ...base,
+          type: rental ? 'rented' : 'released',
+          state,
+          fraction: allocation.fraction,
+          ownerName: nameOf.get(allocation.fraction) ?? null,
+          income: rental && propio && rental.attributedFraction === allocation.fraction ? rental.income : null,
+        }
       }
       return {
         ...base,

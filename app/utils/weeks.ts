@@ -5,14 +5,16 @@ import type { WeekUsageState } from '#shared/scheduling/week-usage'
 /**
  * HU-13 · RF-13.2, RF-13.3 · RT-06 — cómo se pinta cada semana del calendario, con
  * los tokens semánticos de `@nuxt/ui` para que valga en ambos temas. Las semanas
- * propias, ajenas, bloqueadas, en renta y de la bolsa se distinguen por color e
- * icono; la temporada, por su etiqueta.
+ * propias, ajenas, bloqueadas, en bolsa, rentadas y de la bolsa del Administrador
+ * se distinguen por color e icono; la temporada, por su etiqueta. Liberada y
+ * rentada no comparten aspecto (D-43): una espera tercero, la otra ya lo tiene.
  */
 export const CLASS_BY_CELL_TYPE: Record<WeekCellType, string> = {
   own: 'border-primary/50 bg-primary/10',
   other: 'border-default bg-elevated',
   blocked: 'border-error/40 bg-error/10',
-  rented: 'border-warning/40 bg-warning/10',
+  released: 'border-warning/40 bg-warning/10',
+  rented: 'border-success/40 bg-success/10',
   pool: 'border-default bg-accented',
   free: 'border-dashed border-default',
 }
@@ -21,6 +23,7 @@ export const ICON_BY_CELL_TYPE: Record<WeekCellType, string> = {
   own: 'i-lucide-home',
   other: 'i-lucide-users',
   blocked: 'i-lucide-lock',
+  released: 'i-lucide-hand-coins',
   rented: 'i-lucide-key-round',
   pool: 'i-lucide-briefcase',
   free: 'i-lucide-circle-dashed',

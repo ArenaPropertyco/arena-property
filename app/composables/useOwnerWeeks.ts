@@ -3,9 +3,10 @@ import { rejillaDelAnio } from '#shared/scheduling/rejilla'
 import type { BloquePico, SemanaClasificada, Temporada } from '#shared/scheduling/temporadas'
 import type { FraccionPropia } from '#shared/scheduling/vistas'
 import { projectWeeks } from '#shared/scheduling/week-projection'
-import type { AllocationState, WeekProjectionInput } from '#shared/scheduling/week-projection'
+import type { AllocationState, WeekProjectionInput, RentedWeek } from '#shared/scheduling/week-projection'
 import { weekErrorKey } from '#shared/scheduling/week-usage'
 import type { ReleaseReason, UsageContext } from '#shared/scheduling/week-usage'
+import type { CopAmount } from '#shared/money/importe'
 import type { Database } from '#shared/types/database.types'
 import type { ResultadoDeEscritura } from './usePropiedades'
 
@@ -18,6 +19,11 @@ import type { ResultadoDeEscritura } from './usePropiedades'
  * se lo pasa al motor puro: la proyección de cada semana y el contexto de uso
  * salen de `shared/scheduling/week-projection` (RF-13.4). Confirmar, cancelar y
  * liberar son funciones de la base que vuelven a validar todo (RF-14.10).
+ *
+ * RF-13.2b · D-43 · también carga qué semanas de la bolsa ya tienen tercero y, de
+ * las atribuidas, la cuota que la RLS deja ver: la de la propia fracción. Así la
+ * semana liberada y sin colocar se distingue de la rentada, y el importe solo
+ * aparece cuando existe de verdad.
  */
 
 interface CalendarioCargado {
@@ -28,6 +34,7 @@ interface CalendarioCargado {
   blocks: { week: number, reason: string }[]
   selectionComplete: boolean
   coOwners: { fraction: number, name: string | null }[]
+  rentals: RentedWeek[]
 }
 
 export function useOwnerWeeks(fraccion: Ref<FraccionPropia | null>, anio: Ref<number>) {
@@ -54,13 +61,42 @@ export function useOwnerWeeks(fraccion: Ref<FraccionPropia | null>, anio: Ref<nu
       }
       const id = calendario.data.id
 
-      const [semanas, asignaciones, bloqueos, turnos, copropietarios] = await Promise.all([
+      const [semanas, asignaciones, bloqueos, turnos, copropietarios, reservas] = await Promise.all([
         client.from('calendar_weeks').select('index, season, peak_block').eq('calendar_id', id).order('index'),
         client.from('allocations').select('confirmed_at, released_at, release_reason, fractions(number), calendar_weeks(index)').eq('calendar_id', id),
         client.from('week_blocks').select('reason, calendar_weeks(index)').eq('calendar_id', id).is('lifted_at', null),
         client.from('selection_turns').select('fractions(number)').eq('calendar_id', id),
         client.rpc('copropietarios_de', { propiedad: propia.propertyId }),
+        client.from('third_party_bookings').select('id, calendar_weeks(index)').eq('calendar_id', id).eq('status', 'confirmed'),
       ])
+
+      // D-43 · de cada semana ya colocada, cómo se repartió su ingreso. La cuota la
+      // filtra la RLS a la fracción propia (RF-24.3), que es justo la que se muestra.
+      const reservasIds = (reservas.data ?? []).map(fila => fila.id)
+      const ingresos = reservasIds.length === 0
+        ? { data: [] as { id: string, booking_id: string | null, allocation: string, fractions: unknown }[] }
+        : await client.from('movements').select('id, booking_id, allocation, fractions(number)').in('booking_id', reservasIds).is('voided_at', null)
+      const movimientosIds = (ingresos.data ?? []).map(fila => fila.id)
+      const cuotas = movimientosIds.length === 0
+        ? { data: [] as { movement_id: string, amount: number }[] }
+        : await client.from('movement_shares').select('movement_id, amount').in('movement_id', movimientosIds).is('reversed_at', null)
+
+      const cuotaPorMovimiento = new Map((cuotas.data ?? []).map(fila => [fila.movement_id, fila.amount]))
+      const ingresoPorReserva = new Map((ingresos.data ?? []).map(fila => [fila.booking_id ?? '', fila]))
+
+      const rentals = (reservas.data ?? []).flatMap<RentedWeek>((fila) => {
+        const semana = (fila.calendar_weeks as unknown as { index: number } | null)?.index
+        if (semana === undefined) {
+          return []
+        }
+        const ingreso = ingresoPorReserva.get(fila.id) ?? null
+        const atribuida = ingreso?.allocation === 'single_fraction'
+        return [{
+          week: semana,
+          attributedFraction: atribuida ? ((ingreso?.fractions as unknown as { number: number } | null)?.number ?? null) : null,
+          income: atribuida && ingreso ? ((cuotaPorMovimiento.get(ingreso.id) ?? null) as CopAmount | null) : null,
+        }]
+      })
 
       const allocations = (asignaciones.data ?? []).flatMap<AllocationState>((fila) => {
         const numero = (fila.fractions as unknown as { number: number } | null)?.number
@@ -94,6 +130,7 @@ export function useOwnerWeeks(fraccion: Ref<FraccionPropia | null>, anio: Ref<nu
         }),
         selectionComplete,
         coOwners: (copropietarios.data ?? []).map(fila => ({ fraction: fila.fraction_number, name: fila.owner_name })),
+        rentals,
       }
     },
     { watch: [fraccion, anio] },
@@ -118,6 +155,7 @@ export function useOwnerWeeks(fraccion: Ref<FraccionPropia | null>, anio: Ref<nu
       blocks: datos.blocks,
       selectionComplete: datos.selectionComplete,
       coOwners: datos.coOwners,
+      rentals: datos.rentals,
     }
   })
 
