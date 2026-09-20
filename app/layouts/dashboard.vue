@@ -76,6 +76,10 @@ const secciones = computed<NavigationMenuItem[]>(() => [
   ...(canSignUp(roles.value, false).allowed || roles.value.includes('ambassador')
     ? [{ label: t('nav.referralProgram'), icon: 'i-lucide-handshake', to: localePath('/panel/embajador') }]
     : []),
+  // HU-53 · el Embajador sigue a sus referidos; el Superadmin los ve todos (D-20).
+  ...(puede(roles.value, 'ver_referidos')
+    ? [{ label: t('nav.referrals'), icon: 'i-lucide-users-round', to: localePath('/panel/referidos') }]
+    : []),
   ...(puede(roles.value, 'definir_comision')
     ? [{ label: t('nav.commission'), icon: 'i-lucide-percent', to: localePath('/panel/comision') }]
     : []),

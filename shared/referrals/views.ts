@@ -1,12 +1,11 @@
 /**
- * HU-49, HU-50, HU-51, HU-52 — lo que las pantallas del programa de referidos
- * reciben ya resuelto por los composables. Solo tipos: la lógica vive en
- * `commission.ts`, `signup.ts`, `code.ts` y `attribution.ts`.
+ * HU-49, HU-50, HU-52 — lo que las pantallas del programa de referidos reciben
+ * ya resuelto por los composables. Solo tipos: la lógica vive en `commission.ts`,
+ * `signup.ts` y `code.ts`; el listado de referidos (HU-53) tiene los suyos en
+ * `listing.ts`.
  */
 
 import type { AccountKind } from './signup'
-import type { Day } from './commission'
-import type { ReferralStage } from './attribution'
 
 /** RF-49.5 · un Embajador tal como lo lista el Superadmin. */
 export interface AmbassadorListed {
@@ -30,17 +29,6 @@ export interface AmbassadorListed {
 export type AmbassadorStatus = 'pending' | 'approved' | 'rejected' | 'suspended'
 
 export const AMBASSADOR_STATUSES: readonly AmbassadorStatus[] = ['pending', 'approved', 'rejected', 'suspended']
-
-/** RF-51.5 · un referido propio tal como lo ve el Embajador (HU-53 lo amplía). */
-export interface ReferralListed {
-  id: string
-  prospectEmail: string
-  stage: ReferralStage
-  clickedAt: Day
-  registeredAt: Day | null
-  /** D-04 · si ya generó su única comisión. */
-  commissioned: boolean
-}
 
 /**
  * RF-52.4 · CA-52.1 · un Embajador en la pantalla de comisión: qué tipo lleva y

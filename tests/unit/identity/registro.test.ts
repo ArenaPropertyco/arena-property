@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { atribucionDeRegistro, normalizarCodigoReferido, validarRegistro } from '#shared/identity/registro'
+import { atribucionDeRegistro, bandejaDeCorreoLocal, normalizarCodigoReferido, resultadoDeAlta, validarRegistro } from '#shared/identity/registro'
 
 /**
  * HU-04 · RF-04.1 y RF-04.4 — validación del registro en esquema tipado.
@@ -102,5 +102,32 @@ describe('CA-04.3 · atribución al registrarse según el código de referido', 
     expect(atribucionDeRegistro('')).toEqual({ referralCode: null, aviso: null })
     expect(atribucionDeRegistro(null)).toEqual({ referralCode: null, aviso: null })
     expect(atribucionDeRegistro(undefined)).toEqual({ referralCode: null, aviso: null })
+  })
+})
+
+describe('RF-04.5 · el alta sobre un correo que ya tiene cuenta', () => {
+  it('RF-04.5 · una cuenta nueva llega con su identidad y se da por creada', () => {
+    expect(resultadoDeAlta({ identities: [{ id: 'i1' }] })).toBe('creada')
+  })
+
+  it('RF-04.5 · el proveedor devuelve un usuario sin identidades cuando el correo ya estaba registrado', () => {
+    expect(resultadoDeAlta({ identities: [] })).toBe('ya_existente')
+  })
+
+  it('sin usuario en la respuesta no se afirma nada', () => {
+    expect(resultadoDeAlta(null)).toBe('desconocido')
+    expect(resultadoDeAlta({ identities: null })).toBe('desconocido')
+  })
+})
+
+describe('RF-04.2 · la bandeja local de correo en desarrollo', () => {
+  it('contra un Supabase local, los correos caen en la bandeja de pruebas', () => {
+    expect(bandejaDeCorreoLocal('http://127.0.0.1:54321')).toBe('http://127.0.0.1:54324')
+    expect(bandejaDeCorreoLocal('http://localhost:54321')).toBe('http://localhost:54324')
+  })
+
+  it('contra el proyecto en la nube no hay bandeja local', () => {
+    expect(bandejaDeCorreoLocal('https://junljluqhshxayflnbau.supabase.co')).toBeNull()
+    expect(bandejaDeCorreoLocal('')).toBeNull()
   })
 })

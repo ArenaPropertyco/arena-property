@@ -11,8 +11,11 @@ import Ingresar from '~/pages/ingresar.vue'
  * las reales.
  */
 
-const signUp = vi.fn()
-const signInWithPassword = vi.fn()
+const { signUp, signInWithPassword, navegar } = vi.hoisted(() => ({
+  signUp: vi.fn(),
+  signInWithPassword: vi.fn(),
+  navegar: vi.fn(),
+}))
 const consulta = ref<Record<string, string>>({})
 
 mockNuxtImport('useSupabaseClient', () => () => ({ auth: { signUp, signInWithPassword } }))
@@ -21,7 +24,7 @@ mockNuxtImport('useSupabaseSession', () => () => ref(null))
 mockNuxtImport('useLocalePath', () => () => (ruta: string) => ruta)
 mockNuxtImport('useRoute', () => () => ({ query: consulta.value, path: '/registro' }))
 mockNuxtImport('useCookie', () => () => ref(null))
-mockNuxtImport('navigateTo', () => vi.fn())
+mockNuxtImport('navigateTo', () => navegar)
 
 describe('CA-04.1 · registro con datos inválidos', () => {
   it('muestra los errores por campo, traducidos, y no llama al proveedor', async () => {
@@ -104,5 +107,43 @@ describe('RF-04.5 · errores de autenticación traducidos', () => {
     expect(aviso.exists()).toBe(true)
     expect(aviso.text()).toContain('El correo o la contraseña no son correctos.')
     expect(aviso.text()).not.toContain('Invalid login credentials')
+  })
+})
+
+describe('RF-04.5 · registrarse con un correo que ya tiene cuenta', () => {
+  it('RF-04.5 · el proveedor no crea nada y la página lo dice en vez de prometer un correo', async () => {
+    navegar.mockClear()
+    // Con la protección contra enumeración, Supabase responde con un usuario sin
+    // identidades y, si la cuenta no estaba verificada, reenvía el enlace.
+    signUp.mockResolvedValueOnce({ data: { user: { id: 'x', identities: [] }, session: null }, error: null })
+    const pagina = await mountSuspended(Registro)
+
+    await pagina.find('[data-test="campo-email"] input, input[type="email"]').setValue('st-rodriguez@hotmail.com')
+    const contrasenas = pagina.findAll('input[autocomplete="new-password"]')
+    await contrasenas[0]!.setValue('Arena2026')
+    await contrasenas[1]!.setValue('Arena2026')
+    await pagina.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(pagina.find('[data-test="error-auth"]').text()).toContain('Ya existe una cuenta con ese correo')
+    expect(navegar).not.toHaveBeenCalled()
+  })
+})
+
+describe('RF-04.2 · ingresar sin haber verificado el correo', () => {
+  it('RF-04.2 · lleva a la pantalla de verificación con el correo, donde se puede reenviar el enlace', async () => {
+    navegar.mockClear()
+    signInWithPassword.mockResolvedValueOnce({
+      error: { code: 'email_not_confirmed', message: 'Email not confirmed' },
+    })
+    const pagina = await mountSuspended(Ingresar)
+
+    await pagina.find('input[type="email"]').setValue('st-rodriguez@hotmail.com')
+    await pagina.find('input[type="password"]').setValue('cualquiera1')
+    await pagina.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(navegar).toHaveBeenCalledWith({ path: '/registro/verificar', query: { email: 'st-rodriguez@hotmail.com' } })
+    expect(pagina.find('[data-test="error-auth"]').exists()).toBe(false)
   })
 })

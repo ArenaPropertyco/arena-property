@@ -534,27 +534,27 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 6 · HU-53, HU-54 — Motor de comisiones
 
-- [ ] **T-213 · Migración de `commissions` con estados de saldo** — `HU-54 · RF-54.1` · D-02
+- [x] **T-213 · Migración de `commissions` con estados de saldo** — `HU-54 · RF-54.1` · D-02
   Hecho cuando: existe con RLS y contempla pendiente, en gracia, disponible, retirada y reversada.
-- [ ] **T-214 · Acreditación al completarse el pago** — `HU-54 · RF-54.2` · `HU-58 · RF-58.6`
+- [x] **T-214 · Acreditación al completarse el pago** — `HU-54 · RF-54.2` · `HU-58 · RF-58.6`
   Hecho cuando: pasa `CA-54.1`.
-- [ ] **T-215 · Una sola comisión por prospecto** — `HU-54 · RF-54.3` · D-04
+- [x] **T-215 · Una sola comisión por prospecto** — `HU-54 · RF-54.3` · D-04
   Hecho cuando: pasan `CA-54.6` y `CA-54.7`.
-- [ ] **T-216 · Idempotencia de la acreditación** — `HU-54 · RF-54.4`
+- [x] **T-216 · Idempotencia de la acreditación** — `HU-54 · RF-54.4`
   Hecho cuando: pasa `CA-54.3`.
-- [ ] **T-217 · Paso de gracia a disponible a los 30 días** — `HU-54 · RF-54.1` · DT-09
+- [x] **T-217 · Paso de gracia a disponible a los 30 días** — `HU-54 · RF-54.1` · DT-09
   Hecho cuando: pasa `CA-54.2` con tarea programada idempotente.
-- [ ] **T-218 · Reversa dentro de la gracia** — `HU-54 · RF-54.5` · `HU-58 · RF-58.8`
+- [x] **T-218 · Reversa dentro de la gracia** — `HU-54 · RF-54.5` · `HU-58 · RF-58.8`
   Hecho cuando: pasa `CA-54.4`.
-- [ ] **T-219 · Devengo único en el libro de plataforma** — `HU-54 · RF-54.6` · D-01
+- [x] **T-219 · Devengo único en el libro de plataforma** — `HU-54 · RF-54.6` · D-01
   Hecho cuando: pasa `CA-54.5` y no se genera cuota alguna en la propiedad.
-- [ ] **T-220 · Efecto de la suspensión según su tipo** — `HU-54 · RF-54.7` · D-07
+- [x] **T-220 · Efecto de la suspensión según su tipo** — `HU-54 · RF-54.7` · D-07
   Hecho cuando: pasa `CA-54.8`.
-- [ ] **T-221 · Listado de referidos con estados y comisión** — `HU-53 · RF-53.1, RF-53.2, RF-53.3`
+- [x] **T-221 · Listado de referidos con estados y comisión** — `HU-53 · RF-53.1, RF-53.2, RF-53.3`
   Hecho cuando: pasa `CA-53.3` y un referido `Registrado` no muestra monto.
-- [ ] **T-222 · Filtros y totalizadores del listado** — `HU-53 · RF-53.4`
+- [x] **T-222 · Filtros y totalizadores del listado** — `HU-53 · RF-53.4`
   Hecho cuando: pasan `CA-53.1` y `CA-53.2`.
-- [ ] **T-223 · RLS del listado de referidos** — `HU-53 · RF-53.5` · D-20
+- [x] **T-223 · RLS del listado de referidos** — `HU-53 · RF-53.5` · D-20
   Hecho cuando: pasa `CA-53.4` y el Superadmin ve todos.
 
 ---

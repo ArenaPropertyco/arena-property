@@ -36,7 +36,14 @@ async function ingresar(credenciales: { email: string, password: string }) {
 
   if (respuesta.error) {
     enviando.value = false
-    error.value = t(claveDeErrorDeAuth(respuesta.error))
+    const clave = claveDeErrorDeAuth(respuesta.error)
+    // RF-04.2 · la contraseña era correcta pero el correo sigue sin verificar: la
+    // pantalla de verificación explica y permite reenviar el enlace.
+    if (clave === 'auth.errors.email_not_verified') {
+      await navigateTo({ path: localePath(RUTAS.verificar), query: { email: credenciales.email } })
+      return
+    }
+    error.value = t(clave)
     return
   }
 

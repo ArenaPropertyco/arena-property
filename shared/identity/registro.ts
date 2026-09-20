@@ -105,3 +105,33 @@ export function atribucionDeRegistro(codigo: string | null | undefined): Atribuc
   }
   return { referralCode: normalizado, aviso: 'auth.register.referralApplied' }
 }
+
+/** RF-04.5 · lo que la respuesta del proveedor dice de un alta por correo. */
+export type ResultadoDeAlta = 'creada' | 'ya_existente' | 'desconocido'
+
+/**
+ * RF-04.5 · con la protección contra enumeración de cuentas, Supabase responde
+ * al alta de un correo ya registrado con un usuario **sin identidades** en vez de
+ * un error (y, si la cuenta no estaba verificada, reenvía el enlace). Tomarlo
+ * como cuenta nueva engaña a la persona: cree que la creó con la contraseña que
+ * acaba de escribir, y no es así.
+ */
+export function resultadoDeAlta(user: { identities?: readonly unknown[] | null } | null | undefined): ResultadoDeAlta {
+  if (!user || !Array.isArray(user.identities)) {
+    return 'desconocido'
+  }
+  return user.identities.length === 0 ? 'ya_existente' : 'creada'
+}
+
+/** Puerto de la bandeja de correo del stack local (`[local_smtp]` en `supabase/config.toml`). */
+export const PUERTO_DE_BANDEJA_LOCAL = 54324
+
+/**
+ * RF-04.2 · contra un Supabase local ningún correo sale a Internet: todos caen
+ * en la bandeja de pruebas del stack. La interfaz lo dice para que nadie espere
+ * en su buzón real un enlace que nunca va a llegar.
+ */
+export function bandejaDeCorreoLocal(supabaseUrl: string | null | undefined): string | null {
+  const coincidencia = /^(https?:\/\/)(127\.0\.0\.1|localhost)(:\d+)?/i.exec(supabaseUrl ?? '')
+  return coincidencia ? `${coincidencia[1]}${coincidencia[2]}:${PUERTO_DE_BANDEJA_LOCAL}` : null
+}
