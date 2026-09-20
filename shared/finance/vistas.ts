@@ -33,6 +33,14 @@ export interface MovimientoListado {
   createdAt: string
   voidedAt: string | null
   voidReason: string | null
+  /** HU-27 · RF-27.1 · es un gasto de mantenimiento. */
+  maintenance: boolean
+  /** HU-27 · RF-27.3 · el ítem del inventario al que se asoció; `null` si es general. */
+  inventoryItemId: string | null
+  inventoryItemName: string | null
+  /** HU-27 · CA-27.3 · la factura adjunta y su URL firmada; vacía si no pudo firmarse. */
+  attachmentPath: string | null
+  attachmentUrl: string | null
 }
 
 export interface CuotaListada {

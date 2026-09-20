@@ -8,8 +8,8 @@ import { esCombinacionValida, ROLES } from '#shared/permissions/roles'
  * la interfaz. Nivel N1: sin Nuxt ni base de datos.
  *
  * La tabla esperada de abajo transcribe la matriz del VSM §2 con las enmiendas que
- * la spec declara encima: hoy solo `registrar_gastos` para el Superadmin (RF-07.2c,
- * D-40).
+ * la spec declara encima: `registrar_gastos` (RF-07.2c, D-40) y `gestionar_inventario`
+ * (RF-07.2d, D-45) para el Superadmin.
  * Que exista dos veces (aquí y en `shared/permissions/mapa.ts`) es el punto del
  * "test tabla-completa": si alguien toca una celda del mapa sin tocar la spec, esto
  * falla.
@@ -32,7 +32,7 @@ const ESPERADO: Record<Capacidad, Alcance[]> = {
   gestionar_calendario: [T, P, N, N, N, N],
   reservar_en_su_fraccion: [N, N, S, N, N, N],
   ver_finanzas: [T, P, P, N, N, N],
-  gestionar_inventario: [N, S, L, N, N, N],
+  gestionar_inventario: [T, S, L, N, N, N],
   registrar_gastos: [T, S, L, N, N, N],
   enviar_novedades: [S, S, N, N, N, N],
   administrar_usuarios_y_roles: [S, N, N, N, N, N],

@@ -1848,12 +1848,17 @@
       "fraction_required": "Elige la fracción a la que se imputa.",
       "fraction_not_sold": "Solo se imputa a una fracción vendida: esa no tiene titular.",
       "fraction_not_in_property": "Esa fracción no es de esta propiedad.",
-      "fraction_not_expected": "Un gasto prorrateado no lleva fracción."
+      "fraction_not_expected": "Un gasto prorrateado no lleva fracción.",
+      "item_not_in_property": "Ese ítem no es del inventario de esta propiedad.",
+      "attachment_format": "La factura debe ser JPG, PNG, WebP o PDF.",
+      "attachment_empty": "El archivo está vacío.",
+      "attachment_too_large": "La factura no puede pesar más de 10 MB."
     },
     "errors": {
       "save_failed": "No pudimos guardar el gasto.",
       "category_rejected": "La base rechazó la categoría: revisa la maestra contable.",
-      "void_failed": "No pudimos anular el gasto."
+      "void_failed": "No pudimos anular el gasto.",
+      "attachment_failed": "No pudimos subir la factura."
     },
     "messages": {
       "registered": "Gasto registrado con sus 8 cuotas.",
@@ -1885,7 +1890,14 @@
       "commission": "Comisión de gestión ({percent})",
       "net": "Neto de la fracción",
       "week": "Semana {number}, desde el {from}"
-    }
+    },
+    "item": "Ítem de inventario",
+    "itemHint": "A qué ítem corresponde; si es de la propiedad en general, déjalo así.",
+    "itemGeneral": "Propiedad en general",
+    "itemRetired": "{name} (dado de baja)",
+    "attachment": "Factura o foto",
+    "attachmentHint": "Opcional. JPG, PNG, WebP o PDF de hasta 10 MB.",
+    "maintenanceBadge": "Mantenimiento"
   },
   "rentals": {
     "title": "Renta a terceros",
@@ -2033,7 +2045,8 @@
     "coOwnerLine": "{name} · fracción {fraction}/8",
     "openCalendar": "Mi calendario",
     "openStatement": "Estado de cuenta",
-    "openPlan": "Ver plan de pagos"
+    "openPlan": "Ver plan de pagos",
+    "openInventory": "Inventario"
   },
   "statement": {
     "title": "Estado de cuenta",
@@ -2092,5 +2105,107 @@
       "rented": "Rentada a un tercero"
     },
     "noIncome": "—"
+  },
+  "inventory": {
+    "title": "Inventario",
+    "subtitle": "Mobiliario, equipamiento e insumos de la propiedad, con su estado y su historial de mantenimientos.",
+    "open": "Inventario",
+    "notFound": "No encontramos esa propiedad, o no tienes acceso a su inventario.",
+    "readOnly": "Solo lectura: el inventario lo gestiona el Administrador de la propiedad.",
+    "loading": "Cargando el inventario…",
+    "register": "Registrar ítem",
+    "registerTitle": "Nuevo ítem",
+    "editTitle": "Editar ítem",
+    "name": "Nombre",
+    "namePlaceholder": "Sofá de tres puestos, nevera, juego de sábanas…",
+    "category": "Categoría",
+    "categories": {
+      "furniture": "Mobiliario",
+      "appliances": "Electrodomésticos",
+      "equipment": "Equipamiento",
+      "linens": "Lencería",
+      "supplies": "Insumos",
+      "other": "Otro"
+    },
+    "condition": "Estado",
+    "conditions": {
+      "new": "Nuevo",
+      "good": "Bueno",
+      "fair": "Regular",
+      "damaged": "Dañado"
+    },
+    "quantity": "Cantidad",
+    "quantityHint": "Entero; cero si se agotó.",
+    "location": "Ubicación",
+    "locationHint": "Opcional. Dónde está en la propiedad.",
+    "notes": "Notas",
+    "submit": "Guardar ítem",
+    "empty": "Todavía no hay ítems en el inventario.",
+    "columns": {
+      "item": "Ítem",
+      "category": "Categoría",
+      "condition": "Estado",
+      "quantity": "Cantidad"
+    },
+    "retired": "Dado de baja",
+    "retiredLine": "Baja: {reason}",
+    "edit": "Editar",
+    "retire": "Dar de baja",
+    "retireTitle": "Dar de baja el ítem",
+    "retireHint": "El ítem no se borra: deja de listarse como activo y su historial se conserva con este motivo.",
+    "confirmRetire": "Dar de baja con este motivo",
+    "history": "Historial",
+    "historyTitle": "Historial del ítem",
+    "historyChanges": "Cambios de estado y cantidad",
+    "historyEmpty": "Sin cambios registrados.",
+    "fields": {
+      "condition": "Estado",
+      "quantity": "Cantidad",
+      "retired": "Baja"
+    },
+    "values": {
+      "active": "activo",
+      "retired": "dado de baja"
+    },
+    "changeLine": "{field}: {previous} → {next}",
+    "changedBy": "{who} · {when}",
+    "maintenance": {
+      "title": "Mantenimientos",
+      "subtitle": "Gastos de mantenimiento de la propiedad. Son gastos comunes: se reparten y aparecen en el estado de cuenta como cualquier otro.",
+      "register": "Registrar mantenimiento",
+      "registerTitle": "Nuevo gasto de mantenimiento",
+      "empty": "Todavía no hay mantenimientos registrados.",
+      "itemHistory": "Mantenimientos de este ítem",
+      "itemHistoryEmpty": "Ningún mantenimiento asociado a este ítem.",
+      "general": "Propiedad en general",
+      "columns": {
+        "date": "Causación",
+        "concept": "Concepto",
+        "item": "Ítem",
+        "amount": "Monto",
+        "attachment": "Factura"
+      },
+      "viewAttachment": "Ver factura",
+      "noAttachment": "Sin adjunto"
+    },
+    "validation": {
+      "name_required": "Ponle un nombre de hasta 120 caracteres.",
+      "category_required": "Elige la categoría del ítem.",
+      "condition_required": "Elige el estado del ítem.",
+      "quantity_negative": "La cantidad no puede ser negativa.",
+      "quantity_not_integer": "La cantidad debe ser un número entero.",
+      "reason_required": "Escribe el motivo."
+    },
+    "errors": {
+      "save_failed": "No pudimos guardar el ítem.",
+      "retire_failed": "No pudimos dar de baja el ítem."
+    },
+    "messages": {
+      "registered": "Ítem registrado.",
+      "updated": "Ítem actualizado.",
+      "retired": "Ítem dado de baja; su historial se conserva.",
+      "maintenanceRegistered": "Mantenimiento registrado con sus 8 cuotas."
+    },
+    "byAdministrator": "Administrador de la propiedad"
   }
 }

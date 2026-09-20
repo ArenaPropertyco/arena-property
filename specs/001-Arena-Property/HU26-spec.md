@@ -9,7 +9,7 @@ Como Administrador de Propiedad, quiero gestionar el inventario de cada propieda
 ## Requisitos funcionales
 - **RF-26.1** — CRUD de ítems de inventario asociados a una propiedad específica, con categoría, estado (p. ej. nuevo/bueno/regular/dañado) y cantidad (entero ≥ 0).
 - **RF-26.2** — La baja de un ítem es lógica (histórico conservado), coherente con el principio de no-eliminación (HU-11).
-- **RF-26.3** — Solo el Administrador asignado gestiona el inventario; el Propietario accede en solo lectura (HU-28) — reflejado en RLS.
+- **RF-26.3** — El inventario lo gestionan el **Administrador asignado** y el **Superadmin** (D-45, que enmienda la matriz VSM §2); el Propietario accede en solo lectura (HU-28) — reflejado en RLS.
 - **RF-26.4** — Los cambios de estado/cantidad quedan historizados para trazabilidad.
 
 ## Criterios de aceptación (base de las pruebas unitarias)

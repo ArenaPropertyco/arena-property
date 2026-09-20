@@ -67,6 +67,15 @@ const columnas = computed<TableColumn<MovimientoListado>[]>(() => [
           <span :class="row.original.voidedAt ? 'text-muted line-through' : ''">{{ row.original.description }}</span>
           <span class="flex flex-wrap items-center gap-1 text-xs text-muted">
             {{ row.original.categoryName }}
+            <!-- HU-27 · RF-27.2 · un mantenimiento es un gasto más; se señala, no se separa. -->
+            <UBadge
+              v-if="row.original.maintenance"
+              color="info"
+              variant="subtle"
+              size="xs"
+              :label="row.original.inventoryItemName ?? t('finance.maintenanceBadge')"
+              :data-test="`mantenimiento-${row.original.id}`"
+            />
             <!-- RF-23.8 · D-41 · el reparto se ve: quién carga con el gasto no es un detalle. -->
             <UBadge
               :color="row.original.allocation === 'single_fraction' ? 'warning' : 'neutral'"

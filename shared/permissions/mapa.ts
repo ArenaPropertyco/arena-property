@@ -72,7 +72,9 @@ export const MATRIZ: Record<Capacidad, Fila> = {
   gestionar_calendario: fila('todas', 'propias', 'no', 'no', 'no', 'no'),
   reservar_en_su_fraccion: fila('no', 'no', 'si', 'no', 'no', 'no'),
   ver_finanzas: fila('todas', 'propias', 'propias', 'no', 'no', 'no'),
-  gestionar_inventario: fila('no', 'si', 'lectura', 'no', 'no', 'no'),
+  // D-45 · el Superadmin gestiona el inventario de todas; negárselo partía en dos
+  // el mismo activo, porque D-40 ya le daba el gasto de repararlo.
+  gestionar_inventario: fila('todas', 'si', 'lectura', 'no', 'no', 'no'),
   // D-40 · el Superadmin registra en todas; sin él, una propiedad sin Administrador
   // asignado se quedaba sin nadie capaz de darle de alta un gasto.
   registrar_gastos: fila('todas', 'si', 'lectura', 'no', 'no', 'no'),
@@ -120,6 +122,10 @@ export const CAPACIDADES_EN_BASE_DE_DATOS: readonly Capacidad[] = [
   // `puede_gestionar_propiedad` (D-40) y reservan las cuotas a la fracción propia
   // (RF-24.3): ampliarla en esta pantalla no da acceso a los datos.
   'registrar_gastos',
+  // HU-26 · HU-28 · `inventory_items` lo escriben el Superadmin y el Administrador
+  // asignado (`puede_gestionar_propiedad`, D-45) y lo lee además el copropietario,
+  // sin los ítems dados de baja (CA-28.3): ampliarla aquí no da acceso a los datos.
+  'gestionar_inventario',
 ]
 
 /** Estados que condicionan una capacidad además del rol (RF-07.2b, D-31). */

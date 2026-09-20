@@ -38,6 +38,7 @@ const { administradores: cuentasAdministradoras } = useAdministradores()
 const esSuperadmin = computed(() => roles.value.includes('superadmin'))
 const puedeGestionar = computed(() => puede(roles.value, 'gestionar_propiedades', { escritura: true }))
 const puedeVerFinanzas = computed(() => puede(roles.value, 'ver_finanzas'))
+const puedeGestionarInventario = computed(() => puede(roles.value, 'gestionar_inventario'))
 const puedeGestionarCalendario = computed(() => puede(roles.value, 'gestionar_calendario'))
 
 const editando = ref(false)
@@ -237,6 +238,17 @@ function abrirPlan(plan: string) {
             :to="localePath(`/panel/rentas/${id}`)"
             :label="t('rentals.open')"
             data-test="abrir-rentas"
+          />
+
+          <!-- HU-26 · HU-27 · el inventario y sus mantenimientos, en su propia pantalla. -->
+          <UButton
+            v-if="puedeGestionarInventario"
+            variant="outline"
+            size="sm"
+            icon="i-lucide-package"
+            :to="localePath(`/panel/inventario/${id}`)"
+            :label="t('inventory.open')"
+            data-test="abrir-inventario"
           />
 
           <!-- HU-23 · los gastos comunes viven en su propia pantalla, con sus 8 cuotas. -->

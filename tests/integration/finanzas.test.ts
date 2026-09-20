@@ -90,6 +90,11 @@ function movimiento(cambios: Partial<MovimientoListado> = {}): MovimientoListado
     createdAt: '2026-09-14T15:00:00Z',
     voidedAt: null,
     voidReason: null,
+    maintenance: false,
+    inventoryItemId: null,
+    inventoryItemName: null,
+    attachmentPath: null,
+    attachmentUrl: null,
     ...cambios,
   }
 }
