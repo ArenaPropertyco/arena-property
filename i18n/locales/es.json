@@ -66,7 +66,8 @@
       "haveAccount": "¿Ya tienes cuenta?",
       "login": "Iniciar sesión",
       "referralApplied": "Se registrará el código de referido {code}.",
-      "referralIgnored": "El código de referido no tiene un formato válido; puedes continuar sin él."
+      "referralIgnored": "El código de referido no tiene un formato válido; puedes continuar sin él.",
+      "existingAccount": "Ya existe una cuenta con ese correo y su contraseña no cambió. Inicia sesión con la contraseña original; si aún no verificaste el correo, te llevaremos a reenviar el enlace."
     },
     "login": {
       "title": "Iniciar sesión",
@@ -81,7 +82,8 @@
       "bodyGeneric": "Te enviamos un enlace de verificación a tu correo. Hasta que lo abras, tu cuenta no puede entrar al panel.",
       "resend": "Reenviar enlace",
       "resent": "Enlace reenviado.",
-      "logout": "Cerrar sesión"
+      "logout": "Cerrar sesión",
+      "localInbox": "Estás en el entorno local: los correos no salen a Internet. Ábrelo en la bandeja de pruebas de Supabase."
     },
     "suspended": {
       "title": "Cuenta suspendida",

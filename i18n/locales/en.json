@@ -66,7 +66,8 @@
       "haveAccount": "Already have an account?",
       "login": "Log in",
       "referralApplied": "Referral code {code} will be recorded.",
-      "referralIgnored": "The referral code format is not valid; you can continue without it."
+      "referralIgnored": "The referral code format is not valid; you can continue without it.",
+      "existingAccount": "An account with that email already exists and its password did not change. Log in with the original password; if you have not verified the email yet, we will take you to resend the link."
     },
     "login": {
       "title": "Log in",
@@ -81,7 +82,8 @@
       "bodyGeneric": "We sent a verification link to your email. Until you open it, your account cannot access the dashboard.",
       "resend": "Resend link",
       "resent": "Link resent.",
-      "logout": "Log out"
+      "logout": "Log out",
+      "localInbox": "You are on the local environment: emails do not leave your machine. Open it in the Supabase test inbox."
     },
     "suspended": {
       "title": "Account suspended",

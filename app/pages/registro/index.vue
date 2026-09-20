@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { normalizarCodigoReferido } from '#shared/identity/registro'
+import { normalizarCodigoReferido, resultadoDeAlta } from '#shared/identity/registro'
 import { claveDeErrorDeAuth } from '#shared/identity/errores'
 import { RUTAS } from '#shared/permissions/acceso'
 
@@ -52,6 +52,12 @@ async function registrar(datos: { email: string, password: string, referralCode:
 
   if (respuesta.error) {
     error.value = t(claveDeErrorDeAuth(respuesta.error))
+    return
+  }
+  // RF-04.5 · un correo ya registrado no crea cuenta ni cambia la contraseña: se
+  // dice, en vez de mandar a esperar un enlace como si fuera una cuenta nueva.
+  if (resultadoDeAlta(respuesta.data.user) === 'ya_existente') {
+    error.value = t('auth.register.existingAccount')
     return
   }
 

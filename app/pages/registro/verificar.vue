@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { claveDeErrorDeAuth } from '#shared/identity/errores'
+import { bandejaDeCorreoLocal } from '#shared/identity/registro'
 import { RUTAS } from '#shared/permissions/acceso'
 
 /**
@@ -22,6 +23,11 @@ onMounted(async () => {
 })
 
 const email = computed(() => (typeof route.query.email === 'string' ? route.query.email : null))
+
+// En desarrollo, contra el stack local, el correo nunca sale a Internet: cae en
+// la bandeja de pruebas de Supabase y hay que abrirlo allí.
+const config = useRuntimeConfig()
+const bandejaLocal = bandejaDeCorreoLocal((config.public.supabase as { url?: string } | undefined)?.url)
 const reenviando = ref(false)
 
 async function reenviar() {
@@ -43,6 +49,7 @@ async function reenviar() {
     <VerifyEmailNotice
       :email="email"
       :reenviando="reenviando"
+      :bandeja-local="bandejaLocal"
       @reenviar="reenviar"
     />
   </AuthCard>
