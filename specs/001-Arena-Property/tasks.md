@@ -563,21 +563,21 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 1 · HU-26, HU-27, HU-28 — Inventario y mantenimiento
 
-- [ ] **T-224 · Migración de `inventory_items` con baja lógica** — `HU-26 · RF-26.1, RF-26.2`
+- [x] **T-224 · Migración de `inventory_items` con baja lógica** — `HU-26 · RF-26.1, RF-26.2`
   Hecho cuando: existe con RLS y no admite borrado físico.
-- [ ] **T-225 · Validaciones del ítem de inventario** — `HU-26 · RF-26.1`
+- [x] **T-225 · Validaciones del ítem de inventario** — `HU-26 · RF-26.1`
   Hecho cuando: pasa `CA-26.1`.
-- [ ] **T-226 · Baja lógica conservando histórico** — `HU-26 · RF-26.2, RF-26.4`
+- [x] **T-226 · Baja lógica conservando histórico** — `HU-26 · RF-26.2, RF-26.4`
   Hecho cuando: pasa `CA-26.2` y los cambios de estado y cantidad quedan historizados.
-- [ ] **T-227 · RLS de escritura solo para el Administrador asignado** — `HU-26 · RF-26.3`
+- [x] **T-227 · RLS de escritura solo para el Administrador asignado** — `HU-26 · RF-26.3`
   Hecho cuando: pasa `CA-26.3`.
-- [ ] **T-228 · Gasto de mantenimiento como gasto de HU-23** — `HU-27 · RF-27.1, RF-27.2`
+- [x] **T-228 · Gasto de mantenimiento como gasto de HU-23** — `HU-27 · RF-27.1, RF-27.2`
   Hecho cuando: pasa `CA-27.1` y genera las 8 cuotas del módulo financiero.
-- [ ] **T-229 · Asociación del gasto a un ítem o a la propiedad** — `HU-27 · RF-27.3`
+- [x] **T-229 · Asociación del gasto a un ítem o a la propiedad** — `HU-27 · RF-27.3`
   Hecho cuando: pasa `CA-27.2`.
-- [ ] **T-230 · Adjunto de factura con políticas de acceso** — `HU-27 · RF-27.1`
+- [x] **T-230 · Adjunto de factura con políticas de acceso** — `HU-27 · RF-27.1`
   Hecho cuando: pasa `CA-27.3`.
-- [ ] **T-231 · Vista de solo lectura del Propietario** — `HU-28 · RF-28.1, RF-28.2`
+- [x] **T-231 · Vista de solo lectura del Propietario** — `HU-28 · RF-28.1, RF-28.2`
   Hecho cuando: pasan `CA-28.1`, `CA-28.2` y `CA-28.3`.
 
 ## Paso 2 · HU-29, HU-30, HU-31 — Comunicación

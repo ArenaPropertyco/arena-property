@@ -1,3 +1,4 @@
+import { BUCKET_DE_ADJUNTOS } from '#shared/finance/mantenimiento'
 import type { NuevoMovimiento } from '#shared/finance/movimientos'
 import type { CuotaListada, FraccionImputableListada, MovimientoListado } from '#shared/finance/vistas'
 import type { CopAmount } from '#shared/money/importe'
@@ -12,6 +13,9 @@ import type { ResultadoDeEscritura } from './usePropiedades'
  * motivo y lo lleva a la auditoría en la misma transacción (RF-23.4, RF-A.5). Las
  * cuotas se leen tal como la base las dejó: aquí no se suma ni se reparte un peso.
  */
+/** Una hora: la factura se abre desde la pantalla, no se archiva el enlace. */
+const VIGENCIA_DE_FIRMA = 3600
+
 export function useMovimientos(propiedadId: Ref<string>) {
   const client = useSupabaseClient<Database>()
 
@@ -28,7 +32,7 @@ export function useMovimientos(propiedadId: Ref<string>) {
         client.from('fractions').select('id, number, status, owner_id').eq('property_id', propiedadId.value).order('number'),
         client
           .from('movements')
-          .select('*, expense_categories(name), payment_methods(name), ledger_accounts(name), fractions(number), third_party_bookings(calendar_weeks(index, starts_on))')
+          .select('*, expense_categories(name), payment_methods(name), ledger_accounts(name), fractions(number), third_party_bookings(calendar_weeks(index, starts_on)), inventory_items(name)')
           .eq('property_id', propiedadId.value)
           .order('incurred_on', { ascending: false })
           .order('created_at', { ascending: false }),
@@ -55,6 +59,13 @@ export function useMovimientos(propiedadId: Ref<string>) {
       const etiquetaPorCuenta = new Map(
         (perfiles.data ?? []).map(perfil => [perfil.id, perfil.full_name ?? perfil.email ?? perfil.id]),
       )
+
+      // HU-27 · CA-27.3 · la factura de un mantenimiento se sirve con URL firmada.
+      const rutas = (movimientos.data ?? []).map(fila => fila.attachment_path).filter((ruta): ruta is string => ruta !== null)
+      const firmadas = rutas.length === 0
+        ? { data: [] }
+        : await client.storage.from(BUCKET_DE_ADJUNTOS).createSignedUrls(rutas, VIGENCIA_DE_FIRMA)
+      const urlPorRuta = new Map((firmadas.data ?? []).map(firma => [firma.path ?? '', firma.signedUrl]))
 
       return {
         propiedad: { id: propiedad.data.id, name: propiedad.data.name },
@@ -84,6 +95,11 @@ export function useMovimientos(propiedadId: Ref<string>) {
           createdAt: fila.created_at,
           voidedAt: fila.voided_at,
           voidReason: fila.void_reason,
+          maintenance: fila.maintenance,
+          inventoryItemId: fila.inventory_item_id,
+          inventoryItemName: fila.inventory_items?.name ?? null,
+          attachmentPath: fila.attachment_path,
+          attachmentUrl: fila.attachment_path ? urlPorRuta.get(fila.attachment_path) ?? null : null,
         })),
         cuotas: (cuotas.data ?? []).map<CuotaListada>(fila => ({
           id: fila.id,

@@ -1848,12 +1848,17 @@
       "fraction_required": "Choose the fraction to charge.",
       "fraction_not_sold": "Only a sold fraction can be charged: that one has no owner.",
       "fraction_not_in_property": "That fraction does not belong to this property.",
-      "fraction_not_expected": "A prorated expense does not take a fraction."
+      "fraction_not_expected": "A prorated expense does not take a fraction.",
+      "item_not_in_property": "That item is not in this property inventory.",
+      "attachment_format": "The invoice must be JPG, PNG, WebP or PDF.",
+      "attachment_empty": "The file is empty.",
+      "attachment_too_large": "The invoice cannot be larger than 10 MB."
     },
     "errors": {
       "save_failed": "We could not save the expense.",
       "category_rejected": "The database rejected the category: check the ledger master.",
-      "void_failed": "We could not void the expense."
+      "void_failed": "We could not void the expense.",
+      "attachment_failed": "We could not upload the invoice."
     },
     "messages": {
       "registered": "Expense recorded with its 8 shares.",
@@ -1885,7 +1890,14 @@
       "commission": "Management fee ({percent})",
       "net": "Fraction net",
       "week": "Week {number}, from {from}"
-    }
+    },
+    "item": "Inventory item",
+    "itemHint": "Which item it belongs to; leave it if it is for the property in general.",
+    "itemGeneral": "Property in general",
+    "itemRetired": "{name} (retired)",
+    "attachment": "Invoice or photo",
+    "attachmentHint": "Optional. JPG, PNG, WebP or PDF up to 10 MB.",
+    "maintenanceBadge": "Maintenance"
   },
   "rentals": {
     "title": "Third-party rentals",
@@ -2033,7 +2045,8 @@
     "coOwnerLine": "{name} · fraction {fraction}/8",
     "openCalendar": "My calendar",
     "openStatement": "Account statement",
-    "openPlan": "View payment plan"
+    "openPlan": "View payment plan",
+    "openInventory": "Inventory"
   },
   "statement": {
     "title": "Account statement",
@@ -2092,5 +2105,107 @@
       "rented": "Rented to a third party"
     },
     "noIncome": "—"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "Furniture, equipment and supplies of the property, with their condition and maintenance history.",
+    "open": "Inventory",
+    "notFound": "We could not find that property, or you have no access to its inventory.",
+    "readOnly": "Read only: the inventory is managed by the property Administrator.",
+    "loading": "Loading the inventory…",
+    "register": "Add item",
+    "registerTitle": "New item",
+    "editTitle": "Edit item",
+    "name": "Name",
+    "namePlaceholder": "Three-seat sofa, fridge, bed linen set…",
+    "category": "Category",
+    "categories": {
+      "furniture": "Furniture",
+      "appliances": "Appliances",
+      "equipment": "Equipment",
+      "linens": "Linens",
+      "supplies": "Supplies",
+      "other": "Other"
+    },
+    "condition": "Condition",
+    "conditions": {
+      "new": "New",
+      "good": "Good",
+      "fair": "Fair",
+      "damaged": "Damaged"
+    },
+    "quantity": "Quantity",
+    "quantityHint": "Whole number; zero if it ran out.",
+    "location": "Location",
+    "locationHint": "Optional. Where it is in the property.",
+    "notes": "Notes",
+    "submit": "Save item",
+    "empty": "There are no items in the inventory yet.",
+    "columns": {
+      "item": "Item",
+      "category": "Category",
+      "condition": "Condition",
+      "quantity": "Quantity"
+    },
+    "retired": "Retired",
+    "retiredLine": "Retired: {reason}",
+    "edit": "Edit",
+    "retire": "Retire",
+    "retireTitle": "Retire the item",
+    "retireHint": "The item is not deleted: it stops being listed as active and its history is kept with this reason.",
+    "confirmRetire": "Retire with this reason",
+    "history": "History",
+    "historyTitle": "Item history",
+    "historyChanges": "Condition and quantity changes",
+    "historyEmpty": "No changes recorded.",
+    "fields": {
+      "condition": "Condition",
+      "quantity": "Quantity",
+      "retired": "Retirement"
+    },
+    "values": {
+      "active": "active",
+      "retired": "retired"
+    },
+    "changeLine": "{field}: {previous} → {next}",
+    "changedBy": "{who} · {when}",
+    "maintenance": {
+      "title": "Maintenance",
+      "subtitle": "Maintenance expenses of the property. They are common expenses: they are split and appear in the statement like any other.",
+      "register": "Record maintenance",
+      "registerTitle": "New maintenance expense",
+      "empty": "No maintenance recorded yet.",
+      "itemHistory": "Maintenance on this item",
+      "itemHistoryEmpty": "No maintenance linked to this item.",
+      "general": "Property in general",
+      "columns": {
+        "date": "Incurred",
+        "concept": "Concept",
+        "item": "Item",
+        "amount": "Amount",
+        "attachment": "Invoice"
+      },
+      "viewAttachment": "View invoice",
+      "noAttachment": "No attachment"
+    },
+    "validation": {
+      "name_required": "Give it a name of up to 120 characters.",
+      "category_required": "Choose the item category.",
+      "condition_required": "Choose the item condition.",
+      "quantity_negative": "The quantity cannot be negative.",
+      "quantity_not_integer": "The quantity must be a whole number.",
+      "reason_required": "Write the reason."
+    },
+    "errors": {
+      "save_failed": "We could not save the item.",
+      "retire_failed": "We could not retire the item."
+    },
+    "messages": {
+      "registered": "Item added.",
+      "updated": "Item updated.",
+      "retired": "Item retired; its history is kept.",
+      "maintenanceRegistered": "Maintenance recorded with its 8 shares."
+    },
+    "byAdministrator": "Property Administrator"
   }
 }

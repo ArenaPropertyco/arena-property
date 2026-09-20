@@ -14,9 +14,10 @@ import type { EstadoDeFraccion } from '../properties/fracciones'
 import type { Reparto } from './cuotas'
 import type { ClaseDeMovimiento, MaestraContable } from './maestra'
 import { esCategoriaDePropiedad } from './maestra'
+import type { ItemParaGasto } from './mantenimiento'
 
 export const CAMPOS_DE_MOVIMIENTO = [
-  'amount', 'categoryId', 'paymentMethodId', 'accountId', 'incurredOn', 'description', 'fractionId',
+  'amount', 'categoryId', 'paymentMethodId', 'accountId', 'incurredOn', 'description', 'fractionId', 'inventoryItemId',
 ] as const
 export type CampoDeMovimiento = typeof CAMPOS_DE_MOVIMIENTO[number]
 
@@ -34,6 +35,7 @@ export const CLAVES_DE_VALIDACION_DE_MOVIMIENTO = [
   'finance.validation.fraction_not_sold',
   'finance.validation.fraction_not_in_property',
   'finance.validation.fraction_not_expected',
+  'finance.validation.item_not_in_property',
   'finance.validation.reason_required',
 ] as const
 
@@ -53,6 +55,10 @@ export interface NuevoMovimiento {
   allocation: Reparto
   /** RF-23.9 · la fracción imputada; solo con reparto `single_fraction`. */
   fractionId: string | null
+  /** HU-27 · RF-27.1 · es un gasto de mantenimiento; se marca solo o por llevar ítem. */
+  maintenance?: boolean
+  /** HU-27 · RF-27.1 · el ítem del inventario al que se asocia; `null` si es general. */
+  inventoryItemId?: string | null
 }
 
 /** Lo que de una fracción decide si se le puede imputar un gasto (RF-23.9). */
@@ -77,6 +83,7 @@ export function validarMovimiento(
   movimiento: NuevoMovimiento,
   maestra: MaestraContable,
   fracciones: readonly FraccionImputable[],
+  items: readonly ItemParaGasto[] = [],
 ): ErrorDeMovimiento[] {
   const errores: ErrorDeMovimiento[] = []
 
@@ -131,6 +138,13 @@ export function validarMovimiento(
   }
   else if (movimiento.fractionId) {
     errores.push({ name: 'fractionId', message: 'finance.validation.fraction_not_expected' })
+  }
+
+  // HU-27 · RF-27.1 · el ítem tiene que ser del inventario de la propiedad. Uno ya
+  // dado de baja vale: un mantenimiento tardío es un gasto que ocurrió igual.
+  const itemId = movimiento.inventoryItemId ?? null
+  if (itemId !== null && !items.some(item => item.id === itemId)) {
+    errores.push({ name: 'inventoryItemId', message: 'finance.validation.item_not_in_property' })
   }
 
   return errores

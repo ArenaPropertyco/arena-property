@@ -212,6 +212,14 @@ const avisoDeCalendario = computed(() => props.tarjeta.plan
       <UButton
         variant="ghost"
         size="xs"
+        icon="i-lucide-package"
+        :to="localePath(`/panel/inventario/${tarjeta.propertyId}`)"
+        :label="t('portfolio.openInventory')"
+        :data-test="`abrir-inventario-${id}`"
+      />
+      <UButton
+        variant="ghost"
+        size="xs"
         icon="i-lucide-wallet"
         :to="localePath(`/panel/finanzas?propiedad=${tarjeta.propertyId}`)"
         :label="t('portfolio.openStatement')"

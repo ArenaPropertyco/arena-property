@@ -759,6 +759,130 @@ export type Database = {
           },
         ]
       }
+      inventory_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          field: string
+          id: string
+          item_id: string
+          next: string
+          note: string | null
+          previous: string
+          property_id: string
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          field: string
+          id?: string
+          item_id: string
+          next: string
+          note?: string | null
+          previous: string
+          property_id: string
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          field?: string
+          id?: string
+          item_id?: string
+          next?: string
+          note?: string | null
+          previous?: string
+          property_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_history_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_history_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_history_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_items: {
+        Row: {
+          category: Database["public"]["Enums"]["inventory_category"]
+          condition: Database["public"]["Enums"]["inventory_condition"]
+          created_at: string
+          created_by: string | null
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          property_id: string
+          quantity: number
+          retire_reason: string | null
+          retired_at: string | null
+          retired_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["inventory_category"]
+          condition?: Database["public"]["Enums"]["inventory_condition"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          property_id: string
+          quantity?: number
+          retire_reason?: string | null
+          retired_at?: string | null
+          retired_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["inventory_category"]
+          condition?: Database["public"]["Enums"]["inventory_condition"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          property_id?: string
+          quantity?: number
+          retire_reason?: string | null
+          retired_at?: string | null
+          retired_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_items_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_items_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ledger_accounts: {
         Row: {
           active: boolean
@@ -865,6 +989,7 @@ export type Database = {
           account_id: string
           allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          attachment_path: string | null
           booking_id: string | null
           category_id: string
           commission_amount: number | null
@@ -875,7 +1000,9 @@ export type Database = {
           fraction_id: string | null
           id: string
           incurred_on: string
+          inventory_item_id: string | null
           kind: Database["public"]["Enums"]["movement_kind"]
+          maintenance: boolean
           payment_method_id: string
           property_id: string
           updated_at: string
@@ -887,6 +1014,7 @@ export type Database = {
           account_id: string
           allocation?: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          attachment_path?: string | null
           booking_id?: string | null
           category_id: string
           commission_amount?: number | null
@@ -897,7 +1025,9 @@ export type Database = {
           fraction_id?: string | null
           id?: string
           incurred_on: string
+          inventory_item_id?: string | null
           kind?: Database["public"]["Enums"]["movement_kind"]
+          maintenance?: boolean
           payment_method_id: string
           property_id: string
           updated_at?: string
@@ -909,6 +1039,7 @@ export type Database = {
           account_id?: string
           allocation?: Database["public"]["Enums"]["movement_allocation"]
           amount?: number
+          attachment_path?: string | null
           booking_id?: string | null
           category_id?: string
           commission_amount?: number | null
@@ -919,7 +1050,9 @@ export type Database = {
           fraction_id?: string | null
           id?: string
           incurred_on?: string
+          inventory_item_id?: string | null
           kind?: Database["public"]["Enums"]["movement_kind"]
+          maintenance?: boolean
           payment_method_id?: string
           property_id?: string
           updated_at?: string
@@ -954,6 +1087,13 @@ export type Database = {
             columns: ["fraction_id"]
             isOneToOne: false
             referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movements_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
             referencedColumns: ["id"]
           },
           {
@@ -2673,6 +2813,7 @@ export type Database = {
           account_id: string
           allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          attachment_path: string | null
           booking_id: string | null
           category_id: string
           commission_amount: number | null
@@ -2683,7 +2824,9 @@ export type Database = {
           fraction_id: string | null
           id: string
           incurred_on: string
+          inventory_item_id: string | null
           kind: Database["public"]["Enums"]["movement_kind"]
+          maintenance: boolean
           payment_method_id: string
           property_id: string
           updated_at: string
@@ -2964,6 +3107,7 @@ export type Database = {
           account_id: string
           allocation: Database["public"]["Enums"]["movement_allocation"]
           amount: number
+          attachment_path: string | null
           booking_id: string | null
           category_id: string
           commission_amount: number | null
@@ -2974,7 +3118,9 @@ export type Database = {
           fraction_id: string | null
           id: string
           incurred_on: string
+          inventory_item_id: string | null
           kind: Database["public"]["Enums"]["movement_kind"]
+          maintenance: boolean
           payment_method_id: string
           property_id: string
           updated_at: string
@@ -3084,6 +3230,31 @@ export type Database = {
         Args: { approve: boolean; reason?: string; request: string }
         Returns: undefined
       }
+      retire_inventory_item: {
+        Args: { item: string; reason: string }
+        Returns: {
+          category: Database["public"]["Enums"]["inventory_category"]
+          condition: Database["public"]["Enums"]["inventory_condition"]
+          created_at: string
+          created_by: string | null
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          property_id: string
+          quantity: number
+          retire_reason: string | null
+          retired_at: string | null
+          retired_by: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "inventory_items"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       select_weeks: {
         Args: { calendar: string; fraction: string; week_indexes: number[] }
         Returns: number
@@ -3161,6 +3332,14 @@ export type Database = {
         | "withdrawn"
         | "reversed"
       fraction_status: "available" | "reserved" | "sold"
+      inventory_category:
+        | "furniture"
+        | "appliances"
+        | "equipment"
+        | "linens"
+        | "supplies"
+        | "other"
+      inventory_condition: "new" | "good" | "fair" | "damaged"
       movement_allocation: "prorated" | "single_fraction"
       movement_kind: "expense" | "income"
       payment_event_kind: "payment_completed" | "purchase_voided"
@@ -3315,6 +3494,15 @@ export const Constants = {
         "reversed",
       ],
       fraction_status: ["available", "reserved", "sold"],
+      inventory_category: [
+        "furniture",
+        "appliances",
+        "equipment",
+        "linens",
+        "supplies",
+        "other",
+      ],
+      inventory_condition: ["new", "good", "fair", "damaged"],
       movement_allocation: ["prorated", "single_fraction"],
       movement_kind: ["expense", "income"],
       payment_event_kind: ["payment_completed", "purchase_voided"],

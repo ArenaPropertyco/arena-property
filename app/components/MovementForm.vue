@@ -4,6 +4,8 @@ import { REPARTOS } from '#shared/finance/cuotas'
 import type { Reparto } from '#shared/finance/cuotas'
 import { categoriasPara, cuentasActivas, mediosActivos } from '#shared/finance/maestra'
 import type { MaestraContable } from '#shared/finance/maestra'
+import { MIMES_DE_ADJUNTO, validarAdjunto } from '#shared/finance/mantenimiento'
+import type { ItemParaGasto } from '#shared/finance/mantenimiento'
 import { validarMovimiento } from '#shared/finance/movimientos'
 import type { NuevoMovimiento } from '#shared/finance/movimientos'
 import type { FraccionImputableListada } from '#shared/finance/vistas'
@@ -21,20 +23,31 @@ import { esImporte, pesos } from '#shared/money/importe'
  * entre las 8 fracciones; un daño o una avería se imputan a una sola, y para eso se
  * ofrecen únicamente las fracciones vendidas, que son las que tienen a quién.
  *
+ * En modo mantenimiento (HU-27 · RF-27.1) ofrece además a qué ítem del inventario
+ * se asocia el gasto, o a la propiedad en general, y la factura o foto adjunta.
+ * Sigue siendo el mismo gasto: lo reparte la base igual (RF-27.2).
+ *
  * Pensado para el móvil: una columna, la fecha de hoy propuesta y el medio y la
  * cuenta preseleccionados con la primera entrada activa de la maestra.
  */
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   propertyId: string
   maestra: MaestraContable
   /** Las 8 fracciones de la propiedad, para elegir a cuál imputar (RF-23.9). */
   fracciones: FraccionImputableListada[]
   enviando: boolean
-}>()
+  /** HU-27 · RF-27.1 · los ítems del inventario a los que se puede asociar el gasto. */
+  items?: ItemParaGasto[]
+  /** HU-27 · el gasto es de mantenimiento: ofrece ítem y factura. */
+  mantenimiento?: boolean
+}>(), { items: () => [], mantenimiento: false })
 
-const emit = defineEmits<{ submit: [NuevoMovimiento] }>()
+const emit = defineEmits<{ submit: [NuevoMovimiento, File | null] }>()
 
 const { t } = useI18n()
+
+/** RF-27.1 · «propiedad en general»: el selector no admite el vacío como valor. */
+const GENERAL = '__general__'
 
 const categorias = computed(() => categoriasPara(props.maestra.categorias, 'expense'))
 const medios = computed(() => mediosActivos(props.maestra.medios))
@@ -49,9 +62,26 @@ const estado = reactive({
   accountId: cuentas.value[0]?.id ?? '',
   incurredOn: hoy(),
   description: '',
+  inventoryItemId: GENERAL,
 })
 
+/** `shallowRef`: un `File` no se envuelve en un proxy reactivo; se emite tal cual llegó. */
+const archivo = shallowRef<File | null>(null)
 const errores = ref<Record<string, string>>({})
+
+/** RF-27.1 · a cualquier ítem, señalando los dados de baja: un mantenimiento tardío es válido. */
+const opcionesDeItem = computed(() => [
+  { value: GENERAL, label: t('finance.itemGeneral') },
+  ...props.items.map(item => ({
+    value: item.id,
+    label: item.retired ? t('finance.itemRetired', { name: item.name }) : item.name,
+  })),
+])
+
+function elegirArchivo(evento: Event) {
+  const entrada = evento.target as HTMLInputElement
+  archivo.value = entrada.files?.[0] ?? null
+}
 
 const opcionesDeCategoria = computed(() => categorias.value.map(categoria => ({ value: categoria.id, label: categoria.name })))
 const opcionesDeMedio = computed(() => medios.value.map(medio => ({ value: medio.id, label: medio.name })))
@@ -93,15 +123,26 @@ function enviar() {
     description: estado.description.trim(),
     allocation: estado.allocation,
     fractionId: imputaAUnaFraccion.value && estado.fractionId !== '' ? estado.fractionId : null,
+    ...(props.mantenimiento
+      ? { maintenance: true, inventoryItemId: estado.inventoryItemId === GENERAL ? null : estado.inventoryItemId }
+      : {}),
   }
 
-  const encontrados = validarMovimiento(movimiento, props.maestra, props.fracciones)
+  const encontrados = validarMovimiento(movimiento, props.maestra, props.fracciones, props.items)
   errores.value = Object.fromEntries(encontrados.map(error => [error.name, t(error.message)]))
-  if (encontrados.length > 0) {
+
+  // CA-27.3 · la factura es opcional; si viene, tiene que ser válida.
+  const problemaDeArchivo = archivo.value
+    ? validarAdjunto({ mime: archivo.value.type, size: archivo.value.size })
+    : null
+  if (problemaDeArchivo) {
+    errores.value.attachment = t(problemaDeArchivo)
+  }
+  if (encontrados.length > 0 || problemaDeArchivo) {
     return
   }
 
-  emit('submit', movimiento)
+  emit('submit', movimiento, props.mantenimiento ? archivo.value : null)
 }
 </script>
 
@@ -141,6 +182,21 @@ function enviar() {
         :placeholder="t('finance.categoryPlaceholder')"
         class="w-full"
         data-test="gasto-categoria"
+      />
+    </UFormField>
+
+    <UFormField
+      v-if="mantenimiento"
+      :label="t('finance.item')"
+      :hint="t('finance.itemHint')"
+      :error="errores.inventoryItemId"
+      data-test="campo-item"
+    >
+      <USelect
+        v-model="estado.inventoryItemId"
+        :items="opcionesDeItem"
+        class="w-full"
+        data-test="gasto-item"
       />
     </UFormField>
 
@@ -239,6 +295,22 @@ function enviar() {
         :rows="2"
         class="w-full"
       />
+    </UFormField>
+
+    <UFormField
+      v-if="mantenimiento"
+      :label="t('finance.attachment')"
+      :hint="t('finance.attachmentHint')"
+      :error="errores.attachment"
+      data-test="campo-adjunto"
+    >
+      <input
+        type="file"
+        :accept="MIMES_DE_ADJUNTO.join(',')"
+        class="block w-full text-sm text-muted file:mr-3 file:rounded-md file:border-0 file:bg-elevated file:px-3 file:py-1.5 file:text-sm file:text-default"
+        data-test="gasto-adjunto"
+        @change="elegirArchivo"
+      >
     </UFormField>
 
     <div class="flex justify-end">
