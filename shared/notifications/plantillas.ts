@@ -5,6 +5,7 @@
  * estas. Ambas se prueban por contrato.
  */
 
+import { cargaLegible } from './legible'
 import type { CargaDeNotificacion, TipoDeNotificacion } from './tipos'
 
 export const IDIOMAS = ['es', 'en'] as const
@@ -65,17 +66,15 @@ const PLANTILLAS: Record<TipoDeNotificacion, Record<Idioma, Textos>> = {
   },
 }
 
-/** Sustituye `{campo}` por la carga; lo que falte queda vacío, nunca un marcador suelto. */
-function interpolar(texto: string, carga: CargaDeNotificacion): string {
-  return texto.replace(/\{([a-z_]+)\}/g, (_, campo: string) => {
-    const valor = carga[campo]
-    return valor === null || valor === undefined ? '' : String(valor)
-  })
+/** Sustituye `{campo}` por la carga legible; lo que falte queda vacío, nunca un marcador suelto. */
+function interpolar(texto: string, legible: Record<string, string>): string {
+  return texto.replace(/\{([a-z_]+)\}/g, (_, campo: string) => legible[campo] ?? '')
 }
 
 export function plantillaDe(tipo: TipoDeNotificacion, idioma: Idioma, carga: CargaDeNotificacion): Plantilla {
   const textos = PLANTILLAS[tipo][idioma]
-  return { asunto: interpolar(textos.asunto, carga), texto: interpolar(textos.texto, carga) }
+  const legible = cargaLegible(carga, idioma)
+  return { asunto: interpolar(textos.asunto, legible), texto: interpolar(textos.texto, legible) }
 }
 
 /** HTML mínimo y seguro a partir del texto: se escapa y se respetan los saltos. */

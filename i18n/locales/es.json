@@ -23,7 +23,8 @@
     "commission": "Comisión",
     "ambassadors": "Embajadores",
     "referralProgram": "Programa de Referidos",
-    "weekHistory": "Mis semanas"
+    "weekHistory": "Mis semanas",
+    "referrals": "Mis referidos"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -1255,6 +1256,49 @@
         "self_referral": "No puedes referirte a ti mismo.",
         "window_expired": "El enlace de referido caducó: la ventana es de 90 días.",
         "invalid_transition": "Ese cambio de estado del referido no es válido."
+      }
+    },
+    "list": {
+      "title": "Mis referidos",
+      "subtitle": "Cada persona que llegó con tu código, en qué punto va su compra y la comisión que te genera. Solo desde que compra existe un precio pactado sobre el cual calcularla.",
+      "loading": "Cargando tus referidos…",
+      "empty": "Todavía no tienes referidos. Comparte tu enlace para empezar.",
+      "emptyFiltered": "Ningún referido cumple los filtros.",
+      "totalsTitle": "Tus referidos por estado",
+      "totals": {
+        "total": "Referidos",
+        "registered": "Registrados",
+        "payment_in_progress": "En proceso de pago",
+        "paid": "Pago completado"
+      },
+      "filters": {
+        "state": "Estado",
+        "allStates": "Todos los estados",
+        "from": "Referidos desde",
+        "to": "Referidos hasta",
+        "clear": "Limpiar filtros"
+      },
+      "columns": {
+        "prospect": "Referido",
+        "referredOn": "Fecha de referencia",
+        "interest": "Propiedad de interés",
+        "state": "Estado",
+        "commission": "Tu comisión"
+      },
+      "states": {
+        "registered": "Registrado",
+        "payment_in_progress": "En proceso de pago",
+        "paid": "Pago completado"
+      },
+      "interestLine": "{property} · fracción {fraction}/8",
+      "noInterest": "Sin compra todavía",
+      "noCommission": "Sin compra, sin comisión",
+      "balance": {
+        "pending": "Pendiente hasta el pago completo",
+        "in_grace": "En gracia, disponible el {date}",
+        "available": "Disponible para retiro",
+        "withdrawn": "Retirada",
+        "reversed": "Reversada"
       }
     }
   },

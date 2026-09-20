@@ -23,7 +23,8 @@
     "commission": "Commission",
     "ambassadors": "Ambassadors",
     "referralProgram": "Referral Program",
-    "weekHistory": "My weeks"
+    "weekHistory": "My weeks",
+    "referrals": "My referrals"
   },
   "actions": {
     "login": "Log in",
@@ -1255,6 +1256,49 @@
         "self_referral": "You cannot refer yourself.",
         "window_expired": "The referral link expired: the window is 90 days.",
         "invalid_transition": "That referral state change is not valid."
+      }
+    },
+    "list": {
+      "title": "My referrals",
+      "subtitle": "Everyone who arrived with your code, where their purchase stands and the commission it earns you. Only once they buy is there an agreed price to calculate it on.",
+      "loading": "Loading your referrals…",
+      "empty": "You have no referrals yet. Share your link to get started.",
+      "emptyFiltered": "No referral matches the filters.",
+      "totalsTitle": "Your referrals by status",
+      "totals": {
+        "total": "Referrals",
+        "registered": "Registered",
+        "payment_in_progress": "Payment in progress",
+        "paid": "Payment completed"
+      },
+      "filters": {
+        "state": "Status",
+        "allStates": "All statuses",
+        "from": "Referred from",
+        "to": "Referred until",
+        "clear": "Clear filters"
+      },
+      "columns": {
+        "prospect": "Referral",
+        "referredOn": "Referred on",
+        "interest": "Property of interest",
+        "state": "Status",
+        "commission": "Your commission"
+      },
+      "states": {
+        "registered": "Registered",
+        "payment_in_progress": "Payment in progress",
+        "paid": "Payment completed"
+      },
+      "interestLine": "{property} · fraction {fraction}/8",
+      "noInterest": "No purchase yet",
+      "noCommission": "No purchase, no commission",
+      "balance": {
+        "pending": "Pending until payment completes",
+        "in_grace": "In grace, available on {date}",
+        "available": "Available to withdraw",
+        "withdrawn": "Withdrawn",
+        "reversed": "Reversed"
       }
     }
   },

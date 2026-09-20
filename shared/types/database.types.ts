@@ -474,6 +474,135 @@ export type Database = {
         }
         Relationships: []
       }
+      commissions: {
+        Row: {
+          agreed_price: number
+          ambassador_id: string
+          amount: number
+          attribution_id: string
+          available_on: string | null
+          commission_type_id: string
+          completed_on: string | null
+          created_at: string
+          fraction_number: number
+          grace_ends_on: string | null
+          id: string
+          loss_assumed_at: string | null
+          plan_id: string
+          property_id: string
+          provisioned_on: string
+          resolved_at: string | null
+          resolved_reason: string | null
+          reversal_reason: string | null
+          reversed_at: string | null
+          status: Database["public"]["Enums"]["commission_status"]
+          updated_at: string
+        }
+        Insert: {
+          agreed_price: number
+          ambassador_id: string
+          amount: number
+          attribution_id: string
+          available_on?: string | null
+          commission_type_id: string
+          completed_on?: string | null
+          created_at?: string
+          fraction_number: number
+          grace_ends_on?: string | null
+          id?: string
+          loss_assumed_at?: string | null
+          plan_id: string
+          property_id: string
+          provisioned_on?: string
+          resolved_at?: string | null
+          resolved_reason?: string | null
+          reversal_reason?: string | null
+          reversed_at?: string | null
+          status?: Database["public"]["Enums"]["commission_status"]
+          updated_at?: string
+        }
+        Update: {
+          agreed_price?: number
+          ambassador_id?: string
+          amount?: number
+          attribution_id?: string
+          available_on?: string | null
+          commission_type_id?: string
+          completed_on?: string | null
+          created_at?: string
+          fraction_number?: number
+          grace_ends_on?: string | null
+          id?: string
+          loss_assumed_at?: string | null
+          plan_id?: string
+          property_id?: string
+          provisioned_on?: string
+          resolved_at?: string | null
+          resolved_reason?: string | null
+          reversal_reason?: string | null
+          reversed_at?: string | null
+          status?: Database["public"]["Enums"]["commission_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commissions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "referral_listing"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_commission_type_id_fkey"
+            columns: ["commission_type_id"]
+            isOneToOne: false
+            referencedRelation: "commission_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plan_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_requests: {
         Row: {
           created_at: string
@@ -2083,6 +2212,61 @@ export type Database = {
           },
         ]
       }
+      wallet_movements: {
+        Row: {
+          ambassador_id: string
+          amount: number
+          commission_id: string | null
+          created_at: string
+          id: string
+          kind: string
+          note: string | null
+          occurred_on: string
+        }
+        Insert: {
+          ambassador_id: string
+          amount: number
+          commission_id?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          note?: string | null
+          occurred_on?: string
+        }
+        Update: {
+          ambassador_id?: string
+          amount?: number
+          commission_id?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          note?: string | null
+          occurred_on?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_movements_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_commission_id_fkey"
+            columns: ["commission_id"]
+            isOneToOne: false
+            referencedRelation: "commissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_commission_id_fkey"
+            columns: ["commission_id"]
+            isOneToOne: false
+            referencedRelation: "referral_listing"
+            referencedColumns: ["commission_id"]
+          },
+        ]
+      }
       week_blocks: {
         Row: {
           calendar_id: string
@@ -2368,6 +2552,64 @@ export type Database = {
           visibility: Database["public"]["Enums"]["property_visibility"] | null
         }
         Relationships: []
+      }
+      referral_listing: {
+        Row: {
+          ambassador_id: string | null
+          commission_amount: number | null
+          commission_id: string | null
+          commission_status:
+            | Database["public"]["Enums"]["commission_status"]
+            | null
+          fraction_number: number | null
+          grace_ends_on: string | null
+          id: string | null
+          plan_id: string | null
+          property_id: string | null
+          property_name: string | null
+          prospect_email: string | null
+          prospect_id: string | null
+          prospect_name: string | null
+          referred_on: string | null
+          stage: Database["public"]["Enums"]["referral_stage"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attributions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plan_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "payment_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
@@ -2780,6 +3022,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      release_commissions_in_grace: { Args: { hoy?: string }; Returns: number }
       release_week: {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
@@ -2832,6 +3075,10 @@ export type Database = {
           target_fraction: number
         }
         Returns: string
+      }
+      resolve_available_commissions: {
+        Args: { ambassador: string; forfeit: boolean; reason: string }
+        Returns: number
       }
       resolve_swap_request: {
         Args: { approve: boolean; reason?: string; request: string }
@@ -2907,6 +3154,12 @@ export type Database = {
         | "user"
       category_scope: "property" | "platform"
       commission_kind: "fixed" | "percentage"
+      commission_status:
+        | "pending"
+        | "in_grace"
+        | "available"
+        | "withdrawn"
+        | "reversed"
       fraction_status: "available" | "reserved" | "sold"
       movement_allocation: "prorated" | "single_fraction"
       movement_kind: "expense" | "income"
@@ -3054,6 +3307,13 @@ export const Constants = {
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
       category_scope: ["property", "platform"],
       commission_kind: ["fixed", "percentage"],
+      commission_status: [
+        "pending",
+        "in_grace",
+        "available",
+        "withdrawn",
+        "reversed",
+      ],
       fraction_status: ["available", "reserved", "sold"],
       movement_allocation: ["prorated", "single_fraction"],
       movement_kind: ["expense", "income"],

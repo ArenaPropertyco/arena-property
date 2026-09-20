@@ -2,6 +2,7 @@
 import { formatearInstante } from '#shared/dates/formato'
 import type { Idioma } from '#shared/money/formato'
 import { noLeidas } from '#shared/notifications/bandeja'
+import { cargaLegible } from '#shared/notifications/legible'
 import type { ItemDeBandeja } from '#shared/notifications/bandeja'
 
 /**
@@ -23,9 +24,9 @@ const { t, locale } = useI18n()
 
 const pendientes = computed(() => noLeidas(props.items))
 
-/** vue-i18n interpola con cadenas; la carga puede traer números y nulos. */
+/** vue-i18n interpola con cadenas; la carga llega cruda y se vuelve legible (TR-02). */
 function parametros(item: ItemDeBandeja): Record<string, string> {
-  return Object.fromEntries(Object.entries(item.payload).map(([clave, valor]) => [clave, valor === null || valor === undefined ? '' : String(valor)]))
+  return cargaLegible(item.payload, locale.value as Idioma)
 }
 
 function fecha(item: ItemDeBandeja): string {

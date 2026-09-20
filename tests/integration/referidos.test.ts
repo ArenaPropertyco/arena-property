@@ -15,6 +15,15 @@ import type { SignupDraft } from '#shared/referrals/signup'
 import { TERMS_VERSION } from '#shared/referrals/signup'
 import type { AmbassadorCommissionListed, AmbassadorListed } from '#shared/referrals/views'
 
+// ─── HU-53 · RF-53.1…RF-53.4 · el listado de referidos del Embajador ────────
+import ReferralFilters from '~/components/ReferralFilters.vue'
+import ReferralTotals from '~/components/ReferralTotals.vue'
+import ReferralsTable from '~/components/ReferralsTable.vue'
+import { formatearDia } from '#shared/dates/formato'
+import { commissionFor } from '#shared/referrals/commission'
+import { emptyReferralFilter, referralTotals } from '#shared/referrals/listing'
+import type { ReferralRow } from '#shared/referrals/listing'
+
 /**
  * HU-49 · RF-49.1…RF-49.5 · HU-50 · RF-50.3, RF-50.4 · HU-52 · RF-52.1…RF-52.4 ·
  * RT-06 · principio 10 — los componentes del Programa de Referidos reciben datos
@@ -367,5 +376,104 @@ describe('ReferralCodeCard', () => {
   it('CA-50.2 · RF-50.2 · el código se muestra, nunca se edita', async () => {
     const tarjeta = await mountSuspended(ReferralCodeCard, { props: { code: CODIGO, baseUrl: BASE } })
     expect(tarjeta.findAll('input').length).toBe(0)
+  })
+})
+
+const V1: CommissionType = TIPOS[0]!
+
+function referido(cambios: Partial<ReferralRow> & { id: string }): ReferralRow {
+  return {
+    prospectName: null, prospectEmail: `${cambios.id}@correo.co`, referredOn: '2026-09-01',
+    propertyName: null, fractionNumber: null, stage: 'registered', commission: null,
+    ...cambios,
+  }
+}
+
+const REFERIDOS: ReferralRow[] = [
+  referido({ id: 'r1', prospectName: 'Rita Registrada', referredOn: '2026-08-15' }),
+  referido({
+    id: 'r2', prospectName: 'Pedro Pagando', referredOn: '2026-09-02', stage: 'payment_in_progress', propertyName: 'Casa Arena', fractionNumber: 3,
+    commission: { amount: commissionFor(V1, pesos(100_000_000)), status: 'pending', graceEndsOn: null },
+  }),
+  referido({
+    id: 'r3', referredOn: '2026-07-20', stage: 'paid', propertyName: 'Villa Arena', fractionNumber: 7,
+    commission: { amount: commissionFor(V1, pesos(120_000_000)), status: 'in_grace', graceEndsOn: '2026-10-05' },
+  }),
+]
+
+describe('ReferralTotals', () => {
+  it('CA-53.1 · muestra un total por estado y el total del listado, que coinciden con la agregación pura', async () => {
+    const totales = referralTotals(REFERIDOS)
+    const bloque = await mountSuspended(ReferralTotals, { props: { totales } })
+
+    expect(bloque.find('[data-test="total-registered"]').text()).toContain('1')
+    expect(bloque.find('[data-test="total-payment_in_progress"]').text()).toContain('1')
+    expect(bloque.find('[data-test="total-paid"]').text()).toContain('1')
+    expect(bloque.find('[data-test="total-todos"]').text()).toContain('3')
+    expect(totales.registered + totales.payment_in_progress + totales.paid).toBe(totales.total)
+  })
+})
+
+describe('ReferralFilters', () => {
+  it('CA-53.2 · elegir un estado y un periodo emite el filtro completo, con ambos criterios', async () => {
+    const filtros = await mountSuspended(ReferralFilters, { props: { filtro: emptyReferralFilter() } })
+
+    filtros.findComponent({ name: 'USelect' }).vm.$emit('update:modelValue', 'payment_in_progress')
+    await flushPromises()
+    expect(filtros.emitted('update:filtro')?.at(-1)?.[0]).toEqual({ stage: 'payment_in_progress', desde: null, hasta: null })
+
+    await filtros.setProps({ filtro: { stage: 'payment_in_progress', desde: null, hasta: null } })
+    await filtros.find('[data-test="filtro-desde"]').setValue('2026-09-01')
+    await flushPromises()
+    expect(filtros.emitted('update:filtro')?.at(-1)?.[0]).toEqual({ stage: 'payment_in_progress', desde: '2026-09-01', hasta: null })
+  })
+
+  it('RF-53.4 · limpiar devuelve el filtro vacío', async () => {
+    const filtros = await mountSuspended(ReferralFilters, { props: { filtro: { stage: 'paid', desde: '2026-01-01', hasta: null } } })
+
+    await filtros.find('[data-test="filtro-limpiar"]').trigger('click')
+    expect(filtros.emitted('update:filtro')?.at(-1)?.[0]).toEqual(emptyReferralFilter())
+  })
+})
+
+describe('ReferralsTable', () => {
+  it('CA-53.3 · un referido en proceso de pago bajo V1 muestra el 3 % del precio pactado en IBM Plex Mono y su estado de saldo', async () => {
+    const tabla = await mountSuspended(ReferralsTable, { props: { referidos: REFERIDOS } })
+    const comision = tabla.find('[data-test="comision-r2"]')
+
+    expect(comision.text()).toContain(formatearImporte(pesos(3_000_000), 'es'))
+    expect(comision.classes()).toContain('font-mono')
+    expect(tabla.find('[data-test="saldo-r2"]').text()).toContain('Pendiente')
+  })
+
+  it('CA-53.3 · RF-53.3 · un referido «Registrado» no muestra monto alguno', async () => {
+    const tabla = await mountSuspended(ReferralsTable, { props: { referidos: REFERIDOS } })
+
+    expect(tabla.find('[data-test="comision-r1"]').exists()).toBe(false)
+    expect(tabla.find('[data-test="sin-comision-r1"]').exists()).toBe(true)
+    expect(tabla.find('[data-test="estado-r1"]').text()).toContain('Registrado')
+  })
+
+  it('RF-53.3 · D-02 · con el pago completado muestra la fecha en que el saldo se habilita', async () => {
+    const tabla = await mountSuspended(ReferralsTable, { props: { referidos: REFERIDOS } })
+
+    expect(tabla.find('[data-test="comision-r3"]').text()).toContain(formatearImporte(pesos(3_600_000), 'es'))
+    expect(tabla.find('[data-test="saldo-r3"]').text()).toContain(formatearDia('2026-10-05', 'es'))
+    expect(tabla.find('[data-test="estado-r3"]').text()).toContain('Pago completado')
+  })
+
+  it('RF-53.1 · cada fila lleva nombre o correo, fecha de referencia y propiedad de interés cuando existe', async () => {
+    const tabla = await mountSuspended(ReferralsTable, { props: { referidos: REFERIDOS } })
+
+    expect(tabla.find('[data-test="referido-r2"]').text()).toContain('Pedro Pagando')
+    expect(tabla.find('[data-test="referido-r2"]').text()).toContain('Casa Arena')
+    expect(tabla.find('[data-test="referido-r2"]').text()).toContain(formatearDia('2026-09-02', 'es'))
+    expect(tabla.find('[data-test="referido-r3"]').text()).toContain('r3@correo.co')
+  })
+
+  it('RF-53.1 · sin referidos lo dice', async () => {
+    const tabla = await mountSuspended(ReferralsTable, { props: { referidos: [] } })
+
+    expect(tabla.find('[data-test="sin-referidos"]').exists()).toBe(true)
   })
 })
