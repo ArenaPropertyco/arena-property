@@ -6,9 +6,9 @@
  * `formatearPorcentaje` (CA-21.1); las próximas reservas son las semanas
  * confirmadas cuya entrada no ha pasado, por cercanía (CA-21.2); y hay un resumen
  * por propiedad que quien mira gestiona de verdad, ni una más (CA-21.3). Las
- * alertas de hoy son los conflictos de bloqueo (HU-15/HU-17), las solicitudes de
- * intercambio abiertas (HU-12) y las semanas por colocar (RF-21.1b); las novedades
- * abiertas de HU-29 se suman cuando exista esa historia.
+ * alertas son los conflictos de bloqueo (HU-15/HU-17), las solicitudes de
+ * intercambio abiertas (HU-12), las semanas por colocar (RF-21.1b) y las novedades
+ * abiertas de la propiedad (HU-29 · RF-29.3), que dejan de contar al resolverse.
  */
 
 import { proporcionEnPuntosBasicos } from '../money/formato'
@@ -39,6 +39,8 @@ export interface AlertasDePropiedad {
   conflicts: number
   swapRequests: number
   weeksToPlace: number
+  /** HU-29 · RF-29.3 · novedades publicadas que siguen abiertas. */
+  openAnnouncements: number
 }
 
 export interface ResumenDePropiedad {
@@ -89,7 +91,7 @@ export function resumenDePropiedad(propiedad: PropiedadResumible, contexto: Cont
     soldShare: porcentajeVendido(propiedad.soldFractions, propiedad.fractionCount),
     upcoming: proximasReservas(contexto.reservas, contexto.hoy, contexto.proximas),
     alerts: alertas,
-    alertCount: alertas.conflicts + alertas.swapRequests + alertas.weeksToPlace,
+    alertCount: alertas.conflicts + alertas.swapRequests + alertas.weeksToPlace + alertas.openAnnouncements,
   }
 }
 
@@ -102,6 +104,8 @@ export interface ContextoDelTablero {
   conflictos: readonly DePropiedad[]
   solicitudes: readonly DePropiedad[]
   porColocar: readonly DePropiedad[]
+  /** HU-29 · las novedades abiertas, una entrada por novedad. */
+  novedades: readonly DePropiedad[]
   hoy: Dia
   proximas?: number
 }
@@ -122,6 +126,7 @@ export function resumenesDelTablero(
       conflicts: cuenta(contexto.conflictos, propiedad.id),
       swapRequests: cuenta(contexto.solicitudes, propiedad.id),
       weeksToPlace: cuenta(contexto.porColocar, propiedad.id),
+      openAnnouncements: cuenta(contexto.novedades, propiedad.id),
     },
     hoy: contexto.hoy,
     proximas: contexto.proximas,

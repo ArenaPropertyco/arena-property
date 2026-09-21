@@ -582,23 +582,23 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 2 · HU-29, HU-30, HU-31 — Comunicación
 
-- [ ] **T-232 · Migración de `announcements` con urgencia y estado** — `HU-29 · RF-29.1, RF-29.3`
+- [x] **T-232 · Migración de `announcements` con urgencia y estado** — `HU-29 · RF-29.1, RF-29.3`
   Hecho cuando: existe con RLS y contempla abierta y resuelta.
-- [ ] **T-233 · Validación del aviso** — `HU-29 · RF-29.1`
+- [x] **T-233 · Validación del aviso** — `HU-29 · RF-29.1`
   Hecho cuando: pasa `CA-29.2`.
-- [ ] **T-234 · Notificación a todos los propietarios de la propiedad** — `HU-29 · RF-29.2` · `TR-03`
+- [x] **T-234 · Notificación a todos los propietarios de la propiedad** — `HU-29 · RF-29.2` · `TR-03`
   Hecho cuando: pasan `CA-29.1` y `CA-29.3`.
-- [ ] **T-235 · Semántica de color de la urgencia** — `HU-29 · RF-29.4` · `RT-07`
+- [x] **T-235 · Semántica de color de la urgencia** — `HU-29 · RF-29.4` · `RT-07`
   Hecho cuando: el rojo se usa solo para urgente y sale de los tokens de marca.
-- [ ] **T-236 · Novedades abiertas como alertas del Administrador** — `HU-29 · RF-29.3` · `HU-21 · RF-21.2`
+- [x] **T-236 · Novedades abiertas como alertas del Administrador** — `HU-29 · RF-29.3` · `HU-21 · RF-21.2`
   Hecho cuando: una novedad abierta aparece en el dashboard y desaparece al resolverse.
-- [ ] **T-237 · Vista del Propietario sobre la bandeja** — `HU-30 · RF-30.1, RF-30.3` · `TR-03`
+- [x] **T-237 · Vista del Propietario sobre la bandeja** — `HU-30 · RF-30.1, RF-30.3` · `TR-03`
   Hecho cuando: pasan `CA-30.2` y `CA-30.3`.
-- [ ] **T-238 · Marcado de leídas y contador** — `HU-30 · RF-30.2`
+- [x] **T-238 · Marcado de leídas y contador** — `HU-30 · RF-30.2`
   Hecho cuando: pasa `CA-30.1`.
-- [ ] **T-239 · Segmentación de comunicados globales** — `HU-31 · RF-31.1, RF-31.2`
+- [x] **T-239 · Segmentación de comunicados globales** — `HU-31 · RF-31.1, RF-31.2`
   Hecho cuando: pasan `CA-31.1`, `CA-31.2` y `CA-31.3`.
-- [ ] **T-240 · Envío y registro del comunicado** — `HU-31 · RF-31.3, RF-31.4`
+- [x] **T-240 · Envío y registro del comunicado** — `HU-31 · RF-31.3, RF-31.4`
   Hecho cuando: solo el Superadmin lo emite y queda registrado con su segmento y fecha.
 
 ## Paso 3 · HU-25, HU-32, HU-33, HU-22 — Panel del Superadmin

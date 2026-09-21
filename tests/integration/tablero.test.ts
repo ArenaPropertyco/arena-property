@@ -23,7 +23,7 @@ function resumen(cambios: Partial<ResumenDePropiedad> & { id: string }): Resumen
       { propertyId: cambios.id, fraction: 2, week: 17, startsOn: '2027-05-01', endsOn: '2027-05-08' },
       { propertyId: cambios.id, fraction: 5, week: 22, startsOn: '2027-06-05', endsOn: '2027-06-12' },
     ],
-    alerts: { conflicts: 2, swapRequests: 1, weeksToPlace: 0 },
+    alerts: { conflicts: 2, swapRequests: 1, weeksToPlace: 0, openAnnouncements: 0 },
     alertCount: 3,
     ...cambios,
   }

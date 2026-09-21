@@ -71,6 +71,7 @@ describe('CA-21.3 · el tablero arma un resumen por propiedad administrada', () 
     conflictos: [{ propertyId: 'p1' }, { propertyId: 'p1' }, { propertyId: 'p2' }],
     solicitudes: [{ propertyId: 'p3' }],
     porColocar: [{ propertyId: 'p1' }],
+    novedades: [{ propertyId: 'p3' }, { propertyId: 'p3' }],
     hoy: '2027-04-01',
   }
 
@@ -87,17 +88,25 @@ describe('CA-21.3 · el tablero arma un resumen por propiedad administrada', () 
   it('RF-21.1 · cada resumen trae el porcentaje, las próximas reservas y las alertas de su propiedad', () => {
     const [p1, p3] = resumenesDelTablero(propiedades, { id: 'ana', esSuperadmin: false }, contexto)
 
-    expect(p1).toMatchObject({ soldFractions: 3, soldShare: 3750, alerts: { conflicts: 2, swapRequests: 0, weeksToPlace: 1 }, alertCount: 3 })
+    expect(p1).toMatchObject({ soldFractions: 3, soldShare: 3750, alerts: { conflicts: 2, swapRequests: 0, weeksToPlace: 1, openAnnouncements: 0 }, alertCount: 3 })
     expect(p1?.upcoming.map(r => r.startsOn)).toEqual(['2027-05-01'])
-    expect(p3).toMatchObject({ soldShare: 10000, alerts: { conflicts: 0, swapRequests: 1, weeksToPlace: 0 }, alertCount: 1 })
+    expect(p3).toMatchObject({ soldShare: 10000, alerts: { conflicts: 0, swapRequests: 1, weeksToPlace: 0, openAnnouncements: 2 }, alertCount: 3 })
     expect(p3?.upcoming).toEqual([])
   })
 
   it('RF-21.1 · el resumen de una propiedad recorta las próximas reservas al tope pedido', () => {
     const reservas = ['2027-05-01', '2027-05-08', '2027-05-15', '2027-05-22'].map(startsOn => reserva({ startsOn }))
-    const resumen = resumenDePropiedad(propiedad({ id: 'p1' }), { reservas, alertas: { conflicts: 0, swapRequests: 0, weeksToPlace: 0 }, hoy: '2027-04-01', proximas: 2 })
+    const resumen = resumenDePropiedad(propiedad({ id: 'p1' }), { reservas, alertas: { conflicts: 0, swapRequests: 0, weeksToPlace: 0, openAnnouncements: 0 }, hoy: '2027-04-01', proximas: 2 })
 
     expect(resumen.upcoming).toHaveLength(2)
     expect(resumen.alertCount).toBe(0)
+  })
+
+  it('RF-29.3 · RF-21.2 · una novedad abierta cuenta como alerta y deja de contar al resolverse', () => {
+    const conAbierta = resumenesDelTablero(propiedades, { id: 'ana', esSuperadmin: false }, { ...contexto, novedades: [{ propertyId: 'p1' }] })
+    const sinAbiertas = resumenesDelTablero(propiedades, { id: 'ana', esSuperadmin: false }, { ...contexto, novedades: [] })
+
+    expect(conAbierta[0]).toMatchObject({ alerts: { openAnnouncements: 1 }, alertCount: 4 })
+    expect(sinAbiertas[0]).toMatchObject({ alerts: { openAnnouncements: 0 }, alertCount: 3 })
   })
 })

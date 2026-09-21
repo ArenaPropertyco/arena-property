@@ -9,7 +9,7 @@ import type { Database } from '#shared/types/database.types'
  *
  * Orquesta, no calcula: junta lo que la base sabe de las propiedades gestionadas
  * —semanas confirmadas por venir, conflictos de bloqueo abiertos, solicitudes de
- * intercambio abiertas y semanas por colocar— y se lo pasa a
+ * intercambio abiertas, semanas por colocar y novedades abiertas (HU-29)— y se lo pasa a
  * `shared/properties/tablero`, que arma los resúmenes. El alcance lo fija dos
  * veces la misma regla: la RLS solo entrega lo asignado, y `propiedadesGestionadas`
  * descarta lo que se lee por estar publicado pero no se gestiona (CA-21.3).
@@ -19,6 +19,7 @@ interface OperacionCargada {
   reservas: ReservaProxima[]
   conflictos: { propertyId: string }[]
   solicitudes: { propertyId: string }[]
+  novedades: { propertyId: string }[]
 }
 
 export function useTablero() {
@@ -35,9 +36,9 @@ export function useTablero() {
     'tablero-operacion',
     async () => {
       if (ids.value.length === 0) {
-        return { reservas: [], conflictos: [], solicitudes: [] }
+        return { reservas: [], conflictos: [], solicitudes: [], novedades: [] }
       }
-      const [reservas, conflictos, solicitudes] = await Promise.all([
+      const [reservas, conflictos, solicitudes, novedades] = await Promise.all([
         client
           .from('allocations')
           .select('fractions!inner(number, property_id), calendar_weeks!inner(index, starts_on, ends_on)')
@@ -47,6 +48,8 @@ export function useTablero() {
           .gte('calendar_weeks.starts_on', hoy.value),
         client.from('calendar_conflicts').select('property_id').in('property_id', ids.value).eq('status', 'open'),
         client.from('week_swap_requests').select('property_id').in('property_id', ids.value).eq('status', 'open'),
+        // HU-29 · RF-29.3 · las novedades abiertas; resueltas, dejan de contar.
+        client.from('announcements').select('property_id').in('property_id', ids.value).eq('status', 'open'),
       ])
 
       return {
@@ -59,6 +62,7 @@ export function useTablero() {
         }),
         conflictos: (conflictos.data ?? []).map(fila => ({ propertyId: fila.property_id })),
         solicitudes: (solicitudes.data ?? []).map(fila => ({ propertyId: fila.property_id })),
+        novedades: (novedades.data ?? []).map(fila => ({ propertyId: fila.property_id })),
       }
     },
     { watch: [ids] },
@@ -69,6 +73,7 @@ export function useTablero() {
     conflictos: operacion.data.value?.conflictos ?? [],
     solicitudes: operacion.data.value?.solicitudes ?? [],
     porColocar: porColocar.value.map(semana => ({ propertyId: semana.propertyId })),
+    novedades: operacion.data.value?.novedades ?? [],
     hoy: hoy.value,
   }))
 

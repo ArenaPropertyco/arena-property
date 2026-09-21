@@ -68,6 +68,7 @@ const secciones = computed<NavigationMenuItem[]>(() => [
     to: localePath('/panel/notificaciones'),
     badge: noLeidas.value > 0 ? String(noLeidas.value) : undefined,
   },
+  // HU-29 · HU-30 · el historial de novedades: publica quien gestiona, lee el Propietario.
   { label: t('nav.notifications'), icon: 'i-lucide-megaphone', to: localePath('/panel/novedades') },
   // HU-49 · HU-50 · el Programa de Referidos: se ofrece a quien puede inscribirse
   // y a quien ya es Embajador, que es justo cuando la capacidad deja de aplicar.
@@ -88,6 +89,8 @@ const secciones = computed<NavigationMenuItem[]>(() => [
         { label: t('nav.roles'), icon: 'i-lucide-shield-check', to: localePath('/panel/roles') },
         { label: t('nav.admins'), icon: 'i-lucide-users', to: localePath('/panel/administradores') },
         { label: t('nav.ambassadors'), icon: 'i-lucide-megaphone', to: localePath('/panel/embajadores') },
+        // HU-31 · RF-31.4 · el comunicado global es del Superadmin; la RLS lo repite.
+        { label: t('nav.broadcasts'), icon: 'i-lucide-radio', to: localePath('/panel/comunicados') },
       ]
     : []),
 ])

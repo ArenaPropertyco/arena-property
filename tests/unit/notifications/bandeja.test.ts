@@ -41,6 +41,14 @@ describe('CA-N.4 · marcar como leída es por destinatario', () => {
     expect(noLeidas(bandejaDeLuis)).toBe(3)
   })
 
+  it('CA-30.1 · RF-30.2 · dadas 3 no leídas, marcar 1 deja el contador en 2 solo para ese usuario', () => {
+    const deAna = marcarLeida(bandejaDeAna, '1', '2026-09-08T11:00:00Z')
+
+    expect(noLeidas(deAna)).toBe(2)
+    expect(noLeidas(bandejaDeLuis)).toBe(3)
+    expect(deAna.filter(i => i.readAt === null).map(i => i.id)).toEqual(['2', '3'])
+  })
+
   it('marcar una ya leída no la cambia ni altera el contador', () => {
     const una = marcarLeida(bandejaDeAna, '2', '2026-09-08T11:00:00Z')
     const otraVez = marcarLeida(una, '2', '2026-09-09T11:00:00Z')
