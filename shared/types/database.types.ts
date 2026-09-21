@@ -191,6 +191,73 @@ export type Database = {
         }
         Relationships: []
       }
+      announcements: {
+        Row: {
+          active: boolean
+          body: string
+          created_at: string
+          created_by: string | null
+          fraction_id: string | null
+          id: string
+          property_id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string | null
+          title: string
+          urgency: Database["public"]["Enums"]["announcement_urgency"]
+        }
+        Insert: {
+          active?: boolean
+          body: string
+          created_at?: string
+          created_by?: string | null
+          fraction_id?: string | null
+          id?: string
+          property_id: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string | null
+          title: string
+          urgency: Database["public"]["Enums"]["announcement_urgency"]
+        }
+        Update: {
+          active?: boolean
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          fraction_id?: string | null
+          id?: string
+          property_id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string | null
+          title?: string
+          urgency?: Database["public"]["Enums"]["announcement_urgency"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcements_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "announcements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "announcements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attributions: {
         Row: {
           ambassador_id: string
@@ -314,6 +381,57 @@ export type Database = {
           source?: string
         }
         Relationships: []
+      }
+      broadcasts: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          recipient_count: number
+          segment_kind: string
+          segment_property_id: string | null
+          segment_roles: Database["public"]["Enums"]["app_role"][] | null
+          title: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          recipient_count?: number
+          segment_kind: string
+          segment_property_id?: string | null
+          segment_roles?: Database["public"]["Enums"]["app_role"][] | null
+          title: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          recipient_count?: number
+          segment_kind?: string
+          segment_property_id?: string | null
+          segment_roles?: Database["public"]["Enums"]["app_role"][] | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "broadcasts_segment_property_id_fkey"
+            columns: ["segment_property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "broadcasts_segment_property_id_fkey"
+            columns: ["segment_property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       calendar_conflicts: {
         Row: {
@@ -3222,6 +3340,7 @@ export type Database = {
         }
         Returns: string
       }
+      resolve_announcement: { Args: { announcement: string }; Returns: string }
       resolve_available_commissions: {
         Args: { ambassador: string; forfeit: boolean; reason: string }
         Returns: number
@@ -3258,6 +3377,10 @@ export type Database = {
       select_weeks: {
         Args: { calendar: string; fraction: string; week_indexes: number[] }
         Returns: number
+      }
+      set_announcement_active: {
+        Args: { active: boolean; announcement: string }
+        Returns: boolean
       }
       set_commission_type_active: {
         Args: { active: boolean; commission_type: string }
@@ -3317,6 +3440,7 @@ export type Database = {
     Enums: {
       account_status: "active" | "suspended"
       ambassador_status: "pending" | "approved" | "rejected" | "suspended"
+      announcement_urgency: "informative" | "important" | "urgent"
       app_role:
         | "superadmin"
         | "property_admin"
@@ -3483,6 +3607,7 @@ export const Constants = {
     Enums: {
       account_status: ["active", "suspended"],
       ambassador_status: ["pending", "approved", "rejected", "suspended"],
+      announcement_urgency: ["informative", "important", "urgent"],
       app_role: ["superadmin", "property_admin", "owner", "ambassador", "user"],
       category_scope: ["property", "platform"],
       commission_kind: ["fixed", "percentage"],

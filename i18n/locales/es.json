@@ -24,7 +24,8 @@
     "ambassadors": "Embajadores",
     "referralProgram": "Programa de Referidos",
     "weekHistory": "Mis semanas",
-    "referrals": "Mis referidos"
+    "referrals": "Mis referidos",
+    "broadcasts": "Comunicados"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -2023,7 +2024,9 @@
     "openCalendar": "Abrir calendario",
     "openRentals": "Bolsa de renta",
     "empty": "Todavía no administras ninguna propiedad.",
-    "loading": "Cargando propiedades…"
+    "loading": "Cargando propiedades…",
+    "openAnnouncements": "{n} novedades abiertas",
+    "openAnnouncementsPage": "Novedades"
   },
   "portfolio": {
     "title": "Mis fracciones",
@@ -2046,7 +2049,8 @@
     "openCalendar": "Mi calendario",
     "openStatement": "Estado de cuenta",
     "openPlan": "Ver plan de pagos",
-    "openInventory": "Inventario"
+    "openInventory": "Inventario",
+    "openAnnouncements": "Novedades"
   },
   "statement": {
     "title": "Estado de cuenta",
@@ -2207,5 +2211,140 @@
       "maintenanceRegistered": "Mantenimiento registrado con sus 8 cuotas."
     },
     "byAdministrator": "Administrador de la propiedad"
+  },
+  "announcements": {
+    "title": "Novedades",
+    "subtitle": "Lo que la administración publica sobre cada propiedad: cortes, reparaciones, cambios de reglas. Queda en el historial aunque ya esté resuelto.",
+    "open": "Novedades",
+    "publish": "Publicar novedad",
+    "publishTitle": "Publicar una novedad",
+    "publishHint": "Al publicar, todos los propietarios de la propiedad reciben un aviso y un correo. Publicada, no se edita: para corregirla, publica otra.",
+    "readOnly": "Aquí ves las novedades de tus propiedades. Las publica la administración.",
+    "property": "Propiedad",
+    "propertyPlaceholder": "Elige la propiedad",
+    "titleField": "Título",
+    "titlePlaceholder": "Corte de agua, reparación del ascensor…",
+    "body": "Descripción",
+    "bodyHint": "Qué pasa, desde cuándo y qué se espera de los propietarios.",
+    "urgency": "Urgencia",
+    "urgencies": {
+      "informative": "Informativa",
+      "important": "Importante",
+      "urgent": "Urgente"
+    },
+    "urgencyHints": {
+      "informative": "Para saberlo; no exige nada.",
+      "important": "Conviene leerla pronto.",
+      "urgent": "Afecta el uso de la propiedad ahora mismo."
+    },
+    "status": {
+      "open": "Abierta",
+      "resolved": "Resuelta"
+    },
+    "resolve": "Marcar resuelta",
+    "resolvedLine": "Resuelta el {when}.",
+    "publishedBy": "por {name}",
+    "submit": "Publicar",
+    "empty": "No hay novedades todavía.",
+    "filters": {
+      "property": "Propiedad",
+      "allProperties": "Todas las propiedades",
+      "status": "Estado",
+      "allStatuses": "Abiertas y resueltas",
+      "clear": "Limpiar filtros"
+    },
+    "validation": {
+      "property_required": "Elige la propiedad sobre la que publicas.",
+      "title_required": "La novedad necesita un título.",
+      "title_too_long": "El título no puede pasar de 120 caracteres.",
+      "body_required": "Cuenta qué pasa: la descripción es obligatoria.",
+      "body_too_long": "La descripción no puede pasar de 2000 caracteres.",
+      "urgency_required": "Elige la urgencia: informativa, importante o urgente.",
+      "fraction_required": "Elige a qué fracción va dirigida la novedad.",
+      "fraction_not_in_property": "Esa fracción no pertenece a la propiedad de la novedad."
+    },
+    "messages": {
+      "published": "Novedad publicada. Los propietarios ya tienen su aviso.",
+      "resolved": "Novedad marcada como resuelta.",
+      "activated": "Novedad activada: los propietarios ya la ven.",
+      "deactivated": "Novedad desactivada: los propietarios dejaron de verla."
+    },
+    "errors": {
+      "not_allowed": "Solo quien administra la propiedad puede publicar sobre ella.",
+      "publish_failed": "No pudimos publicar la novedad.",
+      "resolve_failed": "No pudimos marcar la novedad como resuelta.",
+      "only_superadmin_sets_state": "Solo el Superadmin activa o desactiva una novedad.",
+      "visibility_failed": "No pudimos cambiar el estado de la novedad."
+    },
+    "audience": "Destinatarios",
+    "audiences": {
+      "property": "Toda la propiedad",
+      "fraction": "Una sola fracción"
+    },
+    "audienceHints": {
+      "property": "Todos los titulares de la propiedad reciben el aviso.",
+      "fraction": "Solo el titular de esa fracción lo recibe y lo ve; los demás, no."
+    },
+    "fractionPlaceholder": "Elige la fracción",
+    "fractionOption": "Fracción {number}/8 · {owner}",
+    "fractionLine": "Fracción {number}/8",
+    "noSoldFractions": "Esta propiedad no tiene fracciones vendidas: no hay a quién dirigirla.",
+    "visible": "Visible para los propietarios",
+    "visibleHint": "Desmarcada, la novedad queda guardada pero ningún propietario la ve ni recibe aviso; podrás activarla después.",
+    "inactive": "Inactiva",
+    "activate": "Activar",
+    "deactivate": "Desactivar"
+  },
+  "broadcasts": {
+    "title": "Comunicados",
+    "subtitle": "Anuncios institucionales a todos, a un rol o a una propiedad. Cada envío queda registrado con su segmento y su fecha.",
+    "send": "Nuevo comunicado",
+    "sendTitle": "Enviar un comunicado",
+    "sendHint": "Cada destinatario recibe un aviso y un correo, una sola vez aunque cumpla varios criterios. Enviado, no se edita.",
+    "onlySuperadmin": "Los comunicados globales los envía el Superadmin.",
+    "titleField": "Título",
+    "body": "Cuerpo",
+    "bodyHint": "El texto completo del comunicado, tal como lo leerán.",
+    "segment": "Destinatarios",
+    "segments": {
+      "all": "Todos",
+      "roles": "Por rol",
+      "property": "Por propiedad"
+    },
+    "segmentHints": {
+      "all": "Toda cuenta activa de la plataforma.",
+      "roles": "Administradores, propietarios o embajadores.",
+      "property": "Los propietarios de una propiedad y su administrador."
+    },
+    "segmentProperty": "Propiedad · {name}",
+    "roles": {
+      "property_admin": "Administradores",
+      "owner": "Propietarios",
+      "ambassador": "Embajadores"
+    },
+    "propertyPlaceholder": "Elige la propiedad",
+    "submit": "Enviar",
+    "empty": "No se ha enviado ningún comunicado.",
+    "columns": {
+      "date": "Fecha",
+      "title": "Comunicado",
+      "segment": "Destinatarios",
+      "recipients": "Cuentas"
+    },
+    "validation": {
+      "title_required": "El comunicado necesita un título.",
+      "title_too_long": "El título no puede pasar de 120 caracteres.",
+      "body_required": "El comunicado necesita un cuerpo.",
+      "body_too_long": "El cuerpo no puede pasar de 4000 caracteres.",
+      "roles_required": "Elige al menos un rol: administradores, propietarios o embajadores.",
+      "property_required": "Elige la propiedad a la que va el comunicado."
+    },
+    "messages": {
+      "sent": "Comunicado enviado."
+    },
+    "errors": {
+      "only_superadmin": "Solo el Superadmin envía comunicados globales.",
+      "send_failed": "No pudimos enviar el comunicado."
+    }
   }
 }

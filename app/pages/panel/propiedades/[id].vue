@@ -39,6 +39,7 @@ const esSuperadmin = computed(() => roles.value.includes('superadmin'))
 const puedeGestionar = computed(() => puede(roles.value, 'gestionar_propiedades', { escritura: true }))
 const puedeVerFinanzas = computed(() => puede(roles.value, 'ver_finanzas'))
 const puedeGestionarInventario = computed(() => puede(roles.value, 'gestionar_inventario'))
+const puedeEnviarNovedades = computed(() => puede(roles.value, 'enviar_novedades'))
 const puedeGestionarCalendario = computed(() => puede(roles.value, 'gestionar_calendario'))
 
 const editando = ref(false)
@@ -249,6 +250,17 @@ function abrirPlan(plan: string) {
             :to="localePath(`/panel/inventario/${id}`)"
             :label="t('inventory.open')"
             data-test="abrir-inventario"
+          />
+
+          <!-- HU-29 · HU-30 · las novedades de la propiedad y su historial. -->
+          <UButton
+            v-if="puedeEnviarNovedades"
+            variant="outline"
+            size="sm"
+            icon="i-lucide-megaphone"
+            :to="localePath(`/panel/novedades?propiedad=${id}`)"
+            :label="t('announcements.open')"
+            data-test="abrir-novedades"
           />
 
           <!-- HU-23 · los gastos comunes viven en su propia pantalla, con sus 8 cuotas. -->

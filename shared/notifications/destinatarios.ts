@@ -6,6 +6,7 @@
  */
 
 import type { Rol } from '../permissions/roles'
+import type { SegmentoDeComunicado } from './comunicados'
 import { ALCANCE } from './tipos'
 import type { EventoDeNotificacion } from './tipos'
 
@@ -70,6 +71,43 @@ export function destinatariosDeSegmento(cuentas: readonly CuentaConRoles[], segm
     .map(cuenta => cuenta.id))
 }
 
+/** HU-31 · CA-31.2 · los vínculos de una propiedad: sus titulares y sus administradores vigentes. */
+export interface VinculosDePropiedad {
+  ownerIds: readonly string[]
+  adminIds: readonly string[]
+}
+
+/**
+ * HU-31 · RF-31.2 · CA-31.1, CA-31.2, CA-31.3 · el segmento de un comunicado
+ * resuelto a cuentas activas, una vez cada una aunque cumpla varios criterios.
+ * Por propiedad son sus titulares y su administrador, y sin los vínculos no hay
+ * nadie: mejor nada que todos. La misma regla vive en la base
+ * (`private.destinatarios_de_comunicado`).
+ */
+export function destinatariosDeComunicado(
+  segmento: SegmentoDeComunicado,
+  cuentas: readonly CuentaConRoles[],
+  vinculos?: VinculosDePropiedad,
+): string[] {
+  const activas = cuentas.filter(cuenta => (cuenta.status ?? 'active') === 'active')
+
+  switch (segmento.kind) {
+    case 'all':
+      return unicos(activas.map(cuenta => cuenta.id))
+    case 'roles':
+      return unicos(activas
+        .filter(cuenta => segmento.roles.some(rol => cuenta.roles.includes(rol)))
+        .map(cuenta => cuenta.id))
+    case 'property': {
+      if (!vinculos) {
+        return []
+      }
+      const activasPorId = new Set(activas.map(cuenta => cuenta.id))
+      return unicos([...vinculos.ownerIds, ...vinculos.adminIds]).filter(id => activasPorId.has(id))
+    }
+  }
+}
+
 /** HU-54, HU-57 · RF-57.2 · el embajador dueño del referido o del retiro. */
 export function destinatariosDeEmbajador(atribucion: { ambassadorId: string | null }): string[] {
   return atribucion.ambassadorId ? [atribucion.ambassadorId] : []
@@ -81,6 +119,9 @@ export interface ContextoDeDestinatarios {
   fracciones?: readonly FraccionConTitular[]
   cuentas?: readonly CuentaConRoles[]
   segmento?: Segmento
+  /** HU-31 · el segmento declarado del comunicado; manda sobre `segmento` si vienen los dos. */
+  comunicado?: SegmentoDeComunicado
+  vinculos?: VinculosDePropiedad
   atribucion?: { ambassadorId: string | null }
 }
 
@@ -92,6 +133,9 @@ export function resolverDestinatarios(evento: EventoDeNotificacion, contexto: Co
     case 'property':
       return contexto.fracciones ? destinatariosDePropiedad(contexto.fracciones) : []
     case 'segment':
+      if (contexto.cuentas && contexto.comunicado) {
+        return destinatariosDeComunicado(contexto.comunicado, contexto.cuentas, contexto.vinculos)
+      }
       return contexto.cuentas && contexto.segmento ? destinatariosDeSegmento(contexto.cuentas, contexto.segmento) : []
     case 'ambassador':
       return contexto.atribucion ? destinatariosDeEmbajador(contexto.atribucion) : []

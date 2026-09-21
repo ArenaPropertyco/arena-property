@@ -24,7 +24,8 @@
     "ambassadors": "Ambassadors",
     "referralProgram": "Referral Program",
     "weekHistory": "My weeks",
-    "referrals": "My referrals"
+    "referrals": "My referrals",
+    "broadcasts": "Broadcasts"
   },
   "actions": {
     "login": "Log in",
@@ -2023,7 +2024,9 @@
     "openCalendar": "Open calendar",
     "openRentals": "Rental pool",
     "empty": "You do not manage any property yet.",
-    "loading": "Loading properties…"
+    "loading": "Loading properties…",
+    "openAnnouncements": "{n} open updates",
+    "openAnnouncementsPage": "Updates"
   },
   "portfolio": {
     "title": "My fractions",
@@ -2046,7 +2049,8 @@
     "openCalendar": "My calendar",
     "openStatement": "Account statement",
     "openPlan": "View payment plan",
-    "openInventory": "Inventory"
+    "openInventory": "Inventory",
+    "openAnnouncements": "Updates"
   },
   "statement": {
     "title": "Account statement",
@@ -2207,5 +2211,140 @@
       "maintenanceRegistered": "Maintenance recorded with its 8 shares."
     },
     "byAdministrator": "Property Administrator"
+  },
+  "announcements": {
+    "title": "Updates",
+    "subtitle": "What the administration posts about each property: outages, repairs, rule changes. It stays in the history even once resolved.",
+    "open": "Updates",
+    "publish": "Post an update",
+    "publishTitle": "Post an update",
+    "publishHint": "When posted, every owner of the property gets a notification and an email. Once posted it cannot be edited: to correct it, post another.",
+    "readOnly": "Here you see the updates about your properties. The administration posts them.",
+    "property": "Property",
+    "propertyPlaceholder": "Choose the property",
+    "titleField": "Title",
+    "titlePlaceholder": "Water outage, elevator repair…",
+    "body": "Description",
+    "bodyHint": "What is happening, since when, and what is expected from the owners.",
+    "urgency": "Urgency",
+    "urgencies": {
+      "informative": "Informative",
+      "important": "Important",
+      "urgent": "Urgent"
+    },
+    "urgencyHints": {
+      "informative": "Good to know; nothing required.",
+      "important": "Worth reading soon.",
+      "urgent": "Affects the use of the property right now."
+    },
+    "status": {
+      "open": "Open",
+      "resolved": "Resolved"
+    },
+    "resolve": "Mark resolved",
+    "resolvedLine": "Resolved on {when}.",
+    "publishedBy": "by {name}",
+    "submit": "Post",
+    "empty": "No updates yet.",
+    "filters": {
+      "property": "Property",
+      "allProperties": "All properties",
+      "status": "Status",
+      "allStatuses": "Open and resolved",
+      "clear": "Clear filters"
+    },
+    "validation": {
+      "property_required": "Choose the property you are posting about.",
+      "title_required": "The update needs a title.",
+      "title_too_long": "The title cannot exceed 120 characters.",
+      "body_required": "Tell what is happening: the description is required.",
+      "body_too_long": "The description cannot exceed 2000 characters.",
+      "urgency_required": "Choose the urgency: informative, important or urgent.",
+      "fraction_required": "Choose which fraction the update goes to.",
+      "fraction_not_in_property": "That fraction does not belong to the property of the update."
+    },
+    "messages": {
+      "published": "Update posted. The owners have their notification.",
+      "resolved": "Update marked as resolved.",
+      "activated": "Update activated: owners can see it now.",
+      "deactivated": "Update deactivated: owners no longer see it."
+    },
+    "errors": {
+      "not_allowed": "Only whoever manages the property can post about it.",
+      "publish_failed": "We could not post the update.",
+      "resolve_failed": "We could not mark the update as resolved.",
+      "only_superadmin_sets_state": "Only the Superadmin activates or deactivates an update.",
+      "visibility_failed": "We could not change the state of the update."
+    },
+    "audience": "Recipients",
+    "audiences": {
+      "property": "The whole property",
+      "fraction": "A single fraction"
+    },
+    "audienceHints": {
+      "property": "Every owner of the property gets the notice.",
+      "fraction": "Only the owner of that fraction gets it and sees it; nobody else."
+    },
+    "fractionPlaceholder": "Choose the fraction",
+    "fractionOption": "Fraction {number}/8 · {owner}",
+    "fractionLine": "Fraction {number}/8",
+    "noSoldFractions": "This property has no sold fractions: there is nobody to address.",
+    "visible": "Visible to owners",
+    "visibleHint": "Unchecked, the update is saved but no owner sees it or gets a notice; you can activate it later.",
+    "inactive": "Inactive",
+    "activate": "Activate",
+    "deactivate": "Deactivate"
+  },
+  "broadcasts": {
+    "title": "Broadcasts",
+    "subtitle": "Institutional announcements to everyone, to a role or to a property. Every send is recorded with its segment and date.",
+    "send": "New broadcast",
+    "sendTitle": "Send a broadcast",
+    "sendHint": "Every recipient gets a notification and an email, once even if they match several criteria. Once sent it cannot be edited.",
+    "onlySuperadmin": "Global broadcasts are sent by the Superadmin.",
+    "titleField": "Title",
+    "body": "Body",
+    "bodyHint": "The full text of the broadcast, as they will read it.",
+    "segment": "Recipients",
+    "segments": {
+      "all": "Everyone",
+      "roles": "By role",
+      "property": "By property"
+    },
+    "segmentHints": {
+      "all": "Every active account on the platform.",
+      "roles": "Administrators, owners or ambassadors.",
+      "property": "The owners of a property and its administrator."
+    },
+    "segmentProperty": "Property · {name}",
+    "roles": {
+      "property_admin": "Administrators",
+      "owner": "Owners",
+      "ambassador": "Ambassadors"
+    },
+    "propertyPlaceholder": "Choose the property",
+    "submit": "Send",
+    "empty": "No broadcast has been sent.",
+    "columns": {
+      "date": "Date",
+      "title": "Broadcast",
+      "segment": "Recipients",
+      "recipients": "Accounts"
+    },
+    "validation": {
+      "title_required": "The broadcast needs a title.",
+      "title_too_long": "The title cannot exceed 120 characters.",
+      "body_required": "The broadcast needs a body.",
+      "body_too_long": "The body cannot exceed 4000 characters.",
+      "roles_required": "Choose at least one role: administrators, owners or ambassadors.",
+      "property_required": "Choose the property the broadcast goes to."
+    },
+    "messages": {
+      "sent": "Broadcast sent."
+    },
+    "errors": {
+      "only_superadmin": "Only the Superadmin sends global broadcasts.",
+      "send_failed": "We could not send the broadcast."
+    }
   }
 }

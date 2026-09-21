@@ -9,7 +9,7 @@ Como Propietario, quiero recibir y ver un historial de las novedades publicadas 
 ## Requisitos funcionales
 - **RF-30.1** — La bandeja, su modelo y su canal viven en **TR-03** (D-19), disponible para cualquier rol. Esta historia cubre la **vista del Propietario** sobre esa bandeja: novedades de sus propiedades (HU-29) y avisos de su fracción (HU-16).
 - **RF-30.2** — Marcar como leída es por notificación y por usuario; "marcar todas" disponible.
-- **RF-30.3** — El Propietario solo ve notificaciones dirigidas a él (RLS); filtro por propiedad.
+- **RF-30.3** — El Propietario solo ve notificaciones dirigidas a él (RLS); filtro por propiedad. En el historial de novedades ve las de sus propiedades y las dirigidas a su fracción, y solo las **activas** (HU-29 RF-29.5, RF-29.6, D-46).
 
 ## Criterios de aceptación (base de las pruebas unitarias)
 - **CA-30.1** — Dadas 3 notificaciones no leídas, cuando se marca 1 como leída, entonces el contador pasa a 2 solo para ese usuario.

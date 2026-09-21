@@ -118,6 +118,15 @@ const porcentaje = computed(() => formatearPorcentaje(props.resumen.soldShare, i
           :label="t('dashboard.weeksToPlace', { n: resumen.alerts.weeksToPlace })"
           :data-test="`alerta-por-colocar-${resumen.id}`"
         />
+        <!-- HU-29 · RF-29.3 · una novedad abierta espera que alguien la resuelva. -->
+        <UBadge
+          v-if="resumen.alerts.openAnnouncements > 0"
+          color="warning"
+          variant="subtle"
+          icon="i-lucide-megaphone"
+          :label="t('dashboard.openAnnouncements', { n: resumen.alerts.openAnnouncements })"
+          :data-test="`alerta-novedades-${resumen.id}`"
+        />
       </div>
     </section>
 
@@ -137,6 +146,14 @@ const porcentaje = computed(() => formatearPorcentaje(props.resumen.soldShare, i
         :label="t('dashboard.openRentals')"
         :to="localePath(`/panel/rentas/${resumen.id}`)"
         :data-test="`abrir-rentas-${resumen.id}`"
+      />
+      <UButton
+        variant="ghost"
+        size="xs"
+        icon="i-lucide-megaphone"
+        :label="t('dashboard.openAnnouncementsPage')"
+        :to="localePath(`/panel/novedades?propiedad=${resumen.id}`)"
+        :data-test="`abrir-novedades-${resumen.id}`"
       />
     </footer>
   </article>
