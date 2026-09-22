@@ -7,7 +7,9 @@
  * mover una semana elegida (sin confirmar) a otra libre de la misma temporada. El
  * cupo 1/1/1/3 no cambia. Terminados los turnos y hasta el cierre, la ventana
  * queda abierta por orden de llegada; cerrada, lo no reubicado se queda donde
- * está. D-47: cerrada antes de tiempo se reabre; una fracción sin turno entra por
+ * está. D-48: una ventana ya creada se ajusta —fechas, duración, turno, orden— y
+ * se elimina en cualquier fase, sin deshacer lo ya reubicado. D-47: cerrada antes
+ * de tiempo se reabre; una fracción sin turno entra por
  * orden de llegada; y la ventana individual que el Superadmin abre a una fracción
  * (RF-59.9) sustituye al turno general. Todo es puro: la base repite las mismas
  * reglas en `relocate_week`.
@@ -129,6 +131,54 @@ export function turnSlots(window: RelocationWindow): TurnSlot[] {
     opensAt: toIso(start + position * turn),
     closesAt: toIso(start + (position + 1) * turn),
   }))
+}
+
+/** RF-59.1 · D-48 · lo que implica guardar un ajuste sobre una ventana que ya existe. */
+export interface WindowAdjustment {
+  opensAt: boolean
+  durationDays: boolean
+  turnHours: boolean
+  order: boolean
+  /** Si algo cambia de verdad: guardar sin cambios no mueve nada ni avisa a nadie. */
+  changed: boolean
+  /** Fracciones cuya franja se mueve; son las que reciben aviso (TR-03). */
+  movedFractions: number[]
+  /** RF-59.6 · D-47 · la ventana estaba cerrada y guardarla la reabre. */
+  reopens: boolean
+}
+
+/**
+ * RF-59.1 · D-48 · qué cambiaría al guardar `after` sobre la ventana `before`.
+ *
+ * Se dice antes de guardar para que el Superadmin sepa a cuántos titulares les
+ * mueve el turno. Sin ventana previa no hay ajuste: es un alta.
+ */
+export function windowAdjustment(before: RelocationWindow | null, after: RelocationWindowConfig): WindowAdjustment {
+  const vacio: WindowAdjustment = { opensAt: false, durationDays: false, turnHours: false, order: false, changed: false, movedFractions: [], reopens: false }
+  if (!before) {
+    return vacio
+  }
+  const despues: RelocationWindow = { opensAt: after.opensAt, durationDays: after.durationDays, turnHours: after.turnHours, order: after.order }
+  const franjaDe = (window: RelocationWindow) => new Map(turnSlots(window).map(slot => [slot.fraction, `${slot.opensAt}|${slot.closesAt}`]))
+  const antes = franjaDe(before)
+  const ahora = franjaDe(despues)
+  const movedFractions = [...ahora]
+    .filter(([fraction, franja]) => antes.get(fraction) !== franja)
+    .map(([fraction]) => fraction)
+    .sort((a, b) => a - b)
+
+  const cambios = {
+    opensAt: instant(before.opensAt) !== instant(after.opensAt),
+    durationDays: before.durationDays !== after.durationDays,
+    turnHours: before.turnHours !== after.turnHours,
+    order: before.order.join(',') !== after.order.join(','),
+  }
+  return {
+    ...cambios,
+    changed: Object.values(cambios).some(Boolean),
+    movedFractions,
+    reopens: Boolean(before.closedAt),
+  }
 }
 
 export type WindowPhase = 'scheduled' | 'turns' | 'open' | 'closed'

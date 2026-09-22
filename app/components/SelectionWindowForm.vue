@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { defaultWindowOpening, fromBogotaInput, RELOCATION_TURN_HOURS, RELOCATION_WINDOW_DAYS, toBogotaInput } from '#shared/scheduling/relocation'
+import { defaultWindowOpening, fromBogotaInput, RELOCATION_TURN_HOURS, RELOCATION_WINDOW_DAYS, toBogotaInput, windowAdjustment } from '#shared/scheduling/relocation'
 import type { RelocationWindowConfig } from '#shared/scheduling/relocation'
 import { isValidOrder } from '#shared/scheduling/selection'
 import type { SelectionWindowListed } from '#shared/scheduling/vistas'
 
 /**
- * HU-59 · RF-59.1, RF-59.2 · D-36 — el Superadmin fija la ventana de reubicación
- * del año: apertura en hora de Bogotá (P-12), duración (P-13), turno por fracción
- * (P-14) y el orden de los turnos, que parte de la sugerencia rotada de la base.
+ * HU-59 · RF-59.1, RF-59.2, RF-59.10 · D-36, D-48 — el Superadmin fija la ventana
+ * de reubicación del año: apertura en hora de Bogotá (P-12), duración (P-13),
+ * turno por fracción (P-14) y el orden de los turnos, que parte de la sugerencia
+ * rotada de la base.
+ *
+ * Sobre una ventana ya creada el mismo formulario ajusta, en cualquier fase. Antes
+ * de guardar dice qué implica el ajuste —a cuántos titulares les mueve el turno,
+ * si reabre una ventana cerrada—, porque mover una franja ajena no debería ser un
+ * efecto que se descubra después. Eliminarla se pide desde aquí y la confirma la
+ * página: lo ya reubicado no se deshace.
  */
 const props = defineProps<{
   window: SelectionWindowListed | null
@@ -20,6 +27,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   submit: [RelocationWindowConfig]
   sugerir: []
+  eliminar: []
 }>()
 
 const { t } = useI18n()
@@ -43,6 +51,14 @@ watch(() => props.suggestedOrder, (sugerido) => {
 })
 
 const errores = reactive<{ duration?: string, turn?: string, order?: string }>({})
+
+/** RF-59.1 · D-48 · qué cambiaría guardar esto sobre la ventana que ya existe. */
+const ajuste = computed(() => windowAdjustment(props.window, {
+  opensAt: fromBogotaInput(estado.opensAt),
+  durationDays: Number(estado.durationDays),
+  turnHours: Number(estado.turnHours),
+  order: estado.order,
+}))
 
 function enviar() {
   const durationDays = Number(estado.durationDays)
@@ -125,12 +141,32 @@ function enviar() {
       </p>
     </div>
 
-    <div class="flex justify-end sm:col-span-3">
+    <p
+      v-if="window && ajuste.changed"
+      class="text-sm text-muted sm:col-span-3"
+      data-test="resumen-ajuste"
+    >
+      {{ ajuste.movedFractions.length > 0
+        ? t('calendar.relocation.adjustMoves', { count: ajuste.movedFractions.length, fractions: ajuste.movedFractions.join(', ') })
+        : t('calendar.relocation.adjustNoMove') }}
+      <span v-if="ajuste.reopens">{{ t('calendar.relocation.adjustReopens') }}</span>
+    </p>
+
+    <div class="flex flex-wrap justify-end gap-2 sm:col-span-3">
+      <UButton
+        v-if="window"
+        variant="outline"
+        color="error"
+        icon="i-lucide-trash-2"
+        :label="t('calendar.relocation.delete')"
+        data-test="eliminar-ventana"
+        @click="emit('eliminar')"
+      />
       <UButton
         type="submit"
         icon="i-lucide-calendar-clock"
         :loading="enviando"
-        :label="t('calendar.relocation.configure')"
+        :label="window ? t('calendar.relocation.adjust') : t('calendar.relocation.configure')"
         data-test="guardar-ventana"
       />
     </div>

@@ -3,6 +3,7 @@ import { flushPromises } from '@vue/test-utils'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import FractionWindowPanel from '~/components/FractionWindowPanel.vue'
 import RelocationTurnStatus from '~/components/RelocationTurnStatus.vue'
+import SelectionWindowDeleteNotice from '~/components/SelectionWindowDeleteNotice.vue'
 import SelectionWindowForm from '~/components/SelectionWindowForm.vue'
 import SelectionWindowTurns from '~/components/SelectionWindowTurns.vue'
 import WeekRelocationForm from '~/components/WeekRelocationForm.vue'
@@ -109,6 +110,53 @@ describe('SelectionWindowForm', () => {
     })
     expect((formulario.find('[data-test="ventana-duracion"]').element as HTMLInputElement).value).toBe('10')
     expect(formulario.findAll('[data-test^="turno-"]').map(li => li.attributes('data-test'))).toEqual(['turno-3', 'turno-1', 'turno-2'])
+  })
+})
+
+describe('SelectionWindowForm · D-48 · ajustar y eliminar', () => {
+  it('RF-59.1 · D-48 · sobre una ventana ya creada ofrece guardar los ajustes y eliminarla, y dice a quién le mueve el turno', async () => {
+    const formulario = await mountSuspended(SelectionWindowForm, {
+      props: { window, fractions, suggestedOrder: [], anio: ANIO, enviando: false },
+    })
+    expect(formulario.find('[data-test="eliminar-ventana"]').exists()).toBe(true)
+    // Sin tocar nada, no hay ajuste que resumir.
+    expect(formulario.find('[data-test="resumen-ajuste"]').exists()).toBe(false)
+
+    await formulario.find('[data-test="ventana-turno"]').setValue('24')
+    expect(formulario.find('[data-test="resumen-ajuste"]').text()).toContain('2')
+
+    await formulario.find('[data-test="eliminar-ventana"]').trigger('click')
+    expect(formulario.emitted('eliminar')).toHaveLength(1)
+  })
+
+  it('RF-59.1 · D-48 · sin ventana previa no ofrece eliminar ni resume ajuste alguno', async () => {
+    const formulario = await mountSuspended(SelectionWindowForm, {
+      props: { window: null, fractions, suggestedOrder: [3, 1, 2], anio: ANIO, enviando: false },
+    })
+    expect(formulario.find('[data-test="eliminar-ventana"]').exists()).toBe(false)
+    expect(formulario.find('[data-test="resumen-ajuste"]').exists()).toBe(false)
+  })
+})
+
+describe('SelectionWindowDeleteNotice', () => {
+  it('CA-59.11 · RF-59.10 · D-48 · advierte de lo que se pierde, de a quién se avisa, y confirma', async () => {
+    const aviso = await mountSuspended(SelectionWindowDeleteNotice, {
+      props: { anio: ANIO, phase: 'scheduled' as const, turnos: 3, enviando: false },
+    })
+    expect(aviso.find('[data-test="aviso-eliminar-ventana"]').exists()).toBe(true)
+    expect(aviso.find('[data-test="avisados-eliminar"]').text()).toContain('3')
+    // Programada: nadie está operando todavía.
+    expect(aviso.find('[data-test="ventana-en-curso"]').exists()).toBe(false)
+
+    await aviso.find('[data-test="confirmar-eliminar-ventana"]').trigger('click')
+    expect(aviso.emitted('confirmar')).toHaveLength(1)
+  })
+
+  it('RF-59.10 · con la ventana abierta avisa de que hay gente reubicando ahora mismo', async () => {
+    const aviso = await mountSuspended(SelectionWindowDeleteNotice, {
+      props: { anio: ANIO, phase: 'turns' as const, turnos: 3, enviando: false },
+    })
+    expect(aviso.find('[data-test="ventana-en-curso"]').exists()).toBe(true)
   })
 })
 

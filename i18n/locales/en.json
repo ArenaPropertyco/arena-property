@@ -1101,7 +1101,8 @@
         "relocate_failed": "We could not move the week.",
         "reopen_failed": "We could not reopen the window.",
         "expired": "The window has already expired: save it with new dates to reopen it.",
-        "ends_in_past": "The window would end in the past: check the opening and the duration."
+        "ends_in_past": "The window would end in the past: check the opening and the duration.",
+        "delete_failed": "We could not delete the window."
       },
       "reopen": "Reopen window",
       "reopened": "Window reopened.",
@@ -1126,7 +1127,18 @@
           "close_failed": "We could not close the individual window.",
           "no_owner": "That fraction has no owner."
         }
-      }
+      },
+      "adjust": "Save changes",
+      "adjustMoves": "This moves the turn of {count} fractions ({fractions}) and notifies them.",
+      "adjustNoMove": "This moves no slot.",
+      "adjustReopens": " It also reopens the closed window.",
+      "delete": "Delete window",
+      "deleteTitle": "Delete the {year} relocation window",
+      "deleteWarning": "The turns and the first-come phase disappear, and nobody will be able to relocate until you configure another one. Weeks that already moved stay at their new date: deleting does not bring them back.",
+      "deleteWhileOpen": "The window is open right now: owners could be relocating at this very moment.",
+      "deleteNotifies": "The {count} owners who had a turn are notified.",
+      "deleteConfirm": "Delete the window",
+      "deleted": "Window deleted."
     },
     "reassignment": {
       "title": "Reassignments",

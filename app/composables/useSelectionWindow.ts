@@ -6,8 +6,9 @@ import type { ResultadoDeEscritura } from './usePropiedades'
 /**
  * HU-59 · RF-59.1, RF-59.2, RF-59.6 · D-36 — la ventana de reubicación de un
  * calendario vista por quien gestiona: apertura, duración, turnos con su franja y
- * el nombre de cada titular (D-16). Configurar, reabrir (solo el Superadmin,
- * D-47) y cerrar son funciones de la base que repiten las reglas; el orden
+ * el nombre de cada titular (D-16). Configurar, ajustar, reabrir y eliminar
+ * (solo el Superadmin, D-47 y D-48) y cerrar son funciones de la base que repiten
+ * las reglas; el orden
  * sugerido también sale de ella (RF-59.2). RF-59.9 · las ventanas individuales
  * abiertas del calendario, con abrir y cerrar, también del Superadmin.
  */
@@ -141,6 +142,19 @@ export function useSelectionWindow(calendarId: Ref<string | null>, propertyId: R
     return { ok: true }
   }
 
+  /** RF-59.10 · D-48 · eliminar la ventana en cualquier fase; lo ya reubicado no se deshace. */
+  async function eliminar(): Promise<ResultadoDeEscritura> {
+    if (!calendarId.value) {
+      return { ok: false, clave: 'calendar.relocation.errors.delete_failed' }
+    }
+    const { error } = await client.rpc('delete_selection_window', { calendar: calendarId.value })
+    if (error) {
+      return { ok: false, clave: 'calendar.relocation.errors.delete_failed' }
+    }
+    await consulta.refresh()
+    return { ok: true }
+  }
+
   async function cerrar(): Promise<ResultadoDeEscritura> {
     if (!calendarId.value) {
       return { ok: false, clave: 'calendar.relocation.errors.close_failed' }
@@ -161,6 +175,7 @@ export function useSelectionWindow(calendarId: Ref<string | null>, propertyId: R
     ordenSugerido,
     configurar,
     reabrir,
+    eliminar,
     cerrar,
     abrirIndividual,
     cerrarIndividual,

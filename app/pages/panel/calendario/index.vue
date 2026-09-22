@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { hoy as hoyDe } from '#shared/dates/formato'
+import { windowPhase } from '#shared/scheduling/relocation'
 import { propiedadesGestionadas } from '#shared/properties/asignaciones'
 import type { ReassignmentProposal } from '#shared/scheduling/reassignment'
 import type { RelocationWindowConfig } from '#shared/scheduling/relocation'
@@ -9,8 +10,8 @@ import type { SwapProposal } from '#shared/scheduling/swaps'
  * HU-12 · RF-12.2, RF-12.4…RF-12.7 · D-32 — configuración del calendario.
  * HU-15 · RF-15.1…RF-15.5 · D-33 — bloqueos del Administrador por semanas.
  * HU-17 · RF-17.1, RF-17.3 · D-42 — la reasignación de una semana a otra libre.
- * HU-59 · RF-59.1, RF-59.2, RF-59.6, RF-59.9 · D-36, D-47 — la ventana de reubicación,
- * su reapertura y las ventanas individuales.
+ * HU-59 · RF-59.1, RF-59.2, RF-59.6, RF-59.9, RF-59.10 · D-36, D-47, D-48 — la ventana
+ * de reubicación, su ajuste, su reapertura, su eliminación y las ventanas individuales.
  *
  * La página orquesta: elige propiedad y año, deja al Administrador clasificar la
  * rejilla, fijar el orden de turnos y abrir la selección; abierta, muestra el
@@ -64,7 +65,8 @@ const { id: calendarId, rejilla, nochesEnBolsa, clasificacion, errorDeRejilla, p
 const { turnos, fracciones, asignaciones, lockedWeeks, releasedWeeks, rentedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, reasignar, resolver } = useSelectionOrder(calendarId, propertyId)
 const { bloqueos, blockedWeeks, crear: crearBloqueo, levantar: levantarBloqueo } = useWeekBlocks(calendarId)
 const {
-  ventana, individuales, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, reabrir: reabrirVentana, cerrar: cerrarVentana, abrirIndividual, cerrarIndividual,
+  ventana, individuales, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, reabrir: reabrirVentana,
+  eliminar: eliminarVentana, cerrar: cerrarVentana, abrirIndividual, cerrarIndividual,
 } = useSelectionWindow(calendarId, propertyId)
 const hoy = computed(() => hoyDe())
 
@@ -78,6 +80,11 @@ const levantando = ref<string | null>(null)
 const configurandoVentana = ref(false)
 const cerrandoVentana = ref(false)
 const abriendoIndividual = ref(false)
+const eliminandoVentana = ref(false)
+const confirmandoEliminar = ref(false)
+
+// RF-59.10 · D-48 · lo que el aviso de borrado necesita saber de la ventana.
+const faseDeLaVentana = computed(() => ventana.value ? windowPhase(ventana.value, ahora.value) : null)
 
 /** El orden que se va a abrir: parte de la sugerencia de la base y el Administrador lo ajusta. */
 const orden = ref<number[]>([])
@@ -183,6 +190,16 @@ async function reabrirLaVentana() {
   const resultado = await reabrirVentana()
   cerrandoVentana.value = false
   toast.add(resultado.ok ? { title: t('calendar.relocation.reopened'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
+}
+
+async function borrarLaVentana() {
+  eliminandoVentana.value = true
+  const resultado = await eliminarVentana()
+  eliminandoVentana.value = false
+  if (resultado.ok) {
+    confirmandoEliminar.value = false
+  }
+  toast.add(resultado.ok ? { title: t('calendar.relocation.deleted'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
 }
 
 async function abrirVentanaIndividual(fraction: number, hours: number) {
@@ -371,6 +388,7 @@ async function levantar(id: string, motivo: string) {
           :enviando="configurandoVentana"
           @sugerir="sugerirOrdenDeVentana"
           @submit="guardarVentana"
+          @eliminar="confirmandoEliminar = true"
         />
         <p
           v-else-if="!ventana"
@@ -405,6 +423,22 @@ async function levantar(id: string, motivo: string) {
           @cerrar="cerrarVentanaIndividual"
         />
       </section>
+
+      <UModal
+        v-model:open="confirmandoEliminar"
+        :title="t('calendar.relocation.delete')"
+      >
+        <template #body>
+          <SelectionWindowDeleteNotice
+            v-if="ventana && faseDeLaVentana"
+            :anio="anio"
+            :phase="faseDeLaVentana"
+            :turnos="ventana.turns.length"
+            :enviando="eliminandoVentana"
+            @confirmar="borrarLaVentana"
+          />
+        </template>
+      </UModal>
 
       <section
         class="space-y-4"
