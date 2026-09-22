@@ -6,6 +6,10 @@
  * de otra, siempre de la misma temporada (nadie convierte bajas en altas), sin
  * confirmación ni liberación encima y con motivo que va a la auditoría. El Propietario
  * puede solicitarlo ofreciendo una semana propia; el Administrador decide.
+ *
+ * Entre pedir y resolver pasa el tiempo: una semana puede confirmarse en medio y
+ * dejar la solicitud sin salida. Eso se dice —no se descubre al fallar— con
+ * `swapRequestBlocked`, y el rechazo de la base se traduce con `swapErrorKey`.
  */
 
 import type { Temporada } from './temporadas'
@@ -32,6 +36,8 @@ export const SWAP_VALIDATION_KEYS = [
   'calendar.swaps.validation.different_season',
   'calendar.swaps.validation.week_locked',
   'calendar.swaps.validation.reason_required',
+  'calendar.swaps.validation.already_resolved',
+  'calendar.swaps.validation.not_allowed',
 ] as const
 
 export type SwapValidationKey = typeof SWAP_VALIDATION_KEYS[number]
@@ -100,6 +106,52 @@ export function swappableWeeksFor(week: number, allocations: readonly Allocation
   return allocations
     .filter(a => a.season === own.season && a.fraction !== own.fraction)
     .sort((a, b) => a.week - b.week)
+}
+
+/**
+ * RF-12.6 · CA-12.11 · RF-12.9 · por qué una solicitud abierta ya no se puede
+ * aprobar: alguna de sus dos semanas se confirmó o se liberó después de pedirla.
+ * Devuelve las semanas que lo impiden; vacío si sigue viva.
+ */
+export function swapRequestBlocked(
+  request: { offeredWeek: number, requestedWeek: number, status: string },
+  lockedWeeks: ReadonlySet<number> | undefined,
+): number[] {
+  if (request.status !== 'open' || !lockedWeeks) {
+    return []
+  }
+  return [request.offeredWeek, request.requestedWeek].filter(week => lockedWeeks.has(week))
+}
+
+/**
+ * RF-12.6 · el rechazo de la base, reconocido por la regla que cita.
+ *
+ * Sin esto la pantalla dice «no pudimos» y se queda el motivo dentro: la base
+ * sabe exactamente qué falló y quien decide merece leerlo.
+ */
+export function swapErrorKey(message: string): SwapValidationKey | null {
+  if (message.includes('RF-12.9') || message.includes('confirmada o liberada')) {
+    return 'calendar.swaps.validation.week_locked'
+  }
+  if (message.includes('misma temporada')) {
+    return 'calendar.swaps.validation.different_season'
+  }
+  if (message.includes('ya fue resuelta')) {
+    return 'calendar.swaps.validation.already_resolved'
+  }
+  if (message.includes('exige un motivo')) {
+    return 'calendar.swaps.validation.reason_required'
+  }
+  if (message.includes('deben ser distintas') || message.includes('distinta')) {
+    return 'calendar.swaps.validation.same_fraction'
+  }
+  if (message.includes('pertenecer a la fracción') || message.includes('semana propia') || message.includes('debe ser de la fracción')) {
+    return 'calendar.swaps.validation.week_not_owned'
+  }
+  if (message.includes('CA-17.4') || message.includes('solo el titular')) {
+    return 'calendar.swaps.validation.not_allowed'
+  }
+  return null
 }
 
 export interface SwapRequestDraft {

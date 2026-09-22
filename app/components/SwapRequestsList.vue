@@ -1,21 +1,35 @@
 <script setup lang="ts">
 import { formatearInstante } from '#shared/dates/formato'
 import type { Idioma } from '#shared/money/formato'
+import { swapRequestBlocked } from '#shared/scheduling/swaps'
 import type { SwapRequestListed, SwapRequestStatus } from '#shared/scheduling/vistas'
 
 /**
- * HU-12 · RF-12.6 · D-32 — las solicitudes de intercambio: el Propietario ve las
- * suyas y su estado; el Administrador aprueba o rechaza con motivo (CA-12.11).
+ * HU-12 · RF-12.6, RF-12.9 · D-32, D-33 — las solicitudes de intercambio: el
+ * Propietario ve las suyas y su estado; el Administrador aprueba o rechaza con
+ * motivo (CA-12.11).
+ *
+ * Entre pedir y resolver una semana puede confirmarse o liberarse, y entonces la
+ * solicitud ya no se puede aprobar. Eso se dice aquí y se desactiva el botón, en
+ * vez de dejar que la base lo rechace al pulsarlo: rechazar con motivo sigue
+ * disponible, que es lo único que queda por hacer.
  */
-defineProps<{
+const props = withDefaults(defineProps<{
   requests: SwapRequestListed[]
   canResolve: boolean
+  /** RF-12.9 · semanas confirmadas o liberadas del calendario. */
+  lockedWeeks?: ReadonlySet<number>
   ocupadaId: string | null
-}>()
+}>(), { lockedWeeks: undefined })
 
 const emit = defineEmits<{ resolver: [string, boolean, string | null] }>()
 
 const { t, locale } = useI18n()
+
+/** RF-12.9 · las semanas que impiden aprobar esta solicitud; vacío si sigue viva. */
+function bloqueada(request: SwapRequestListed): number[] {
+  return swapRequestBlocked(request, props.lockedWeeks)
+}
 
 const motivos = reactive<Record<string, string>>({})
 const errores = ref<Map<string, string>>(new Map())
@@ -123,10 +137,18 @@ function rechazar(id: string) {
           color="success"
           icon="i-lucide-check"
           :loading="ocupadaId === request.id"
+          :disabled="bloqueada(request).length > 0"
           :label="t('calendar.swaps.approve')"
           :data-test="`aprobar-${request.id}`"
           @click="emit('resolver', request.id, true, null)"
         />
+        <p
+          v-if="bloqueada(request).length > 0"
+          class="w-full text-sm text-error"
+          :data-test="`bloqueada-${request.id}`"
+        >
+          {{ t('calendar.swaps.blocked', { weeks: bloqueada(request).map(w => w + 1).join(', ') }) }}
+        </p>
       </UForm>
     </article>
   </div>

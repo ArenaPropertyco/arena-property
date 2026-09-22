@@ -6,15 +6,21 @@ import { swappableWeeksFor, validateSwapRequest } from '#shared/scheduling/swaps
 import type { AllocationEntry, SwapError, SwapRequestDraft } from '#shared/scheduling/swaps'
 
 /**
- * HU-12 · RF-12.6 · D-32 — el Propietario ofrece una semana suya por una de otra
- * fracción de la misma temporada y deja un mensaje al Administrador (CA-12.11).
+ * HU-12 · RF-12.6, RF-12.9 · D-32, D-33 — el Propietario ofrece una semana suya
+ * por una de otra fracción de la misma temporada y deja un mensaje al
+ * Administrador (CA-12.11).
+ *
+ * Las semanas confirmadas o liberadas no se ofrecen ni se piden: no se pueden
+ * mover, así que proponerlas solo produce una solicitud que nace muerta.
  */
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   fraction: number
   allocations: AllocationEntry[]
+  /** RF-12.9 · semanas confirmadas o liberadas: fuera de las dos listas. */
+  lockedWeeks?: ReadonlySet<number>
   rejilla: SemanaDeRejilla[]
   enviando: boolean
-}>()
+}>(), { lockedWeeks: undefined })
 
 const emit = defineEmits<{ submit: [SwapRequestDraft, string | null] }>()
 
@@ -33,10 +39,11 @@ function label(entry: AllocationEntry): string {
   })
 }
 
-const propias = computed(() => props.allocations.filter(a => a.fraction === props.fraction).sort((a, b) => a.week - b.week).map(e => ({ label: label(e), value: e.week })))
+const movibles = computed(() => props.allocations.filter(a => !props.lockedWeeks?.has(a.week)))
+const propias = computed(() => movibles.value.filter(a => a.fraction === props.fraction).sort((a, b) => a.week - b.week).map(e => ({ label: label(e), value: e.week })))
 const ajenas = computed(() => estado.offered === null
   ? []
-  : swappableWeeksFor(estado.offered, props.allocations).map(e => ({ label: label(e), value: e.week })))
+  : swappableWeeksFor(estado.offered, movibles.value).map(e => ({ label: label(e), value: e.week })))
 
 watch(() => estado.offered, () => {
   estado.requested = null
@@ -49,7 +56,7 @@ function enviar() {
     return
   }
   const draft: SwapRequestDraft = { fraction: props.fraction, offeredWeek: estado.offered, targetFraction: target.fraction, requestedWeek: target.week }
-  errores.value = validateSwapRequest(draft, { allocations: props.allocations })
+  errores.value = validateSwapRequest(draft, { allocations: props.allocations, lockedWeeks: props.lockedWeeks })
   if (errores.value.length > 0) {
     return
   }

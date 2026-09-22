@@ -919,13 +919,16 @@
         "week_not_owned": "Cada semana debe pertenecer a la fracción indicada.",
         "different_season": "Solo se intercambian semanas de la misma temporada.",
         "reason_required": "El intercambio necesita un motivo.",
-        "week_locked": "Estas semanas ya están confirmadas o liberadas: {weeks}."
+        "week_locked": "La semana {weeks} ya está confirmada o liberada, y una semana así no se mueve. Cancela antes la confirmación.",
+        "already_resolved": "Esta solicitud ya fue resuelta.",
+        "not_allowed": "No tienes permiso para hacer esto."
       },
       "errors": {
         "swap_failed": "No pudimos aplicar el intercambio.",
         "request_failed": "No pudimos enviar la solicitud.",
         "resolve_failed": "No pudimos resolver la solicitud."
-      }
+      },
+      "blocked": "No se puede aprobar: la semana {weeks} ya está confirmada o liberada. Solo queda rechazar la solicitud, o cancelar antes la confirmación."
     },
     "weeks": {
       "title": "Mi calendario",

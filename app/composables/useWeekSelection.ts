@@ -23,6 +23,8 @@ interface SeleccionPropia {
   clasificacion: SemanaClasificada[]
   turnos: SelectionTurn[]
   asignaciones: AllocationEntry[]
+  /** RF-12.9 · D-33 · semanas confirmadas o liberadas: no se ofrecen ni se piden. */
+  lockedWeeks: number[]
   solicitudes: SwapRequestListed[]
 }
 
@@ -53,7 +55,7 @@ export function useWeekSelection(fraccion: Ref<FraccionPropia | null>, anio: Ref
         client.from('calendar_weeks').select('index, season, peak_block').eq('calendar_id', id).order('index'),
         client.rpc('copropietarios_de', { propiedad: propia.propertyId }),
         client.from('selection_turns').select('position, fractions(number)').eq('calendar_id', id).order('position'),
-        client.from('allocations').select('fractions(number), calendar_weeks(index, season)').eq('calendar_id', id),
+        client.from('allocations').select('confirmed_at, released_at, fractions(number), calendar_weeks(index, season)').eq('calendar_id', id),
         client.from('week_swap_requests')
           .select('id, status, message, created_at, resolution_reason, requester:requester_fraction_id(number), target:target_fraction_id(number), offered:offered_week_id(index, season), requested:requested_week_id(index)')
           .eq('calendar_id', id)
@@ -85,6 +87,12 @@ export function useWeekSelection(fraccion: Ref<FraccionPropia | null>, anio: Ref
             : [{ fraction: numero, position: fila.position, hasOwner: conTitular.has(numero) || (numero === propia.number && propia.calendarActive), selectedWeeks: elegidas.get(numero) ?? 0 }]
         }),
         asignaciones: entradas,
+        lockedWeeks: (asignaciones.data ?? [])
+          .filter(fila => fila.confirmed_at !== null || fila.released_at !== null)
+          .flatMap((fila) => {
+            const semana = (fila.calendar_weeks as unknown as { index: number } | null)?.index
+            return semana === undefined ? [] : [semana]
+          }),
         solicitudes: (solicitudes.data ?? []).map<SwapRequestListed>(fila => ({
           id: fila.id,
           status: fila.status as SwapRequestListed['status'],
@@ -155,6 +163,7 @@ export function useWeekSelection(fraccion: Ref<FraccionPropia | null>, anio: Ref
     disponibles: computed(() => availableWeeks(cargada.value?.clasificacion ?? [], taken.value)),
     asignaciones: computed(() => cargada.value?.asignaciones ?? []),
     propias: computed(() => (cargada.value?.asignaciones ?? []).filter(a => a.fraction === fraccion.value?.number)),
+    lockedWeeks: computed(() => new Set(cargada.value?.lockedWeeks ?? [])),
     solicitudes: computed(() => cargada.value?.solicitudes ?? []),
     pendiente: consulta.pending,
     recargar: consulta.refresh,
