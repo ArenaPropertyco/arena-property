@@ -3161,6 +3161,10 @@ export type Database = {
           name: string
         }[]
       }
+      delete_selection_window: {
+        Args: { calendar: string }
+        Returns: undefined
+      }
       derivar_estado_del_plan: {
         Args: { abonado: number; anulado: boolean; precio: number }
         Returns: string

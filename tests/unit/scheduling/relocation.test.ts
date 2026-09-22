@@ -19,6 +19,7 @@ import {
   toBogotaInput,
   turnSlots,
   validateRelocation,
+  windowAdjustment,
   windowClosesAt,
   windowPhase,
 } from '#shared/scheduling/relocation'
@@ -269,6 +270,48 @@ describe('CA-59.7 · RF-59.6 · cerrada la ventana, lo no reubicado se queda y l
     expect(outcome.freed).toEqual([2, 24])
     expect(outcome.kept).toHaveLength(allocations.length - 2)
     expect(outcome.kept.some(a => a.fraction === 2 && a.week === 27)).toBe(true)
+  })
+})
+
+describe('RF-59.1 · RF-59.10 · D-48 · ajustar una ventana ya creada', () => {
+  const config = (cambios: Partial<{ opensAt: string, durationDays: number, turnHours: number, order: number[] }> = {}) => ({
+    opensAt: window.opensAt, durationDays: window.durationDays, turnHours: window.turnHours, order: [...window.order], ...cambios,
+  })
+
+  it('CA-59.10 · D-48 · guardar lo mismo no cambia nada, no mueve franjas y no avisa a nadie', () => {
+    expect(windowAdjustment(window, config())).toEqual({
+      opensAt: false, durationDays: false, turnHours: false, order: false, changed: false, movedFractions: [], reopens: false,
+    })
+  })
+
+  it('D-48 · mover la apertura mueve la franja de todas; alargar el turno mueve todas menos la primera', () => {
+    const apertura = windowAdjustment(window, config({ opensAt: '2026-10-02T05:00:00.000Z' }))
+    expect(apertura).toMatchObject({ opensAt: true, changed: true, movedFractions: [1, 2, 3] })
+
+    // La primera franja arranca en la apertura: solo cambia su final y las siguientes.
+    expect(windowAdjustment(window, config({ turnHours: 72 }))).toMatchObject({ turnHours: true, changed: true, movedFractions: [1, 2, 3] })
+  })
+
+  it('CA-59.10 · D-48 · cambiar solo el orden mueve a quien cambió de posición, no a quien la conserva', () => {
+    // [3, 1, 2] → [3, 2, 1]: la 3 sigue primera y no se mueve.
+    expect(windowAdjustment(window, config({ order: [3, 2, 1] }))).toMatchObject({
+      order: true, opensAt: false, changed: true, movedFractions: [1, 2],
+    })
+  })
+
+  it('D-48 · alargar solo la duración no mueve ninguna franja, pero es un cambio', () => {
+    expect(windowAdjustment(window, config({ durationDays: 20 }))).toMatchObject({
+      durationDays: true, changed: true, movedFractions: [],
+    })
+  })
+
+  it('RF-59.6 · D-47 · D-48 · guardar sobre una ventana cerrada avisa de que la reabre', () => {
+    expect(windowAdjustment({ ...window, closedAt: '2026-10-04T00:00:00.000Z' }, config()).reopens).toBe(true)
+    expect(windowAdjustment(window, config()).reopens).toBe(false)
+  })
+
+  it('D-48 · sin ventana previa no hay ajuste: es un alta', () => {
+    expect(windowAdjustment(null, config({ opensAt: '2026-01-01T05:00:00.000Z' }))).toMatchObject({ changed: false, movedFractions: [] })
   })
 })
 

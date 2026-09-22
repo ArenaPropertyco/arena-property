@@ -1101,7 +1101,8 @@
         "relocate_failed": "No pudimos mover la semana.",
         "reopen_failed": "No pudimos reabrir la ventana.",
         "expired": "La ventana ya venció: guárdala con nuevas fechas para reabrirla.",
-        "ends_in_past": "La ventana terminaría en el pasado: revisa la apertura y la duración."
+        "ends_in_past": "La ventana terminaría en el pasado: revisa la apertura y la duración.",
+        "delete_failed": "No pudimos eliminar la ventana."
       },
       "reopen": "Reabrir ventana",
       "reopened": "Ventana reabierta.",
@@ -1126,7 +1127,18 @@
           "close_failed": "No pudimos cerrar la ventana individual.",
           "no_owner": "Esa fracción no tiene titular."
         }
-      }
+      },
+      "adjust": "Guardar ajustes",
+      "adjustMoves": "Esto mueve el turno de {count} fracciones ({fractions}) y les avisa.",
+      "adjustNoMove": "Esto no mueve ninguna franja.",
+      "adjustReopens": " Además reabre la ventana cerrada.",
+      "delete": "Eliminar ventana",
+      "deleteTitle": "Eliminar la ventana de reubicación de {year}",
+      "deleteWarning": "Desaparecen los turnos y la fase por orden de llegada, y nadie podrá reubicar hasta que configures otra. Las semanas que ya se movieron se quedan en su fecha nueva: eliminar no las devuelve.",
+      "deleteWhileOpen": "La ventana está abierta ahora mismo: hay propietarios que podrían estar reubicando en este momento.",
+      "deleteNotifies": "Se avisa a los {count} titulares que tenían turno.",
+      "deleteConfirm": "Eliminar la ventana",
+      "deleted": "Ventana eliminada."
     },
     "reassignment": {
       "title": "Reasignaciones",
