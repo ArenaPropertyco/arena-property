@@ -1,5 +1,5 @@
-import { relocationErrorKey, relocationTurnOf, windowPhase } from '#shared/scheduling/relocation'
-import type { RelocationTurn, RelocationWindow, WindowPhase } from '#shared/scheduling/relocation'
+import { fractionWindowActive, relocationErrorKey, relocationTurnOf, windowPhase } from '#shared/scheduling/relocation'
+import type { FractionWindow, RelocationTurn, RelocationWindow, WindowPhase } from '#shared/scheduling/relocation'
 import type { FraccionPropia } from '#shared/scheduling/vistas'
 import type { Database } from '#shared/types/database.types'
 import type { ResultadoDeEscritura } from './usePropiedades'
@@ -9,14 +9,20 @@ import type { ResultadoDeEscritura } from './usePropiedades'
  * Propietario: si existe, en qué fase está y qué puede hacer su fracción ahora
  * mismo. El estado del turno lo calcula `shared/scheduling/relocation` con el
  * instante que avanza; mover una semana es una función de la base que vuelve a
- * validar todo (RF-59.8).
+ * validar todo (RF-59.8). RF-59.9 · D-47 · si el Superadmin abrió a la fracción
+ * una ventana individual, esa manda: hay turno aunque no haya ventana general.
  */
 
 interface VentanaCargada extends RelocationWindow {
   calendarId: string
 }
 
-export function useRelocation(fraccion: Ref<FraccionPropia | null>, anio: Ref<number>) {
+/** RF-59.9 · la ventana individual vigente de la fracción para el año, con su calendario. */
+export interface VentanaIndividual extends FractionWindow {
+  calendarId: string
+}
+
+export function useRelocation(fraccion: Ref<FraccionPropia | null>, anio: Ref<number>, individual?: Ref<VentanaIndividual | null>) {
   const client = useSupabaseClient<Database>()
   const ahora = useAhora()
 
@@ -58,13 +64,14 @@ export function useRelocation(fraccion: Ref<FraccionPropia | null>, anio: Ref<nu
 
   const ventana = computed(() => consulta.data.value ?? null)
   const fase = computed<WindowPhase | null>(() => ventana.value ? windowPhase(ventana.value, ahora.value) : null)
-  const turno = computed<RelocationTurn | null>(() => (ventana.value && fraccion.value)
-    ? relocationTurnOf(ventana.value, fraccion.value.number, ahora.value)
+  const individualActiva = computed(() => fractionWindowActive(individual?.value, ahora.value))
+  const turno = computed<RelocationTurn | null>(() => (fraccion.value && (ventana.value || individualActiva.value))
+    ? relocationTurnOf(ventana.value, fraccion.value.number, ahora.value, individual?.value)
     : null)
 
   async function reubicar(fromWeek: number, toWeek: number): Promise<ResultadoDeEscritura> {
     const propia = fraccion.value
-    const calendario = ventana.value?.calendarId
+    const calendario = ventana.value?.calendarId ?? individual?.value?.calendarId
     if (!propia || !calendario) {
       return { ok: false, clave: 'calendar.relocation.errors.relocate_failed' }
     }

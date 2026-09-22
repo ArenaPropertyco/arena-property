@@ -13,7 +13,8 @@ import type { ResultadoDeEscritura } from './usePropiedades'
  * libres, cuáles eligió y sus solicitudes de intercambio.
  *
  * El turno y la composición los calcula `shared/scheduling/selection`; la base
- * vuelve a comprobarlos en `select_weeks` y `request_week_swap`.
+ * vuelve a comprobarlos en `select_weeks` y `request_week_swap`. RF-59.9 · D-47 ·
+ * con ventana individual abierta (`concedida`) el turno no se espera.
  */
 
 interface SeleccionPropia {
@@ -25,7 +26,7 @@ interface SeleccionPropia {
   solicitudes: SwapRequestListed[]
 }
 
-export function useWeekSelection(fraccion: Ref<FraccionPropia | null>, anio: Ref<number>) {
+export function useWeekSelection(fraccion: Ref<FraccionPropia | null>, anio: Ref<number>, concedida?: Ref<boolean>) {
   const client = useSupabaseClient<Database>()
 
   const rejilla = computed(() => rejillaDelAnio(anio.value))
@@ -105,7 +106,7 @@ export function useWeekSelection(fraccion: Ref<FraccionPropia | null>, anio: Ref
   const abierta = computed(() => cargada.value?.abiertaEl !== null && cargada.value?.abiertaEl !== undefined)
   const taken = computed(() => new Set((cargada.value?.asignaciones ?? []).map(a => a.week)))
   const turno = computed(() => (cargada.value && fraccion.value)
-    ? turnOf(cargada.value.turnos, fraccion.value.number)
+    ? turnOf(cargada.value.turnos, fraccion.value.number, undefined, concedida?.value ?? false)
     : { position: null, canSelect: false, done: false, waitingFor: null })
 
   async function elegir(semanas: number[]): Promise<ResultadoDeEscritura> {

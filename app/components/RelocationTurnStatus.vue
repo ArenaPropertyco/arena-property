@@ -27,6 +27,7 @@ const COLOR: Record<RelocationTurnState, 'success' | 'warning' | 'neutral'> = {
   after: 'warning',
   closed: 'neutral',
   none: 'neutral',
+  individual: 'success',
 }
 
 const ICON: Record<RelocationTurnState, string> = {
@@ -37,6 +38,7 @@ const ICON: Record<RelocationTurnState, string> = {
   after: 'i-lucide-check',
   closed: 'i-lucide-door-closed',
   none: 'i-lucide-circle-off',
+  individual: 'i-lucide-key-round',
 }
 
 const mensaje = computed(() => {

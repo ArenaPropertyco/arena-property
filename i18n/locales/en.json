@@ -1055,7 +1055,8 @@
         "after": "Turn done",
         "open": "First come",
         "closed": "Closed",
-        "none": "No turn"
+        "none": "No turn",
+        "individual": "Individual"
       },
       "status": {
         "scheduled": "Your turn in the {year} window opens on {date}.",
@@ -1064,7 +1065,8 @@
         "after": "Your turn has passed. Once all turns end, the window opens first come, first served until {date}.",
         "open": "Window open first come, first served until {date}.",
         "closed": "The {year} window is closed: your weeks stay where they are.",
-        "none": "Your fraction has no turn in this window."
+        "none": "Your fraction has no turn in this window: you will be able to move once it opens on a first-come basis.",
+        "individual": "The Superadmin opened an individual window for you: you can choose or move weeks until {date}."
       },
       "remaining": "{days} d {hours} h {minutes} min left",
       "movable": "You can move {count} weeks: {weeks}.",
@@ -1096,7 +1098,34 @@
       "errors": {
         "configure_failed": "We could not save the window.",
         "close_failed": "We could not close the window.",
-        "relocate_failed": "We could not move the week."
+        "relocate_failed": "We could not move the week.",
+        "reopen_failed": "We could not reopen the window.",
+        "expired": "The window has already expired: save it with new dates to reopen it.",
+        "ends_in_past": "The window would end in the past: check the opening and the duration."
+      },
+      "reopen": "Reopen window",
+      "reopened": "Window reopened.",
+      "individual": {
+        "title": "Individual windows",
+        "subtitle": "Open a slot for a single fraction to choose or relocate outside the general turn. Every other rule stays the same.",
+        "fraction": "Fraction",
+        "fractionPlaceholder": "Choose the fraction",
+        "hours": "Hours",
+        "open": "Open individual window",
+        "opened": "Individual window opened; the owner has been notified.",
+        "close": "Close",
+        "closed": "Individual window closed.",
+        "empty": "No individual windows are open.",
+        "status": {
+          "active": "Active",
+          "scheduled": "Scheduled",
+          "expired": "Expired"
+        },
+        "errors": {
+          "open_failed": "We could not open the individual window.",
+          "close_failed": "We could not close the individual window.",
+          "no_owner": "That fraction has no owner."
+        }
       }
     },
     "reassignment": {

@@ -3,7 +3,7 @@
 -- rotativo, guarda de turno y de calendario activo (I-08), reglas de temporada y
 -- ocupación, cierre manual y programado, auditoría y aviso por movimiento.
 begin;
-select plan(47);
+select plan(48);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'selection_windows', 'RF-59.1 · existe selection_windows');
@@ -244,22 +244,27 @@ select is(
      and not exists (select 1 from public.allocations a where a.week_id = w.id)),
   2::bigint, 'CA-59.7 · las semanas liberadas por las reubicaciones figuran disponibles');
 set local request.jwt.claim.sub = 'c5900000-0000-4000-8000-000000000002';
-select throws_like(
+-- D-47 · guardar de nuevo una ventana cerrada la reabre con las fechas nuevas.
+select lives_ok(
   $$ select public.configure_selection_window((select id from cal28), now(), 16, 48, null) $$,
-  '%CA-59.7%', 'CA-59.7 · una ventana cerrada no se reconfigura');
+  'RF-59.1 · D-47 · una ventana cerrada se reconfigura');
+select is(
+  (select closed_at is null from public.selection_windows where calendar_id = (select id from cal28)),
+  true, 'RF-59.6 · D-47 · reconfigurarla la reabre');
 
 -- ── RF-59.6 · cierre programado al vencer ───────────────────────────────────
-select public.configure_selection_window((select id from cal29), now() - interval '20 days', 16, 48, null);
+-- D-47 · una ventana que ya habría vencido no se guarda; se guarda una que vence mañana y se adelanta el reloj del cierre.
+select public.configure_selection_window((select id from cal29), now() - interval '15 days', 16, 48, null);
 reset role;
 set local request.jwt.claim.sub = '';
 select is(
-  (select public.close_expired_selection_windows(now())), 1,
+  (select public.close_expired_selection_windows(now() + interval '2 days')), 1,
   'RF-59.6 · el cierre programado cierra la ventana vencida y solo esa');
 select is(
   (select closed_at is not null from public.selection_windows where calendar_id = (select id from cal29)),
   true, 'RF-59.6 · la ventana vencida queda cerrada');
 select is(
-  (select public.close_expired_selection_windows(now())), 0,
+  (select public.close_expired_selection_windows(now() + interval '2 days')), 0,
   'RF-59.6 · una segunda pasada no cierra nada más');
 
 select * from finish();

@@ -5,6 +5,7 @@ import {
   closeWindowOutcome,
   defaultWindowOpening,
   firstTurnsOver,
+  fractionWindowActive,
   fromBogotaInput,
   movableWeeks,
   RELOCATION_TURN_HOURS,
@@ -268,6 +269,30 @@ describe('CA-59.7 · RF-59.6 · cerrada la ventana, lo no reubicado se queda y l
     expect(outcome.freed).toEqual([2, 24])
     expect(outcome.kept).toHaveLength(allocations.length - 2)
     expect(outcome.kept.some(a => a.fraction === 2 && a.week === 27)).toBe(true)
+  })
+})
+
+describe('RF-59.9 · D-47 · la ventana individual y la fracción sin turno', () => {
+  const individual = { opensAt: '2026-10-04T05:00:00.000Z', closesAt: '2026-10-06T05:00:00.000Z', closedAt: null }
+
+  it('RF-59.9 · abierta la ventana individual, la fracción puede mover aunque no haya ventana general ni turno', () => {
+    expect(fractionWindowActive(individual, '2026-10-05T05:00:00.000Z')).toBe(true)
+    expect(fractionWindowActive({ ...individual, closedAt: '2026-10-04T12:00:00.000Z' }, '2026-10-05T05:00:00.000Z')).toBe(false)
+    expect(fractionWindowActive(individual, '2026-10-06T05:00:00.000Z')).toBe(false)
+    expect(fractionWindowActive(null, '2026-10-05T05:00:00.000Z')).toBe(false)
+
+    expect(relocationTurnOf(null, 5, '2026-10-05T05:00:00.000Z', individual)).toEqual({
+      state: 'individual', canRelocate: true, opensAt: individual.opensAt, closesAt: individual.closesAt, remainingMs: 24 * 60 * 60 * 1000, waitingFor: null,
+    })
+    // Con la ventana general por turnos, la individual manda: la 2 movería antes de su franja.
+    expect(relocationTurnOf(window, 2, '2026-10-05T05:00:00.000Z', individual).state).toBe('individual')
+    expect(relocationTurnOf(null, 5, '2026-10-07T05:00:00.000Z', individual).state).toBe('none')
+  })
+
+  it('D-47 · sin turno en la ventana general, la fracción espera a la fase por orden de llegada y entonces puede', () => {
+    expect(relocationTurnOf(window, 5, '2026-10-04T05:00:00.000Z')).toMatchObject({ state: 'none', canRelocate: false })
+    expect(relocationTurnOf(window, 5, '2026-10-08T05:00:00.000Z')).toMatchObject({ state: 'open', canRelocate: true, closesAt: windowClosesAt(window) })
+    expect(relocationTurnOf({ ...window, closedAt: '2026-10-08T00:00:00.000Z' }, 5, '2026-10-08T05:00:00.000Z')).toMatchObject({ state: 'closed', canRelocate: false })
   })
 })
 

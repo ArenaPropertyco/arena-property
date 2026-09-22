@@ -9,13 +9,15 @@ import type { SwapProposal } from '#shared/scheduling/swaps'
  * HU-12 · RF-12.2, RF-12.4…RF-12.7 · D-32 — configuración del calendario.
  * HU-15 · RF-15.1…RF-15.5 · D-33 — bloqueos del Administrador por semanas.
  * HU-17 · RF-17.1, RF-17.3 · D-42 — la reasignación de una semana a otra libre.
- * HU-59 · RF-59.1, RF-59.2, RF-59.6 · D-36 — la ventana de reubicación.
+ * HU-59 · RF-59.1, RF-59.2, RF-59.6, RF-59.9 · D-36, D-47 — la ventana de reubicación,
+ * su reapertura y las ventanas individuales.
  *
  * La página orquesta: elige propiedad y año, deja al Administrador clasificar la
  * rejilla, fijar el orden de turnos y abrir la selección; abierta, muestra el
  * avance de cada fracción, permite intercambiar semanas, reasignarlas y resolver
- * solicitudes, y deja al Superadmin configurar la ventana de reubicación (que el
- * Administrador ve y puede cerrar). Debajo, los bloqueos de la propiedad.
+ * solicitudes, y deja al Superadmin configurar, reabrir y abrir ventanas
+ * individuales de la reubicación (el Administrador la ve y puede cerrarla).
+ * Debajo, los bloqueos de la propiedad.
  *
  * Llega con `?propiedad=` desde el tablero (HU-21): se abre en esa propiedad si
  * quien mira la gestiona; si no, en la primera de las suyas.
@@ -61,7 +63,9 @@ const anio = ref(new Date().getFullYear() + 1)
 const { id: calendarId, rejilla, nochesEnBolsa, clasificacion, errorDeRejilla, publicadoEl, pendiente, guardar } = useCalendario(propertyId, anio)
 const { turnos, fracciones, asignaciones, lockedWeeks, releasedWeeks, rentedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, reasignar, resolver } = useSelectionOrder(calendarId, propertyId)
 const { bloqueos, blockedWeeks, crear: crearBloqueo, levantar: levantarBloqueo } = useWeekBlocks(calendarId)
-const { ventana, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, cerrar: cerrarVentana } = useSelectionWindow(calendarId, propertyId)
+const {
+  ventana, individuales, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, reabrir: reabrirVentana, cerrar: cerrarVentana, abrirIndividual, cerrarIndividual,
+} = useSelectionWindow(calendarId, propertyId)
 const hoy = computed(() => hoyDe())
 
 const ocupado = ref(false)
@@ -73,6 +77,7 @@ const bloqueando = ref(false)
 const levantando = ref<string | null>(null)
 const configurandoVentana = ref(false)
 const cerrandoVentana = ref(false)
+const abriendoIndividual = ref(false)
 
 /** El orden que se va a abrir: parte de la sugerencia de la base y el Administrador lo ajusta. */
 const orden = ref<number[]>([])
@@ -171,6 +176,25 @@ async function cerrarLaVentana() {
   const resultado = await cerrarVentana()
   cerrandoVentana.value = false
   toast.add(resultado.ok ? { title: t('calendar.relocation.closed'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
+}
+
+async function reabrirLaVentana() {
+  cerrandoVentana.value = true
+  const resultado = await reabrirVentana()
+  cerrandoVentana.value = false
+  toast.add(resultado.ok ? { title: t('calendar.relocation.reopened'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
+}
+
+async function abrirVentanaIndividual(fraction: number, hours: number) {
+  abriendoIndividual.value = true
+  const resultado = await abrirIndividual(fraction, hours)
+  abriendoIndividual.value = false
+  toast.add(resultado.ok ? { title: t('calendar.relocation.individual.opened'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
+}
+
+async function cerrarVentanaIndividual(id: string) {
+  const resultado = await cerrarIndividual(id)
+  toast.add(resultado.ok ? { title: t('calendar.relocation.individual.closed'), color: 'success' } : { title: t(resultado.clave), color: 'error' })
 }
 
 async function levantar(id: string, motivo: string) {
@@ -366,8 +390,19 @@ async function levantar(id: string, motivo: string) {
           :window="ventana"
           :now="ahora"
           can-close
+          :can-reopen="esSuperadmin"
           :cerrando="cerrandoVentana"
           @cerrar="cerrarLaVentana"
+          @reabrir="reabrirLaVentana"
+        />
+        <FractionWindowPanel
+          v-if="esSuperadmin"
+          :fractions="fracciones"
+          :windows="individuales"
+          :now="ahora"
+          :enviando="abriendoIndividual"
+          @abrir="abrirVentanaIndividual"
+          @cerrar="cerrarVentanaIndividual"
         />
       </section>
 

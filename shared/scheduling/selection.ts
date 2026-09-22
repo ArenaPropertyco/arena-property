@@ -103,11 +103,17 @@ export function isValidOrder(order: readonly number[], eligible: readonly number
   return order.every(fraction => allowed.has(fraction))
 }
 
-/** RF-12.4 · CA-12.5 · si a la fracción le toca elegir, ya eligió o espera a otra. */
-export function turnOf(turns: readonly SelectionTurn[], fraction: number, criteria: Criterio = CRITERIO_POR_DEFECTO): TurnStatus {
+/**
+ * RF-12.4 · CA-12.5 · si a la fracción le toca elegir, ya eligió o espera a otra.
+ * RF-59.9 · D-47 · con ventana individual abierta (`granted`) no espera a nadie.
+ */
+export function turnOf(turns: readonly SelectionTurn[], fraction: number, criteria: Criterio = CRITERIO_POR_DEFECTO, granted = false): TurnStatus {
   const needed = weeksPerFraction(criteria)
   const ordered = [...turns].sort((a, b) => a.position - b.position)
   const own = ordered.find(t => t.fraction === fraction)
+  if (granted && (own?.selectedWeeks ?? 0) < needed) {
+    return { position: own?.position ?? null, canSelect: true, done: false, waitingFor: null }
+  }
   if (!own) {
     return { position: null, canSelect: false, done: false, waitingFor: null }
   }

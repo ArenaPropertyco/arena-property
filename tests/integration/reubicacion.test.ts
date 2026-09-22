@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import FractionWindowPanel from '~/components/FractionWindowPanel.vue'
 import RelocationTurnStatus from '~/components/RelocationTurnStatus.vue'
 import SelectionWindowForm from '~/components/SelectionWindowForm.vue'
 import SelectionWindowTurns from '~/components/SelectionWindowTurns.vue'
@@ -11,7 +12,7 @@ import { defaultWindowOpening, relocationTurnOf, RELOCATION_TURN_HOURS, RELOCATI
 import type { RelocationContext, RelocationWindowConfig } from '#shared/scheduling/relocation'
 import { clasificacionBase } from '#shared/scheduling/temporadas'
 import type { SemanaClasificada } from '#shared/scheduling/temporadas'
-import type { SelectionWindowListed } from '#shared/scheduling/vistas'
+import type { FractionWindowListed, SelectionWindowListed } from '#shared/scheduling/vistas'
 import type { AllocationState } from '#shared/scheduling/week-projection'
 
 /**
@@ -135,6 +136,50 @@ describe('SelectionWindowTurns', () => {
     expect(turnos.find('[data-test="ventana-fase"]').attributes('data-fase')).toBe('closed')
     expect(turnos.find('[data-test="ventana-fase"]').text()).toContain(formatearInstante('2026-10-06T12:00:00.000Z', 'es'))
     expect(turnos.find('[data-test="cerrar-ventana"]').exists()).toBe(false)
+    expect(turnos.find('[data-test="reabrir-ventana"]').exists()).toBe(false)
+  })
+
+  it('RF-59.6 · D-47 · cerrada, quien puede reabrirla lo ve y la reapertura emite', async () => {
+    const cerrada = { ...window, closedAt: '2026-10-06T12:00:00.000Z' }
+    const turnos = await mountSuspended(SelectionWindowTurns, {
+      props: { window: cerrada, now: '2026-10-06T13:00:00.000Z', canClose: true, canReopen: true, cerrando: false },
+    })
+    await turnos.find('[data-test="reabrir-ventana"]').trigger('click')
+    expect(turnos.emitted('reabrir')).toHaveLength(1)
+  })
+})
+
+describe('FractionWindowPanel', () => {
+  const abiertas: FractionWindowListed[] = [
+    { id: 'fw1', fraction: 3, ownerName: 'Ana Ruiz', opensAt: '2026-10-04T05:00:00.000Z', closesAt: '2026-10-06T05:00:00.000Z' },
+  ]
+
+  it('RF-59.9 · D-47 · lista las ventanas individuales abiertas con su estado; abrir y cerrar emiten', async () => {
+    const panel = await mountSuspended(FractionWindowPanel, {
+      props: { fractions, windows: abiertas, now: '2026-10-05T05:00:00.000Z', enviando: false },
+    })
+    expect(panel.find('[data-test="ventana-individual-fw1"]').attributes('data-estado')).toBe('active')
+    expect(panel.find('[data-test="ventana-individual-fw1"]').text()).toContain('Ana Ruiz')
+    await panel.find('[data-test="cerrar-individual-fw1"]').trigger('click')
+    expect(panel.emitted('cerrar')).toEqual([['fw1']])
+
+    // Solo las fracciones con titular se ofrecen: la 2 no tiene.
+    const seleccion = panel.findComponent({ name: 'USelect' })
+    expect(seleccion.props('items')).toHaveLength(2)
+    await panel.find('[data-test="abrir-individual"]').trigger('click')
+    expect(panel.emitted('abrir')).toBeUndefined()
+
+    seleccion.vm.$emit('update:modelValue', 1)
+    await panel.find('[data-test="individual-horas"]').setValue('24')
+    await panel.find('[data-test="abrir-individual"]').trigger('click')
+    expect(panel.emitted('abrir')).toEqual([[1, 24]])
+  })
+
+  it('RF-59.9 · sin ventanas abiertas lo dice, y una vencida se marca', async () => {
+    const vacio = await mountSuspended(FractionWindowPanel, { props: { fractions, windows: [], now: '2026-10-05T05:00:00.000Z', enviando: false } })
+    expect(vacio.find('[data-test="sin-ventanas-individuales"]').exists()).toBe(true)
+    const vencida = await mountSuspended(FractionWindowPanel, { props: { fractions, windows: abiertas, now: '2026-10-07T05:00:00.000Z', enviando: false } })
+    expect(vencida.find('[data-test="ventana-individual-fw1"]').attributes('data-estado')).toBe('expired')
   })
 })
 

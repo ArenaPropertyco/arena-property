@@ -7,7 +7,10 @@
  * mover una semana elegida (sin confirmar) a otra libre de la misma temporada. El
  * cupo 1/1/1/3 no cambia. Terminados los turnos y hasta el cierre, la ventana
  * queda abierta por orden de llegada; cerrada, lo no reubicado se queda donde
- * está. Todo es puro: la base repite las mismas reglas en `relocate_week`.
+ * está. D-47: cerrada antes de tiempo se reabre; una fracción sin turno entra por
+ * orden de llegada; y la ventana individual que el Superadmin abre a una fracción
+ * (RF-59.9) sustituye al turno general. Todo es puro: la base repite las mismas
+ * reglas en `relocate_week`.
  */
 
 import type { Dia, SemanaDeRejilla } from './rejilla'
@@ -143,7 +146,23 @@ export function windowPhase(window: RelocationWindow, now: string): WindowPhase 
   return last && t < instant(last.closesAt) ? 'turns' : 'open'
 }
 
-export type RelocationTurnState = 'scheduled' | 'before' | 'own' | 'after' | 'open' | 'closed' | 'none'
+/** RF-59.9 · D-47 · la franja individual que el Superadmin abre a una fracción. */
+export interface FractionWindow {
+  opensAt: string
+  closesAt: string
+  closedAt?: string | null
+}
+
+/** RF-59.9 · abierta ahora mismo: no cerrada a mano, ni antes de empezar, ni vencida. */
+export function fractionWindowActive(window: FractionWindow | null | undefined, now: string): boolean {
+  if (!window || window.closedAt) {
+    return false
+  }
+  const t = instant(now)
+  return t >= instant(window.opensAt) && t < instant(window.closesAt)
+}
+
+export type RelocationTurnState = 'scheduled' | 'before' | 'own' | 'after' | 'open' | 'closed' | 'none' | 'individual'
 
 export interface RelocationTurn {
   state: RelocationTurnState
@@ -158,25 +177,35 @@ export interface RelocationTurn {
   waitingFor: number | null
 }
 
-/** RF-59.3 · RF-59.6 · CA-59.5 · qué puede hacer la fracción en este instante. */
-export function relocationTurnOf(window: RelocationWindow, fraction: number, now: string): RelocationTurn {
-  const slots = turnSlots(window)
-  const own = slots.find(slot => slot.fraction === fraction)
+/**
+ * RF-59.3 · RF-59.6 · RF-59.9 · CA-59.5 · qué puede hacer la fracción en este
+ * instante. La ventana individual manda sobre la general; sin ventana general ni
+ * individual, nada; sin turno propio (D-47), solo la fase por orden de llegada.
+ */
+export function relocationTurnOf(window: RelocationWindow | null, fraction: number, now: string, individual?: FractionWindow | null): RelocationTurn {
   const none: RelocationTurn = { state: 'none', canRelocate: false, opensAt: null, closesAt: null, remainingMs: 0, waitingFor: null }
-  if (!own) {
+  const t = instant(now)
+  if (individual && fractionWindowActive(individual, now)) {
+    return { ...none, state: 'individual', canRelocate: true, opensAt: individual.opensAt, closesAt: individual.closesAt, remainingMs: instant(individual.closesAt) - t }
+  }
+  if (!window) {
     return none
   }
-  const t = instant(now)
+  const slots = turnSlots(window)
+  const own = slots.find(slot => slot.fraction === fraction)
   const closes = windowClosesAt(window)
   const phase = windowPhase(window, now)
   if (phase === 'closed') {
-    return { ...none, state: 'closed', opensAt: own.opensAt, closesAt: window.closedAt ?? closes }
+    return { ...none, state: 'closed', opensAt: own?.opensAt ?? null, closesAt: window.closedAt ?? closes }
+  }
+  if (phase === 'open') {
+    return { ...none, state: 'open', canRelocate: true, opensAt: own?.opensAt ?? null, closesAt: closes, remainingMs: instant(closes) - t }
+  }
+  if (!own) {
+    return none
   }
   if (phase === 'scheduled') {
     return { ...none, state: 'scheduled', opensAt: own.opensAt, closesAt: own.closesAt, remainingMs: instant(own.opensAt) - t }
-  }
-  if (phase === 'open') {
-    return { ...none, state: 'open', canRelocate: true, opensAt: own.opensAt, closesAt: closes, remainingMs: instant(closes) - t }
   }
   const current = slots.find(slot => t >= instant(slot.opensAt) && t < instant(slot.closesAt))
   if (t < instant(own.opensAt)) {

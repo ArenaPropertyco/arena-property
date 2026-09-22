@@ -823,6 +823,74 @@ export type Database = {
         }
         Relationships: []
       }
+      fraction_windows: {
+        Row: {
+          calendar_id: string
+          closed_at: string | null
+          closes_at: string
+          created_at: string
+          created_by: string | null
+          fraction_id: string
+          id: string
+          opens_at: string
+          property_id: string
+          year: number
+        }
+        Insert: {
+          calendar_id: string
+          closed_at?: string | null
+          closes_at: string
+          created_at?: string
+          created_by?: string | null
+          fraction_id: string
+          id?: string
+          opens_at?: string
+          property_id: string
+          year: number
+        }
+        Update: {
+          calendar_id?: string
+          closed_at?: string | null
+          closes_at?: string
+          created_at?: string
+          created_by?: string | null
+          fraction_id?: string
+          id?: string
+          opens_at?: string
+          property_id?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fraction_windows_calendar_id_fkey"
+            columns: ["calendar_id"]
+            isOneToOne: false
+            referencedRelation: "season_calendars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fraction_windows_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fraction_windows_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fraction_windows_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fractions: {
         Row: {
           calendar_activated_at: string | null
@@ -3037,6 +3105,7 @@ export type Database = {
         Args: { at?: string }
         Returns: number
       }
+      close_fraction_window: { Args: { window_id: string }; Returns: undefined }
       close_selection_window: { Args: { calendar: string }; Returns: undefined }
       commission_type_for: {
         Args: { ambassador: string }
@@ -3196,6 +3265,10 @@ export type Database = {
         Args: { calendar: string; fraction_order?: number[] }
         Returns: number[]
       }
+      open_fraction_window: {
+        Args: { calendar: string; fraction_number: number; hours?: number }
+        Returns: string
+      }
       reassign_week: {
         Args: {
           calendar: string
@@ -3328,6 +3401,10 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      reopen_selection_window: {
+        Args: { calendar: string }
+        Returns: undefined
       }
       request_week_swap: {
         Args: {

@@ -40,8 +40,10 @@ const opciones = computed(() => fracciones.value.map(f => ({
 const anio = ref(new Date().getFullYear())
 
 const semanas = useOwnerWeeks(fraccion, anio)
-const seleccion = useWeekSelection(fraccion, anio)
-const reubicacion = useRelocation(fraccion, anio)
+// RF-59.9 · D-47 · la ventana individual, si el Superadmin la abrió, manda sobre los turnos.
+const individual = useFractionWindow(fraccion, anio)
+const seleccion = useWeekSelection(fraccion, anio, individual.activa)
+const reubicacion = useRelocation(fraccion, anio, individual.ventana)
 
 const plan = computed(() => planes.value.find(p => p.fractionId === fraccion.value?.id) ?? null)
 const takenList = computed(() => [...seleccion.taken.value])
@@ -214,7 +216,7 @@ async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string 
           </section>
 
           <section
-            v-if="reubicacion.ventana.value && reubicacion.turno.value && contextoDeReubicacion"
+            v-if="reubicacion.turno.value && contextoDeReubicacion"
             class="space-y-4"
             data-test="seccion-reubicacion"
           >

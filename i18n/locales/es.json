@@ -1055,7 +1055,8 @@
         "after": "Turno cumplido",
         "open": "Orden de llegada",
         "closed": "Cerrada",
-        "none": "Sin turno"
+        "none": "Sin turno",
+        "individual": "Individual"
       },
       "status": {
         "scheduled": "Tu turno en la ventana de {year} abre el {date}.",
@@ -1064,7 +1065,8 @@
         "after": "Tu turno ya pasó. Cuando terminen los turnos, la ventana abre por orden de llegada hasta el {date}.",
         "open": "Ventana abierta por orden de llegada hasta el {date}.",
         "closed": "La ventana de {year} está cerrada: tus semanas quedan donde están.",
-        "none": "Tu fracción no tiene turno en esta ventana."
+        "none": "Tu fracción no tiene turno en esta ventana: podrás mover cuando abra por orden de llegada.",
+        "individual": "El Superadmin te abrió una ventana individual: puedes elegir o mover semanas hasta el {date}."
       },
       "remaining": "Quedan {days} d {hours} h {minutes} min",
       "movable": "Puedes mover {count} semanas: {weeks}.",
@@ -1096,7 +1098,34 @@
       "errors": {
         "configure_failed": "No pudimos guardar la ventana.",
         "close_failed": "No pudimos cerrar la ventana.",
-        "relocate_failed": "No pudimos mover la semana."
+        "relocate_failed": "No pudimos mover la semana.",
+        "reopen_failed": "No pudimos reabrir la ventana.",
+        "expired": "La ventana ya venció: guárdala con nuevas fechas para reabrirla.",
+        "ends_in_past": "La ventana terminaría en el pasado: revisa la apertura y la duración."
+      },
+      "reopen": "Reabrir ventana",
+      "reopened": "Ventana reabierta.",
+      "individual": {
+        "title": "Ventanas individuales",
+        "subtitle": "Abre a una sola fracción una franja para elegir o reubicar fuera del turno general. Las demás reglas no cambian.",
+        "fraction": "Fracción",
+        "fractionPlaceholder": "Elige la fracción",
+        "hours": "Horas",
+        "open": "Abrir ventana individual",
+        "opened": "Ventana individual abierta; el titular ya tiene aviso.",
+        "close": "Cerrar",
+        "closed": "Ventana individual cerrada.",
+        "empty": "No hay ventanas individuales abiertas.",
+        "status": {
+          "active": "Vigente",
+          "scheduled": "Programada",
+          "expired": "Vencida"
+        },
+        "errors": {
+          "open_failed": "No pudimos abrir la ventana individual.",
+          "close_failed": "No pudimos cerrar la ventana individual.",
+          "no_owner": "Esa fracción no tiene titular."
+        }
       }
     },
     "reassignment": {
