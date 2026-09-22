@@ -247,6 +247,7 @@ async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string 
             <SwapRequestForm
               :fraction="fraccion.number"
               :allocations="seleccion.asignaciones.value"
+              :locked-weeks="seleccion.lockedWeeks.value"
               :rejilla="seleccion.rejilla.value"
               :enviando="solicitando"
               @submit="solicitarIntercambio"

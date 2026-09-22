@@ -342,6 +342,7 @@ async function levantar(id: string, motivo: string) {
           <SwapRequestsList
             :requests="solicitudes"
             can-resolve
+            :locked-weeks="new Set(lockedWeeks)"
             :ocupada-id="resolviendo"
             @resolver="resolverSolicitud"
           />

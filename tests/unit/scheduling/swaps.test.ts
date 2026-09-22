@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applySwap, swappableWeeksFor, validateSwap, validateSwapRequest } from '#shared/scheduling/swaps'
+import { applySwap, swapErrorKey, swappableWeeksFor, swapRequestBlocked, validateSwap, validateSwapRequest } from '#shared/scheduling/swaps'
 import type { AllocationEntry } from '#shared/scheduling/swaps'
 
 /**
@@ -53,6 +53,43 @@ describe('CA-12.10 · intercambio entre fracciones', () => {
   it('las semanas intercambiables por una dada son las de otras fracciones en su temporada', () => {
     expect(swappableWeeksFor(0, allocations).map(a => a.week)).toEqual([1, 2])
     expect(swappableWeeksFor(8, allocations)).toEqual([])
+  })
+})
+
+describe('CA-12.11 · RF-12.9 · una semana confirmada o liberada no entra en un intercambio', () => {
+  const locked = new Set([24])
+
+  it('CA-12.11 · RF-12.9 · ofrecer una semana confirmada se rechaza, y nombra la semana', () => {
+    const errores = validateSwapRequest(
+      { fraction: 1, offeredWeek: 24, targetFraction: 2, requestedWeek: 25 },
+      { allocations, lockedWeeks: locked },
+    )
+    expect(errores).toEqual([{ message: 'calendar.swaps.validation.week_locked', weeks: [24] }])
+  })
+
+  it('RF-12.9 · una solicitud abierta cuya semana se confirmó después ya no se puede aprobar', () => {
+    const abierta = { offeredWeek: 24, requestedWeek: 25, status: 'open' }
+    expect(swapRequestBlocked(abierta, locked)).toEqual([24])
+    expect(swapRequestBlocked({ ...abierta, offeredWeek: 26 }, locked)).toEqual([])
+    // Sin saber qué está cerrado no se bloquea nada: la base sigue teniendo la última palabra.
+    expect(swapRequestBlocked(abierta, undefined)).toEqual([])
+    // Una ya resuelta no se marca: no hay nada que aprobar.
+    expect(swapRequestBlocked({ ...abierta, status: 'approved' }, locked)).toEqual([])
+  })
+
+  it('RF-12.6 · RF-12.9 · el rechazo de la base se reconoce por la regla que cita', () => {
+    expect(swapErrorKey('CA-12.10 · RF-12.9 · alguna de las semanas ya está confirmada o liberada.'))
+      .toBe('calendar.swaps.validation.week_locked')
+    expect(swapErrorKey('CA-12.10 · RF-12.6 · solo se intercambian semanas de la misma temporada (baja ≠ alta).'))
+      .toBe('calendar.swaps.validation.different_season')
+    expect(swapErrorKey('CA-12.11 · la solicitud ya fue resuelta.'))
+      .toBe('calendar.swaps.validation.already_resolved')
+    expect(swapErrorKey('CA-12.10 · RF-12.6 · el intercambio exige un motivo.'))
+      .toBe('calendar.swaps.validation.reason_required')
+    expect(swapErrorKey('CA-17.4 · solo el Administrador asignado resuelve solicitudes de intercambio.'))
+      .toBe('calendar.swaps.validation.not_allowed')
+    // Lo que no cita ninguna regla conocida se deja al mensaje genérico de quien llama.
+    expect(swapErrorKey('algo se rompió')).toBeNull()
   })
 })
 

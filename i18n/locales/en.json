@@ -919,13 +919,16 @@
         "week_not_owned": "Each week must belong to the given fraction.",
         "different_season": "Only weeks of the same season can be swapped.",
         "reason_required": "The swap needs a reason.",
-        "week_locked": "These weeks are already confirmed or released: {weeks}."
+        "week_locked": "Week {weeks} is already confirmed or released, and such a week does not move. Cancel the confirmation first.",
+        "already_resolved": "This request has already been resolved.",
+        "not_allowed": "You do not have permission to do this."
       },
       "errors": {
         "swap_failed": "We could not apply the swap.",
         "request_failed": "We could not send the request.",
         "resolve_failed": "We could not resolve the request."
-      }
+      },
+      "blocked": "Cannot approve: week {weeks} is already confirmed or released. Only rejecting is left, or cancel the confirmation first."
     },
     "weeks": {
       "title": "My calendar",

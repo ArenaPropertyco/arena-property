@@ -312,6 +312,21 @@ describe('SwapRequestsList', () => {
     expect(lista.emitted('resolver')?.[1]).toEqual(['r1', true, null])
   })
 
+  it('CA-12.11 · RF-12.9 · si una semana se confirmó después de pedir, no deja aprobar y lo explica', async () => {
+    const lista = await mountSuspended(SwapRequestsList, {
+      props: { requests, canResolve: true, lockedWeeks: new Set([24]), ocupadaId: null },
+    })
+
+    expect(lista.find('[data-test="bloqueada-r1"]').text()).toContain('25')
+    expect(lista.find('[data-test="aprobar-r1"]').attributes('disabled')).toBeDefined()
+
+    // Rechazar con motivo sigue siendo posible: es lo único que queda por hacer.
+    await lista.find('[data-test="motivo-rechazo-r1"]').setValue('La semana ya está confirmada')
+    await lista.find('form').trigger('submit')
+    await flushPromises()
+    expect(lista.emitted('resolver')?.[0]).toEqual(['r1', false, 'La semana ya está confirmada'])
+  })
+
   it('RF-12.6 · el Propietario ve el estado y no puede resolver', async () => {
     const lista = await mountSuspended(SwapRequestsList, { props: { requests, canResolve: false, ocupadaId: null } })
     expect(lista.find('[data-test="estado-r1"]').text()).toContain('Pendiente')

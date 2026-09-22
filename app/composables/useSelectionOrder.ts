@@ -1,4 +1,5 @@
 import type { ReassignmentProposal } from '#shared/scheduling/reassignment'
+import { swapErrorKey } from '#shared/scheduling/swaps'
 import type { SwapProposal, AllocationEntry } from '#shared/scheduling/swaps'
 import type { Temporada } from '#shared/scheduling/temporadas'
 import type { SelectionTurnListed, SwapRequestListed } from '#shared/scheduling/vistas'
@@ -167,7 +168,8 @@ export function useSelectionOrder(calendarId: Ref<string | null>, propertyId: Re
   async function resolver(id: string, aprobar: boolean, motivo: string | null): Promise<ResultadoDeEscritura> {
     const { error } = await client.rpc('resolve_swap_request', { request: id, approve: aprobar, reason: motivo ?? undefined })
     if (error) {
-      return { ok: false, clave: 'calendar.swaps.errors.resolve_failed' }
+      // RF-12.9 · la base sabe por qué no se puede; decirlo es la mitad del arreglo.
+      return { ok: false, clave: swapErrorKey(error.message) ?? 'calendar.swaps.errors.resolve_failed' }
     }
     await consulta.refresh()
     return { ok: true }
