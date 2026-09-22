@@ -7,7 +7,7 @@
  */
 
 import type { Dia } from './rejilla'
-import type { RelocationWindow, TurnSlot } from './relocation'
+import type { FractionWindow, RelocationWindow, TurnSlot } from './relocation'
 import type { Temporada } from './temporadas'
 
 /** Un turno del año tal como se lista: fracción, posición y cuánto lleva elegido (D-32). */
@@ -69,4 +69,11 @@ export interface SelectionWindowListed extends RelocationWindow {
   id: string
   closesAt: string
   turns: RelocationTurnListed[]
+}
+
+/** Una ventana individual abierta por el Superadmin, tal como la ve quien gestiona (RF-59.9, D-47). */
+export interface FractionWindowListed extends FractionWindow {
+  id: string
+  fraction: number
+  ownerName: string | null
 }

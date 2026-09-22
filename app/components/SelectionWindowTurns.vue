@@ -7,17 +7,19 @@ import type { SelectionWindowListed } from '#shared/scheduling/vistas'
 
 /**
  * HU-59 · RF-59.1, RF-59.6 · D-36 — la ventana tal como la ve quien gestiona: en
- * qué fase está, la franja de cada fracción con su estado ahora mismo y el cierre
- * anticipado (CA-59.7).
+ * qué fase está, la franja de cada fracción con su estado ahora mismo, el cierre
+ * anticipado (CA-59.7) y, cerrada, la reapertura para quien puede (D-47).
  */
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   window: SelectionWindowListed
   now: string
   canClose: boolean
+  /** RF-59.6 · D-47 · reabrir es del Superadmin. */
+  canReopen?: boolean
   cerrando: boolean
-}>()
+}>(), { canReopen: false })
 
-const emit = defineEmits<{ cerrar: [] }>()
+const emit = defineEmits<{ cerrar: [], reabrir: [] }>()
 
 const { t, locale } = useI18n()
 
@@ -76,6 +78,16 @@ function stateOf(fraction: number): RelocationTurnState {
         :label="t('calendar.relocation.close')"
         data-test="cerrar-ventana"
         @click="emit('cerrar')"
+      />
+      <UButton
+        v-else-if="canReopen && phase === 'closed'"
+        variant="outline"
+        size="sm"
+        icon="i-lucide-door-open"
+        :loading="cerrando"
+        :label="t('calendar.relocation.reopen')"
+        data-test="reabrir-ventana"
+        @click="emit('reabrir')"
       />
     </div>
 

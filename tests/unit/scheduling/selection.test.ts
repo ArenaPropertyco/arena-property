@@ -108,6 +108,12 @@ describe('CA-12.5 · cada fracción elige solo cuando le llega el turno', () => 
     expect(turnOf(turns(), 1)).toEqual({ position: 1, canSelect: false, done: false, waitingFor: 3 })
   })
 
+  it('RF-59.9 · D-47 · con ventana individual la fracción elige sin esperar y aunque no tenga turno; si ya eligió, no', () => {
+    expect(turnOf(turns(), 1, undefined, true)).toEqual({ position: 1, canSelect: true, done: false, waitingFor: null })
+    expect(turnOf(turns(), 9, undefined, true)).toEqual({ position: null, canSelect: true, done: false, waitingFor: null })
+    expect(turnOf(turns({ 3: 6 }), 3, undefined, true)).toMatchObject({ canSelect: false, done: true })
+  })
+
   it('CA-12.5 · con la primera completa, la segunda elige; la tercera espera a la segunda', () => {
     const state = turns({ 3: 6 })
     expect(turnOf(state, 1)).toMatchObject({ canSelect: true, waitingFor: null })
