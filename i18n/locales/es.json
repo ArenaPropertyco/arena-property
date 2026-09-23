@@ -25,7 +25,9 @@
     "referralProgram": "Programa de Referidos",
     "weekHistory": "Mis semanas",
     "referrals": "Mis referidos",
-    "broadcasts": "Comunicados"
+    "broadcasts": "Comunicados",
+    "reports": "Reportes",
+    "metrics": "Métricas"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -168,7 +170,10 @@
     "enforcedByDatabase": "También en la base",
     "adjusted": "Permiso actualizado.",
     "adjustFailed": "No se pudo actualizar el permiso.",
-    "readOnlyMatrix": "Solo el Superadmin puede editar los permisos."
+    "readOnlyMatrix": "Solo el Superadmin puede editar los permisos.",
+    "status": "Estado",
+    "suspend": "Suspender",
+    "reactivate": "Reactivar"
   },
   "admins": {
     "title": "Administradores de propiedad",
@@ -202,7 +207,36 @@
     "propertiesFailed": "No pudimos actualizar las propiedades."
   },
   "account": {
-    "menu": "Menú de cuenta"
+    "menu": "Menú de cuenta",
+    "suspension": {
+      "title": "Suspender cuenta",
+      "subtitle": "Vas a suspender a {account}. Pierde el acceso al panel en el acto; puedes reactivarla cuando quieras.",
+      "kind": "Tipo de suspensión",
+      "kinds": {
+        "administrative": "Administrativa",
+        "breach_or_fraud": "Por incumplimiento o fraude"
+      },
+      "effects": {
+        "administrative": "Si es Embajador, conserva todo su saldo y puede retirarlo.",
+        "breach_or_fraud": "Si es Embajador, pierde lo pendiente y lo en gracia; sobre lo disponible decides tú y queda constancia."
+      },
+      "fraudWarning": "Las comisiones pendientes y en gracia se cancelan en el acto y no se recuperan al reactivar.",
+      "reason": "Motivo",
+      "reasonPlaceholder": "Qué pasó y por qué se suspende.",
+      "submit": "Suspender la cuenta",
+      "suspended": "Cuenta suspendida.",
+      "reactivated": "Cuenta reactivada.",
+      "validation": {
+        "reason_required": "La suspensión necesita un motivo.",
+        "kind_required": "Elige el tipo de suspensión."
+      },
+      "errors": {
+        "not_allowed": "Solo el Superadmin suspende o reactiva cuentas, y nunca a un Superadmin.",
+        "already_suspended": "Esa cuenta ya está suspendida.",
+        "failed": "No pudimos suspender la cuenta.",
+        "reactivate_failed": "No pudimos reactivar la cuenta."
+      }
+    }
   },
   "properties": {
     "title": "Propiedades",
@@ -2390,5 +2424,73 @@
       "only_superadmin": "Solo el Superadmin envía comunicados globales.",
       "send_failed": "No pudimos enviar el comunicado."
     }
+  },
+  "reports": {
+    "title": "Reporte financiero",
+    "subtitle": "Ingresos y egresos de todas las propiedades por periodo, categoría y medio de pago. El libro de cada propiedad y el libro de Arena van por separado; solo se consolidan aquí.",
+    "export": "Exportar CSV",
+    "property": "Propiedad",
+    "allProperties": "Todas las propiedades",
+    "admin": "Administrador",
+    "allAdmins": "Todos los administradores",
+    "from": "Desde",
+    "to": "Hasta",
+    "clear": "Limpiar",
+    "propertyBook": "Libro de propiedades",
+    "platformBook": "Libro de Arena",
+    "consolidated": "Consolidado",
+    "income": "Ingresos",
+    "expenses": "Egresos",
+    "net": "Neto",
+    "columns": {
+      "book": "Libro",
+      "property": "Propiedad",
+      "kind": "Clase",
+      "category": "Categoría",
+      "method": "Medio de pago",
+      "total": "Total"
+    },
+    "books": {
+      "property": "Propiedad",
+      "platform": "Arena"
+    },
+    "kinds": {
+      "expense": "Egreso",
+      "income": "Ingreso"
+    },
+    "empty": "No hay movimientos para este filtro.",
+    "loading": "Cargando el reporte…",
+    "error": "No pudimos cargar el reporte."
+  },
+  "metrics": {
+    "title": "Métricas globales",
+    "subtitle": "Toda la plataforma de un vistazo: propiedades, fracciones, cuentas y comisiones, con sus series por periodo.",
+    "period": "Periodo",
+    "periods": {
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "yearly": "Anual"
+    },
+    "kpis": {
+      "properties": "Propiedades",
+      "fractionsSold": "Fracciones vendidas",
+      "soldShare": "{share} del total",
+      "activeAdmins": "Administradores activos",
+      "owners": "Propietarios",
+      "activeAmbassadors": "Embajadores activos",
+      "commissionsGenerated": "Comisiones generadas",
+      "pending": "Pendientes",
+      "released": "Liberadas",
+      "paid": "Pagadas"
+    },
+    "charts": {
+      "title": "Por periodo",
+      "sales": "Fracciones vendidas",
+      "commissions": "Comisiones generadas",
+      "total": "Total:",
+      "empty": "Todavía no hay datos en este periodo."
+    },
+    "loading": "Calculando las métricas…",
+    "error": "No pudimos cargar las métricas."
   }
 }

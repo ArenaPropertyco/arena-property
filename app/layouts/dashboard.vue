@@ -93,6 +93,13 @@ const secciones = computed<NavigationMenuItem[]>(() => [
         { label: t('nav.broadcasts'), icon: 'i-lucide-radio', to: localePath('/panel/comunicados') },
       ]
     : []),
+  // HU-25 · RF-25.5 · HU-32 · RF-32.3 · el reporte y el dashboard globales son solo del Superadmin.
+  ...(roles.value.includes('superadmin')
+    ? [
+        { label: t('nav.reports'), icon: 'i-lucide-file-spreadsheet', to: localePath('/panel/reportes') },
+        { label: t('nav.metrics'), icon: 'i-lucide-bar-chart-3', to: localePath('/panel/metricas') },
+      ]
+    : []),
 ])
 </script>
 

@@ -5,6 +5,7 @@
  * Propietario (HU-18).
  */
 
+export * from './csv'
 export * from './cuotas'
 export * from './detalle'
 export * from './estado-de-cuenta'
@@ -13,4 +14,5 @@ export * from './maestra'
 export * from './mantenimiento'
 export * from './movimientos'
 export * from './portafolio'
+export * from './reportes'
 export * from './vistas'

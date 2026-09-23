@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
 
-  // Los 13 módulos base de docs/stack.md. Ninguno se agrega sin entrada previa ahí.
+  // Los 14 módulos base de docs/stack.md. Ninguno se agrega sin entrada previa ahí.
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@formkit/auto-animate/nuxt',
     '@tresjs/nuxt',
     'nuxt-aos',
+    'nuxt-charts',
     'nuxt-gtag',
     '@nuxt/test-utils/module',
   ],
@@ -105,6 +106,18 @@ export default defineNuxtConfig({
   // proveedor de imagen necesita conocer el dominio para optimizarlas.
   image: {
     domains: [process.env.NUXT_PUBLIC_SUPABASE_URL ?? 'http://127.0.0.1:54321'].map(url => new URL(url).host),
+  },
+
+  // RT-12 · DT-01 · del catálogo de `nuxt-charts` solo entra el gráfico de barras
+  // que pide HU-32: ni mapas, ni TopoJSON, ni los ayudantes geográficos. Sin
+  // auto-imports el módulo no ensucia el espacio global con sus enumeraciones, y
+  // sin registro global el gráfico viaja en el paquete de `/panel/metricas`, que
+  // es la única vista que lo usa, en vez de en el de toda la aplicación.
+  // La clave es `nuxtChartsLegacy` porque así la declara el propio módulo.
+  nuxtChartsLegacy: {
+    autoImports: false,
+    global: false,
+    include: ['BarChart'],
   },
 
   // Ninguna HU pide imágenes OG generadas y el renderizador exige una dependencia

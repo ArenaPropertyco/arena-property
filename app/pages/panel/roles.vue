@@ -4,10 +4,16 @@ import type { AjusteDeCapacidad } from '#shared/permissions/mapa'
 import { filasDeMatriz, puede } from '#shared/permissions/mapa'
 import type { Rol } from '#shared/permissions/roles'
 
+import type { TipoDeSuspension } from '#shared/identity/suspension'
+
 /**
  * HU-07 · RF-07.3 — gestión de roles del Superadmin: ver y ajustar los permisos por
  * módulo, y asignar o retirar roles a cuentas. La página orquesta; la base decide
  * quién puede (RLS) y deja constancia de cada cambio (RF-07.4).
+ *
+ * HU-33 · RF-33.1…RF-33.6 · D-07 — desde la misma lista se suspende una cuenta,
+ * con motivo y tipo, y se reactiva. La base aplica el efecto sobre el saldo y el
+ * código de referido y audita los dos eventos.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'administrar_usuarios_y_roles' } })
 
@@ -15,7 +21,11 @@ const { t } = useI18n()
 const toast = useToast()
 const { cuentas, pendiente, otorgar, retirar } = useRoles()
 const { matriz, ajustar, pendiente: guardando } = usePermisos()
-const { roles: rolesPropios } = useCuenta()
+const { roles: rolesPropios, idDeCuenta } = useCuenta()
+const { suspender, reactivar } = useSuspension()
+
+const suspendiendo = ref<CuentaConRoles | null>(null)
+const ocupadoConSuspension = ref(false)
 
 const filas = computed(() => filasDeMatriz(matriz.value))
 // La matriz se edita solo con la capacidad; RLS lo vuelve a comprobar al escribir.
@@ -38,6 +48,28 @@ async function otorgarRol(cuenta: CuentaConRoles, rol: Rol) {
     title: resultado === 'combinacion_invalida' ? t('roles.invalidCombination') : t('auth.errors.unknown'),
     color: 'error',
   })
+}
+
+async function confirmarSuspension(kind: TipoDeSuspension, reason: string) {
+  if (!suspendiendo.value) {
+    return
+  }
+  ocupadoConSuspension.value = true
+  const resultado = await suspender(suspendiendo.value.id, kind, reason)
+  ocupadoConSuspension.value = false
+  if (resultado.ok) {
+    suspendiendo.value = null
+  }
+  toast.add(resultado.ok
+    ? { title: t('account.suspension.suspended'), color: 'success' }
+    : { title: t(resultado.clave), color: 'error' })
+}
+
+async function reactivarCuenta(cuenta: CuentaConRoles) {
+  const resultado = await reactivar(cuenta.id)
+  toast.add(resultado.ok
+    ? { title: t('account.suspension.reactivated'), color: 'success' }
+    : { title: t(resultado.clave), color: 'error' })
 }
 
 async function retirarRol(cuenta: CuentaConRoles, rol: Rol) {
@@ -69,10 +101,29 @@ async function retirarRol(cuenta: CuentaConRoles, rol: Rol) {
         <AccountsRolesTable
           :cuentas="cuentas"
           :pendiente="pendiente"
+          :id-del-actor="idDeCuenta"
+          :roles-del-actor="rolesPropios"
           @otorgar="otorgarRol"
           @retirar="retirarRol"
+          @suspender="suspendiendo = $event"
+          @reactivar="reactivarCuenta"
         />
       </div>
     </div>
+
+    <UModal
+      :open="suspendiendo !== null"
+      :title="t('account.suspension.title')"
+      @update:open="suspendiendo = $event ? suspendiendo : null"
+    >
+      <template #body>
+        <SuspendAccountForm
+          v-if="suspendiendo"
+          :cuenta="suspendiendo"
+          :enviando="ocupadoConSuspension"
+          @submit="confirmarSuspension"
+        />
+      </template>
+    </UModal>
   </PanelPage>
 </template>

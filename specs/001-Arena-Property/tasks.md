@@ -630,7 +630,7 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 - [ ] **T-253 · Buscador de propiedades del Administrador** — `HU-22 · RF-22.1, RF-22.2, RF-22.3`
   Hecho cuando: pasan `CA-22.1`, `CA-22.2` y `CA-22.3`.
 
-## Paso 4 · HU-55, HU-56, HU-57 — Billetera y retiros
+## Paso 4 · HU-55, HU-56, HU-57 —   
 
 - [ ] **T-254 · Migración de `wallet_movements`** — `HU-55 · RF-55.2`
   Hecho cuando: existe con RLS y registra acreditación, paso a disponible, reversa, solicitud y pago.

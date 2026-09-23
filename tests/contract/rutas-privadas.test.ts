@@ -6,6 +6,8 @@ import { describe, expect, it } from 'vitest'
  * Contrato de HU-04 · RF-04.2 y HU-07 · RF-07.2: toda página bajo el panel declara
  * su requisito de acceso, y la guarda es global. Así no existe una página privada
  * "que se olvidó" de protegerse: la decisión la toma `decidirAcceso`, probada en N1.
+ * Los requisitos válidos son los tres de `Requisito`: `privada`, `capacidad` y
+ * `soloSuperadmin` (HU-25 · RF-25.5, HU-32 · RF-32.3).
  */
 
 const raiz = process.cwd()
@@ -40,9 +42,9 @@ describe('RF-04.2 / RF-07.2 · rutas privadas', () => {
     expect(privadas.length).toBeGreaterThan(0)
   })
 
-  it.each(privadas)('%s declara `acceso` con `privada` o `capacidad`', (ruta) => {
+  it.each(privadas)('%s declara `acceso` con `privada`, `capacidad` o `soloSuperadmin`', (ruta) => {
     const contenido = readFileSync(resolve(raiz, ruta), 'utf8')
 
-    expect(contenido).toMatch(/definePageMeta\(\{[\s\S]*?acceso:\s*\{[\s\S]*?(privada:\s*true|capacidad:\s*')/)
+    expect(contenido).toMatch(/definePageMeta\(\{[\s\S]*?acceso:\s*\{[\s\S]*?(privada:\s*true|capacidad:\s*'|soloSuperadmin:\s*true)/)
   })
 })

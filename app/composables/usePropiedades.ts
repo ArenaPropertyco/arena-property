@@ -52,6 +52,7 @@ export function usePropiedades() {
         id: fila.id ?? '',
         name: fila.name ?? '',
         region: fila.region ?? '',
+        city: fila.city ?? '',
         visibility: (fila.visibility ?? 'draft') as Visibilidad,
         // `commercial_status` es null mientras no esté fraccionada; la interfaz lo
         // dice, no lo rellena (principio 9).

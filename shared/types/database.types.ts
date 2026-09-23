@@ -3273,6 +3273,8 @@ export type Database = {
         Args: { calendar: string; fraction_number: number; hours?: number }
         Returns: string
       }
+      platform_metrics: { Args: never; Returns: Json }
+      reactivate_account: { Args: { account: string }; Returns: undefined }
       reassign_week: {
         Args: {
           calendar: string
@@ -3478,6 +3480,14 @@ export type Database = {
       suggested_selection_order: {
         Args: { calendar: string }
         Returns: number[]
+      }
+      suspend_account: {
+        Args: {
+          account: string
+          kind: Database["public"]["Enums"]["suspension_kind"]
+          reason: string
+        }
+        Returns: undefined
       }
       swap_weeks: {
         Args: {

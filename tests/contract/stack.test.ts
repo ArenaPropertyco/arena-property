@@ -46,8 +46,8 @@ const desarrollo = paquetesDeParrafo(seccion('## Dependencias de desarrollo perm
 const aprobadas = new Set([...PLATAFORMA, ...modulosBase, ...complementos, ...desarrollo])
 
 describe('RT-01 · stack cerrado', () => {
-  it('stack.md declara los 13 módulos base', () => {
-    expect(modulosBase).toHaveLength(13)
+  it('stack.md declara los 14 módulos base', () => {
+    expect(modulosBase).toHaveLength(14)
   })
 
   it('ninguna dependencia de package.json está fuera de stack.md', () => {
@@ -60,7 +60,7 @@ describe('RT-01 · stack cerrado', () => {
     expect(noAprobadas).toEqual([])
   })
 
-  it('los 13 módulos base están instalados', () => {
+  it('los 14 módulos base están instalados', () => {
     const instaladas = new Set([
       ...Object.keys(packageJson.dependencies ?? {}),
       ...Object.keys(packageJson.devDependencies ?? {}),
@@ -80,7 +80,7 @@ describe('RT-01 · stack cerrado', () => {
     expect(faltantes).toEqual([])
   })
 
-  it('los 13 módulos base están registrados en nuxt.config.ts', () => {
+  it('los 14 módulos base están registrados en nuxt.config.ts', () => {
     const faltantes = modulosBase.filter(nombre => !nuxtConfig.includes(nombre))
 
     expect(faltantes).toEqual([])
