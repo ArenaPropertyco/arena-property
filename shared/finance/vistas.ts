@@ -62,3 +62,71 @@ export interface FraccionImputableListada extends FraccionImputable {
   /** Nombre o correo del titular (D-16); `null` si no está vendida. */
   ownerLabel: string | null
 }
+
+// ── HU-62 · la billetera del Propietario tal como la leen composables y vistas ─
+
+/** HU-62 · RF-62.7 · un pago tal como lo lista el cobro, con el nombre del medio. */
+export interface OwnerPaymentListed {
+  id: string
+  chargeId: string
+  amount: CopAmount
+  paidOn: string
+  paymentMethodName: string
+  description: string
+  receiptPath: string | null
+  channel: 'manual' | 'gateway'
+  provider: string | null
+  externalReference: string | null
+  status: 'reported' | 'confirmed' | 'rejected'
+  reportedAt: string
+  resolvedOn: string | null
+  rejectionReason: string | null
+}
+
+/** HU-62 · RF-62.6 · un cobro con sus pagos y el nombre de su propiedad. */
+export interface OwnerChargeListed {
+  id: string
+  ownerId: string
+  propertyId: string
+  propertyName: string
+  /** `AAAA-MM` · el mes cuyo corte lo emitió. */
+  period: string
+  amount: CopAmount
+  paidAmount: CopAmount
+  status: 'pending' | 'under_review' | 'paid'
+  payments: OwnerPaymentListed[]
+}
+
+/** HU-62 · RF-62.14 · un corte mensual tal como se lista en el histórico. */
+export interface OwnerStatementListed {
+  id: string
+  propertyId: string
+  propertyName: string
+  fractionNumber: number
+  /** `AAAA-MM`. */
+  period: string
+  income: CopAmount
+  expenses: CopAmount
+  net: CopAmount
+  /** RF-62.5 · alguna de sus líneas viene de un mes anterior. */
+  hasAdjustments: boolean
+  closedAt: string
+}
+
+/** HU-62 · RF-62.9 · una solicitud de retiro con el nombre de su propiedad. */
+export interface OwnerWithdrawalListed {
+  id: string
+  ownerId: string
+  propertyId: string
+  propertyName: string
+  amount: CopAmount
+  status: 'requested' | 'paid' | 'rejected'
+  requestedOn: string
+  resolvedOn: string | null
+  rejectionReason: string | null
+  receiptPath: string | null
+  bank: string
+  accountKind: 'savings' | 'checking'
+  accountNumber: string
+  holder: string
+}

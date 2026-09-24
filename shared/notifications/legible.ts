@@ -7,17 +7,20 @@
  * y una fecha con la del idioma, sin que ninguna vista formatee por su cuenta.
  */
 
-import { formatearDia } from '../dates/formato'
+import { formatearDia, formatearMes } from '../dates/formato'
 import { formatearImporte } from '../money/formato'
 import type { Idioma } from '../money/formato'
 import { esImporte } from '../money/importe'
 import type { CargaDeNotificacion } from './tipos'
 
 /** Campos que llevan un importe entero en pesos. */
-const CAMPOS_DE_IMPORTE: ReadonlySet<string> = new Set(['amount'])
+const CAMPOS_DE_IMPORTE: ReadonlySet<string> = new Set(['amount', 'balance'])
 
 /** Campos que llevan un día de calendario. */
-const CAMPOS_DE_DIA: ReadonlySet<string> = new Set(['available_on', 'check_in', 'check_out'])
+const CAMPOS_DE_DIA: ReadonlySet<string> = new Set(['available_on', 'check_in', 'check_out', 'paid_on'])
+
+/** Campos que llevan un mes `AAAA-MM` (HU-62 · el periodo del corte). */
+const CAMPOS_DE_MES: ReadonlySet<string> = new Set(['period'])
 
 /** Cada valor de la carga como texto legible; lo nulo queda vacío, nunca «null». */
 export function cargaLegible(carga: CargaDeNotificacion, idioma: Idioma): Record<string, string> {
@@ -30,6 +33,9 @@ export function cargaLegible(carga: CargaDeNotificacion, idioma: Idioma): Record
     }
     if (CAMPOS_DE_DIA.has(campo) && typeof valor === 'string') {
       return [campo, formatearDia(valor, idioma)]
+    }
+    if (CAMPOS_DE_MES.has(campo) && typeof valor === 'string') {
+      return [campo, formatearMes(valor, idioma)]
     }
     return [campo, String(valor)]
   }))

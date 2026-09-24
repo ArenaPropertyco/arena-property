@@ -25,7 +25,12 @@
     "referralProgram": "Referral Program",
     "weekHistory": "My weeks",
     "referrals": "My referrals",
-    "broadcasts": "Broadcasts"
+    "broadcasts": "Broadcasts",
+    "reports": "Reports",
+    "metrics": "Metrics",
+    "wallet": "My wallet",
+    "withdrawals": "Withdrawals",
+    "ownerWallet": "My wallet"
   },
   "actions": {
     "login": "Log in",
@@ -168,7 +173,10 @@
     "enforcedByDatabase": "Also in the database",
     "adjusted": "Permission updated.",
     "adjustFailed": "The permission could not be updated.",
-    "readOnlyMatrix": "Only the Superadmin can edit permissions."
+    "readOnlyMatrix": "Only the Superadmin can edit permissions.",
+    "status": "Status",
+    "suspend": "Suspend",
+    "reactivate": "Reactivate"
   },
   "admins": {
     "title": "Property administrators",
@@ -202,7 +210,36 @@
     "propertiesFailed": "We could not update the properties."
   },
   "account": {
-    "menu": "Account menu"
+    "menu": "Account menu",
+    "suspension": {
+      "title": "Suspend account",
+      "subtitle": "You are about to suspend {account}. They lose access to the panel immediately; you can reactivate them at any time.",
+      "kind": "Suspension type",
+      "kinds": {
+        "administrative": "Administrative",
+        "breach_or_fraud": "For breach or fraud"
+      },
+      "effects": {
+        "administrative": "If they are an ambassador, they keep their whole balance and can withdraw it.",
+        "breach_or_fraud": "If they are an ambassador, they lose what is pending and in grace; you decide on what is available, on the record."
+      },
+      "fraudWarning": "Pending and in-grace commissions are cancelled immediately and are not recovered on reactivation.",
+      "reason": "Reason",
+      "reasonPlaceholder": "What happened and why the account is suspended.",
+      "submit": "Suspend the account",
+      "suspended": "Account suspended.",
+      "reactivated": "Account reactivated.",
+      "validation": {
+        "reason_required": "The suspension needs a reason.",
+        "kind_required": "Choose the suspension type."
+      },
+      "errors": {
+        "not_allowed": "Only the Superadmin suspends or reactivates accounts, and never a Superadmin.",
+        "already_suspended": "That account is already suspended.",
+        "failed": "We could not suspend the account.",
+        "reactivate_failed": "We could not reactivate the account."
+      }
+    }
   },
   "properties": {
     "title": "Properties",
@@ -791,6 +828,30 @@
       "withdrawal_paid": {
         "title": "Withdrawal paid",
         "body": "The {amount} withdrawal was paid to your account."
+      },
+      "owner_statement_closed": {
+        "title": "{period} statement for {property_name}",
+        "body": "The month net was {amount} and your balance for the property is now {balance}."
+      },
+      "owner_payment_reported": {
+        "title": "Payment reported at {property_name}",
+        "body": "An owner reported a {amount} payment. Review the receipt and confirm or reject it."
+      },
+      "owner_payment_confirmed": {
+        "title": "Payment confirmed",
+        "body": "We confirmed your {amount} payment at {property_name}."
+      },
+      "owner_payment_rejected": {
+        "title": "Payment rejected",
+        "body": "We could not confirm your {amount} payment at {property_name}. Reason: {reason}"
+      },
+      "owner_withdrawal_paid": {
+        "title": "Withdrawal paid",
+        "body": "The {amount} withdrawal from {property_name} was paid to your account."
+      },
+      "owner_withdrawal_rejected": {
+        "title": "Withdrawal rejected",
+        "body": "We could not pay your {amount} withdrawal from {property_name}. Reason: {reason}"
       }
     }
   },
@@ -2389,6 +2450,391 @@
     "errors": {
       "only_superadmin": "Only the Superadmin sends global broadcasts.",
       "send_failed": "We could not send the broadcast."
+    }
+  },
+  "reports": {
+    "title": "Financial report",
+    "subtitle": "Income and expenses across every property by period, category and payment method. Each property's book and Arena's book stay apart; they only consolidate here.",
+    "export": "Export CSV",
+    "property": "Property",
+    "allProperties": "All properties",
+    "admin": "Administrator",
+    "allAdmins": "All administrators",
+    "from": "From",
+    "to": "To",
+    "clear": "Clear",
+    "propertyBook": "Property book",
+    "platformBook": "Arena book",
+    "consolidated": "Consolidated",
+    "income": "Income",
+    "expenses": "Expenses",
+    "net": "Net",
+    "columns": {
+      "book": "Book",
+      "property": "Property",
+      "kind": "Kind",
+      "category": "Category",
+      "method": "Payment method",
+      "total": "Total"
+    },
+    "books": {
+      "property": "Property",
+      "platform": "Arena"
+    },
+    "kinds": {
+      "expense": "Expense",
+      "income": "Income"
+    },
+    "empty": "No movements match this filter.",
+    "loading": "Loading the report…",
+    "error": "We could not load the report."
+  },
+  "metrics": {
+    "title": "Global metrics",
+    "subtitle": "The whole platform at a glance: properties, fractions, accounts and commissions, with their series by period.",
+    "period": "Period",
+    "periods": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "kpis": {
+      "properties": "Properties",
+      "fractionsSold": "Fractions sold",
+      "soldShare": "{share} of the total",
+      "activeAdmins": "Active administrators",
+      "owners": "Owners",
+      "activeAmbassadors": "Active ambassadors",
+      "commissionsGenerated": "Commissions generated",
+      "pending": "Pending",
+      "released": "Released",
+      "paid": "Paid"
+    },
+    "charts": {
+      "title": "By period",
+      "sales": "Fractions sold",
+      "commissions": "Commissions generated",
+      "total": "Total:",
+      "empty": "No data in this period yet."
+    },
+    "loading": "Calculating the metrics…",
+    "error": "We could not load the metrics."
+  },
+  "wallet": {
+    "title": "My wallet",
+    "subtitle": "What you have earned with the Referral Program: pending, in grace, available to withdraw today and the all-time total. Balances are derived from the movement history, never from a counter.",
+    "loading": "Loading your wallet…",
+    "notAmbassador": "Your Ambassador enrollment is not approved yet. The wallet opens once it is.",
+    "balances": {
+      "pending": "Pending balance",
+      "pendingHint": "Referrals paying their plan",
+      "inGrace": "Balance in grace",
+      "inGraceHint": "Credited, not withdrawable yet",
+      "availableOn": "Available from {date}",
+      "available": "Available to withdraw",
+      "availableHint": "What you can withdraw today",
+      "totalEarned": "Total earned",
+      "totalEarnedHint": "All-time credited"
+    },
+    "movements": {
+      "title": "Movements",
+      "empty": "There are no movements in your wallet yet.",
+      "emptyFiltered": "No movement matches the filters.",
+      "columns": {
+        "kind": "Movement",
+        "date": "Date",
+        "referral": "Referral",
+        "amount": "Amount"
+      },
+      "kinds": {
+        "commission_credited": "Commission credited",
+        "commission_available": "Commission available",
+        "commission_reversed": "Commission reversed",
+        "withdrawal_requested": "Withdrawal requested",
+        "withdrawal_approved": "Withdrawal approved",
+        "withdrawal_paid": "Withdrawal paid"
+      },
+      "propertyLine": "{property} · fraction {fraction}/8",
+      "graceLine": "Available on {date}",
+      "withdrawalStatus": "Request {status}"
+    },
+    "filters": {
+      "kind": "Type",
+      "allKinds": "All movements",
+      "from": "From",
+      "to": "To",
+      "clear": "Clear filters"
+    },
+    "withdrawal": {
+      "title": "Request a withdrawal",
+      "hint": "Withdraw part or all of your available balance. The minimum per withdrawal is {minimum}; today you can withdraw up to {available}.",
+      "amount": "Amount to withdraw",
+      "amountHint": "Whole pesos, no decimals",
+      "submit": "Request withdrawal",
+      "sent": "Your withdrawal request was recorded. We will let you know once it is approved.",
+      "open": "You have a withdrawal request in progress. You can request another once it is resolved.",
+      "requestsTitle": "Your withdrawal requests",
+      "validation": {
+        "amount_required": "Enter how much you want to withdraw.",
+        "below_minimum": "The amount is below the minimum per withdrawal.",
+        "above_available": "The amount exceeds your available balance.",
+        "open_request": "You already have an open withdrawal request."
+      },
+      "errors": {
+        "invalid_transition": "The request does not allow that status change.",
+        "reason_required": "A rejection needs a reason.",
+        "receipt_required": "The payment needs the receipt.",
+        "request_failed": "We could not record your withdrawal request."
+      }
+    },
+    "receipt": {
+      "validation": {
+        "format": "The receipt must be a PDF or an image (JPG, PNG or WebP).",
+        "empty": "The file is empty.",
+        "too_large": "The receipt cannot exceed 10 MB."
+      }
+    },
+    "minimum": {
+      "validation": {
+        "not_positive": "The minimum must be a whole number greater than zero."
+      }
+    },
+    "requests": {
+      "empty": "There are no withdrawal requests.",
+      "columns": {
+        "ambassador": "Ambassador",
+        "amount": "Amount",
+        "requestedOn": "Requested",
+        "status": "Status",
+        "bank": "Bank account",
+        "actions": "Actions"
+      },
+      "status": {
+        "requested": "Requested",
+        "approved": "Approved",
+        "paid": "Paid",
+        "rejected": "Rejected"
+      },
+      "available": "Available: {amount}",
+      "reason": "Reason: {reason}",
+      "receipt": "View receipt",
+      "bankLine": "{bank} · {kind} · {number}",
+      "holderLine": "Holder: {holder}",
+      "accountKinds": {
+        "savings": "savings",
+        "checking": "checking"
+      }
+    }
+  },
+  "withdrawals": {
+    "title": "Ambassador withdrawals",
+    "subtitle": "Withdrawal requests from the Referral Program. Approving deducts the available balance; paying requires the receipt and creates no new expense: the commission was already accrued when it was credited.",
+    "loading": "Loading requests…",
+    "minimum": {
+      "title": "Minimum per withdrawal",
+      "hint": "No Ambassador can request less than this figure. Today it is {amount}.",
+      "amount": "New minimum",
+      "save": "Save minimum",
+      "saved": "The minimum per withdrawal was updated.",
+      "failed": "We could not update the minimum."
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "pay": "Record payment"
+    },
+    "reject": {
+      "title": "Reject the withdrawal of {name}",
+      "hint": "The reason is recorded and the Ambassador will see it in their wallet. The balance does not change.",
+      "reason": "Rejection reason",
+      "submit": "Reject withdrawal"
+    },
+    "pay": {
+      "title": "Record the payment to {name}",
+      "hint": "Attach the transfer receipt for {amount} to the registered account. Without a receipt the payment is not recorded.",
+      "receipt": "Payment receipt",
+      "receiptHint": "PDF or image, up to 10 MB",
+      "submit": "Record payment"
+    },
+    "done": {
+      "approved": "Withdrawal approved. The Ambassador’s available balance was deducted.",
+      "rejected": "Withdrawal rejected with its reason.",
+      "paid": "Payment recorded with its receipt."
+    },
+    "errors": {
+      "approve_failed": "We could not approve the withdrawal.",
+      "reject_failed": "We could not reject the withdrawal.",
+      "pay_failed": "We could not record the payment.",
+      "receipt_failed": "We could not upload the receipt."
+    }
+  },
+  "ownerWallet": {
+    "title": "My wallet",
+    "subtitle": "What you hold in each property: your income minus your expenses. On the 1st of each month the previous month is closed: a negative balance is due; a positive one can be withdrawn. Each property settles on its own.",
+    "loading": "Loading your wallet…",
+    "empty": "You have no fractions yet: there is no wallet to show.",
+    "balances": {
+      "title": "Balance per property",
+      "consolidated": "Total across your properties",
+      "consolidatedHint": "Informational only: each property is paid and withdrawn separately.",
+      "currentMonth": "Current month (estimated): {amount}",
+      "currentMonthHint": "Changes until the closing on the 1st.",
+      "nature": {
+        "charge": "Due",
+        "payout": "Available to withdraw",
+        "settled": "Settled"
+      }
+    },
+    "charges": {
+      "title": "Charges",
+      "hint": "Each charge comes from a month closed with a negative balance. Report your payment with the receipt and the administration confirms it.",
+      "empty": "You have no pending charges.",
+      "columns": {
+        "period": "Statement",
+        "property": "Property",
+        "amount": "Charge",
+        "pending": "Pending",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "pending": "Pending",
+        "under_review": "Under review",
+        "paid": "Paid"
+      },
+      "report": "Report payment",
+      "payments": "Reported payments",
+      "paymentLine": "{amount} · {date} · {method}",
+      "paymentStatus": {
+        "reported": "Under review",
+        "confirmed": "Confirmed",
+        "rejected": "Rejected"
+      },
+      "reason": "Reason: {reason}",
+      "receipt": "View receipt",
+      "channel": {
+        "manual": "Manual",
+        "gateway": "Gateway"
+      }
+    },
+    "payment": {
+      "title": "Report the payment for {property} · {period}",
+      "hint": "Pending: {pending}. You may report a partial payment; never more than what is pending.",
+      "amount": "Amount paid",
+      "amountHint": "Whole pesos, no decimals",
+      "paidOn": "Payment date",
+      "method": "Payment method",
+      "methodPlaceholder": "Choose the payment method",
+      "description": "Description",
+      "descriptionHint": "Transfer reference, source bank or anything that helps identify it.",
+      "receipt": "Receipt",
+      "receiptHint": "PDF or image (JPG, PNG or WebP) up to 10 MB.",
+      "submit": "Report payment",
+      "sent": "Your payment was reported. The administration will review it and we will let you know.",
+      "validation": {
+        "amount_required": "Enter how much you paid.",
+        "above_charge": "The amount exceeds what is pending on the charge.",
+        "method_required": "Choose the payment method.",
+        "description_required": "Describe the payment.",
+        "date_invalid": "The payment date is not valid.",
+        "receipt_required": "Attach the receipt.",
+        "charge_closed": "This charge is already paid."
+      },
+      "errors": {
+        "invalid_transition": "The payment does not allow that status change.",
+        "reason_required": "A rejection needs a reason.",
+        "report_failed": "We could not register your payment.",
+        "receipt_failed": "We could not upload the receipt."
+      }
+    },
+    "withdrawal": {
+      "title": "Request a withdrawal",
+      "hint": "Withdraw up to the positive balance of a property. We pay it to the account you provide.",
+      "noBalance": "None of your properties has a positive balance to withdraw.",
+      "open": "You have a withdrawal request in progress for {property}. You can request another once it is resolved.",
+      "property": "Property",
+      "propertyPlaceholder": "Choose the property",
+      "available": "Available: {amount}",
+      "amount": "Amount to withdraw",
+      "amountHint": "Whole pesos, no decimals",
+      "bank": "Bank",
+      "accountKind": "Account type",
+      "accountNumber": "Account number",
+      "holder": "Account holder",
+      "submit": "Request withdrawal",
+      "sent": "Your withdrawal request was registered. We will let you know when it is paid.",
+      "requestsTitle": "Your withdrawal requests",
+      "empty": "You have not requested any withdrawals.",
+      "columns": {
+        "property": "Property",
+        "amount": "Amount",
+        "requestedOn": "Requested",
+        "status": "Status"
+      },
+      "status": {
+        "requested": "Requested",
+        "paid": "Paid",
+        "rejected": "Rejected"
+      },
+      "reason": "Reason: {reason}",
+      "receipt": "View receipt",
+      "bankLine": "{bank} · {kind} · {number}",
+      "accountKinds": {
+        "savings": "savings",
+        "checking": "checking"
+      },
+      "validation": {
+        "amount_required": "Enter how much you want to withdraw.",
+        "above_balance": "The amount exceeds the available balance of the property.",
+        "open_request": "You already have an open withdrawal request for that property.",
+        "bank_required": "Enter the bank.",
+        "account_kind_required": "Choose the account type.",
+        "account_required": "Enter the account number.",
+        "holder_required": "Enter the account holder."
+      },
+      "errors": {
+        "invalid_transition": "The request does not allow that status change.",
+        "reason_required": "A rejection needs a reason.",
+        "receipt_required": "The payment needs the receipt.",
+        "request_failed": "We could not register your withdrawal request."
+      }
+    },
+    "statements": {
+      "title": "Monthly statements",
+      "hint": "Each statement closes one month of one fraction. Late items enter the next statement as adjustments, and a closed statement never changes.",
+      "empty": "No statements yet: the first one is made on the 1st of next month.",
+      "columns": {
+        "period": "Month",
+        "property": "Property",
+        "income": "Income",
+        "expenses": "Expenses",
+        "net": "Net"
+      },
+      "fractionLine": "fraction {fraction}/8",
+      "adjustment": "Includes adjustments from earlier months"
+    },
+    "movements": {
+      "title": "Movements",
+      "empty": "There are no movements in your wallet yet.",
+      "columns": {
+        "kind": "Movement",
+        "date": "Date",
+        "property": "Property",
+        "amount": "Amount"
+      },
+      "kinds": {
+        "statement_closed": "Monthly statement",
+        "payment_confirmed": "Payment confirmed",
+        "withdrawal_paid": "Withdrawal paid"
+      },
+      "periodLine": "fraction {fraction}/8 · {period}"
+    },
+    "filters": {
+      "property": "Property",
+      "allProperties": "All properties",
+      "from": "From",
+      "to": "To",
+      "clear": "Clear filters"
     }
   }
 }

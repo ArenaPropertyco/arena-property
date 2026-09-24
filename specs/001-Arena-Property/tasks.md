@@ -559,7 +559,7 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ---
 
-# Sprint 4 — Inventario, comunicación, panel y billetera · 66 SP
+# Sprint 4 — Inventario, comunicación, panel y billetera · 87 SP
 
 ## Paso 1 · HU-26, HU-27, HU-28 — Inventario y mantenimiento
 
@@ -603,70 +603,146 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ## Paso 3 · HU-25, HU-32, HU-33, HU-22 — Panel del Superadmin
 
-- [ ] **T-241 · Agregación pura del reporte financiero** — `HU-25 · RF-25.1, RF-25.4`
+- [x] **T-241 · Agregación pura del reporte financiero** — `HU-25 · RF-25.1, RF-25.4`
   Hecho cuando: pasan `CA-25.1` y `CA-25.2`.
-- [ ] **T-242 · Separación de libro de propiedad y libro de plataforma** — `HU-25 · RF-25.3` · D-01
+- [x] **T-242 · Separación de libro de propiedad y libro de plataforma** — `HU-25 · RF-25.3` · D-01
   Hecho cuando: pasa `CA-25.3`.
-- [ ] **T-243 · Serialización CSV propia** — `HU-25 · RF-25.2` · DT-11
+- [x] **T-243 · Serialización CSV propia** — `HU-25 · RF-25.2` · DT-11
   Hecho cuando: pasan `CA-25.4` y `CA-25.5`.
-- [ ] **T-244 · Acceso exclusivo del Superadmin al reporte** — `HU-25 · RF-25.5`
+- [x] **T-244 · Acceso exclusivo del Superadmin al reporte** — `HU-25 · RF-25.5`
   Hecho cuando: cualquier otro rol recibe denegación.
-- [ ] **T-245 · Cálculo de los KPI globales** — `HU-32 · RF-32.1, RF-32.3`
+- [x] **T-245 · Cálculo de los KPI globales** — `HU-32 · RF-32.1, RF-32.3`
   Hecho cuando: pasan `CA-32.1` y `CA-32.3`, sin doble conteo entre estados de comisión.
-- [ ] **T-246 · Series por periodo con `@unovis/vue`** — `HU-32 · RF-32.2` · `RT-12`, DT-01
+- [x] **T-246 · Series por periodo con `nuxt-charts`** — `HU-32 · RF-32.2` · `RT-12`, DT-01
   Hecho cuando: pasa `CA-32.2` y el componente recibe la serie ya calculada.
-- [ ] **T-247 · Formato de cifras del panel** — `HU-32 · RF-32.4` · `TR-02`
+- [x] **T-247 · Formato de cifras del panel** — `HU-32 · RF-32.4` · `TR-02`
   Hecho cuando: los importes siguen `RF-D.5` y ninguna métrica estimada aparece sin su condición.
-- [ ] **T-248 · Suspensión con motivo y tipo** — `HU-33 · RF-33.1, RF-33.3` · D-07
+- [x] **T-248 · Suspensión con motivo y tipo** — `HU-33 · RF-33.1, RF-33.3` · D-07
   Hecho cuando: pasan `CA-33.1` y `CA-33.2`.
-- [ ] **T-249 · Inhabilitación del código de referido** — `HU-33 · RF-33.2`
+- [x] **T-249 · Inhabilitación del código de referido** — `HU-33 · RF-33.2`
   Hecho cuando: pasa `CA-33.3`.
-- [ ] **T-250 · Efecto de la suspensión sobre el saldo** — `HU-33 · RF-33.3` · `HU-54 · RF-54.7`
+- [x] **T-250 · Efecto de la suspensión sobre el saldo** — `HU-33 · RF-33.3` · `HU-54 · RF-54.7`
   Hecho cuando: pasa `CA-33.5`.
-- [ ] **T-251 · Suspensión de un Propietario con estadías futuras** — `HU-33 · RF-33.4`
+- [x] **T-251 · Suspensión de un Propietario con estadías futuras** — `HU-33 · RF-33.4`
   Hecho cuando: las estadías no se cancelan solas y la decisión del Administrador queda auditada.
-- [ ] **T-252 · Reactivación y auditoría** — `HU-33 · RF-33.5, RF-33.6`
+- [x] **T-252 · Reactivación y auditoría** — `HU-33 · RF-33.5, RF-33.6`
   Hecho cuando: pasa `CA-33.4`.
-- [ ] **T-253 · Buscador de propiedades del Administrador** — `HU-22 · RF-22.1, RF-22.2, RF-22.3`
+- [x] **T-253 · Buscador de propiedades del Administrador** — `HU-22 · RF-22.1, RF-22.2, RF-22.3`
   Hecho cuando: pasan `CA-22.1`, `CA-22.2` y `CA-22.3`.
 
 ## Paso 4 · HU-55, HU-56, HU-57 — Billetera y retiros
 
-- [ ] **T-254 · Migración de `wallet_movements`** — `HU-55 · RF-55.2`
+- [x] **T-254 · Migración de `wallet_movements`** — `HU-55 · RF-55.2`
   Hecho cuando: existe con RLS y registra acreditación, paso a disponible, reversa, solicitud y pago.
-- [ ] **T-255 · Derivación pura de los cuatro saldos** — `HU-55 · RF-55.1, RF-55.2`
+- [x] **T-255 · Derivación pura de los cuatro saldos** — `HU-55 · RF-55.1, RF-55.2`
   Hecho cuando: pasan `CA-55.1`, `CA-55.2` y `CA-55.3`.
-- [ ] **T-256 · Listado de movimientos con filtros** — `HU-55 · RF-55.3`
+- [x] **T-256 · Listado de movimientos con filtros** — `HU-55 · RF-55.3`
   Hecho cuando: pasa `CA-55.4` con orden descendente y filtro por tipo y periodo.
-- [ ] **T-257 · Acceso a la billetera y lectura del Superadmin** — `HU-55 · RF-55.4` · D-20
+- [x] **T-257 · Acceso a la billetera y lectura del Superadmin** — `HU-55 · RF-55.4` · D-20
   Hecho cuando: pasa `CA-55.5`.
-- [ ] **T-258 · Formato de la billetera** — `HU-55 · RF-55.5` · `TR-02`
+- [x] **T-258 · Formato de la billetera** — `HU-55 · RF-55.5` · `TR-02`
   Hecho cuando: las cuatro cifras usan IBM Plex Mono y ninguna presenta lo pendiente como disponible.
-- [ ] **T-259 · Migración de `withdrawal_requests` con solicitud única abierta** — `HU-56 · RF-56.3`
+- [x] **T-259 · Migración de `withdrawal_requests` con solicitud única abierta** — `HU-56 · RF-56.3`
   Hecho cuando: existe con RLS y pasa `CA-56.5` por restricción de base de datos.
-- [ ] **T-260 · Mínimo configurable y retiro parcial** — `HU-56 · RF-56.1` · D-06
+- [x] **T-260 · Mínimo configurable y retiro parcial** — `HU-56 · RF-56.1` · D-06
   Hecho cuando: pasan `CA-56.1` y `CA-56.2`.
-- [ ] **T-261 · Máquina de estados de la solicitud** — `HU-56 · RF-56.2`
+- [x] **T-261 · Máquina de estados de la solicitud** — `HU-56 · RF-56.2`
   Hecho cuando: pasan `CA-56.3` y `CA-56.4`.
-- [ ] **T-262 · Registro de pago con comprobante** — `HU-56 · RF-56.4`
+- [x] **T-262 · Registro de pago con comprobante** — `HU-56 · RF-56.4`
   Hecho cuando: pasa `CA-56.6`.
-- [ ] **T-263 · Ausencia de segundo egreso al pagar** — `HU-56 · RF-56.5` · D-01
+- [x] **T-263 · Ausencia de segundo egreso al pagar** — `HU-56 · RF-56.5` · D-01
   Hecho cuando: pasa `CA-56.7`.
-- [ ] **T-264 · Auditoría y notificación de cada transición de retiro** — `HU-56 · RF-56.6` · `TR-01`, `TR-03`
+- [x] **T-264 · Auditoría y notificación de cada transición de retiro** — `HU-56 · RF-56.6` · `TR-01`, `TR-03`
   Hecho cuando: cada transición deja auditoría y avisa al Embajador una sola vez.
-- [ ] **T-265 · Eventos notificables del Embajador** — `HU-57 · RF-57.1, RF-57.2`
+- [x] **T-265 · Eventos notificables del Embajador** — `HU-57 · RF-57.1, RF-57.2`
   Hecho cuando: pasan `CA-57.1`, `CA-57.2` y `CA-57.3`.
-- [ ] **T-266 · Plantillas e idioma del Embajador** — `HU-57 · RF-57.3` · `TR-03`
+- [x] **T-266 · Plantillas e idioma del Embajador** — `HU-57 · RF-57.3` · `TR-03`
   Hecho cuando: cada evento tiene plantilla en `en` y `es` y se elige por el idioma del destinatario.
-- [ ] **T-267 · Idempotencia de las notificaciones del programa** — `HU-57 · RF-57.4`
+- [x] **T-267 · Idempotencia de las notificaciones del programa** — `HU-57 · RF-57.4`
   Hecho cuando: pasa `CA-57.4`.
+
+## Paso 5 · HU-62, HU-63 — Billetera del Propietario y cobros mensuales
+
+> Las tareas de este paso se añadieron después de numerar el cierre del MVP, así que empiezan en T-273. T-268…T-272 conservan su número para que ninguna referencia antigua apunte a otro trabajo.
+
+### HU-62 — Billetera del Propietario y cobro mensual
+
+- [x] **T-273 · Registro de D-51 en `docs/decisions.md`** — `HU-62 · RF-62.1, RF-62.3, RF-62.6` · `HU-63 · RF-63.6`
+  Hecho cuando: D-51 fija que cada propiedad se liquida por separado, sin compensar saldos entre propiedades; que el corte cubre siempre el mes anterior cerrado; y que ni el pago de un cobro ni el pago a una fracción generan un movimiento nuevo en la maestra.
+- [x] **T-274 · Migración de `owner_statements`, un corte por fracción y periodo** — `HU-62 · RF-62.3, RF-62.4` · `TR-01`
+  Hecho cuando: existe con RLS, con la restricción única (fracción, periodo), la relación con las cuotas que forman cada corte y la auditoría activa.
+- [x] **T-275 · Migración de `owner_wallet_movements`** — `HU-62 · RF-62.2`
+  Hecho cuando: existe con RLS y registra el corte, el pago confirmado y el retiro pagado, sin ningún contador de saldo editable.
+- [x] **T-276 · Cálculo puro del neto de una fracción en el mes** — `HU-62 · RF-62.3` · D-08, D-09, D-39, D-41 · `TR-02`
+  Hecho cuando: pasan `CA-62.1`, `CA-62.2` y `CA-62.4`.
+- [x] **T-277 · Función de corte idempotente, programada con `pg_cron` para el día 1** — `HU-62 · RF-62.3, RF-62.4`
+  Hecho cuando: pasa `CA-62.3` y el trabajo queda programado a la hora de Bogotá, sin duplicarse aunque la migración se aplique dos veces.
+- [x] **T-278 · Ajuste de periodo anterior para movimientos tardíos y anulaciones** — `HU-62 · RF-62.5`
+  Hecho cuando: pasa `CA-62.5` y ningún corte cerrado admite edición.
+- [x] **T-279 · Derivación pura del saldo por propiedad y del total consolidado** — `HU-62 · RF-62.1, RF-62.2`
+  Hecho cuando: pasa `CA-62.11`.
+- [x] **T-280 · Migración de `owner_charges` y máquina de estados del cobro** — `HU-62 · RF-62.6`
+  Hecho cuando: el corte emite el cobro por el saldo negativo exacto y pasa `CA-62.9` en las transiciones del cobro.
+- [x] **T-281 · Puerto `PaymentProvider` con su implementación manual** — `HU-62 · RF-62.11` · D-10 · `RT-01`
+  Hecho cuando: la confirmación de un pago pasa por el puerto tipado de `shared/`, y `package.json` no gana ninguna dependencia de pasarela.
+- [x] **T-282 · Migración de `owner_payments` con canal, proveedor y referencia externa** — `HU-62 · RF-62.7, RF-62.11`
+  Hecho cuando: existe con RLS y pasa `CA-62.13`.
+- [x] **T-283 · Bucket privado de comprobantes del Propietario y sus políticas** — `HU-62 · RF-62.7, RF-62.12`
+  Hecho cuando: acepta PDF o imagen de hasta 10 MB y solo pueden leer el comprobante el Propietario dueño, el Administrador de la propiedad y el Superadmin.
+- [x] **T-284 · Reporte del pago con sus validaciones** — `HU-62 · RF-62.7`
+  Hecho cuando: pasa `CA-62.6`, y el reporte válido lleva el cobro a `En revisión` sin tocar el saldo (primera mitad de `CA-62.7`).
+- [x] **T-285 · Confirmación y rechazo del pago en la base** — `HU-62 · RF-62.8`
+  Hecho cuando: pasan `CA-62.7` y `CA-62.8`.
+- [x] **T-286 · Migración de `owner_withdrawals` con una sola solicitud abierta** — `HU-62 · RF-62.9`
+  Hecho cuando: existe con RLS, y la segunda solicitud abierta por Propietario y propiedad se rechaza por una restricción de base de datos.
+- [x] **T-287 · Solicitud, pago con comprobante y rechazo del retiro** — `HU-62 · RF-62.9`
+  Hecho cuando: pasa `CA-62.10` y `CA-62.9` en las transiciones del retiro.
+- [x] **T-288 · RLS de la billetera, los cobros, los pagos y los retiros del Propietario** — `HU-62 · RF-62.12`
+  Hecho cuando: pasa `CA-62.14`.
+- [x] **T-289 · Condición de las cifras y color por signo** — `HU-62 · RF-62.10` · `RT-07`, `RT-08`, `TR-02`
+  Hecho cuando: pasa `CA-62.12`; rojo y verde salen de los tokens de marca y solo se aplican a cortes cerrados.
+- [x] **T-290 · Auditoría y avisos del ciclo del Propietario** — `HU-62 · RF-62.13` · `TR-01`, `TR-03`
+  Hecho cuando: pasa `CA-62.15` y cada evento tiene plantilla en `en` y `es`.
+- [x] **T-291 · Página «Mi billetera» del Propietario con histórico y filtros** — `HU-62 · RF-62.1, RF-62.14` · `RT-05`, `RT-06`
+  Hecho cuando: el menú del Propietario lleva a la página; la página orquesta componentes de `@nuxt/ui` con props y eventos tipados; el histórico por mes se filtra por propiedad y por periodo; y la prueba de integración pasa.
+- [x] **T-292 · Componentes para reportar un pago y solicitar un retiro** — `HU-62 · RF-62.7, RF-62.9` · principio 10
+  Hecho cuando: cada formulario es un componente que valida con las funciones de `shared/`, muestra los mensajes traducidos y emite solo datos válidos, con su prueba de integración en verde.
+
+### HU-63 — Tablero de cobros mensuales por propiedad
+
+- [ ] **T-293 · Capacidades nuevas en el mapa de permisos** — `HU-63 · RF-63.8` · `HU-07`
+  Hecho cuando: confirmar pagos y pagar a fracciones son dos capacidades del mapa (Superadmin `sí`, Administrador `solo sus propiedades`, Propietario `no`), y `decidirAcceso` tiene su prueba.
+- [ ] **T-294 · Clasificación pura de cada fracción en cobro, pago o al día** — `HU-63 · RF-63.1, RF-63.2`
+  Hecho cuando: pasa `CA-63.1`, con las 8 fracciones siempre presentes.
+- [ ] **T-295 · Resumen puro de la propiedad, cuadrado con las filas** — `HU-63 · RF-63.3` · `TR-02`, `RT-08`
+  Hecho cuando: pasan `CA-63.2` y `CA-63.11`.
+- [ ] **T-296 · Filas del titular del inventario** — `HU-63 · RF-63.7` · D-08
+  Hecho cuando: pasa `CA-63.9`.
+- [ ] **T-297 · Vista del tablero en la base, con RLS por propiedad asignada** — `HU-63 · RF-63.1, RF-63.8`
+  Hecho cuando: la vista es `security_invoker` y pasa `CA-63.10`.
+- [ ] **T-298 · Estado del comprobante, con enlace firmado y temporal** — `HU-63 · RF-63.4`
+  Hecho cuando: pasa `CA-63.3`.
+- [ ] **T-299 · Botón y diálogo de confirmación, a prueba de doble clic** — `HU-63 · RF-63.5`
+  Hecho cuando: pasan `CA-63.4`, `CA-63.5`, `CA-63.6` y `CA-63.7`.
+- [ ] **T-300 · Pago del saldo positivo de una fracción** — `HU-63 · RF-63.6`
+  Hecho cuando: pasa `CA-63.8`, y el pago no genera un egreso nuevo en la maestra.
+- [ ] **T-301 · Pagos por pasarela en modo lectura** — `HU-63 · RF-63.10` · D-10
+  Hecho cuando: pasa `CA-63.12`.
+- [ ] **T-302 · Filtros del tablero por mes, naturaleza y estado** — `HU-63 · RF-63.9`
+  Hecho cuando: el filtro es una función pura con su prueba, y el mes en curso aparece como estimado.
+- [ ] **T-303 · Vista global de cobros del Superadmin** — `HU-63 · RF-63.8`
+  Hecho cuando: pasa `CA-63.13`.
+- [ ] **T-304 · Página del tablero por propiedad** — `HU-63 · RF-63.1, RF-63.3, RF-63.4, RF-63.5` · `HU-21` · `RT-05`, `RT-06`
+  Hecho cuando: el menú y el dashboard del Administrador llevan al tablero; la página orquesta el resumen, la tabla y los diálogos como componentes; y la prueba de integración pasa en claro, en oscuro y a 320 px.
+- [ ] **T-305 · Auditoría y avisos del tablero** — `HU-63 · RF-63.11` · `TR-01`, `TR-03`
+  Hecho cuando: cada confirmación, rechazo y pago a una fracción audita a su autor y el motivo, y avisa al Propietario una sola vez.
 
 ---
 
 # Cierre del MVP
 
 - [ ] **T-268 · Informe de trazabilidad completo en verde** — principio 4
-  Hecho cuando: todos los `CA` de las 55 historias y los 3 transversales tienen test que los cita y la suite pasa.
+  Hecho cuando: todos los `CA` de las 57 historias y los 3 transversales tienen test que los cita y la suite pasa.
 - [ ] **T-269 · Revisión de responsive y bitema de todas las vistas** — `RT-06`
   Hecho cuando: cada vista se valida en 320/768/1280 px y en ambos temas.
 - [ ] **T-270 · Auditoría de paridad i18n y ausencia de textos fijos** — `RT-05`
@@ -685,7 +761,7 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 | 1 | T-001 … T-091 | RT base, TR-01, TR-02, HU-04, HU-61, HU-05, HU-07, HU-08, HU-09, HU-10, HU-11, HU-06, HU-58, HU-00, HU-01, HU-02, HU-03, HU-46 |
 | 2 | T-092 … T-168 | TR-03, HU-12, HU-13, HU-14, HU-15, HU-59, HU-52, HU-49, HU-50, HU-51, HU-41, HU-42, HU-43, HU-44, HU-47, HU-48 |
 | 3 | T-169 … T-223 | HU-23, HU-24, HU-39, HU-40, HU-13, HU-14, HU-16, HU-17, HU-21, HU-18, HU-19, HU-20, HU-43, HU-53, HU-54 |
-| 4 | T-224 … T-267 | HU-26, HU-27, HU-28, HU-29, HU-30, HU-31, HU-25, HU-32, HU-33, HU-22, HU-55, HU-56, HU-57 |
+| 4 | T-224 … T-267 · T-273 … T-305 | HU-26, HU-27, HU-28, HU-29, HU-30, HU-31, HU-25, HU-32, HU-33, HU-22, HU-55, HU-56, HU-57, HU-62, HU-63 |
 | Cierre | T-268 … T-272 | Verificación transversal |
 
-**272 tareas. Las 55 historias y los 3 requisitos transversales tienen al menos una tarea; ninguna tarea existe sin HU o RT que la justifique.** Los identificadores T-188…T-194 quedaron vacantes al eliminarse HU-60 (D-42) y no se reutilizan.
+**305 tareas. Las 57 historias y los 3 requisitos transversales tienen al menos una tarea; ninguna tarea existe sin HU o RT que la justifique.** Los identificadores T-188…T-194 quedaron vacantes al eliminarse HU-60 (D-42) y no se reutilizan. Por eso el Paso 5 del Sprint 4 empieza en T-273, detrás de las tareas de cierre.

@@ -74,7 +74,7 @@ describe('CA-07.2 · capacidad exigida por la ruta', () => {
 })
 
 describe('HU-33 · RF-33.1 · cuenta suspendida', () => {
-  it('una cuenta suspendida pierde el acceso a toda ruta privada, aunque tenga el rol', () => {
+  it('CA-33.2 · una cuenta suspendida pierde el acceso a toda ruta privada, aunque tenga el rol', () => {
     const decision = decidirAcceso(
       { ...sesionVerificada, estadoCuenta: 'suspended', roles: ['superadmin'] },
       { privada: true, capacidad: 'administrar_usuarios_y_roles' },
@@ -89,5 +89,41 @@ describe('HU-33 · RF-33.1 · cuenta suspendida', () => {
       { privada: true, capacidad: 'administrar_usuarios_y_roles' },
     )
     expect(sinVerificar).toMatchObject({ motivo: 'no_verificado' })
+  })
+})
+
+describe('HU-25 · RF-25.5 · HU-32 · RF-32.3 · rutas reservadas al Superadmin', () => {
+  it('CA-32.3 · un rol que no es Superadmin es denegado y devuelto al panel', () => {
+    for (const roles of [['property_admin'], ['owner', 'ambassador'], ['user']] as const) {
+      expect(decidirAcceso({ ...sesionVerificada, roles: [...roles] }, { soloSuperadmin: true }))
+        .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
+    }
+  })
+
+  it('RF-25.5 · el Superadmin entra, también cuando acumula otros roles', () => {
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['superadmin'] }, { soloSuperadmin: true })).toEqual({ permitido: true })
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['owner', 'superadmin'] }, { soloSuperadmin: true })).toEqual({ permitido: true })
+  })
+
+  it('la reserva implica ruta privada: sin sesión o suspendido se deniega antes de mirar el rol', () => {
+    expect(decidirAcceso({ ...sesionVerificada, autenticado: false, roles: ['superadmin'] }, { soloSuperadmin: true })).toMatchObject({ motivo: 'no_autenticado' })
+    expect(decidirAcceso({ ...sesionVerificada, estadoCuenta: 'suspended', roles: ['superadmin'] }, { soloSuperadmin: true })).toMatchObject({ motivo: 'suspendido' })
+  })
+})
+
+describe('HU-55 · RF-55.4 · D-20 · la billetera y la bandeja de retiros', () => {
+  it('CA-55.5 · el Embajador entra a su billetera; quien no lo es, no', () => {
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['ambassador'] }, { capacidad: 'ver_saldo_y_retirar' })).toEqual({ permitido: true })
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['owner', 'ambassador'] }, { capacidad: 'ver_saldo_y_retirar' })).toEqual({ permitido: true })
+    for (const roles of [['owner'], ['property_admin'], ['user']] as const) {
+      expect(decidirAcceso({ ...sesionVerificada, roles: [...roles] }, { capacidad: 'ver_saldo_y_retirar' }))
+        .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
+    }
+  })
+
+  it('CA-55.5 · D-20 · el Superadmin lee las billeteras desde la bandeja de retiros, no desde la de un Embajador', () => {
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['superadmin'] }, { capacidad: 'aprobar_pagos_comision' })).toEqual({ permitido: true })
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['ambassador'] }, { capacidad: 'aprobar_pagos_comision' }))
+      .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
   })
 })

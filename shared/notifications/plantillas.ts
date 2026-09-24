@@ -64,6 +64,30 @@ const PLANTILLAS: Record<TipoDeNotificacion, Record<Idioma, Textos>> = {
     es: { asunto: 'Tu retiro de {amount} fue pagado', texto: 'El retiro por {amount} ya fue pagado a la cuenta que registraste. El comprobante queda en tu billetera.' },
     en: { asunto: 'Your {amount} withdrawal was paid', texto: 'The {amount} withdrawal was paid to the account you registered. The receipt is in your wallet.' },
   },
+  owner_statement_closed: {
+    es: { asunto: 'Corte de {period} en {property_name}: {balance}', texto: 'Cerramos el mes de {period} en {property_name}. El neto del mes fue {amount} y el saldo de tu billetera en esa propiedad queda en {balance}. Si es negativo, te toca pagarlo; si es positivo, puedes retirarlo desde tu billetera.' },
+    en: { asunto: '{period} statement for {property_name}: {balance}', texto: 'We closed {period} for {property_name}. The month net was {amount} and your wallet balance for that property is now {balance}. If it is negative, it is due; if it is positive, you can withdraw it from your wallet.' },
+  },
+  owner_payment_reported: {
+    es: { asunto: 'Pago reportado en {property_name}: {amount}', texto: 'Un Propietario reportó un pago de {amount} en {property_name}. Revisa el comprobante en el tablero de cobros y confírmalo o recházalo.' },
+    en: { asunto: 'Payment reported at {property_name}: {amount}', texto: 'An owner reported a {amount} payment at {property_name}. Review the receipt on the collections board and confirm or reject it.' },
+  },
+  owner_payment_confirmed: {
+    es: { asunto: 'Tu pago de {amount} fue confirmado', texto: 'Confirmamos tu pago de {amount} en {property_name}. Ya se refleja en el saldo de tu billetera.' },
+    en: { asunto: 'Your {amount} payment was confirmed', texto: 'We confirmed your {amount} payment at {property_name}. It is now reflected in your wallet balance.' },
+  },
+  owner_payment_rejected: {
+    es: { asunto: 'Tu pago de {amount} fue rechazado', texto: 'No pudimos confirmar tu pago de {amount} en {property_name}. Motivo: {reason}. El cobro sigue pendiente; puedes reportar el pago de nuevo desde tu billetera.' },
+    en: { asunto: 'Your {amount} payment was rejected', texto: 'We could not confirm your {amount} payment at {property_name}. Reason: {reason}. The charge is still pending; you can report the payment again from your wallet.' },
+  },
+  owner_withdrawal_paid: {
+    es: { asunto: 'Tu retiro de {amount} fue pagado', texto: 'El retiro por {amount} de {property_name} ya fue pagado a la cuenta que indicaste. El comprobante queda en tu billetera.' },
+    en: { asunto: 'Your {amount} withdrawal was paid', texto: 'The {amount} withdrawal from {property_name} was paid to the account you provided. The receipt is in your wallet.' },
+  },
+  owner_withdrawal_rejected: {
+    es: { asunto: 'Tu retiro de {amount} fue rechazado', texto: 'No pudimos pagar tu retiro de {amount} de {property_name}. Motivo: {reason}. Puedes pedirlo de nuevo desde tu billetera.' },
+    en: { asunto: 'Your {amount} withdrawal was rejected', texto: 'We could not pay your {amount} withdrawal from {property_name}. Reason: {reason}. You can request it again from your wallet.' },
+  },
 }
 
 /** Sustituye `{campo}` por la carga legible; lo que falte queda vacío, nunca un marcador suelto. */

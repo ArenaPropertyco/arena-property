@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { propiedadesGestionadas } from '#shared/properties/asignaciones'
 import type { FichaTecnica } from '#shared/properties/ficha'
 
 /**
- * HU-08 · RF-08.1 y HU-10 · RF-10.1, RF-10.2 — listado de propiedades.
+ * HU-08 · RF-08.1, HU-10 · RF-10.1, RF-10.2 y HU-22 · RF-22.1…RF-22.3 — listado y
+ * buscador de propiedades.
  *
- * La página orquesta: carga con el composable, pasa props y atiende eventos. Qué
- * propiedades llegan lo decide la RLS (el Superadmin las ve todas, el Administrador
- * las suyas), así que esta misma pantalla sirve a los dos sin ramificar por rol.
+ * La página orquesta: carga con el composable, pasa props y atiende eventos. La
+ * RLS deja pasar lo publicado a cualquiera, así que el Administrador ve primero
+ * recortado a lo que administra (CA-22.3) y busca sobre eso, por nombre o
+ * ubicación, sin acentos ni mayúsculas (CA-22.1) y combinando región y estados
+ * (CA-22.2). El Superadmin busca sobre todas.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'gestionar_propiedades' } })
 
@@ -14,13 +18,14 @@ const { t } = useI18n()
 const toast = useToast()
 const localePath = useLocalePath()
 
-const { roles } = useCuenta()
+const { roles, idDeCuenta } = useCuenta()
 const { propiedades, pendiente, crear } = usePropiedades()
-const { filtro, filtradas, regiones, administradores } = useFiltrosDePropiedades(propiedades)
+const esSuperadmin = computed(() => roles.value.includes('superadmin'))
+// RF-22.3 · nunca se busca entre lo que no se administra.
+const gestionadas = computed(() => propiedadesGestionadas(propiedades.value, { id: idDeCuenta.value, esSuperadmin: esSuperadmin.value }))
+const { filtro, filtradas, regiones, administradores } = useFiltrosDePropiedades(gestionadas)
 // RF-05.1 · las cuentas con rol Administrador entre las que puede elegir.
 const { administradores: candidatos } = useAdministradores()
-
-const esSuperadmin = computed(() => roles.value.includes('superadmin'))
 const opcionesDeAdmin = computed(() => candidatos.value
   .map(cuenta => ({ id: cuenta.id, label: cuenta.fullName ?? cuenta.email ?? cuenta.id })))
 
@@ -68,7 +73,7 @@ function abrir(id: string) {
         v-model:filtro="filtro"
         :regiones="regiones"
         :administradores="administradores"
-        :total="propiedades.length"
+        :total="gestionadas.length"
         :mostradas="filtradas.length"
       />
 

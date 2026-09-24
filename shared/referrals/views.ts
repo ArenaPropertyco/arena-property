@@ -1,11 +1,13 @@
 /**
- * HU-49, HU-50, HU-52 — lo que las pantallas del programa de referidos reciben
- * ya resuelto por los composables. Solo tipos: la lógica vive en `commission.ts`,
- * `signup.ts` y `code.ts`; el listado de referidos (HU-53) tiene los suyos en
- * `listing.ts`.
+ * HU-49, HU-50, HU-52, HU-56 — lo que las pantallas del programa de referidos
+ * reciben ya resuelto por los composables. Solo tipos: la lógica vive en
+ * `commission.ts`, `signup.ts`, `code.ts` y `withdrawals.ts`; el listado de
+ * referidos (HU-53) tiene los suyos en `listing.ts`.
  */
 
+import type { CopAmount } from '../money/importe'
 import type { AccountKind } from './signup'
+import type { WithdrawalRequest } from './withdrawals'
 
 /** RF-49.5 · un Embajador tal como lo lista el Superadmin. */
 export interface AmbassadorListed {
@@ -43,4 +45,20 @@ export interface AmbassadorCommissionListed {
   /** Nombre del tipo que realmente le aplica, ya resuelto. */
   effectiveTypeName: string | null
   assignedAt: string | null
+}
+
+/**
+ * HU-56 · RF-56.4 · D-20 · una solicitud de retiro tal como la lista la bandeja:
+ * con quién la pide, sus datos bancarios de HU-49 para pagarle y cuánto tiene
+ * disponible hoy. En la vista del propio Embajador los datos son los suyos.
+ */
+export interface WithdrawalListed extends WithdrawalRequest {
+  ambassadorEmail: string
+  ambassadorName: string | null
+  bank: string
+  accountKind: AccountKind
+  accountNumber: string
+  holder: string
+  /** El disponible del Embajador al momento de listar; `null` si no se pidió. */
+  available: CopAmount | null
 }

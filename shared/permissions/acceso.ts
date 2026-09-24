@@ -1,5 +1,6 @@
 /**
- * HU-04 · RF-04.2, HU-07 · RF-07.2 y HU-33 · RF-33.1 — decisión de acceso a rutas.
+ * HU-04 · RF-04.2, HU-07 · RF-07.2, HU-33 · RF-33.1, HU-25 · RF-25.5 y HU-32 ·
+ * RF-32.3 — decisión de acceso a rutas.
  *
  * Función pura: recibe lo que se sabe de la sesión y lo que exige la ruta, y
  * devuelve si entra o adónde se le redirige. El middleware de Nuxt solo la llama.
@@ -35,6 +36,12 @@ export interface Requisito {
   privada?: boolean
   /** Capacidad de la matriz que la ruta exige (implica `privada`). */
   capacidad?: Capacidad
+  /**
+   * RF-25.5 · RF-32.3 · la ruta es solo del Superadmin (implica `privada`). No es
+   * una capacidad de la matriz VSM: el reporte y el dashboard globales no se
+   * delegan, así que tampoco se ajustan celda a celda.
+   */
+  soloSuperadmin?: boolean
   /** Contexto para capacidades condicionadas por estado (D-31). */
   contexto?: Contexto
 }
@@ -46,7 +53,7 @@ export type Decision
     | { permitido: false, motivo: Motivo, redirigirA: string }
 
 export function decidirAcceso(sesion: Sesion, requisito: Requisito, matriz: Matriz = MATRIZ): Decision {
-  const esPrivada = requisito.privada === true || requisito.capacidad !== undefined
+  const esPrivada = requisito.privada === true || requisito.capacidad !== undefined || requisito.soloSuperadmin === true
 
   if (!esPrivada) {
     return { permitido: true }
@@ -59,6 +66,9 @@ export function decidirAcceso(sesion: Sesion, requisito: Requisito, matriz: Matr
   }
   if (sesion.estadoCuenta === 'suspended') {
     return { permitido: false, motivo: 'suspendido', redirigirA: RUTAS.suspendida }
+  }
+  if (requisito.soloSuperadmin && !sesion.roles.includes('superadmin')) {
+    return { permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel }
   }
   if (requisito.capacidad && !puede(sesion.roles, requisito.capacidad, requisito.contexto, matriz)) {
     return { permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel }

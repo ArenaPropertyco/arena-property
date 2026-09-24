@@ -18,6 +18,8 @@ export interface PropiedadListada {
   id: string
   name: string
   region: string
+  /** HU-22 · RF-22.1 · la búsqueda por texto también mira la ciudad. */
+  city?: string
   visibility: Visibilidad
   commercial: EstadoComercial
   /** Administradores con asignación vigente (HU-05). */
@@ -79,7 +81,8 @@ export function filtrarPropiedades(
     if (region !== null && propiedad.region !== region) {
       return false
     }
-    if (texto !== null && !plegar(propiedad.name).includes(plegar(texto))) {
+    // RF-22.1 · por nombre o por ubicación (región y ciudad).
+    if (texto !== null && !plegar([propiedad.name, propiedad.region, propiedad.city ?? ''].join(' ')).includes(plegar(texto))) {
       return false
     }
     return true

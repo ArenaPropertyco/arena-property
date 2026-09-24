@@ -38,7 +38,7 @@ Aplican a **todas** las specs; cada `HUXX-spec.md` los referencia y no los repit
 - **RT-09 Idioma de trabajo.** Comentarios y documentación en español con buena ortografía.
 - **RT-10 Dinero y formatos.** Todo importe, prorrateo, porcentaje y formato numérico sigue [TR-02](./TR02-dinero-formatos-spec.md): entero COP, reparto determinista de residuos, porcentajes en puntos básicos.
 - **RT-11 Auditoría.** Toda mención de "auditado", "auditable" o "queda registrado" en cualquier spec se implementa según [TR-01](./TR01-auditoria-spec.md): registro append-only, escrito en la misma transacción que la operación.
-- **RT-12 Uso de los módulos aprobados.** Cada módulo de [docs/stack.md](../../docs/stack.md) tiene un uso obligatorio asignado y verificable: `nuxt-aos` (animación de entrada de las secciones de E1), `nuxt-gtag` (analítica del embudo público: vistas y activación de CTA en HU-00 y HU-41…HU-48), `@tresjs/nuxt` (visor 3D del plano elevado, HU-02), `@formkit/auto-animate` (transiciones de listas en HU-18, HU-21, HU-53, HU-55), `@nuxt/image` (galerías de HU-01/HU-02/HU-08), `@nuxtjs/seo` (todas las rutas públicas de E1) y `@unovis/vue` (gráficos de HU-32). Ningún módulo aprobado queda sin historia que lo exija.
+- **RT-12 Uso de los módulos aprobados.** Cada módulo de [docs/stack.md](../../docs/stack.md) tiene un uso obligatorio asignado y verificable: `nuxt-aos` (animación de entrada de las secciones de E1), `nuxt-gtag` (analítica del embudo público: vistas y activación de CTA en HU-00 y HU-41…HU-48), `@tresjs/nuxt` (visor 3D del plano elevado, HU-02), `@formkit/auto-animate` (transiciones de listas en HU-18, HU-21, HU-53, HU-55), `@nuxt/image` (galerías de HU-01/HU-02/HU-08), `@nuxtjs/seo` (todas las rutas públicas de E1) y `nuxt-charts` sobre `@unovis/vue` (gráficos de HU-32). Ningún módulo aprobado queda sin historia que lo exija.
 
 ## Convenciones de las specs
 
@@ -58,7 +58,7 @@ Aplican a **todas** las specs; cada `HUXX-spec.md` los referencia y no los repit
 | E4 Calendario y Agendamiento | [HU12](./HU12-spec.md) · [HU13](./HU13-spec.md) · [HU14](./HU14-spec.md) · [HU15](./HU15-spec.md) · [HU16](./HU16-spec.md) · [HU17](./HU17-spec.md) · [HU39](./HU39-spec.md) · [HU59 🆕](./HU59-spec.md) |
 | E5 Dashboard del Propietario | [HU18](./HU18-spec.md) · [HU19](./HU19-spec.md) · [HU20](./HU20-spec.md) |
 | E6 Dashboard del Administrador | [HU21](./HU21-spec.md) · [HU22](./HU22-spec.md) |
-| E7 Finanzas prorrateadas | [HU23](./HU23-spec.md) · [HU24](./HU24-spec.md) · [HU25](./HU25-spec.md) · [HU40](./HU40-spec.md) |
+| E7 Finanzas prorrateadas | [HU23](./HU23-spec.md) · [HU24](./HU24-spec.md) · [HU25](./HU25-spec.md) · [HU40](./HU40-spec.md) · [HU62 🆕](./HU62-spec.md) · [HU63 🆕](./HU63-spec.md) |
 | E8 Inventario y Mantenimiento | [HU26](./HU26-spec.md) · [HU27](./HU27-spec.md) · [HU28](./HU28-spec.md) |
 | E9 Notificaciones y Comunicación | [HU29](./HU29-spec.md) · [HU30](./HU30-spec.md) · [HU31](./HU31-spec.md) |
 | E10 Panel Superadmin | [HU33](./HU33-spec.md) |

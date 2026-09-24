@@ -5,6 +5,27 @@
 begin;
 select plan(55);
 
+/**
+ * Corre la tarea de gracia y cuenta solo lo que liberó en la propiedad de esta
+ * prueba. La tarea devuelve cuántas liberó en toda la base, y la base local
+ * guarda datos reales: contar lo global haría depender la prueba de ellos.
+ */
+create or replace function pg_temp.liberadas_en(dia date, propiedad uuid)
+returns integer
+language plpgsql
+security definer
+as $$
+declare
+  antes integer;
+  despues integer;
+begin
+  select count(*) into antes from public.commissions where property_id = propiedad and status = 'available';
+  perform public.release_commissions_in_grace(dia);
+  select count(*) into despues from public.commissions where property_id = propiedad and status = 'available';
+  return despues - antes;
+end;
+$$;
+
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'commissions', 'RF-54.1 · existe commissions');
 select has_table('public', 'wallet_movements', 'RF-54.1 · existe wallet_movements');
@@ -158,8 +179,8 @@ select is(
   1::bigint, 'RF-54.1 · TR-03 · Ana recibe una sola notificación de pago completado');
 
 -- ── CA-54.2 · de gracia a disponible a los 30 días, por tarea idempotente ───
-select is(public.release_commissions_in_grace(current_date), 0, 'CA-54.2 · el día del pago la tarea no libera nada');
-select is(public.release_commissions_in_grace(current_date + 29), 0, 'CA-54.2 · a los 29 días sigue en gracia');
+select is(pg_temp.liberadas_en(current_date, 'a5400000-0000-4000-8000-000000000001'), 0, 'CA-54.2 · el día del pago la tarea no libera nada');
+select is(pg_temp.liberadas_en(current_date + 29, 'a5400000-0000-4000-8000-000000000001'), 0, 'CA-54.2 · a los 29 días sigue en gracia');
 select is(
   (select status::text from public.commissions where plan_id = (select id from planes54 where nombre = 'A')),
   'in_grace', 'CA-54.2 · y no es retirable');
@@ -211,11 +232,11 @@ select is(
 
 reset role;
 set local request.jwt.claim.sub = '';
-select is(public.release_commissions_in_grace(current_date + 30), 1, 'CA-54.2 · a los 30 días la tarea libera la comisión');
+select is(pg_temp.liberadas_en(current_date + 30, 'a5400000-0000-4000-8000-000000000001'), 1, 'CA-54.2 · a los 30 días la tarea libera la comisión');
 select is(
   (select (status::text, available_on) from public.commissions where plan_id = (select id from planes54 where nombre = 'B')),
   ('available'::text, current_date + 30), 'CA-54.2 · y queda disponible con su fecha');
-select is(public.release_commissions_in_grace(current_date + 31), 0, 'DT-09 · correrla otra vez no libera nada más');
+select is(pg_temp.liberadas_en(current_date + 31, 'a5400000-0000-4000-8000-000000000001'), 0, 'DT-09 · correrla otra vez no libera nada más');
 select is(
   (select count(*) from public.wallet_movements w join public.commissions c on c.id = w.commission_id
     where c.plan_id = (select id from planes54 where nombre = 'B') and w.kind = 'commission_available'),

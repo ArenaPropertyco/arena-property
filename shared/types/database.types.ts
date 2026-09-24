@@ -132,6 +132,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "ambassador_commissions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: true
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
+          },
+          {
             foreignKeyName: "ambassador_commissions_commission_type_id_fkey"
             columns: ["commission_type_id"]
             isOneToOne: false
@@ -305,6 +312,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "ambassadors"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attributions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
           },
           {
             foreignKeyName: "attributions_commissioned_purchase_id_fkey"
@@ -615,6 +629,7 @@ export type Database = {
           reversed_at: string | null
           status: Database["public"]["Enums"]["commission_status"]
           updated_at: string
+          withdrawn_amount: number
         }
         Insert: {
           agreed_price: number
@@ -638,6 +653,7 @@ export type Database = {
           reversed_at?: string | null
           status?: Database["public"]["Enums"]["commission_status"]
           updated_at?: string
+          withdrawn_amount?: number
         }
         Update: {
           agreed_price?: number
@@ -661,6 +677,7 @@ export type Database = {
           reversed_at?: string | null
           status?: Database["public"]["Enums"]["commission_status"]
           updated_at?: string
+          withdrawn_amount?: number
         }
         Relationships: [
           {
@@ -669,6 +686,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "ambassadors"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
           },
           {
             foreignKeyName: "commissions_attribution_id_fkey"
@@ -1397,6 +1421,434 @@ export type Database = {
           },
         ]
       }
+      owner_charges: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          owner_id: string
+          paid_amount: number
+          paid_at: string | null
+          period: string
+          property_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          owner_id: string
+          paid_amount?: number
+          paid_at?: string | null
+          period: string
+          property_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          owner_id?: string
+          paid_amount?: number
+          paid_at?: string | null
+          period?: string
+          property_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_charges_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_charges_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_payments: {
+        Row: {
+          amount: number
+          channel: string
+          charge_id: string
+          created_at: string
+          description: string
+          external_reference: string | null
+          id: string
+          owner_id: string
+          paid_on: string
+          payment_method_id: string | null
+          property_id: string
+          provider: string | null
+          receipt_path: string | null
+          rejection_reason: string | null
+          reported_at: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          channel?: string
+          charge_id: string
+          created_at?: string
+          description: string
+          external_reference?: string | null
+          id?: string
+          owner_id: string
+          paid_on: string
+          payment_method_id?: string | null
+          property_id: string
+          provider?: string | null
+          receipt_path?: string | null
+          rejection_reason?: string | null
+          reported_at?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          channel?: string
+          charge_id?: string
+          created_at?: string
+          description?: string
+          external_reference?: string | null
+          id?: string
+          owner_id?: string
+          paid_on?: string
+          payment_method_id?: string | null
+          property_id?: string
+          provider?: string | null
+          receipt_path?: string | null
+          rejection_reason?: string | null
+          reported_at?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_payments_charge_id_fkey"
+            columns: ["charge_id"]
+            isOneToOne: false
+            referencedRelation: "owner_charges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_payments_payment_method_id_fkey"
+            columns: ["payment_method_id"]
+            isOneToOne: false
+            referencedRelation: "payment_methods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_payments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_payments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_statement_lines: {
+        Row: {
+          adjustment: boolean
+          amount: number
+          entry: string
+          id: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          movement_id: string
+          origin_period: string
+          share_id: string
+          statement_id: string
+        }
+        Insert: {
+          adjustment?: boolean
+          amount: number
+          entry: string
+          id?: string
+          kind: Database["public"]["Enums"]["movement_kind"]
+          movement_id: string
+          origin_period: string
+          share_id: string
+          statement_id: string
+        }
+        Update: {
+          adjustment?: boolean
+          amount?: number
+          entry?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["movement_kind"]
+          movement_id?: string
+          origin_period?: string
+          share_id?: string
+          statement_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_statement_lines_movement_id_fkey"
+            columns: ["movement_id"]
+            isOneToOne: false
+            referencedRelation: "movements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_statement_lines_share_id_fkey"
+            columns: ["share_id"]
+            isOneToOne: false
+            referencedRelation: "movement_shares"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_statement_lines_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "owner_statements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_statements: {
+        Row: {
+          closed_at: string
+          expenses: number
+          fraction_id: string
+          fraction_number: number
+          id: string
+          income: number
+          net: number
+          owner_id: string
+          period: string
+          property_id: string
+        }
+        Insert: {
+          closed_at?: string
+          expenses?: number
+          fraction_id: string
+          fraction_number: number
+          id?: string
+          income?: number
+          net?: number
+          owner_id: string
+          period: string
+          property_id: string
+        }
+        Update: {
+          closed_at?: string
+          expenses?: number
+          fraction_id?: string
+          fraction_number?: number
+          id?: string
+          income?: number
+          net?: number
+          owner_id?: string
+          period?: string
+          property_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_statements_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_statements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_statements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_wallet_movements: {
+        Row: {
+          amount: number
+          created_at: string
+          fraction_id: string | null
+          id: string
+          kind: string
+          occurred_on: string
+          owner_id: string
+          payment_id: string | null
+          property_id: string
+          statement_id: string | null
+          withdrawal_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          fraction_id?: string | null
+          id?: string
+          kind: string
+          occurred_on?: string
+          owner_id: string
+          payment_id?: string | null
+          property_id: string
+          statement_id?: string | null
+          withdrawal_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          fraction_id?: string | null
+          id?: string
+          kind?: string
+          occurred_on?: string
+          owner_id?: string
+          payment_id?: string | null
+          property_id?: string
+          statement_id?: string | null
+          withdrawal_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_wallet_movements_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: true
+            referencedRelation: "owner_payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: true
+            referencedRelation: "owner_statements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_withdrawal_id_fkey"
+            columns: ["withdrawal_id"]
+            isOneToOne: true
+            referencedRelation: "owner_withdrawals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_withdrawals: {
+        Row: {
+          account_kind: string
+          account_number: string
+          amount: number
+          bank: string
+          created_at: string
+          holder: string
+          id: string
+          owner_id: string
+          paid_at: string | null
+          property_id: string
+          receipt_path: string | null
+          rejected_at: string | null
+          rejection_reason: string | null
+          requested_on: string
+          resolved_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          account_kind: string
+          account_number: string
+          amount: number
+          bank: string
+          created_at?: string
+          holder: string
+          id?: string
+          owner_id: string
+          paid_at?: string | null
+          property_id: string
+          receipt_path?: string | null
+          rejected_at?: string | null
+          rejection_reason?: string | null
+          requested_on?: string
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          account_kind?: string
+          account_number?: string
+          amount?: number
+          bank?: string
+          created_at?: string
+          holder?: string
+          id?: string
+          owner_id?: string
+          paid_at?: string | null
+          property_id?: string
+          receipt_path?: string | null
+          rejected_at?: string | null
+          rejection_reason?: string | null
+          requested_on?: string
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_withdrawals_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_withdrawals_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_events: {
         Row: {
           emitted_at: string
@@ -1703,6 +2155,38 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_settings: {
+        Row: {
+          id: string
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          id?: string
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value: Json
+        }
+        Update: {
+          id?: string
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2041,6 +2525,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "ambassadors"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_codes_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: true
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
           },
         ]
       }
@@ -2548,6 +3039,7 @@ export type Database = {
           kind: string
           note: string | null
           occurred_on: string
+          withdrawal_id: string | null
         }
         Insert: {
           ambassador_id: string
@@ -2558,6 +3050,7 @@ export type Database = {
           kind: string
           note?: string | null
           occurred_on?: string
+          withdrawal_id?: string | null
         }
         Update: {
           ambassador_id?: string
@@ -2568,6 +3061,7 @@ export type Database = {
           kind?: string
           note?: string | null
           occurred_on?: string
+          withdrawal_id?: string | null
         }
         Relationships: [
           {
@@ -2576,6 +3070,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "ambassadors"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
           },
           {
             foreignKeyName: "wallet_movements_commission_id_fkey"
@@ -2590,6 +3091,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "referral_listing"
             referencedColumns: ["commission_id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_withdrawal_id_fkey"
+            columns: ["withdrawal_id"]
+            isOneToOne: false
+            referencedRelation: "withdrawal_requests"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2762,6 +3270,76 @@ export type Database = {
           },
         ]
       }
+      withdrawal_requests: {
+        Row: {
+          ambassador_id: string
+          amount: number
+          approved_at: string | null
+          created_at: string
+          id: string
+          paid_at: string | null
+          receipt_path: string | null
+          rejected_at: string | null
+          rejection_reason: string | null
+          requested_on: string
+          resolved_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          ambassador_id: string
+          amount: number
+          approved_at?: string | null
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          receipt_path?: string | null
+          rejected_at?: string | null
+          rejection_reason?: string | null
+          requested_on?: string
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          ambassador_id?: string
+          amount?: number
+          approved_at?: string | null
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          receipt_path?: string | null
+          rejected_at?: string | null
+          rejection_reason?: string | null
+          requested_on?: string
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "withdrawal_requests_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "withdrawal_requests_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
+          },
+          {
+            foreignKeyName: "withdrawal_requests_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       notification_inbox: {
@@ -2798,6 +3376,69 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_wallet_balances: {
+        Row: {
+          balance: number | null
+          owner_id: string | null
+          property_id: string | null
+          property_name: string | null
+        }
+        Relationships: []
+      }
+      owner_wallet_listing: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          fraction_number: number | null
+          id: string | null
+          kind: string | null
+          occurred_on: string | null
+          owner_id: string | null
+          payment_id: string | null
+          period: string | null
+          property_id: string | null
+          property_name: string | null
+          statement_id: string | null
+          withdrawal_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_wallet_movements_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: true
+            referencedRelation: "owner_payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: true
+            referencedRelation: "owner_statements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_wallet_movements_withdrawal_id_fkey"
+            columns: ["withdrawal_id"]
+            isOneToOne: true
+            referencedRelation: "owner_withdrawals"
             referencedColumns: ["id"]
           },
         ]
@@ -2908,6 +3549,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "attributions_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
+          },
+          {
             foreignKeyName: "commissions_plan_id_fkey"
             columns: ["plan_id"]
             isOneToOne: false
@@ -2933,6 +3581,74 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallet_balances: {
+        Row: {
+          ambassador_id: string | null
+          available: number | null
+          in_grace: number | null
+          pending: number | null
+          reversed: number | null
+          total_earned: number | null
+          user_id: string | null
+          withdrawn: number | null
+        }
+        Relationships: []
+      }
+      wallet_listing: {
+        Row: {
+          ambassador_id: string | null
+          amount: number | null
+          commission_id: string | null
+          created_at: string | null
+          fraction_number: number | null
+          grace_ends_on: string | null
+          id: string | null
+          kind: string | null
+          note: string | null
+          occurred_on: string | null
+          property_name: string | null
+          referral_label: string | null
+          withdrawal_id: string | null
+          withdrawal_status: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_movements_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "ambassadors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_ambassador_id_fkey"
+            columns: ["ambassador_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_balances"
+            referencedColumns: ["ambassador_id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_commission_id_fkey"
+            columns: ["commission_id"]
+            isOneToOne: false
+            referencedRelation: "commissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_commission_id_fkey"
+            columns: ["commission_id"]
+            isOneToOne: false
+            referencedRelation: "referral_listing"
+            referencedColumns: ["commission_id"]
+          },
+          {
+            foreignKeyName: "wallet_movements_withdrawal_id_fkey"
+            columns: ["withdrawal_id"]
+            isOneToOne: false
+            referencedRelation: "withdrawal_requests"
             referencedColumns: ["id"]
           },
         ]
@@ -3035,6 +3751,7 @@ export type Database = {
         Args: { ambassador: string; approve: boolean; reason?: string }
         Returns: string
       }
+      approve_withdrawal: { Args: { request: string }; Returns: undefined }
       assign_commission_type: {
         Args: { ambassador: string; commission_type?: string }
         Returns: undefined
@@ -3106,6 +3823,7 @@ export type Database = {
         Returns: number
       }
       close_fraction_window: { Args: { window_id: string }; Returns: undefined }
+      close_owner_statements: { Args: { periodo?: string }; Returns: number }
       close_selection_window: { Args: { calendar: string }; Returns: undefined }
       commission_type_for: {
         Args: { ambassador: string }
@@ -3128,6 +3846,7 @@ export type Database = {
         }
         Returns: string
       }
+      confirm_owner_payment: { Args: { payment: string }; Returns: undefined }
       confirm_week: {
         Args: { calendar: string; fraction: string; week_index: number }
         Returns: undefined
@@ -3273,6 +3992,16 @@ export type Database = {
         Args: { calendar: string; fraction_number: number; hours?: number }
         Returns: string
       }
+      pay_owner_withdrawal: {
+        Args: { receipt_path: string; request: string }
+        Returns: undefined
+      }
+      pay_withdrawal: {
+        Args: { receipt_path: string; request: string }
+        Returns: undefined
+      }
+      platform_metrics: { Args: never; Returns: Json }
+      reactivate_account: { Args: { account: string }; Returns: undefined }
       reassign_week: {
         Args: {
           calendar: string
@@ -3363,6 +4092,18 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      reject_owner_payment: {
+        Args: { payment: string; reason: string }
+        Returns: undefined
+      }
+      reject_owner_withdrawal: {
+        Args: { reason: string; request: string }
+        Returns: undefined
+      }
+      reject_withdrawal: {
+        Args: { reason: string; request: string }
+        Returns: undefined
+      }
       release_commissions_in_grace: { Args: { hoy?: string }; Returns: number }
       release_week: {
         Args: { calendar: string; fraction: string; week_index: number }
@@ -3410,6 +4151,28 @@ export type Database = {
         Args: { calendar: string }
         Returns: undefined
       }
+      report_owner_payment: {
+        Args: {
+          amount: number
+          charge: string
+          description: string
+          paid_on: string
+          payment_method: string
+          receipt_path: string
+        }
+        Returns: string
+      }
+      request_owner_withdrawal: {
+        Args: {
+          account_kind: string
+          account_number: string
+          amount: number
+          bank: string
+          holder: string
+          property: string
+        }
+        Returns: string
+      }
       request_week_swap: {
         Args: {
           calendar: string
@@ -3421,6 +4184,7 @@ export type Database = {
         }
         Returns: string
       }
+      request_withdrawal: { Args: { amount: number }; Returns: string }
       resolve_announcement: { Args: { announcement: string }; Returns: string }
       resolve_available_commissions: {
         Args: { ambassador: string; forfeit: boolean; reason: string }
@@ -3471,6 +4235,7 @@ export type Database = {
         Args: { commission_type: string }
         Returns: undefined
       }
+      set_withdrawal_minimum: { Args: { amount: number }; Returns: number }
       suggested_relocation_order: {
         Args: { calendar: string }
         Returns: number[]
@@ -3478,6 +4243,14 @@ export type Database = {
       suggested_selection_order: {
         Args: { calendar: string }
         Returns: number[]
+      }
+      suspend_account: {
+        Args: {
+          account: string
+          kind: Database["public"]["Enums"]["suspension_kind"]
+          reason: string
+        }
+        Returns: undefined
       }
       swap_weeks: {
         Args: {
@@ -3517,6 +4290,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      withdrawal_minimum: { Args: never; Returns: number }
     }
     Enums: {
       account_status: "active" | "suspended"
