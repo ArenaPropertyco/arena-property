@@ -3496,6 +3496,42 @@ export type Database = {
           },
         ]
       }
+      property_board_shares: {
+        Row: {
+          expenses: number | null
+          fraction_id: string | null
+          fraction_number: number | null
+          income: number | null
+          net: number | null
+          owner_id: string | null
+          period: string | null
+          property_id: string | null
+          responsible: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "movement_shares_fraction_id_fkey"
+            columns: ["fraction_id"]
+            isOneToOne: false
+            referencedRelation: "fractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movement_shares_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "movement_shares_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "property_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_overview: {
         Row: {
           area_m2: number | null

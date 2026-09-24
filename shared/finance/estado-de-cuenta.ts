@@ -123,9 +123,16 @@ export function agregarMes(lineas: readonly LineaDelPropietario[], mes: Mes): Me
   return { mes, ingresos, gastos, neto: pesos(ingresos - gastos), movimientos: delMes.length }
 }
 
-function mesSiguiente(mes: Mes): Mes {
+/** El mes que sigue a uno dado; diciembre pasa al enero siguiente. */
+export function mesSiguiente(mes: Mes): Mes {
   const [anio, numero] = mes.split('-').map(Number) as [number, number]
   return numero === 12 ? `${anio + 1}-01` : `${anio}-${String(numero + 1).padStart(2, '0')}`
+}
+
+/** El mes anterior a uno dado; enero vuelve al diciembre anterior. */
+export function mesAnterior(mes: Mes): Mes {
+  const [anio, numero] = mes.split('-').map(Number) as [number, number]
+  return numero === 1 ? `${anio - 1}-12` : `${anio}-${String(numero - 1).padStart(2, '0')}`
 }
 
 /** RF-19.2 · CA-19.3 · todos los meses del rango, en orden, con ceros donde no hubo nada. */

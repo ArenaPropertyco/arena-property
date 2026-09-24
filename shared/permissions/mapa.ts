@@ -47,6 +47,8 @@ export const CAPACIDADES = [
   'ver_saldo_y_retirar',
   'definir_comision',
   'aprobar_pagos_comision',
+  'confirmar_pagos_de_propietarios',
+  'pagar_saldos_de_fracciones',
 ] as const
 
 export type Capacidad = typeof CAPACIDADES[number]
@@ -90,6 +92,11 @@ export const MATRIZ: Record<Capacidad, Fila> = {
   ver_saldo_y_retirar: fila('no', 'no', 'no', 'si', 'no', 'no'),
   definir_comision: fila('si', 'no', 'no', 'no', 'no', 'no'),
   aprobar_pagos_comision: fila('si', 'no', 'no', 'no', 'no', 'no'),
+  // HU-63 · RF-63.8 · el tablero de cobros: confirmar los pagos de los Propietarios y
+  // pagar el saldo de una fracción. El Superadmin en todas; el Administrador solo en
+  // sus propiedades; el Propietario, nunca.
+  confirmar_pagos_de_propietarios: fila('todas', 'propias', 'no', 'no', 'no', 'no'),
+  pagar_saldos_de_fracciones: fila('todas', 'propias', 'no', 'no', 'no', 'no'),
 }
 
 /** La matriz completa: qué alcance tiene cada capacidad para cada columna. */
@@ -126,6 +133,11 @@ export const CAPACIDADES_EN_BASE_DE_DATOS: readonly Capacidad[] = [
   // asignado (`puede_gestionar_propiedad`, D-45) y lo lee además el copropietario,
   // sin los ítems dados de baja (CA-28.3): ampliarla aquí no da acceso a los datos.
   'gestionar_inventario',
+  // HU-63 · RF-63.8 · `confirm_owner_payment`, `reject_owner_payment` y
+  // `pay_owner_withdrawal` comprueban `puede_gestionar_propiedad` y las vistas del
+  // tablero se filtran igual: ampliarlas aquí no da acceso a los datos.
+  'confirmar_pagos_de_propietarios',
+  'pagar_saldos_de_fracciones',
 ]
 
 /** Estados que condicionan una capacidad además del rol (RF-07.2b, D-31). */

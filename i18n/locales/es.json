@@ -30,7 +30,8 @@
     "metrics": "Métricas",
     "wallet": "Mi billetera",
     "withdrawals": "Retiros",
-    "ownerWallet": "Mi billetera"
+    "ownerWallet": "Mi billetera",
+    "collections": "Cobros"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -166,7 +167,9 @@
       "ver_referidos": "Ver listado de referidos",
       "ver_saldo_y_retirar": "Ver saldo a favor y solicitar retiro",
       "definir_comision": "Definir la comisión por referido",
-      "aprobar_pagos_comision": "Aprobar pagos de comisión"
+      "aprobar_pagos_comision": "Aprobar pagos de comisión",
+      "confirmar_pagos_de_propietarios": "Confirmar pagos de Propietarios",
+      "pagar_saldos_de_fracciones": "Pagar el saldo de una fracción"
     },
     "editHint": "Estás editando la matriz de permisos.",
     "enforcedByDatabaseHint": "Estos ajustes gobiernan la interfaz y el acceso a las rutas. Las capacidades marcadas con «También en la base» las hace cumplir además la base de datos: ampliarlas aquí no concede acceso a los datos hasta cambiar su política en una migración.",
@@ -2131,7 +2134,8 @@
     "empty": "Todavía no administras ninguna propiedad.",
     "loading": "Cargando propiedades…",
     "openAnnouncements": "{n} novedades abiertas",
-    "openAnnouncementsPage": "Novedades"
+    "openAnnouncementsPage": "Novedades",
+    "openCollections": "Cobros"
   },
   "portfolio": {
     "title": "Mis fracciones",
@@ -2835,6 +2839,117 @@
       "from": "Desde",
       "to": "Hasta",
       "clear": "Limpiar filtros"
+    }
+  },
+  "collections": {
+    "title": "Cobros mensuales",
+    "subtitle": "El estado de pagos de cada fracción tras el corte de un mes: cuánto debe, cuánto se le debe, si ya envió el comprobante y qué falta por confirmar. Cada propiedad se liquida por separado.",
+    "globalTitle": "Cobros por propiedad",
+    "globalSubtitle": "Una fila por propiedad con lo que falta cobrar, lo cobrado, lo que está en revisión y lo que hay que pagar a las fracciones. Cada fila enlaza a su tablero.",
+    "loading": "Cargando el tablero…",
+    "empty": "Todavía no administras ninguna propiedad.",
+    "notFound": "No encontramos esa propiedad, o no gestionas sus cobros.",
+    "boardOf": "Tablero de {property}",
+    "month": "Mes",
+    "currentMonth": "{month} · mes en curso (estimado)",
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "summary": {
+      "title": "Resumen del mes",
+      "income": "Ingresos del mes",
+      "expenses": "Gastos del mes",
+      "net": "Neto del mes",
+      "receivable": "Por cobrar",
+      "collected": "Cobrado y confirmado",
+      "underReview": "En revisión",
+      "payable": "Por pagar a fracciones",
+      "cashNet": "Neto de caja",
+      "cashNetHint": "Por cobrar menos por pagar",
+      "underReviewHint": "Reportado, aún sin confirmar: no cuenta como cobrado"
+    },
+    "columns": {
+      "fraction": "Fracción",
+      "responsible": "Responde",
+      "month": "Neto del mes",
+      "balance": "Saldo",
+      "status": "Estado",
+      "receipt": "Comprobante",
+      "actions": "Acciones"
+    },
+    "fractionLine": "Fracción {fraction}/8",
+    "responsible": {
+      "inventory_holder": "Titular del inventario",
+      "linked": "Liquida con la fracción {fraction}/8"
+    },
+    "nature": {
+      "charge": "Cobro",
+      "payout": "Pago",
+      "settled": "Al día",
+      "inventory_holder": "Titular del inventario",
+      "linked": "Ligada"
+    },
+    "estimated": "Estimado",
+    "openCharges": "{n} cobros abiertos · pendiente {amount}",
+    "receipt": {
+      "none": "Sin comprobante",
+      "line": "{amount} · {date} · {method}",
+      "view": "Ver comprobante",
+      "gateway": "Pasarela {provider} · {reference}"
+    },
+    "withdrawal": {
+      "requested": "Solicitó retirar {amount} · {bank} · {kind} · {number} · {holder}",
+      "none": "Sin solicitud de retiro"
+    },
+    "actions": {
+      "confirm": "Confirmar pago",
+      "reject": "Rechazar",
+      "pay": "Pagar retiro"
+    },
+    "confirm": {
+      "title": "Confirmar el pago de {name}",
+      "hint": "Vas a confirmar {amount} pagados el {date} por {method} sobre el cobro de la fracción {fraction}/8. Al confirmar, el pago entra al saldo del Propietario.",
+      "submit": "Sí, confirmar",
+      "done": "Pago confirmado."
+    },
+    "reject": {
+      "title": "Rechazar el pago de {name}",
+      "hint": "Explica por qué no confirmas este pago. El Propietario verá el motivo y podrá reportar el pago de nuevo.",
+      "label": "Motivo del rechazo",
+      "submit": "Rechazar con este motivo",
+      "done": "Pago rechazado."
+    },
+    "pay": {
+      "title": "Pagar el retiro de {name}",
+      "hint": "Adjunta el comprobante de la transferencia de {amount}. El pago baja el saldo de la fracción y no crea ningún egreso nuevo.",
+      "receipt": "Comprobante",
+      "receiptHint": "PDF o imagen (JPG, PNG o WebP) de hasta 10 MB.",
+      "submit": "Registrar pago",
+      "done": "Retiro pagado."
+    },
+    "errors": {
+      "confirm_failed": "No pudimos confirmar el pago.",
+      "reject_failed": "No pudimos rechazar el pago.",
+      "pay_failed": "No pudimos registrar el pago.",
+      "receipt_failed": "No pudimos subir el comprobante.",
+      "receipt_required": "El pago necesita el comprobante."
+    },
+    "filters": {
+      "nature": "Naturaleza",
+      "allNatures": "Todas",
+      "status": "Estado del cobro",
+      "allStatuses": "Todos",
+      "clear": "Limpiar filtros"
+    },
+    "global": {
+      "columns": {
+        "property": "Propiedad",
+        "receivable": "Por cobrar",
+        "collected": "Cobrado",
+        "underReview": "En revisión",
+        "payable": "Por pagar"
+      },
+      "open": "Abrir tablero",
+      "empty": "No hay propiedades que mostrar."
     }
   }
 }

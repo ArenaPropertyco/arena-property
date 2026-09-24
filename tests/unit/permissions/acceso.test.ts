@@ -127,3 +127,16 @@ describe('HU-55 · RF-55.4 · D-20 · la billetera y la bandeja de retiros', () 
       .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
   })
 })
+
+describe('HU-63 · RF-63.8 · el tablero de cobros', () => {
+  it('CA-63.10 · el Superadmin y el Administrador entran; el Propietario no accede a ningún tablero', () => {
+    for (const capacidad of ['confirmar_pagos_de_propietarios', 'pagar_saldos_de_fracciones'] as const) {
+      expect(decidirAcceso({ ...sesionVerificada, roles: ['superadmin'] }, { capacidad })).toEqual({ permitido: true })
+      expect(decidirAcceso({ ...sesionVerificada, roles: ['property_admin'] }, { capacidad })).toEqual({ permitido: true })
+      for (const roles of [['owner'], ['ambassador'], ['user'], ['owner', 'ambassador']] as const) {
+        expect(decidirAcceso({ ...sesionVerificada, roles: [...roles] }, { capacidad }), roles.join('+'))
+          .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
+      }
+    }
+  })
+})

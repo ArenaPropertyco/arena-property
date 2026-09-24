@@ -710,31 +710,31 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 ### HU-63 — Tablero de cobros mensuales por propiedad
 
-- [ ] **T-293 · Capacidades nuevas en el mapa de permisos** — `HU-63 · RF-63.8` · `HU-07`
+- [x] **T-293 · Capacidades nuevas en el mapa de permisos** — `HU-63 · RF-63.8` · `HU-07`
   Hecho cuando: confirmar pagos y pagar a fracciones son dos capacidades del mapa (Superadmin `sí`, Administrador `solo sus propiedades`, Propietario `no`), y `decidirAcceso` tiene su prueba.
-- [ ] **T-294 · Clasificación pura de cada fracción en cobro, pago o al día** — `HU-63 · RF-63.1, RF-63.2`
+- [x] **T-294 · Clasificación pura de cada fracción en cobro, pago o al día** — `HU-63 · RF-63.1, RF-63.2`
   Hecho cuando: pasa `CA-63.1`, con las 8 fracciones siempre presentes.
-- [ ] **T-295 · Resumen puro de la propiedad, cuadrado con las filas** — `HU-63 · RF-63.3` · `TR-02`, `RT-08`
+- [x] **T-295 · Resumen puro de la propiedad, cuadrado con las filas** — `HU-63 · RF-63.3` · `TR-02`, `RT-08`
   Hecho cuando: pasan `CA-63.2` y `CA-63.11`.
-- [ ] **T-296 · Filas del titular del inventario** — `HU-63 · RF-63.7` · D-08
+- [x] **T-296 · Filas del titular del inventario** — `HU-63 · RF-63.7` · D-08
   Hecho cuando: pasa `CA-63.9`.
-- [ ] **T-297 · Vista del tablero en la base, con RLS por propiedad asignada** — `HU-63 · RF-63.1, RF-63.8`
+- [x] **T-297 · Vista del tablero en la base, con RLS por propiedad asignada** — `HU-63 · RF-63.1, RF-63.8`
   Hecho cuando: la vista es `security_invoker` y pasa `CA-63.10`.
-- [ ] **T-298 · Estado del comprobante, con enlace firmado y temporal** — `HU-63 · RF-63.4`
+- [x] **T-298 · Estado del comprobante, con enlace firmado y temporal** — `HU-63 · RF-63.4`
   Hecho cuando: pasa `CA-63.3`.
-- [ ] **T-299 · Botón y diálogo de confirmación, a prueba de doble clic** — `HU-63 · RF-63.5`
+- [x] **T-299 · Botón y diálogo de confirmación, a prueba de doble clic** — `HU-63 · RF-63.5`
   Hecho cuando: pasan `CA-63.4`, `CA-63.5`, `CA-63.6` y `CA-63.7`.
-- [ ] **T-300 · Pago del saldo positivo de una fracción** — `HU-63 · RF-63.6`
+- [x] **T-300 · Pago del saldo positivo de una fracción** — `HU-63 · RF-63.6`
   Hecho cuando: pasa `CA-63.8`, y el pago no genera un egreso nuevo en la maestra.
-- [ ] **T-301 · Pagos por pasarela en modo lectura** — `HU-63 · RF-63.10` · D-10
+- [x] **T-301 · Pagos por pasarela en modo lectura** — `HU-63 · RF-63.10` · D-10
   Hecho cuando: pasa `CA-63.12`.
-- [ ] **T-302 · Filtros del tablero por mes, naturaleza y estado** — `HU-63 · RF-63.9`
+- [x] **T-302 · Filtros del tablero por mes, naturaleza y estado** — `HU-63 · RF-63.9`
   Hecho cuando: el filtro es una función pura con su prueba, y el mes en curso aparece como estimado.
-- [ ] **T-303 · Vista global de cobros del Superadmin** — `HU-63 · RF-63.8`
+- [x] **T-303 · Vista global de cobros del Superadmin** — `HU-63 · RF-63.8`
   Hecho cuando: pasa `CA-63.13`.
-- [ ] **T-304 · Página del tablero por propiedad** — `HU-63 · RF-63.1, RF-63.3, RF-63.4, RF-63.5` · `HU-21` · `RT-05`, `RT-06`
+- [x] **T-304 · Página del tablero por propiedad** — `HU-63 · RF-63.1, RF-63.3, RF-63.4, RF-63.5` · `HU-21` · `RT-05`, `RT-06`
   Hecho cuando: el menú y el dashboard del Administrador llevan al tablero; la página orquesta el resumen, la tabla y los diálogos como componentes; y la prueba de integración pasa en claro, en oscuro y a 320 px.
-- [ ] **T-305 · Auditoría y avisos del tablero** — `HU-63 · RF-63.11` · `TR-01`, `TR-03`
+- [x] **T-305 · Auditoría y avisos del tablero** — `HU-63 · RF-63.11` · `TR-01`, `TR-03`
   Hecho cuando: cada confirmación, rechazo y pago a una fracción audita a su autor y el motivo, y avisa al Propietario una sola vez.
 
 ---
