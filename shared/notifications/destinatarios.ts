@@ -108,6 +108,16 @@ export function destinatariosDeComunicado(
   }
 }
 
+/** HU-62 · RF-62.13 · el Propietario dueño del corte, del pago o del retiro. */
+export function destinatariosDePropietario(propietario: { ownerId: string | null }): string[] {
+  return propietario.ownerId ? [propietario.ownerId] : []
+}
+
+/** HU-62 · RF-62.13 · los administradores vigentes de la propiedad, una vez cada uno. */
+export function destinatariosDeAdministracion(vinculos: VinculosDePropiedad): string[] {
+  return unicos([...vinculos.adminIds])
+}
+
 /** HU-54, HU-57 · RF-57.2 · el embajador dueño del referido o del retiro. */
 export function destinatariosDeEmbajador(atribucion: { ambassadorId: string | null }): string[] {
   return atribucion.ambassadorId ? [atribucion.ambassadorId] : []
@@ -123,6 +133,8 @@ export interface ContextoDeDestinatarios {
   comunicado?: SegmentoDeComunicado
   vinculos?: VinculosDePropiedad
   atribucion?: { ambassadorId: string | null }
+  /** HU-62 · el Propietario al que pertenece el evento. */
+  propietario?: { ownerId: string | null }
 }
 
 /** RF-N.3 · elige el resolutor por el alcance del tipo; sin contexto, nadie. */
@@ -139,5 +151,9 @@ export function resolverDestinatarios(evento: EventoDeNotificacion, contexto: Co
       return contexto.cuentas && contexto.segmento ? destinatariosDeSegmento(contexto.cuentas, contexto.segmento) : []
     case 'ambassador':
       return contexto.atribucion ? destinatariosDeEmbajador(contexto.atribucion) : []
+    case 'owner':
+      return contexto.propietario ? destinatariosDePropietario(contexto.propietario) : []
+    case 'property_admins':
+      return contexto.vinculos ? destinatariosDeAdministracion(contexto.vinculos) : []
   }
 }

@@ -58,7 +58,7 @@ Aplican a **todas** las specs; cada `HUXX-spec.md` los referencia y no los repit
 | E4 Calendario y Agendamiento | [HU12](./HU12-spec.md) · [HU13](./HU13-spec.md) · [HU14](./HU14-spec.md) · [HU15](./HU15-spec.md) · [HU16](./HU16-spec.md) · [HU17](./HU17-spec.md) · [HU39](./HU39-spec.md) · [HU59 🆕](./HU59-spec.md) |
 | E5 Dashboard del Propietario | [HU18](./HU18-spec.md) · [HU19](./HU19-spec.md) · [HU20](./HU20-spec.md) |
 | E6 Dashboard del Administrador | [HU21](./HU21-spec.md) · [HU22](./HU22-spec.md) |
-| E7 Finanzas prorrateadas | [HU23](./HU23-spec.md) · [HU24](./HU24-spec.md) · [HU25](./HU25-spec.md) · [HU40](./HU40-spec.md) |
+| E7 Finanzas prorrateadas | [HU23](./HU23-spec.md) · [HU24](./HU24-spec.md) · [HU25](./HU25-spec.md) · [HU40](./HU40-spec.md) · [HU62 🆕](./HU62-spec.md) · [HU63 🆕](./HU63-spec.md) |
 | E8 Inventario y Mantenimiento | [HU26](./HU26-spec.md) · [HU27](./HU27-spec.md) · [HU28](./HU28-spec.md) |
 | E9 Notificaciones y Comunicación | [HU29](./HU29-spec.md) · [HU30](./HU30-spec.md) · [HU31](./HU31-spec.md) |
 | E10 Panel Superadmin | [HU33](./HU33-spec.md) |

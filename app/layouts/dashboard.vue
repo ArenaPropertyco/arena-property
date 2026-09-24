@@ -57,6 +57,8 @@ const secciones = computed<NavigationMenuItem[]>(() => [
         { label: t('nav.myCalendar'), icon: 'i-lucide-calendar-heart', to: localePath('/panel/mi-calendario') },
         { label: t('nav.weekHistory'), icon: 'i-lucide-history', to: localePath('/panel/mis-semanas') },
         { label: t('nav.finance'), icon: 'i-lucide-wallet', to: localePath('/panel/finanzas') },
+        // HU-62 · su billetera: lo que debe o puede retirar en cada propiedad tras el corte mensual.
+        { label: t('nav.ownerWallet'), icon: 'i-lucide-piggy-bank', to: localePath('/panel/mi-billetera') },
       ]
     : []),
   ...(puede(roles.value, 'gestionar_calendario')
@@ -81,8 +83,15 @@ const secciones = computed<NavigationMenuItem[]>(() => [
   ...(puede(roles.value, 'ver_referidos')
     ? [{ label: t('nav.referrals'), icon: 'i-lucide-users-round', to: localePath('/panel/referidos') }]
     : []),
+  // HU-55 · HU-56 · la billetera es del Embajador; la bandeja de retiros, del Superadmin (D-20).
+  ...(puede(roles.value, 'ver_saldo_y_retirar')
+    ? [{ label: t('nav.wallet'), icon: 'i-lucide-wallet-cards', to: localePath('/panel/billetera') }]
+    : []),
   ...(puede(roles.value, 'definir_comision')
     ? [{ label: t('nav.commission'), icon: 'i-lucide-percent', to: localePath('/panel/comision') }]
+    : []),
+  ...(puede(roles.value, 'aprobar_pagos_comision')
+    ? [{ label: t('nav.withdrawals'), icon: 'i-lucide-hand-coins', to: localePath('/panel/retiros') }]
     : []),
   ...(puede(roles.value, 'administrar_usuarios_y_roles')
     ? [

@@ -3,7 +3,7 @@
  *
  * Un catálogo cerrado de tipos: cada uno sabe a quién alcanza (RF-N.3) y si además
  * de la bandeja exige correo (RF-N.2). Las historias que emiten (HU-16, HU-29,
- * HU-31, HU-54, HU-57, HU-58) apuntan aquí y no inventan tipos por su cuenta; la
+ * HU-31, HU-54, HU-57, HU-58, HU-62) apuntan aquí y no inventan tipos por su cuenta; la
  * base repite la lista en su restricción.
  */
 
@@ -28,12 +28,24 @@ export const TIPOS_DE_NOTIFICACION = [
   'withdrawal_approved',
   /** HU-57 · solicitud de retiro pagada. */
   'withdrawal_paid',
+  /** HU-62 · RF-62.13 · el corte mensual de una propiedad: si toca pagar o se puede retirar. */
+  'owner_statement_closed',
+  /** HU-62 · RF-62.13 · el Propietario reportó un pago que la administración debe revisar. */
+  'owner_payment_reported',
+  /** HU-62 · RF-62.13 · el pago del Propietario quedó confirmado. */
+  'owner_payment_confirmed',
+  /** HU-62 · RF-62.13 · el pago del Propietario fue rechazado, con motivo. */
+  'owner_payment_rejected',
+  /** HU-62 · RF-62.13 · el retiro del Propietario fue pagado. */
+  'owner_withdrawal_paid',
+  /** HU-62 · RF-62.13 · el retiro del Propietario fue rechazado, con motivo. */
+  'owner_withdrawal_rejected',
 ] as const
 
 export type TipoDeNotificacion = typeof TIPOS_DE_NOTIFICACION[number]
 
 /** RF-N.3 · a quién alcanza cada tipo; decide qué resolutor se usa. */
-export type Alcance = 'fraction' | 'property' | 'segment' | 'ambassador'
+export type Alcance = 'fraction' | 'property' | 'segment' | 'ambassador' | 'owner' | 'property_admins'
 
 export const ALCANCE: Record<TipoDeNotificacion, Alcance> = {
   stay_confirmed: 'fraction',
@@ -46,6 +58,12 @@ export const ALCANCE: Record<TipoDeNotificacion, Alcance> = {
   commission_available: 'ambassador',
   withdrawal_approved: 'ambassador',
   withdrawal_paid: 'ambassador',
+  owner_statement_closed: 'owner',
+  owner_payment_reported: 'property_admins',
+  owner_payment_confirmed: 'owner',
+  owner_payment_rejected: 'owner',
+  owner_withdrawal_paid: 'owner',
+  owner_withdrawal_rejected: 'owner',
 }
 
 /** RF-N.2 · in-app siempre; correo cuando el tipo lo exige. Hoy todos lo exigen. */
@@ -60,6 +78,12 @@ export const REQUIERE_CORREO: Record<TipoDeNotificacion, boolean> = {
   commission_available: true,
   withdrawal_approved: true,
   withdrawal_paid: true,
+  owner_statement_closed: true,
+  owner_payment_reported: true,
+  owner_payment_confirmed: true,
+  owner_payment_rejected: true,
+  owner_withdrawal_paid: true,
+  owner_withdrawal_rejected: true,
 }
 
 export type CargaDeNotificacion = Record<string, unknown>

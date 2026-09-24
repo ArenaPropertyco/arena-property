@@ -27,7 +27,10 @@
     "referrals": "Mis referidos",
     "broadcasts": "Comunicados",
     "reports": "Reportes",
-    "metrics": "Métricas"
+    "metrics": "Métricas",
+    "wallet": "Mi billetera",
+    "withdrawals": "Retiros",
+    "ownerWallet": "Mi billetera"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -825,6 +828,30 @@
       "withdrawal_paid": {
         "title": "Retiro pagado",
         "body": "El retiro por {amount} ya fue pagado a tu cuenta."
+      },
+      "owner_statement_closed": {
+        "title": "Corte de {period} en {property_name}",
+        "body": "El neto del mes fue {amount} y tu saldo en la propiedad queda en {balance}."
+      },
+      "owner_payment_reported": {
+        "title": "Pago reportado en {property_name}",
+        "body": "Un Propietario reportó un pago de {amount}. Revisa el comprobante y confírmalo o recházalo."
+      },
+      "owner_payment_confirmed": {
+        "title": "Pago confirmado",
+        "body": "Confirmamos tu pago de {amount} en {property_name}."
+      },
+      "owner_payment_rejected": {
+        "title": "Pago rechazado",
+        "body": "No pudimos confirmar tu pago de {amount} en {property_name}. Motivo: {reason}"
+      },
+      "owner_withdrawal_paid": {
+        "title": "Retiro pagado",
+        "body": "El retiro por {amount} de {property_name} ya fue pagado a tu cuenta."
+      },
+      "owner_withdrawal_rejected": {
+        "title": "Retiro rechazado",
+        "body": "No pudimos pagar tu retiro de {amount} de {property_name}. Motivo: {reason}"
       }
     }
   },
@@ -2492,5 +2519,322 @@
     },
     "loading": "Calculando las métricas…",
     "error": "No pudimos cargar las métricas."
+  },
+  "wallet": {
+    "title": "Mi billetera",
+    "subtitle": "Lo que has ganado con el Programa de Referidos: lo pendiente, lo que está en gracia, lo que puedes retirar hoy y el total histórico. Los saldos salen del histórico de movimientos, no de un contador.",
+    "loading": "Cargando tu billetera…",
+    "notAmbassador": "Tu inscripción como Embajador todavía no está aprobada. La billetera se abre cuando lo esté.",
+    "balances": {
+      "pending": "Saldo pendiente",
+      "pendingHint": "Referidos en proceso de pago",
+      "inGrace": "Saldo en gracia",
+      "inGraceHint": "Acreditado, aún no retirable",
+      "availableOn": "Disponible desde el {date}",
+      "available": "Disponible para retiro",
+      "availableHint": "Lo que puedes retirar hoy",
+      "totalEarned": "Total ganado",
+      "totalEarnedHint": "Histórico acreditado"
+    },
+    "movements": {
+      "title": "Movimientos",
+      "empty": "Todavía no hay movimientos en tu billetera.",
+      "emptyFiltered": "Ningún movimiento cumple los filtros.",
+      "columns": {
+        "kind": "Movimiento",
+        "date": "Fecha",
+        "referral": "Referido",
+        "amount": "Monto"
+      },
+      "kinds": {
+        "commission_credited": "Comisión acreditada",
+        "commission_available": "Comisión disponible",
+        "commission_reversed": "Comisión reversada",
+        "withdrawal_requested": "Retiro solicitado",
+        "withdrawal_approved": "Retiro aprobado",
+        "withdrawal_paid": "Retiro pagado"
+      },
+      "propertyLine": "{property} · fracción {fraction}/8",
+      "graceLine": "Disponible el {date}",
+      "withdrawalStatus": "Solicitud {status}"
+    },
+    "filters": {
+      "kind": "Tipo",
+      "allKinds": "Todos los movimientos",
+      "from": "Desde",
+      "to": "Hasta",
+      "clear": "Limpiar filtros"
+    },
+    "withdrawal": {
+      "title": "Solicitar un retiro",
+      "hint": "Retira parte o todo tu saldo disponible. El mínimo por retiro es {minimum}; hoy puedes retirar hasta {available}.",
+      "amount": "Monto a retirar",
+      "amountHint": "Entero en pesos, sin decimales",
+      "submit": "Solicitar retiro",
+      "sent": "Tu solicitud de retiro quedó registrada. Te avisaremos cuando se apruebe.",
+      "open": "Tienes una solicitud de retiro en curso. Podrás pedir otra cuando se resuelva.",
+      "requestsTitle": "Tus solicitudes de retiro",
+      "validation": {
+        "amount_required": "Indica cuánto quieres retirar.",
+        "below_minimum": "El monto está por debajo del mínimo por retiro.",
+        "above_available": "El monto supera tu saldo disponible.",
+        "open_request": "Ya tienes una solicitud de retiro abierta."
+      },
+      "errors": {
+        "invalid_transition": "La solicitud no admite ese cambio de estado.",
+        "reason_required": "El rechazo necesita un motivo.",
+        "receipt_required": "El pago necesita el comprobante.",
+        "request_failed": "No pudimos registrar tu solicitud de retiro."
+      }
+    },
+    "receipt": {
+      "validation": {
+        "format": "El comprobante debe ser PDF o una imagen (JPG, PNG o WebP).",
+        "empty": "El archivo está vacío.",
+        "too_large": "El comprobante no puede pesar más de 10 MB."
+      }
+    },
+    "minimum": {
+      "validation": {
+        "not_positive": "El mínimo debe ser un entero mayor que cero."
+      }
+    },
+    "requests": {
+      "empty": "No hay solicitudes de retiro.",
+      "columns": {
+        "ambassador": "Embajador",
+        "amount": "Monto",
+        "requestedOn": "Solicitada",
+        "status": "Estado",
+        "bank": "Cuenta bancaria",
+        "actions": "Acciones"
+      },
+      "status": {
+        "requested": "Solicitada",
+        "approved": "Aprobada",
+        "paid": "Pagada",
+        "rejected": "Rechazada"
+      },
+      "available": "Disponible: {amount}",
+      "reason": "Motivo: {reason}",
+      "receipt": "Ver comprobante",
+      "bankLine": "{bank} · {kind} · {number}",
+      "holderLine": "Titular: {holder}",
+      "accountKinds": {
+        "savings": "ahorros",
+        "checking": "corriente"
+      }
+    }
+  },
+  "withdrawals": {
+    "title": "Retiros de Embajadores",
+    "subtitle": "Las solicitudes de retiro del Programa de Referidos. Aprobar descuenta el saldo disponible; pagar exige el comprobante y no genera ningún egreso nuevo: la comisión ya se devengó al acreditarse.",
+    "loading": "Cargando las solicitudes…",
+    "minimum": {
+      "title": "Mínimo por retiro",
+      "hint": "Ningún Embajador puede pedir menos de esta cifra. Hoy rige {amount}.",
+      "amount": "Nuevo mínimo",
+      "save": "Guardar mínimo",
+      "saved": "El mínimo por retiro quedó actualizado.",
+      "failed": "No pudimos actualizar el mínimo."
+    },
+    "actions": {
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "pay": "Registrar pago"
+    },
+    "reject": {
+      "title": "Rechazar el retiro de {name}",
+      "hint": "El motivo queda registrado y el Embajador lo verá en su billetera. El saldo no cambia.",
+      "reason": "Motivo del rechazo",
+      "submit": "Rechazar retiro"
+    },
+    "pay": {
+      "title": "Registrar el pago a {name}",
+      "hint": "Adjunta el comprobante de la transferencia por {amount} a la cuenta registrada. Sin comprobante no se registra el pago.",
+      "receipt": "Comprobante del pago",
+      "receiptHint": "PDF o imagen, hasta 10 MB",
+      "submit": "Registrar pago"
+    },
+    "done": {
+      "approved": "Retiro aprobado. El saldo disponible del Embajador quedó descontado.",
+      "rejected": "Retiro rechazado con su motivo.",
+      "paid": "Pago registrado con su comprobante."
+    },
+    "errors": {
+      "approve_failed": "No pudimos aprobar el retiro.",
+      "reject_failed": "No pudimos rechazar el retiro.",
+      "pay_failed": "No pudimos registrar el pago.",
+      "receipt_failed": "No pudimos subir el comprobante."
+    }
+  },
+  "ownerWallet": {
+    "title": "Mi billetera",
+    "subtitle": "Lo que tienes en cada propiedad: la suma de tus ingresos menos tus gastos. Cada mes, el día 1, se cierra el mes anterior: si el saldo queda en negativo, te toca pagarlo; si queda en positivo, puedes retirarlo. Cada propiedad se liquida por separado.",
+    "loading": "Cargando tu billetera…",
+    "empty": "Todavía no tienes fracciones: no hay billetera que mostrar.",
+    "balances": {
+      "title": "Saldo por propiedad",
+      "consolidated": "Total de tus propiedades",
+      "consolidatedHint": "Solo informativo: cada propiedad se paga y se retira por separado.",
+      "currentMonth": "Mes en curso (estimado): {amount}",
+      "currentMonthHint": "Cambia hasta el corte del día 1.",
+      "nature": {
+        "charge": "Por pagar",
+        "payout": "Disponible para retiro",
+        "settled": "Al día"
+      }
+    },
+    "charges": {
+      "title": "Cobros",
+      "hint": "Cada cobro nace del corte de un mes con saldo negativo. Reporta tu pago con el comprobante y la administración lo confirma.",
+      "empty": "No tienes cobros pendientes.",
+      "columns": {
+        "period": "Corte",
+        "property": "Propiedad",
+        "amount": "Cobro",
+        "pending": "Pendiente",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "status": {
+        "pending": "Pendiente",
+        "under_review": "En revisión",
+        "paid": "Pagado"
+      },
+      "report": "Reportar pago",
+      "payments": "Pagos reportados",
+      "paymentLine": "{amount} · {date} · {method}",
+      "paymentStatus": {
+        "reported": "En revisión",
+        "confirmed": "Confirmado",
+        "rejected": "Rechazado"
+      },
+      "reason": "Motivo: {reason}",
+      "receipt": "Ver comprobante",
+      "channel": {
+        "manual": "Manual",
+        "gateway": "Pasarela"
+      }
+    },
+    "payment": {
+      "title": "Reportar el pago de {property} · {period}",
+      "hint": "Pendiente: {pending}. Puedes reportar un abono parcial; nunca más de lo pendiente.",
+      "amount": "Monto pagado",
+      "amountHint": "Entero en pesos, sin decimales",
+      "paidOn": "Fecha del pago",
+      "method": "Medio de pago",
+      "methodPlaceholder": "Elige el medio de pago",
+      "description": "Descripción",
+      "descriptionHint": "Referencia de la transferencia, banco de origen o lo que ayude a identificarlo.",
+      "receipt": "Comprobante",
+      "receiptHint": "PDF o imagen (JPG, PNG o WebP) de hasta 10 MB.",
+      "submit": "Reportar pago",
+      "sent": "Tu pago quedó reportado. La administración lo revisará y te avisaremos.",
+      "validation": {
+        "amount_required": "Indica cuánto pagaste.",
+        "above_charge": "El monto supera lo pendiente del cobro.",
+        "method_required": "Elige el medio de pago.",
+        "description_required": "Describe el pago.",
+        "date_invalid": "La fecha del pago no es válida.",
+        "receipt_required": "Adjunta el comprobante.",
+        "charge_closed": "Este cobro ya está pagado."
+      },
+      "errors": {
+        "invalid_transition": "El pago no admite ese cambio de estado.",
+        "reason_required": "El rechazo necesita un motivo.",
+        "report_failed": "No pudimos registrar tu pago.",
+        "receipt_failed": "No pudimos subir el comprobante."
+      }
+    },
+    "withdrawal": {
+      "title": "Solicitar un retiro",
+      "hint": "Retira hasta el saldo positivo de una propiedad. Te lo pagamos a la cuenta que indiques.",
+      "noBalance": "Ninguna de tus propiedades tiene saldo positivo para retirar.",
+      "open": "Tienes una solicitud de retiro en curso sobre {property}. Podrás pedir otra cuando se resuelva.",
+      "property": "Propiedad",
+      "propertyPlaceholder": "Elige la propiedad",
+      "available": "Disponible: {amount}",
+      "amount": "Monto a retirar",
+      "amountHint": "Entero en pesos, sin decimales",
+      "bank": "Banco",
+      "accountKind": "Tipo de cuenta",
+      "accountNumber": "Número de cuenta",
+      "holder": "Titular",
+      "submit": "Solicitar retiro",
+      "sent": "Tu solicitud de retiro quedó registrada. Te avisaremos cuando se pague.",
+      "requestsTitle": "Tus solicitudes de retiro",
+      "empty": "No has solicitado retiros.",
+      "columns": {
+        "property": "Propiedad",
+        "amount": "Monto",
+        "requestedOn": "Solicitado",
+        "status": "Estado"
+      },
+      "status": {
+        "requested": "Solicitado",
+        "paid": "Pagado",
+        "rejected": "Rechazado"
+      },
+      "reason": "Motivo: {reason}",
+      "receipt": "Ver comprobante",
+      "bankLine": "{bank} · {kind} · {number}",
+      "accountKinds": {
+        "savings": "ahorros",
+        "checking": "corriente"
+      },
+      "validation": {
+        "amount_required": "Indica cuánto quieres retirar.",
+        "above_balance": "El monto supera el saldo disponible de la propiedad.",
+        "open_request": "Ya tienes una solicitud de retiro abierta sobre esa propiedad.",
+        "bank_required": "Indica el banco.",
+        "account_kind_required": "Elige el tipo de cuenta.",
+        "account_required": "Indica el número de cuenta.",
+        "holder_required": "Indica el titular de la cuenta."
+      },
+      "errors": {
+        "invalid_transition": "La solicitud no admite ese cambio de estado.",
+        "reason_required": "El rechazo necesita un motivo.",
+        "receipt_required": "El pago necesita el comprobante.",
+        "request_failed": "No pudimos registrar tu solicitud de retiro."
+      }
+    },
+    "statements": {
+      "title": "Cortes mensuales",
+      "hint": "Cada corte cierra un mes de una fracción. Lo que llegó tarde entra en el corte siguiente como ajuste, y ningún corte cerrado cambia.",
+      "empty": "Todavía no hay cortes: el primero se hace el día 1 del mes siguiente.",
+      "columns": {
+        "period": "Mes",
+        "property": "Propiedad",
+        "income": "Ingresos",
+        "expenses": "Gastos",
+        "net": "Neto"
+      },
+      "fractionLine": "fracción {fraction}/8",
+      "adjustment": "Con ajustes de meses anteriores"
+    },
+    "movements": {
+      "title": "Movimientos",
+      "empty": "Todavía no hay movimientos en tu billetera.",
+      "columns": {
+        "kind": "Movimiento",
+        "date": "Fecha",
+        "property": "Propiedad",
+        "amount": "Monto"
+      },
+      "kinds": {
+        "statement_closed": "Corte mensual",
+        "payment_confirmed": "Pago confirmado",
+        "withdrawal_paid": "Retiro pagado"
+      },
+      "periodLine": "fracción {fraction}/8 · {period}"
+    },
+    "filters": {
+      "property": "Propiedad",
+      "allProperties": "Todas las propiedades",
+      "from": "Desde",
+      "to": "Hasta",
+      "clear": "Limpiar filtros"
+    }
   }
 }

@@ -110,3 +110,20 @@ describe('HU-25 · RF-25.5 · HU-32 · RF-32.3 · rutas reservadas al Superadmin
     expect(decidirAcceso({ ...sesionVerificada, estadoCuenta: 'suspended', roles: ['superadmin'] }, { soloSuperadmin: true })).toMatchObject({ motivo: 'suspendido' })
   })
 })
+
+describe('HU-55 · RF-55.4 · D-20 · la billetera y la bandeja de retiros', () => {
+  it('CA-55.5 · el Embajador entra a su billetera; quien no lo es, no', () => {
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['ambassador'] }, { capacidad: 'ver_saldo_y_retirar' })).toEqual({ permitido: true })
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['owner', 'ambassador'] }, { capacidad: 'ver_saldo_y_retirar' })).toEqual({ permitido: true })
+    for (const roles of [['owner'], ['property_admin'], ['user']] as const) {
+      expect(decidirAcceso({ ...sesionVerificada, roles: [...roles] }, { capacidad: 'ver_saldo_y_retirar' }))
+        .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
+    }
+  })
+
+  it('CA-55.5 · D-20 · el Superadmin lee las billeteras desde la bandeja de retiros, no desde la de un Embajador', () => {
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['superadmin'] }, { capacidad: 'aprobar_pagos_comision' })).toEqual({ permitido: true })
+    expect(decidirAcceso({ ...sesionVerificada, roles: ['ambassador'] }, { capacidad: 'aprobar_pagos_comision' }))
+      .toEqual({ permitido: false, motivo: 'sin_capacidad', redirigirA: RUTAS.panel })
+  })
+})
