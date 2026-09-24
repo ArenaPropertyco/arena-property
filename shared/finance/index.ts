@@ -3,7 +3,7 @@
  * contable, validación de movimientos, generación de cuotas, el gasto de
  * mantenimiento (HU-27), el estado de cuenta (HU-19) y el portafolio del
  * Propietario (HU-18), y la billetera del Propietario con su cobro mensual y su
- * retiro (HU-62).
+ * retiro (HU-62), y el tablero de cobros de la administración (HU-63).
  */
 
 export * from './billetera'
@@ -19,4 +19,5 @@ export * from './movimientos'
 export * from './portafolio'
 export * from './reportes'
 export * from './retiros-propietario'
+export * from './tablero-de-cobros'
 export * from './vistas'

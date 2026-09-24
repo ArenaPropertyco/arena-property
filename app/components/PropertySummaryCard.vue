@@ -155,6 +155,15 @@ const porcentaje = computed(() => formatearPorcentaje(props.resumen.soldShare, i
         :to="localePath(`/panel/novedades?propiedad=${resumen.id}`)"
         :data-test="`abrir-novedades-${resumen.id}`"
       />
+      <!-- HU-63 · RF-63.8 · el tablero de cobros de la propiedad. -->
+      <UButton
+        variant="ghost"
+        size="xs"
+        icon="i-lucide-table-2"
+        :label="t('dashboard.openCollections')"
+        :to="localePath(`/panel/cobros/${resumen.id}`)"
+        :data-test="`abrir-cobros-${resumen.id}`"
+      />
     </footer>
   </article>
 </template>

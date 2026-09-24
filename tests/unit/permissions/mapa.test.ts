@@ -9,7 +9,8 @@ import { esCombinacionValida, ROLES } from '#shared/permissions/roles'
  *
  * La tabla esperada de abajo transcribe la matriz del VSM §2 con las enmiendas que
  * la spec declara encima: `registrar_gastos` (RF-07.2c, D-40) y `gestionar_inventario`
- * (RF-07.2d, D-45) para el Superadmin.
+ * (RF-07.2d, D-45) para el Superadmin, y las dos capacidades del tablero de cobros
+ * que HU-63 · RF-63.8 añade a la matriz.
  * Que exista dos veces (aquí y en `shared/permissions/mapa.ts`) es el punto del
  * "test tabla-completa": si alguien toca una celda del mapa sin tocar la spec, esto
  * falla.
@@ -44,6 +45,8 @@ const ESPERADO: Record<Capacidad, Alcance[]> = {
   ver_saldo_y_retirar: [N, N, N, S, N, N],
   definir_comision: [S, N, N, N, N, N],
   aprobar_pagos_comision: [S, N, N, N, N, N],
+  confirmar_pagos_de_propietarios: [T, P, N, N, N, N],
+  pagar_saldos_de_fracciones: [T, P, N, N, N, N],
 }
 
 describe('CA-07.1 · el mapa de permisos coincide celda a celda con la matriz VSM', () => {

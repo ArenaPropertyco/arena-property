@@ -30,7 +30,8 @@
     "metrics": "Metrics",
     "wallet": "My wallet",
     "withdrawals": "Withdrawals",
-    "ownerWallet": "My wallet"
+    "ownerWallet": "My wallet",
+    "collections": "Collections"
   },
   "actions": {
     "login": "Log in",
@@ -166,7 +167,9 @@
       "ver_referidos": "View referrals",
       "ver_saldo_y_retirar": "View balance and request withdrawal",
       "definir_comision": "Set referral commission",
-      "aprobar_pagos_comision": "Approve commission payouts"
+      "aprobar_pagos_comision": "Approve commission payouts",
+      "confirmar_pagos_de_propietarios": "Confirm owner payments",
+      "pagar_saldos_de_fracciones": "Pay a fraction balance"
     },
     "editHint": "You are editing the permissions matrix.",
     "enforcedByDatabaseHint": "These adjustments govern the interface and route access. Capabilities marked “Also in the database” are additionally enforced by the database: widening them here grants no data access until their policy changes in a migration.",
@@ -2131,7 +2134,8 @@
     "empty": "You do not manage any property yet.",
     "loading": "Loading properties…",
     "openAnnouncements": "{n} open updates",
-    "openAnnouncementsPage": "Updates"
+    "openAnnouncementsPage": "Updates",
+    "openCollections": "Collections"
   },
   "portfolio": {
     "title": "My fractions",
@@ -2835,6 +2839,117 @@
       "from": "From",
       "to": "To",
       "clear": "Clear filters"
+    }
+  },
+  "collections": {
+    "title": "Monthly collections",
+    "subtitle": "The payment status of each fraction after a month closes: what it owes, what it is owed, whether the receipt was sent and what is left to confirm. Each property settles on its own.",
+    "globalTitle": "Collections per property",
+    "globalSubtitle": "One row per property with what is left to collect, what was collected, what is under review and what must be paid to fractions. Each row links to its board.",
+    "loading": "Loading the board…",
+    "empty": "You do not manage any property yet.",
+    "notFound": "We could not find that property, or you do not manage its collections.",
+    "boardOf": "{property} board",
+    "month": "Month",
+    "currentMonth": "{month} · current month (estimated)",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "summary": {
+      "title": "Month summary",
+      "income": "Month income",
+      "expenses": "Month expenses",
+      "net": "Month net",
+      "receivable": "To collect",
+      "collected": "Collected and confirmed",
+      "underReview": "Under review",
+      "payable": "To pay to fractions",
+      "cashNet": "Cash net",
+      "cashNetHint": "To collect minus to pay",
+      "underReviewHint": "Reported, not yet confirmed: does not count as collected"
+    },
+    "columns": {
+      "fraction": "Fraction",
+      "responsible": "Responsible",
+      "month": "Month net",
+      "balance": "Balance",
+      "status": "Status",
+      "receipt": "Receipt",
+      "actions": "Actions"
+    },
+    "fractionLine": "Fraction {fraction}/8",
+    "responsible": {
+      "inventory_holder": "Inventory holder",
+      "linked": "Settles with fraction {fraction}/8"
+    },
+    "nature": {
+      "charge": "Charge",
+      "payout": "Payout",
+      "settled": "Settled",
+      "inventory_holder": "Inventory holder",
+      "linked": "Linked"
+    },
+    "estimated": "Estimated",
+    "openCharges": "{n} open charges · pending {amount}",
+    "receipt": {
+      "none": "No receipt",
+      "line": "{amount} · {date} · {method}",
+      "view": "View receipt",
+      "gateway": "Gateway {provider} · {reference}"
+    },
+    "withdrawal": {
+      "requested": "Requested {amount} · {bank} · {kind} · {number} · {holder}",
+      "none": "No withdrawal request"
+    },
+    "actions": {
+      "confirm": "Confirm payment",
+      "reject": "Reject",
+      "pay": "Pay withdrawal"
+    },
+    "confirm": {
+      "title": "Confirm the payment from {name}",
+      "hint": "You are about to confirm {amount} paid on {date} by {method} against the charge of fraction {fraction}/8. Once confirmed, the payment enters the owner balance.",
+      "submit": "Yes, confirm",
+      "done": "Payment confirmed."
+    },
+    "reject": {
+      "title": "Reject the payment from {name}",
+      "hint": "Explain why you are not confirming this payment. The owner will see the reason and may report the payment again.",
+      "label": "Rejection reason",
+      "submit": "Reject with this reason",
+      "done": "Payment rejected."
+    },
+    "pay": {
+      "title": "Pay the withdrawal of {name}",
+      "hint": "Attach the receipt of the {amount} transfer. The payment lowers the fraction balance and creates no new expense.",
+      "receipt": "Receipt",
+      "receiptHint": "PDF or image (JPG, PNG or WebP) up to 10 MB.",
+      "submit": "Register payment",
+      "done": "Withdrawal paid."
+    },
+    "errors": {
+      "confirm_failed": "We could not confirm the payment.",
+      "reject_failed": "We could not reject the payment.",
+      "pay_failed": "We could not register the payment.",
+      "receipt_failed": "We could not upload the receipt.",
+      "receipt_required": "The payment needs the receipt."
+    },
+    "filters": {
+      "nature": "Nature",
+      "allNatures": "All",
+      "status": "Charge status",
+      "allStatuses": "All",
+      "clear": "Clear filters"
+    },
+    "global": {
+      "columns": {
+        "property": "Property",
+        "receivable": "To collect",
+        "collected": "Collected",
+        "underReview": "Under review",
+        "payable": "To pay"
+      },
+      "open": "Open board",
+      "empty": "No properties to show."
     }
   }
 }

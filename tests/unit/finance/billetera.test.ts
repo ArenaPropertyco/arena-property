@@ -15,6 +15,7 @@ import {
   sortOwnerWalletEntries,
 } from '#shared/finance/billetera'
 import type { CuotaLiquidable, LineaDeCorte, OwnerWalletEntry } from '#shared/finance/billetera'
+import { mesAnterior, mesSiguiente } from '#shared/finance/estado-de-cuenta'
 import type { LineaDelPropietario } from '#shared/finance/estado-de-cuenta'
 import { formatearImporte } from '#shared/money/formato'
 import { pesos } from '#shared/money/importe'
@@ -149,6 +150,12 @@ describe('RF-62.3 · D-51 · el periodo que cierra el día 1', () => {
     expect(periodoAnterior('2026-10-01')).toBe('2026-09')
     expect(periodoAnterior('2027-01-01')).toBe('2026-12')
     expect(periodoAnterior('2026-10-15')).toBe('2026-09')
+  })
+
+  it('RF-63.9 · el tablero navega mes a mes sin aritmética en la vista', () => {
+    expect(mesAnterior('2026-01')).toBe('2025-12')
+    expect(mesSiguiente('2026-12')).toBe('2027-01')
+    expect(mesSiguiente(mesAnterior('2026-06'))).toBe('2026-06')
   })
 })
 

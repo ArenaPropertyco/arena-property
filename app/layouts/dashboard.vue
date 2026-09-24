@@ -93,6 +93,10 @@ const secciones = computed<NavigationMenuItem[]>(() => [
   ...(puede(roles.value, 'aprobar_pagos_comision')
     ? [{ label: t('nav.withdrawals'), icon: 'i-lucide-hand-coins', to: localePath('/panel/retiros') }]
     : []),
+  // HU-63 · el tablero de cobros: el Administrador el de sus propiedades, el Superadmin todos.
+  ...(puede(roles.value, 'confirmar_pagos_de_propietarios')
+    ? [{ label: t('nav.collections'), icon: 'i-lucide-table-2', to: localePath('/panel/cobros') }]
+    : []),
   ...(puede(roles.value, 'administrar_usuarios_y_roles')
     ? [
         { label: t('nav.roles'), icon: 'i-lucide-shield-check', to: localePath('/panel/roles') },
