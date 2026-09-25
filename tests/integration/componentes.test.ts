@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import RegistroForm from '~/components/RegistroForm.vue'
 import IngresoForm from '~/components/IngresoForm.vue'
 import AuthGoogleButton from '~/components/AuthGoogleButton.vue'
@@ -11,6 +11,9 @@ import AdminInviteForm from '~/components/AdminInviteForm.vue'
 import AccountStatusBadge from '~/components/AccountStatusBadge.vue'
 import PermissionsMatrix from '~/components/PermissionsMatrix.vue'
 import { filasDeMatriz } from '#shared/permissions/mapa'
+
+// El menú de cuenta enlaza «Perfil» en el idioma activo; aquí no hay plugin de i18n que resuelva la ruta.
+mockNuxtImport('useLocalePath', () => () => (ruta: string) => ruta)
 
 /**
  * Principio 10 · los componentes reciben datos por props y comunican por eventos.
@@ -180,11 +183,12 @@ describe('UserMenu · identidad y salida del panel', () => {
 
   it('ofrece cerrar sesión y lo emite en vez de decidirlo por su cuenta', async () => {
     const menu = await mountSuspended(UserMenu, { props: { ...cuenta, roles: [...cuenta.roles] } })
-    const opciones = opcionesDe(menu)
+    // «Perfil» va en su propio grupo, encima: el cierre se busca por lo que es.
+    const salir = opcionesDe(menu).flat().find(opcion => opcion.label === 'Cerrar sesión')
 
-    expect(opciones[0]![0]!.label).toBe('Cerrar sesión')
+    expect(salir).toBeDefined()
 
-    opciones[0]![0]!.onSelect()
+    salir!.onSelect()
     await flushPromises()
 
     expect(menu.emitted('salir')).toHaveLength(1)

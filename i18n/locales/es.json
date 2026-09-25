@@ -183,7 +183,18 @@
     "readOnlyMatrix": "Solo el Superadmin puede editar los permisos.",
     "status": "Estado",
     "suspend": "Suspender",
-    "reactivate": "Reactivar"
+    "reactivate": "Reactivar",
+    "edit": {
+      "action": "Editar",
+      "title": "Editar cuenta",
+      "subtitle": "Nombre, teléfono, idioma y correo de acceso. El cambio de correo se confirma en el acto y queda auditado.",
+      "saved": "Cuenta actualizada.",
+      "errors": {
+        "failed": "No pudimos actualizar la cuenta."
+      },
+      "passwordTitle": "Contraseña",
+      "passwordSet": "Contraseña actualizada para la cuenta."
+    }
   },
   "admins": {
     "title": "Administradores de propiedad",
@@ -1026,6 +1037,14 @@
       },
       "quota": "Mi cupo por temporada",
       "quotaLine": "{confirmed} confirmadas · {elected} por confirmar · {released} liberadas · de {required}",
+      "quotaCard": {
+        "confirmed": "{n} confirmadas",
+        "elected": "{n} por confirmar",
+        "released": "{n} liberadas",
+        "of": "de {n} semana | de {n} semanas",
+        "noQuota": "Sin titular no hay cupo que contar.",
+        "pick": "Fracción"
+      },
       "week": "Semana {n}",
       "deadline": "Confirma antes del {date}",
       "ownerLine": "Fracción {n}/8 · {name}",
@@ -1066,6 +1085,12 @@
       "releaseTitle": "Liberar esta semana",
       "releaseWarning": "Liberar tiene consecuencia económica: si el Administrador renta esta semana a un tercero, el ingreso es de tu fracción, descontada la comisión de gestión. Cancelar a última hora o dejarla caducar no da ese derecho: esas se reparten entre las ocho.",
       "releaseConfirm": "Liberar la semana"
+    },
+    "view": {
+      "label": "Cómo ver el año",
+      "list": "Lista por semanas",
+      "almanac": "Almanaque",
+      "almanacHint": "Cada día lleva el color de la semana en que cae. Toca un día para ver su semana."
     },
     "blocks": {
       "title": "Bloqueos",
@@ -2990,6 +3015,59 @@
       "description": "Descubre las propiedades, el modelo fraccionado y cómo se agendan tus semanas de descanso.",
       "imageAlt": "Fachada frontal de Invictvs",
       "eyebrow": "Arena Property"
+    }
+  },
+  "profile": {
+    "menu": "Perfil",
+    "title": "Mi perfil",
+    "subtitle": "Tus datos de contacto, tu idioma y tu contraseña. El correo es tu acceso y no se cambia aquí.",
+    "dataTitle": "Datos personales",
+    "dataHint": "Nombre, teléfono e idioma de la plataforma.",
+    "fields": {
+      "fullName": "Nombre completo",
+      "phone": "Teléfono",
+      "locale": "Idioma",
+      "email": "Correo electrónico",
+      "optional": "Opcional",
+      "emailLocked": "Es tu correo de acceso: si necesitas cambiarlo, pídeselo al Superadmin."
+    },
+    "locales": {
+      "es": "Español",
+      "en": "English"
+    },
+    "save": "Guardar cambios",
+    "saved": "Perfil actualizado.",
+    "validation": {
+      "name_too_long": "El nombre admite hasta 120 caracteres.",
+      "phone_invalid": "Escribe un teléfono válido: dígitos, espacios, guiones o paréntesis, y + al inicio si quieres.",
+      "locale_invalid": "Elige un idioma de la lista."
+    },
+    "errors": {
+      "save_failed": "No pudimos guardar tu perfil.",
+      "load_failed": "No pudimos cargar tu perfil."
+    },
+    "password": {
+      "title": "Contraseña",
+      "createTitle": "Crear contraseña",
+      "changeHint": "Para cambiarla necesitas la actual.",
+      "createHint": "Entraste con Google y tu cuenta aún no tiene contraseña. Crea una para entrar también con tu correo.",
+      "current": "Contraseña actual",
+      "new": "Contraseña nueva",
+      "confirm": "Confirmar contraseña nueva",
+      "show": "Mostrar contraseñas",
+      "change": "Cambiar contraseña",
+      "create": "Crear contraseña",
+      "changed": "Contraseña cambiada.",
+      "created": "Contraseña creada. Ya puedes entrar con tu correo y esta contraseña.",
+      "validation": {
+        "current_required": "Escribe tu contraseña actual.",
+        "same_as_current": "La contraseña nueva debe ser distinta de la actual."
+      },
+      "errors": {
+        "wrong_current": "La contraseña actual no es correcta.",
+        "failed": "No pudimos cambiar la contraseña."
+      },
+      "adminHint": "Fija una contraseña nueva para esta cuenta. No hace falta la actual; queda auditado quién la cambió."
     }
   }
 }

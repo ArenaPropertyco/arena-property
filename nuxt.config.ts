@@ -87,9 +87,14 @@ export default defineNuxtConfig({
     },
   },
 
+  // RT-12 · RF-00.8 · Google Analytics 4 del embudo público. El identificador de
+  // medición es público (viaja en el HTML), no es un secreto; `NUXT_PUBLIC_GTAG_ID`
+  // lo sustituye si hiciera falta otra propiedad. Solo mide en el build de
+  // producción, para que el tráfico de localhost no ensucie los datos; en local se
+  // activa definiendo la variable en `.env`.
   gtag: {
-    id: process.env.NUXT_PUBLIC_GTAG_ID || '',
-    enabled: Boolean(process.env.NUXT_PUBLIC_GTAG_ID),
+    id: process.env.NUXT_PUBLIC_GTAG_ID || 'G-SGM949VT0D',
+    enabled: process.env.NODE_ENV === 'production' || Boolean(process.env.NUXT_PUBLIC_GTAG_ID),
   },
 
   // RT-05 · dos idiomas en archivos separados y en paridad de claves.

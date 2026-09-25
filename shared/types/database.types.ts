@@ -4302,6 +4302,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      tengo_contrasena: { Args: never; Returns: boolean }
       traspasar_fraccion: {
         Args: {
           destino_cuotas: string

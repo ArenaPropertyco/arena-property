@@ -22,7 +22,7 @@ import type { SwapProposal } from '#shared/scheduling/swaps'
  *
  * HU-13 · RF-13.3 · HU-14 · RF-14.1, RF-14.6, RF-14.7 — y el tablero de la
  * propiedad: qué fracción tiene cada semana y en qué estado está, con la opción de
- * confirmar, cancelar o liberar en nombre del titular.
+ * confirmar, cancelar o liberar en nombre del titular, en lista o en almanaque.
  *
  * Cada bloque va en su tarjeta plegable (RT-06): en móvil se abre solo lo que se
  * necesita y en escritorio la página se lee de un vistazo.
@@ -110,6 +110,9 @@ watch(calendarId, (id) => {
 
 const semanasLibres = computed(() => rejilla.value.length - asignaciones.value.length)
 const solicitudesPendientes = computed(() => solicitudes.value.filter(solicitud => solicitud.status === 'pending').length)
+
+// RT-06 · el tablero se ve como lista o como almanaque; la preferencia se guarda.
+const { almanaque } = useVistaDeCalendario()
 
 /** HU-14 · confirmar, cancelar o liberar en nombre del titular; la base repite las reglas. */
 const semanaOcupada = ref<number | null>(null)
@@ -368,14 +371,29 @@ async function levantar(id: string, motivo: string) {
           icono="i-lucide-calendar-range"
         >
           <SectionHeading :titulo="t('calendar.propertyBoard.quotaTitle')" />
-          <FractionQuotaTable
+          <FractionQuotaCards
             :cupo="tablero.cupoPorFraccion.value"
             :fracciones="tablero.fracciones.value"
           />
 
           <SectionHeading :titulo="t('calendar.propertyBoard.boardTitle')" />
-          <WeekLegend gestion />
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <WeekLegend gestion />
+            <CalendarViewSwitch v-model="almanaque" />
+          </div>
+          <WeekAlmanac
+            v-if="almanaque"
+            :anio="anio"
+            :cells="tablero.cells.value"
+            :context="tablero.context.value"
+            :busy-week="semanaOcupada"
+            gestion
+            @confirm="operarSemana('confirm', $event, 'calendar.weeks.confirmed')"
+            @cancel="operarSemana('cancel', $event, 'calendar.weeks.cancelled')"
+            @release="liberando = $event"
+          />
           <WeekCalendar
+            v-else
             :cells="tablero.cells.value"
             :context="tablero.context.value"
             :busy-week="semanaOcupada"

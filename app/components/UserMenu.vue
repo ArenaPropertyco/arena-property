@@ -4,9 +4,10 @@ import { inicialesDe } from '#shared/identity/perfil'
 import type { Rol } from '#shared/permissions/roles'
 
 /**
- * Menú de la cuenta: quién eres y cómo salir. Presenta y emite; no sabe de Supabase
- * ni de rutas. Se usa en dos sitios del panel —la barra superior y el pie de la barra
- * lateral—, así que `compacto` decide si se muestra solo el avatar o también el nombre.
+ * Menú de la cuenta: quién eres, tu perfil y cómo salir. Presenta y emite; no sabe
+ * de Supabase. Se usa en la barra superior y el pie de la barra lateral del panel y
+ * en la cabecera pública, así que `compacto` decide si se muestra solo el avatar o
+ * también el nombre. «Perfil» lleva siempre a la misma página, en el idioma activo.
  */
 withDefaults(defineProps<{
   nombre: string
@@ -23,8 +24,14 @@ withDefaults(defineProps<{
 const emit = defineEmits<{ salir: [] }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 const opciones = computed<DropdownMenuItem[][]>(() => [
+  [{
+    label: t('profile.menu'),
+    icon: 'i-lucide-user-round-cog',
+    to: localePath('/panel/perfil'),
+  }],
   [{
     label: t('actions.logout'),
     icon: 'i-lucide-log-out',

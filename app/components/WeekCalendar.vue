@@ -1,25 +1,17 @@
 <script setup lang="ts">
-import { formatearDia } from '#shared/dates/formato'
-import { formatearImporte, regionDe } from '#shared/money/formato'
+import { regionDe } from '#shared/money/formato'
 import type { Idioma } from '#shared/money/formato'
 import type { WeekCell } from '#shared/scheduling/week-projection'
-import { validateCancellation, validateConfirmation, validateRelease } from '#shared/scheduling/week-usage'
-import type { OwnedWeek, UsageContext, WeekUsageError } from '#shared/scheduling/week-usage'
-import { CLASS_BY_CELL_TYPE, COLOR_BY_SEASON, COLOR_BY_STATE, ICON_BY_CELL_TYPE } from '~/utils/weeks'
+import type { UsageContext } from '#shared/scheduling/week-usage'
 
 /**
  * HU-13 · RF-13.2, RF-13.3 · HU-14 · RF-14.1, RF-14.6, RF-14.7 · RT-06 — el año
- * por semanas, agrupado por mes de entrada.
+ * por semanas en lista vertical, agrupado por mes de entrada.
  *
- * Cada semana llega ya proyectada (tipo, estado, quién, por qué, fecha límite) y
- * el componente solo la pinta y ofrece, en las propias, confirmar, cancelar o
- * liberar; el motor puro dice antes si cada acción cabe. En solo lectura (D-31)
- * nada responde.
- *
- * En `gestion` es el tablero del Administrador (HU-14 · RF-14.1, RF-14.6, RF-14.7):
- * ninguna semana es «propia», cada una dice de qué fracción es y en qué estado
- * está, y las acciones se ofrecen sobre las semanas con dueño que la proyección
- * marcó accionables. La base vuelve a exigir quién gestiona la propiedad.
+ * Cada semana llega ya proyectada y se pinta con `WeekCard`, que es quien ofrece
+ * confirmar, cancelar o liberar. En solo lectura (D-31) nada responde. En
+ * `gestion` es el tablero del Administrador (HU-14): cada semana dice de qué
+ * fracción es y las acciones valen sobre cualquiera con dueño.
  */
 const props = withDefaults(defineProps<{
   cells: WeekCell[]
@@ -35,13 +27,10 @@ const emit = defineEmits<{
   release: [number]
 }>()
 
-const { t, locale } = useI18n()
-const { translate } = useWeekErrors()
-
-const idioma = computed(() => locale.value as Idioma)
+const { locale } = useI18n()
 
 const meses = computed(() => {
-  const formato = new Intl.DateTimeFormat(regionDe(idioma.value), { month: 'long', timeZone: 'UTC' })
+  const formato = new Intl.DateTimeFormat(regionDe(locale.value as Idioma), { month: 'long', timeZone: 'UTC' })
   const grupos = new Map<string, WeekCell[]>()
   for (const cell of props.cells) {
     const clave = cell.startsOn.slice(0, 7)
@@ -49,71 +38,6 @@ const meses = computed(() => {
   }
   return [...grupos.entries()].map(([clave, cells]) => ({ clave, nombre: formato.format(new Date(`${clave}-01T00:00:00Z`)), cells }))
 })
-
-/** Las semanas sobre las que quien mira puede actuar: las suyas o, en gestión, las de cualquier fracción. */
-function esOperable(cell: WeekCell): boolean {
-  return cell.type === 'own' || (props.gestion && cell.type === 'other')
-}
-
-function ownedWeek(cell: WeekCell): OwnedWeek | undefined {
-  if (!esOperable(cell) || !cell.season) {
-    return undefined
-  }
-  const state = cell.state
-  return {
-    week: cell.week,
-    season: cell.season,
-    startsOn: cell.startsOn,
-    endsOn: cell.endsOn,
-    confirmedAt: state === 'confirmed' || state === 'used' ? 'yes' : null,
-    releasedAt: state === 'released' ? 'yes' : null,
-    releaseReason: state === 'released' ? 'voluntary' : null,
-  }
-}
-
-type Accion = 'confirm' | 'cancel' | 'release'
-
-function errorsOf(cell: WeekCell, action: Accion): WeekUsageError[] {
-  if (!props.context) {
-    return []
-  }
-  const week = ownedWeek(cell)
-  return action === 'confirm'
-    ? validateConfirmation(week, props.context)
-    : action === 'cancel'
-      ? validateCancellation(week, props.context)
-      : validateRelease(week, props.context)
-}
-
-function reasonOf(cell: WeekCell, action: Accion): string | null {
-  const error = errorsOf(cell, action)[0]
-  return error ? translate(error) : null
-}
-
-function rango(cell: WeekCell): string {
-  return t('calendar.weekRange', { from: formatearDia(cell.startsOn, idioma.value), to: formatearDia(cell.endsOn, idioma.value) })
-}
-
-function descripcion(cell: WeekCell): string {
-  switch (cell.type) {
-    case 'own':
-      return cell.state ? t(`calendar.weeks.states.${cell.state}`) : ''
-    case 'other':
-      return t('calendar.weeks.ownerLine', { n: cell.fraction ?? '', name: cell.ownerName ?? '' })
-    case 'blocked':
-      return t('calendar.weeks.blockedLine', { reason: cell.reason ?? '' })
-    case 'released':
-      return t('calendar.weeks.releasedLine')
-    case 'rented':
-      return t('calendar.weeks.rentedLine', { reason: t('calendar.weeks.reasons.voluntary') })
-    default:
-      return t(`calendar.weeks.types.${cell.type}`)
-  }
-}
-
-function showActions(cell: WeekCell): boolean {
-  return esOperable(cell) && cell.actionable && !props.readOnly
-}
 </script>
 
 <template>
@@ -133,120 +57,17 @@ function showActions(cell: WeekCell): boolean {
         <li
           v-for="cell in mes.cells"
           :key="cell.week"
-          class="flex flex-wrap items-center gap-3 rounded-2xl border p-3"
-          :class="CLASS_BY_CELL_TYPE[cell.type]"
-          :data-test="`semana-${cell.week}`"
-          :data-tipo="cell.type"
-          :data-estado="cell.state ?? undefined"
-          :data-temporada="cell.season ?? undefined"
         >
-          <UIcon
-            :name="ICON_BY_CELL_TYPE[cell.type]"
-            class="size-5 shrink-0 text-muted"
+          <WeekCard
+            :cell="cell"
+            :context="context"
+            :read-only="readOnly"
+            :busy-week="busyWeek"
+            :gestion="gestion"
+            @confirm="emit('confirm', $event)"
+            @cancel="emit('cancel', $event)"
+            @release="emit('release', $event)"
           />
-          <div class="min-w-0 flex-1">
-            <p class="flex flex-wrap items-center gap-2">
-              <span class="font-mono text-xs text-muted">{{ t('calendar.weeks.week', { n: cell.week + 1 }) }}</span>
-              <span class="text-sm text-highlighted">{{ rango(cell) }}</span>
-              <UBadge
-                v-if="cell.season"
-                :color="COLOR_BY_SEASON[cell.season]"
-                variant="subtle"
-                size="sm"
-                :label="t(`calendar.seasons.${cell.season}`)"
-              />
-              <UBadge
-                v-if="esOperable(cell) && cell.state"
-                :color="COLOR_BY_STATE[cell.state]"
-                variant="soft"
-                size="sm"
-                :label="t(`calendar.weeks.states.${cell.state}`)"
-                :data-test="`estado-${cell.week}`"
-              />
-              <!-- RF-13.2b · D-43 · solo la semana ya rentada cuyo ingreso es de esta fracción. -->
-              <UBadge
-                v-if="cell.income !== null"
-                color="success"
-                variant="subtle"
-                size="sm"
-                :label="t('calendar.weeks.incomeLine', { amount: formatearImporte(cell.income, idioma) })"
-                :data-test="`ingreso-${cell.week}`"
-              />
-            </p>
-            <p
-              class="text-xs text-muted"
-              data-test="descripcion"
-            >
-              <template v-if="esOperable(cell)">
-                {{ cell.type === 'own' ? t('calendar.weeks.types.own') : t('calendar.weeks.ownerLine', { n: cell.fraction ?? '', name: cell.ownerName ?? '' }) }}
-                <span
-                  v-if="cell.deadline"
-                  class="ml-1 font-mono"
-                  :data-test="`limite-${cell.week}`"
-                >· {{ t('calendar.weeks.deadline', { date: formatearDia(cell.deadline, idioma) }) }}</span>
-              </template>
-              <template v-else>
-                {{ descripcion(cell) }}
-              </template>
-            </p>
-          </div>
-
-          <div
-            v-if="showActions(cell)"
-            class="flex flex-wrap gap-2"
-          >
-            <UButton
-              v-if="cell.state === 'elected'"
-              size="xs"
-              icon="i-lucide-check"
-              :disabled="errorsOf(cell, 'confirm').length > 0"
-              :loading="busyWeek === cell.week"
-              :label="t('calendar.weeks.confirm')"
-              :title="reasonOf(cell, 'confirm') ?? undefined"
-              :data-test="`confirmar-${cell.week}`"
-              @click="emit('confirm', cell.week)"
-            />
-            <UButton
-              v-if="cell.state === 'confirmed'"
-              size="xs"
-              variant="soft"
-              color="error"
-              icon="i-lucide-calendar-x"
-              :disabled="errorsOf(cell, 'cancel').length > 0"
-              :loading="busyWeek === cell.week"
-              :label="t('calendar.weeks.cancel')"
-              :title="reasonOf(cell, 'cancel') ?? undefined"
-              :data-test="`cancelar-${cell.week}`"
-              @click="emit('cancel', cell.week)"
-            />
-            <UButton
-              v-if="cell.state === 'elected'"
-              size="xs"
-              variant="outline"
-              color="neutral"
-              icon="i-lucide-key-round"
-              :disabled="errorsOf(cell, 'release').length > 0"
-              :loading="busyWeek === cell.week"
-              :label="t('calendar.weeks.release')"
-              :title="reasonOf(cell, 'release') ?? undefined"
-              :data-test="`liberar-${cell.week}`"
-              @click="emit('release', cell.week)"
-            />
-            <p
-              v-if="cell.state === 'confirmed' && reasonOf(cell, 'cancel')"
-              class="w-full text-xs text-muted"
-              :data-test="`motivo-${cell.week}`"
-            >
-              {{ reasonOf(cell, 'cancel') }}
-            </p>
-            <p
-              v-else-if="cell.state === 'elected' && reasonOf(cell, 'confirm')"
-              class="w-full text-xs text-muted"
-              :data-test="`motivo-${cell.week}`"
-            >
-              {{ reasonOf(cell, 'confirm') }}
-            </p>
-          </div>
         </li>
       </ul>
     </section>

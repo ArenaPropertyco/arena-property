@@ -183,7 +183,18 @@
     "readOnlyMatrix": "Only the Superadmin can edit permissions.",
     "status": "Status",
     "suspend": "Suspend",
-    "reactivate": "Reactivate"
+    "reactivate": "Reactivate",
+    "edit": {
+      "action": "Edit",
+      "title": "Edit account",
+      "subtitle": "Name, phone, language and login email. An email change is confirmed at once and audited.",
+      "saved": "Account updated.",
+      "errors": {
+        "failed": "We could not update the account."
+      },
+      "passwordTitle": "Password",
+      "passwordSet": "Password updated for the account."
+    }
   },
   "admins": {
     "title": "Property administrators",
@@ -1026,6 +1037,14 @@
       },
       "quota": "My quota by season",
       "quotaLine": "{confirmed} confirmed · {elected} to confirm · {released} released · of {required}",
+      "quotaCard": {
+        "confirmed": "{n} confirmed",
+        "elected": "{n} to confirm",
+        "released": "{n} released",
+        "of": "of {n} week | of {n} weeks",
+        "noQuota": "Without an owner there is no quota to count.",
+        "pick": "Fraction"
+      },
       "week": "Week {n}",
       "deadline": "Confirm before {date}",
       "ownerLine": "Fraction {n}/8 · {name}",
@@ -1066,6 +1085,12 @@
       "releaseTitle": "Release this week",
       "releaseWarning": "Releasing has an economic consequence: if the administrator rents this week to a guest, the income is yours, net of the management fee. Cancelling at the last minute or letting it expire does not grant that right: those are split across the eight.",
       "releaseConfirm": "Release the week"
+    },
+    "view": {
+      "label": "How to view the year",
+      "list": "Week list",
+      "almanac": "Almanac",
+      "almanacHint": "Each day carries the colour of the week it belongs to. Tap a day to see its week."
     },
     "blocks": {
       "title": "Blocks",
@@ -2990,6 +3015,59 @@
       "description": "Discover the properties, the fractional model and how your holiday weeks are scheduled.",
       "imageAlt": "Front façade of Invictvs",
       "eyebrow": "Arena Property"
+    }
+  },
+  "profile": {
+    "menu": "Profile",
+    "title": "My profile",
+    "subtitle": "Your contact details, your language and your password. Your email is your login and is not changed here.",
+    "dataTitle": "Personal details",
+    "dataHint": "Name, phone and platform language.",
+    "fields": {
+      "fullName": "Full name",
+      "phone": "Phone",
+      "locale": "Language",
+      "email": "Email",
+      "optional": "Optional",
+      "emailLocked": "This is your login email: if you need to change it, ask the Superadmin."
+    },
+    "locales": {
+      "es": "Español",
+      "en": "English"
+    },
+    "save": "Save changes",
+    "saved": "Profile updated.",
+    "validation": {
+      "name_too_long": "The name can be up to 120 characters.",
+      "phone_invalid": "Enter a valid phone: digits, spaces, dashes or parentheses, with an optional leading +.",
+      "locale_invalid": "Choose a language from the list."
+    },
+    "errors": {
+      "save_failed": "We could not save your profile.",
+      "load_failed": "We could not load your profile."
+    },
+    "password": {
+      "title": "Password",
+      "createTitle": "Create password",
+      "changeHint": "You need your current password to change it.",
+      "createHint": "You signed in with Google and your account has no password yet. Create one to also sign in with your email.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "show": "Show passwords",
+      "change": "Change password",
+      "create": "Create password",
+      "changed": "Password changed.",
+      "created": "Password created. You can now sign in with your email and this password.",
+      "validation": {
+        "current_required": "Enter your current password.",
+        "same_as_current": "The new password must be different from the current one."
+      },
+      "errors": {
+        "wrong_current": "The current password is not correct.",
+        "failed": "We could not change the password."
+      },
+      "adminHint": "Set a new password for this account. The current one is not needed; who changed it is audited."
     }
   }
 }
