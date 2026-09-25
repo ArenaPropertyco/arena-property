@@ -4,6 +4,7 @@ import type { AjusteDeCapacidad } from '#shared/permissions/mapa'
 import { filasDeMatriz, puede } from '#shared/permissions/mapa'
 import type { Rol } from '#shared/permissions/roles'
 
+import type { CambioDeContrasena, DatosDeCuenta } from '#shared/identity/edicion-de-perfil'
 import type { TipoDeSuspension } from '#shared/identity/suspension'
 
 /**
@@ -14,17 +15,54 @@ import type { TipoDeSuspension } from '#shared/identity/suspension'
  * HU-33 · RF-33.1…RF-33.6 · D-07 — desde la misma lista se suspende una cuenta,
  * con motivo y tipo, y se reactiva. La base aplica el efecto sobre el saldo y el
  * código de referido y audita los dos eventos.
+ *
+ * El Superadmin, además, edita los datos de cualquier cuenta: nombre, teléfono,
+ * idioma y correo. El servidor vuelve a exigir el rol y audita cada cambio.
  */
 definePageMeta({ layout: 'dashboard', acceso: { capacidad: 'administrar_usuarios_y_roles' } })
 
 const { t } = useI18n()
 const toast = useToast()
-const { cuentas, pendiente, otorgar, retirar } = useRoles()
+const { cuentas, pendiente, otorgar, retirar, editar, fijarContrasena } = useRoles()
 const { matriz, ajustar, pendiente: guardando } = usePermisos()
 const { roles: rolesPropios, idDeCuenta } = useCuenta()
 const { suspender, reactivar } = useSuspension()
 
 const suspendiendo = ref<CuentaConRoles | null>(null)
+const editando = ref<CuentaConRoles | null>(null)
+const guardandoCuenta = ref(false)
+const fijandoContrasena = ref(false)
+const formularioDeContrasena = ref<{ limpiar: () => void } | null>(null)
+
+async function guardarContrasena(datos: CambioDeContrasena) {
+  if (!editando.value) {
+    return
+  }
+  fijandoContrasena.value = true
+  const resultado = await fijarContrasena(editando.value, datos)
+  fijandoContrasena.value = false
+  if (resultado.ok) {
+    formularioDeContrasena.value?.limpiar()
+  }
+  toast.add(resultado.ok
+    ? { title: t('roles.edit.passwordSet'), color: 'success' }
+    : { title: t(resultado.clave), color: 'error' })
+}
+
+async function guardarCuenta(datos: DatosDeCuenta) {
+  if (!editando.value) {
+    return
+  }
+  guardandoCuenta.value = true
+  const resultado = await editar(editando.value, datos)
+  guardandoCuenta.value = false
+  if (resultado.ok) {
+    editando.value = null
+  }
+  toast.add(resultado.ok
+    ? { title: t('roles.edit.saved'), color: 'success' }
+    : { title: t(resultado.clave), color: 'error' })
+}
 const ocupadoConSuspension = ref(false)
 
 const filas = computed(() => filasDeMatriz(matriz.value))
@@ -107,9 +145,44 @@ async function retirarRol(cuenta: CuentaConRoles, rol: Rol) {
           @retirar="retirarRol"
           @suspender="suspendiendo = $event"
           @reactivar="reactivarCuenta"
+          @editar="editando = $event"
         />
       </div>
     </div>
+
+    <UModal
+      :open="editando !== null"
+      :title="t('roles.edit.title')"
+      :description="t('roles.edit.subtitle')"
+      @update:open="editando = $event ? editando : null"
+    >
+      <template #body>
+        <div
+          v-if="editando"
+          class="space-y-6"
+        >
+          <ProfileForm
+            :key="editando.id"
+            :datos="editando"
+            correo-editable
+            :enviando="guardandoCuenta"
+            @submit="guardarCuenta"
+          />
+
+          <div class="space-y-3 border-t border-default pt-6">
+            <SectionHeading :titulo="t('roles.edit.passwordTitle')" />
+            <PasswordForm
+              :key="`contrasena-${editando.id}`"
+              ref="formularioDeContrasena"
+              :tiene-contrasena="false"
+              administrada
+              :enviando="fijandoContrasena"
+              @submit="guardarContrasena"
+            />
+          </div>
+        </div>
+      </template>
+    </UModal>
 
     <UModal
       :open="suspendiendo !== null"

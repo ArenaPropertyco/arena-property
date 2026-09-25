@@ -15,7 +15,8 @@ import type { SwapRequestDraft } from '#shared/scheduling/swaps'
  * semanas donde confirma, cancela o libera, el aviso de las que faltan por
  * confirmar, la ventana de reubicación con el estado de su turno, la solicitud
  * de intercambios y sus solicitudes. Con el calendario inactivo (D-31) todo se ve
- * y nada se puede hacer (RF-13.1b).
+ * y nada se puede hacer (RF-13.1b). El calendario se ve como lista vertical o
+ * como almanaque de doce meses, según prefiera quien mira (RT-06).
  */
 definePageMeta({ layout: 'dashboard', acceso: { privada: true } })
 
@@ -71,6 +72,9 @@ const contextoDeReubicacion = computed<RelocationContext | null>(() => {
 const semanasMovibles = computed(() => (contextoDeReubicacion.value && fraccion.value)
   ? movableWeeks(contextoDeReubicacion.value.allocations, fraccion.value.number, { rejilla: contextoDeReubicacion.value.rejilla, today: contextoDeReubicacion.value.today })
   : [])
+
+// RT-06 · lista vertical o almanaque, a gusto de quien mira; la preferencia se guarda.
+const { almanaque } = useVistaDeCalendario()
 
 const busyWeek = ref<number | null>(null)
 const eligiendo = ref(false)
@@ -203,8 +207,23 @@ async function solicitarIntercambio(borrador: SwapRequestDraft, mensaje: string 
           />
 
           <section class="space-y-4">
-            <WeekLegend />
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <WeekLegend />
+              <CalendarViewSwitch v-model="almanaque" />
+            </div>
+            <WeekAlmanac
+              v-if="almanaque"
+              :anio="anio"
+              :cells="semanas.projection.value.cells"
+              :context="semanas.context.value"
+              :read-only="semanas.projection.value.readOnly"
+              :busy-week="busyWeek"
+              @confirm="operar('confirm', $event, 'calendar.weeks.confirmed')"
+              @cancel="operar('cancel', $event, 'calendar.weeks.cancelled')"
+              @release="liberando = $event"
+            />
             <WeekCalendar
+              v-else
               :cells="semanas.projection.value.cells"
               :context="semanas.context.value"
               :read-only="semanas.projection.value.readOnly"

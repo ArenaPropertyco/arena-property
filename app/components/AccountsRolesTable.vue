@@ -7,8 +7,9 @@ import { ROLES } from '#shared/permissions/roles'
 
 /**
  * Cuentas con sus roles (HU-07 · RF-07.3) y su estado (HU-33 · RF-33.1, RF-33.5).
- * Otorgar, retirar, suspender y reactivar son eventos: la página los lleva a la
- * base, donde RLS y las funciones deciden. Quién puede suspender a quién lo dice
+ * Otorgar, retirar, suspender, reactivar y editar son eventos: la página los lleva
+ * a la base, donde RLS y las funciones deciden. Editar los datos de una cuenta
+ * (nombre, teléfono, idioma y correo) es solo del Superadmin. Quién puede suspender a quién lo dice
  * el dominio, para no ofrecer un botón que la base va a rechazar.
  */
 const props = withDefaults(defineProps<{
@@ -24,6 +25,7 @@ const emit = defineEmits<{
   retirar: [cuenta: CuentaConRoles, rol: Rol]
   suspender: [cuenta: CuentaConRoles]
   reactivar: [cuenta: CuentaConRoles]
+  editar: [cuenta: CuentaConRoles]
 }>()
 
 const { t } = useI18n()
@@ -42,6 +44,8 @@ function suspendible(cuenta: CuentaConRoles): boolean {
 function reactivable(cuenta: CuentaConRoles): boolean {
   return puedeReactivar(props.rolesDelActor, cuenta)
 }
+
+const puedeEditarDatos = computed(() => props.rolesDelActor.includes('superadmin'))
 
 const opcionesDeRol = computed(() => ROLES.map(rol => ({ label: t(`roles.names.${rol}`), value: rol })))
 
@@ -97,6 +101,16 @@ function otorgar(cuenta: CuentaConRoles) {
 
       <template #acciones-cell="{ row }">
         <div class="flex items-center gap-2">
+          <UButton
+            v-if="puedeEditarDatos"
+            size="sm"
+            color="neutral"
+            variant="outline"
+            icon="i-lucide-user-round-pen"
+            :label="t('roles.edit.action')"
+            :data-test="`editar-${row.original.id}`"
+            @click="emit('editar', row.original)"
+          />
           <USelect
             v-model="rolSeleccionado[row.original.id]"
             :items="opcionesDeRol.filter(opcion => !row.original.roles.includes(opcion.value))"

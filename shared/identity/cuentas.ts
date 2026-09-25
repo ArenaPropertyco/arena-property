@@ -10,6 +10,9 @@ export interface CuentaConRoles {
   id: string
   email: string | null
   fullName: string | null
+  /** Lo que el Superadmin edita además del nombre y el correo. */
+  phone?: string | null
+  locale?: string | null
   status: EstadoCuenta
   roles: Rol[]
 }

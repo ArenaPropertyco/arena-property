@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
-import FractionQuotaTable from '~/components/FractionQuotaTable.vue'
+import FractionQuotaCards from '~/components/FractionQuotaCards.vue'
 import PanelCollapsible from '~/components/PanelCollapsible.vue'
 import WeekCalendar from '~/components/WeekCalendar.vue'
 import WeekLegend from '~/components/WeekLegend.vue'
@@ -125,28 +125,40 @@ describe('WeekLegend · gestión', () => {
   })
 })
 
-describe('FractionQuotaTable', () => {
-  it('RF-13.2 · una fila por fracción con su titular y el cupo por temporada; sin titular lo dice', async () => {
+describe('FractionQuotaCards', () => {
+  const fracciones = [
+    { number: 3, ownerName: 'Ana Ruiz', calendarActive: true },
+    { number: 5, ownerName: 'Luis Mora', calendarActive: false },
+    { number: 7, ownerName: null, calendarActive: false },
+  ]
+
+  it('RF-13.2 · RT-06 · se elige una fracción y su cupo por temporada se lee en tarjetas, una línea por estado', async () => {
     const { quotaByFraction } = projectPropertyWeeks(entrada())
-    const tabla = await mountSuspended(FractionQuotaTable, {
-      props: {
-        cupo: quotaByFraction,
-        fracciones: [
-          { number: 3, ownerName: 'Ana Ruiz', calendarActive: true },
-          { number: 5, ownerName: 'Luis Mora', calendarActive: false },
-          { number: 7, ownerName: null, calendarActive: false },
-        ],
-      },
-    })
+    const cupo = await mountSuspended(FractionQuotaCards, { props: { cupo: quotaByFraction, fracciones } })
 
-    const fila = (numero: number) => tabla.findAll('tbody tr').find(tr => tr.find(`[data-test="cupo-fraccion-${numero}"]`).exists())!
+    // Nace en la primera fracción con titular.
+    expect(cupo.find('[data-test="cupo-titular"]').text()).toContain('Ana Ruiz')
+    expect(cupo.findAll('[data-test^="cupo-temporada-"]')).toHaveLength(4)
+    const alta = cupo.find('[data-test="cupo-temporada-alta"]').text()
+    expect(alta).toContain('Alta')
+    expect(alta).toContain('1 confirmadas')
+    expect(alta).toContain('0 por confirmar')
+    expect(alta).toContain('0 liberadas')
+    expect(alta).toContain('de 1 semana')
+    const baja = cupo.find('[data-test="cupo-temporada-baja"]').text()
+    expect(baja).toContain('1 liberadas')
+    expect(baja).toContain('de 3 semanas')
+  })
 
-    expect(tabla.findAll('[data-test^="cupo-fraccion-"]')).toHaveLength(3)
-    expect(fila(3).text()).toContain('Ana Ruiz')
-    expect(fila(3).text()).toContain('1 confirmadas · 0 por confirmar · 0 liberadas · de 1')
-    expect(fila(3).text()).toContain('0 confirmadas · 0 por confirmar · 1 liberadas · de 3')
-    expect(fila(5).text()).toContain('Calendario inactivo')
-    expect(fila(7).text()).toContain('Sin titular')
-    expect(fila(7).text()).toContain('—')
+  it('RF-13.2 · D-31 · con el calendario inactivo lo dice; sin titular no hay cupo que contar', async () => {
+    const { quotaByFraction } = projectPropertyWeeks(entrada())
+    const cupo = await mountSuspended(FractionQuotaCards, { props: { cupo: quotaByFraction, fracciones, fraccion: 5 } })
+    expect(cupo.find('[data-test="cupo-titular"]').text()).toContain('Luis Mora')
+    expect(cupo.find('[data-test="cupo-titular"]').text()).toContain('Calendario inactivo')
+
+    await cupo.setProps({ fraccion: 7 })
+    expect(cupo.find('[data-test="cupo-titular"]').text()).toContain('Sin titular')
+    expect(cupo.find('[data-test="cupo-sin-titular"]').exists()).toBe(true)
+    expect(cupo.findAll('[data-test^="cupo-temporada-"]')).toHaveLength(0)
   })
 })
