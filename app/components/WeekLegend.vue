@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { TEMPORADAS } from '#shared/scheduling/temporadas'
 import { WEEK_CELL_TYPES } from '#shared/scheduling/week-projection'
+import type { WeekCellType } from '#shared/scheduling/week-projection'
 import { CLASS_BY_CELL_TYPE, COLOR_BY_SEASON, ICON_BY_CELL_TYPE } from '~/utils/weeks'
 
-/** HU-13 · RF-13.2, RF-13.3 · RT-06 — qué significa cada tipo de semana y cada temporada. */
+/**
+ * HU-13 · RF-13.2, RF-13.3 · RT-06 — qué significa cada tipo de semana y cada
+ * temporada. En `gestion` (el tablero del Administrador) nada es «propio»: esa
+ * entrada desaparece y la semana con dueño se llama por lo que es.
+ */
+const props = withDefaults(defineProps<{ gestion?: boolean }>(), { gestion: false })
+
 const { t } = useI18n()
+
+const tipos = computed(() => props.gestion ? WEEK_CELL_TYPES.filter(tipo => tipo !== 'own') : WEEK_CELL_TYPES)
+
+function etiqueta(tipo: WeekCellType): string {
+  return props.gestion && tipo === 'other' ? t('calendar.weeks.types.allocated') : t(`calendar.weeks.types.${tipo}`)
+}
 </script>
 
 <template>
@@ -13,7 +26,7 @@ const { t } = useI18n()
     data-test="leyenda"
   >
     <li
-      v-for="tipo in WEEK_CELL_TYPES"
+      v-for="tipo in tipos"
       :key="tipo"
       class="inline-flex items-center gap-1.5"
       :data-test="`leyenda-${tipo}`"
@@ -27,7 +40,7 @@ const { t } = useI18n()
           class="size-3"
         />
       </span>
-      {{ t(`calendar.weeks.types.${tipo}`) }}
+      {{ etiqueta(tipo) }}
     </li>
     <li
       v-for="temporada in TEMPORADAS"

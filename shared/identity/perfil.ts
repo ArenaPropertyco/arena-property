@@ -2,8 +2,8 @@
  * Presentación de la identidad de una cuenta.
  *
  * Funciones puras: deciden qué nombre mostrar cuando el perfil aún no tiene uno.
- * Hoy `full_name` está vacío en toda alta —ni el registro por correo ni el de Google
- * lo rellenan todavía (HU-61 · RF-61.7)—, así que el correo es lo único que hay.
+ * El alta por Google rellena `full_name` y lo refresca en cada ingreso (HU-61 ·
+ * RF-61.7); el registro por correo no lo pide, y entonces el correo es lo único que hay.
  */
 
 export interface IdentidadVisible {

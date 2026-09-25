@@ -15,13 +15,19 @@ import { CLASS_BY_CELL_TYPE, COLOR_BY_SEASON, COLOR_BY_STATE, ICON_BY_CELL_TYPE 
  * el componente solo la pinta y ofrece, en las propias, confirmar, cancelar o
  * liberar; el motor puro dice antes si cada acción cabe. En solo lectura (D-31)
  * nada responde.
+ *
+ * En `gestion` es el tablero del Administrador (HU-14 · RF-14.1, RF-14.6, RF-14.7):
+ * ninguna semana es «propia», cada una dice de qué fracción es y en qué estado
+ * está, y las acciones se ofrecen sobre las semanas con dueño que la proyección
+ * marcó accionables. La base vuelve a exigir quién gestiona la propiedad.
  */
 const props = withDefaults(defineProps<{
   cells: WeekCell[]
   context: UsageContext | null
   readOnly?: boolean
   busyWeek?: number | null
-}>(), { readOnly: false, busyWeek: null })
+  gestion?: boolean
+}>(), { readOnly: false, busyWeek: null, gestion: false })
 
 const emit = defineEmits<{
   confirm: [number]
@@ -44,8 +50,13 @@ const meses = computed(() => {
   return [...grupos.entries()].map(([clave, cells]) => ({ clave, nombre: formato.format(new Date(`${clave}-01T00:00:00Z`)), cells }))
 })
 
+/** Las semanas sobre las que quien mira puede actuar: las suyas o, en gestión, las de cualquier fracción. */
+function esOperable(cell: WeekCell): boolean {
+  return cell.type === 'own' || (props.gestion && cell.type === 'other')
+}
+
 function ownedWeek(cell: WeekCell): OwnedWeek | undefined {
-  if (cell.type !== 'own' || !cell.season) {
+  if (!esOperable(cell) || !cell.season) {
     return undefined
   }
   const state = cell.state
@@ -101,7 +112,7 @@ function descripcion(cell: WeekCell): string {
 }
 
 function showActions(cell: WeekCell): boolean {
-  return cell.type === 'own' && cell.actionable && !props.readOnly
+  return esOperable(cell) && cell.actionable && !props.readOnly
 }
 </script>
 
@@ -145,7 +156,7 @@ function showActions(cell: WeekCell): boolean {
                 :label="t(`calendar.seasons.${cell.season}`)"
               />
               <UBadge
-                v-if="cell.type === 'own' && cell.state"
+                v-if="esOperable(cell) && cell.state"
                 :color="COLOR_BY_STATE[cell.state]"
                 variant="soft"
                 size="sm"
@@ -166,8 +177,8 @@ function showActions(cell: WeekCell): boolean {
               class="text-xs text-muted"
               data-test="descripcion"
             >
-              <template v-if="cell.type === 'own'">
-                {{ t('calendar.weeks.types.own') }}
+              <template v-if="esOperable(cell)">
+                {{ cell.type === 'own' ? t('calendar.weeks.types.own') : t('calendar.weeks.ownerLine', { n: cell.fraction ?? '', name: cell.ownerName ?? '' }) }}
                 <span
                   v-if="cell.deadline"
                   class="ml-1 font-mono"

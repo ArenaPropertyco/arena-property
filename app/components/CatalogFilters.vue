@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CopAmount } from '#shared/money/importe'
 import { esImporte, pesos } from '#shared/money/importe'
+import { formatearImporte } from '#shared/money/formato'
+import type { Idioma } from '#shared/money/formato'
 import type { FiltroDeCatalogo } from '#shared/properties/catalogo-publico'
 import { filtroDeCatalogoVacio, hayFiltroDeCatalogoActivo } from '#shared/properties/catalogo-publico'
 import { COMERCIALES } from '#shared/properties/estados'
@@ -22,7 +24,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{ 'update:filtro': [FiltroDeCatalogo] }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+// TR-02 · el rango de precio se lee como dinero, nunca como número crudo.
+const idioma = computed(() => locale.value as Idioma)
 
 /** Centinela de «sin filtrar»: el `Select` reserva la cadena vacía. */
 const TODOS = '*' as const
@@ -74,7 +79,7 @@ const activo = computed(() => hayFiltroDeCatalogoActivo(props.filtro))
 
       <UFormField
         :label="t('catalog.filters.priceMin')"
-        :hint="rango ? String(rango.min) : undefined"
+        :hint="rango ? formatearImporte(rango.min, idioma) : undefined"
         data-test="filtro-precio-min"
       >
         <UInput
@@ -89,7 +94,7 @@ const activo = computed(() => hayFiltroDeCatalogoActivo(props.filtro))
 
       <UFormField
         :label="t('catalog.filters.priceMax')"
-        :hint="rango ? String(rango.max) : undefined"
+        :hint="rango ? formatearImporte(rango.max, idioma) : undefined"
         data-test="filtro-precio-max"
       >
         <UInput

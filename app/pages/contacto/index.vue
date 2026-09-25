@@ -34,24 +34,27 @@ async function enviarContacto(solicitud: SolicitudDeContacto) {
 
 <template>
   <div>
-    <UPageHeader
-      :headline="t('app.name')"
-      :title="t('contact.title')"
-      :description="t('contact.subtitle')"
-      :ui="{ title: 'font-display font-medium text-4xl sm:text-5xl' }"
-      class="border-b border-default"
-    >
-      <template #links>
-        <UButton
-          variant="outline"
-          icon="i-lucide-message-circle"
-          :to="CONTACTO_ARENA.whatsappUrl"
-          target="_blank"
-          rel="noopener"
-          :label="t('contact.whatsapp')"
-        />
-      </template>
-    </UPageHeader>
+    <!-- RT-06 · UPageHeader no trae margen propio: sin contenedor, el texto toca el borde. -->
+    <UContainer>
+      <UPageHeader
+        :headline="t('app.name')"
+        :title="t('contact.title')"
+        :description="t('contact.subtitle')"
+        :ui="{ title: 'font-display font-medium text-4xl sm:text-5xl' }"
+        class="border-b border-default"
+      >
+        <template #links>
+          <UButton
+            variant="outline"
+            icon="i-lucide-message-circle"
+            :to="CONTACTO_ARENA.whatsappUrl"
+            target="_blank"
+            rel="noopener"
+            :label="t('contact.whatsapp')"
+          />
+        </template>
+      </UPageHeader>
+    </UContainer>
 
     <UContainer class="max-w-3xl py-10 sm:py-14">
       <p

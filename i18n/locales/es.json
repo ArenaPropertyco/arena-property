@@ -31,7 +31,11 @@
     "wallet": "Mi billetera",
     "withdrawals": "Retiros",
     "ownerWallet": "Mi billetera",
-    "collections": "Cobros"
+    "collections": "Cobros",
+    "fractionalModel": "Modelo fraccionado",
+    "aboutShort": "Nosotros",
+    "contactUs": "Contáctenos",
+    "signUp": "Registrarse"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -1006,7 +1010,8 @@
         "released": "En bolsa de renta",
         "rented": "Rentada a un tercero",
         "pool": "Bolsa del Administrador",
-        "free": "Sin elegir"
+        "free": "Sin elegir",
+        "allocated": "De una fracción"
       },
       "states": {
         "elected": "Por confirmar",
@@ -1236,6 +1241,20 @@
       "errors": {
         "reassign_failed": "No pudimos reasignar la semana."
       }
+    },
+    "sections": {
+      "toggle": "Mostrar u ocultar {section}"
+    },
+    "propertyBoard": {
+      "title": "Cupo por temporada",
+      "subtitle": "Qué fracción tiene cada semana y en qué estado está: por confirmar, confirmada, liberada a la bolsa de renta o ya rentada. Puedes confirmar, cancelar o liberar en nombre del titular; la base repite las mismas reglas y él recibe el aviso.",
+      "quotaTitle": "Cupo por fracción",
+      "fraction": "Fracción",
+      "owner": "Titular",
+      "noOwner": "Sin titular",
+      "inactive": "Calendario inactivo",
+      "boardTitle": "Semanas del año",
+      "pendingRequests": "{count} pendientes"
     }
   },
   "referrals": {
@@ -2950,6 +2969,27 @@
       },
       "open": "Abrir tablero",
       "empty": "No hay propiedades que mostrar."
+    }
+  },
+  "errorPage": {
+    "eyebrow": "Error {code}",
+    "notFound": {
+      "title": "Esta semana no está en el calendario",
+      "description": "La página que buscas no existe o cambió de lugar. Volvamos a un lugar conocido."
+    },
+    "generic": {
+      "title": "Algo no salió como esperábamos",
+      "description": "Tuvimos un problema al cargar esta página. Intenta de nuevo en unos minutos o vuelve al inicio."
+    },
+    "home": "Volver al inicio",
+    "secondary": "Conocer el modelo",
+    "scroll": "Desliza",
+    "marquee": "Copropiedad fraccionada · Ocho fracciones · Una sola propiedad",
+    "closing": {
+      "title": "Tu próxima semana empieza en el inicio",
+      "description": "Descubre las propiedades, el modelo fraccionado y cómo se agendan tus semanas de descanso.",
+      "imageAlt": "Fachada frontal de Invictvs",
+      "eyebrow": "Arena Property"
     }
   }
 }

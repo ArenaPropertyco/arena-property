@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 /**
@@ -93,5 +93,40 @@ describe('RT-01 · stack cerrado', () => {
     ])
 
     expect(instaladas.has('framer-motion')).toBe(false)
+  })
+
+  /**
+   * T-271 · el stack cerrado también vale para lo que el código importa: un paquete
+   * que llega como dependencia de otro no se usa directo en tiempo de ejecución,
+   * porque su versión la decide un tercero. Solo se admiten tipos de los motores
+   * que la propia plataforma trae (Nitro, el cliente de `@nuxtjs/supabase`), que
+   * desaparecen al compilar.
+   */
+  it('el código no importa en ejecución ningún paquete fuera de package.json', () => {
+    const declaradas = new Set([
+      ...Object.keys(packageJson.dependencies ?? {}),
+      ...Object.keys(packageJson.devDependencies ?? {}),
+    ])
+    const soloTipos = new Set(['h3', '@supabase/supabase-js'])
+
+    function archivos(dir: string): string[] {
+      return readdirSync(dir).flatMap((entrada) => {
+        const ruta = join(dir, entrada)
+        return statSync(ruta).isDirectory() ? archivos(ruta) : /\.(ts|vue)$/.test(entrada) ? [ruta] : []
+      })
+    }
+
+    const fuera = ['app', 'shared', 'server'].flatMap(dir => archivos(resolve(raiz, dir))).flatMap((archivo) => {
+      const codigo = readFileSync(archivo, 'utf8')
+      return [...codigo.matchAll(/^import\s+(type\s+)?[^'"]*from\s+'([^'.#~][^']*)'/gm)].flatMap(([, tipo, origen]) => {
+        const paquete = origen!.startsWith('@') ? origen!.split('/').slice(0, 2).join('/') : origen!.split('/')[0]!
+        if (paquete.startsWith('node:') || declaradas.has(paquete) || (tipo && soloTipos.has(paquete))) {
+          return []
+        }
+        return [`${archivo.slice(raiz.length + 1)} → ${origen}`]
+      })
+    })
+
+    expect(fuera).toEqual([])
   })
 })

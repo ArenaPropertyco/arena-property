@@ -2,7 +2,7 @@
 -- reabre, el comprador tardío recibe turno y la ventana individual del Superadmin
 -- sustituye al turno general sin tocar las demás reglas.
 begin;
-select plan(32);
+select plan(35);
 
 -- ── Estructura ──────────────────────────────────────────────────────────────
 select has_table('public', 'fraction_windows', 'RF-59.9 · existe fraction_windows');
@@ -112,6 +112,23 @@ select lives_ok(
 select throws_like(
   $$ select public.relocate_week((select id from cal), (select id from fr where number = 4), 47, 5) $$,
   '%CA-59.1%', 'RF-59.9 · la ventana individual no relaja la regla de temporada');
+-- CA-59.9 · la ventana individual no relaja el destino ocupado ni el calendario inactivo.
+select throws_like(
+  $$ select public.relocate_week((select id from cal), (select id from fr where number = 4), 35, 43) $$,
+  '%CA-59.3%', 'CA-59.9 · en su ventana individual se le sigue rechazando el destino ocupado');
+reset role;
+set local request.jwt.claim.sub = '';
+update public.fractions set calendar_active = false where id = (select id from fr where number = 4);
+set local role authenticated;
+set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000004';
+select throws_like(
+  $$ select public.relocate_week((select id from cal), (select id from fr where number = 4), 35, 36) $$,
+  '%CA-59.5%I-08%', 'CA-59.9 · en su ventana individual se le sigue rechazando el calendario inactivo');
+reset role;
+set local request.jwt.claim.sub = '';
+update public.fractions set calendar_active = true where id = (select id from fr where number = 4);
+set local role authenticated;
+set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000004';
 set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000002';
 select lives_ok(
   $$ select public.close_fraction_window((select id from public.fraction_windows where calendar_id = (select id from cal) and closed_at is null)) $$,
@@ -119,7 +136,7 @@ select lives_ok(
 set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000004';
 select throws_like(
   $$ select public.relocate_week((select id from cal), (select id from fr where number = 4), 47, 48) $$,
-  '%RF-59.1%', 'RF-59.9 · cerrada la individual, vuelve la regla general');
+  '%RF-59.1%', 'CA-59.9 · RF-59.9 · cerrada la individual, vuelve la regla general');
 
 -- ── RF-59.6 · D-47 · la ventana cerrada se reabre ───────────────────────────
 set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000002';
@@ -128,14 +145,21 @@ select public.close_selection_window((select id from cal));
 set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000001';
 select throws_like(
   $$ select public.reopen_selection_window((select id from cal)) $$,
-  '%RF-59.6%', 'RF-59.6 · el Administrador cierra pero no reabre');
+  '%RF-59.6%', 'CA-59.8 · RF-59.6 · el Administrador cierra pero no reabre');
 set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000002';
 select lives_ok(
   $$ select public.reopen_selection_window((select id from cal)) $$,
-  'RF-59.6 · D-47 · el Superadmin reabre la ventana cerrada antes de tiempo');
+  'CA-59.8 · RF-59.6 · D-47 · el Superadmin reabre la ventana cerrada antes de tiempo');
 select is(
   (select closed_at is null from public.selection_windows where calendar_id = (select id from cal)),
   true, 'RF-59.6 · D-47 · la ventana vuelve a estar abierta');
+-- CA-59.8 · reabierta, vuelve a aceptar reubicaciones según su fase: la 1 está en su turno.
+select public.select_weeks((select id from cal), (select id from fr where number = 1), array[0, 8, 16, 24, 32, 40]);
+set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000003';
+select lives_ok(
+  $$ select public.relocate_week((select id from cal), (select id from fr where number = 1), 40, 41) $$,
+  'CA-59.8 · reabierta, la ventana vuelve a aceptar reubicaciones del turno en curso');
+set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000002';
 select lives_ok(
   $$ select public.reopen_selection_window((select id from cal)) $$,
   'RF-59.6 · reabrir una ventana abierta no hace nada');
@@ -150,13 +174,13 @@ set local role authenticated;
 set local request.jwt.claim.sub = 'c5910000-0000-4000-8000-000000000002';
 select throws_like(
   $$ select public.reopen_selection_window((select id from cal)) $$,
-  '%ya venció%', 'RF-59.6 · D-47 · una ventana vencida no se reabre sin nuevas fechas');
+  '%ya venció%', 'CA-59.8 · RF-59.6 · D-47 · una ventana vencida no se reabre sin nuevas fechas');
 select lives_ok(
   $$ select public.configure_selection_window((select id from cal), now() - interval '10 days', 16, 1, null) $$,
   'RF-59.1 · D-47 · guardarla con nuevas fechas la reabre');
 select is(
   (select closed_at is null from public.selection_windows where calendar_id = (select id from cal)),
-  true, 'RF-59.1 · D-47 · reconfigurada, ya no está cerrada');
+  true, 'CA-59.8 · RF-59.1 · D-47 · guardada con nuevas fechas, ya no está cerrada');
 
 -- ── D-47 · sin turno en la ventana general se entra por orden de llegada ───
 -- La ventana quedó con 4 turnos de una hora hace 10 días: está por orden de llegada.
