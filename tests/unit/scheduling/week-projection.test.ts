@@ -3,8 +3,8 @@ import type { CopAmount } from '#shared/money/importe'
 import { rejillaDelAnio } from '#shared/scheduling/rejilla'
 import { clasificacionBase } from '#shared/scheduling/temporadas'
 import type { SemanaClasificada } from '#shared/scheduling/temporadas'
-import { projectWeeks } from '#shared/scheduling/week-projection'
-import type { WeekProjectionInput } from '#shared/scheduling/week-projection'
+import { projectPropertyWeeks, projectWeeks } from '#shared/scheduling/week-projection'
+import type { PropertyProjectionInput, WeekProjectionInput } from '#shared/scheduling/week-projection'
 
 /**
  * HU-13 · RF-13.1b, RF-13.2, RF-13.3, RF-13.4 · D-16, D-31, D-33 — la proyección
@@ -167,5 +167,69 @@ describe('RF-13.1b · D-31 · con el calendario inactivo la vista es de solo lec
     expect(projection.cells.filter(c => c.type === 'own')).toEqual([])
     expect(projection.cells.filter(c => c.actionable)).toEqual([])
     expect(projection.readOnly).toBe(true)
+  })
+})
+
+/**
+ * Tablero de la propiedad para quien la gestiona (HU-13 · RF-13.3, HU-14 · RF-14.1,
+ * RF-14.6, RF-14.7): cada semana dice de qué fracción es y en qué estado está, y
+ * solo admite acción si esa fracción tiene el calendario activo y la semana no pasó.
+ */
+describe('projectPropertyWeeks · el tablero de la propiedad desde la gestión', () => {
+  function entrada(changes: Partial<PropertyProjectionInput> = {}): PropertyProjectionInput {
+    const base = input()
+    return {
+      today: base.today,
+      rejilla: base.rejilla,
+      classification: base.classification,
+      allocations: base.allocations,
+      blocks: base.blocks,
+      selectionComplete: true,
+      coOwners: [{ fraction: 3, name: 'Ana Ruiz', calendarActive: true }, { fraction: 5, name: 'Luis Mora', calendarActive: false }],
+      ...changes,
+    }
+  }
+
+  it('cada semana con dueño lleva la fracción, el nombre y el estado; nada es «propio»', () => {
+    const { cells } = projectPropertyWeeks(entrada())
+    const semana = (n: number) => cells.find(c => c.week === n)!
+
+    expect(cells.some(c => c.type === 'own')).toBe(false)
+    expect(semana(0)).toMatchObject({ type: 'other', fraction: 3, ownerName: 'Ana Ruiz', state: 'confirmed' })
+    expect(semana(8)).toMatchObject({ type: 'other', fraction: 3, state: 'elected', deadline: '2026-12-29' })
+    expect(semana(24)).toMatchObject({ type: 'released', fraction: 3, state: 'released' })
+    expect(semana(30)).toMatchObject({ type: 'blocked', reason: 'Mantenimiento' })
+    expect(semana(40).type).toBe('pool')
+  })
+
+  it('solo se actúa sobre las semanas futuras de fracciones con calendario activo', () => {
+    const { cells } = projectPropertyWeeks(entrada())
+    const semana = (n: number) => cells.find(c => c.week === n)!
+
+    expect(semana(0).actionable).toBe(true)
+    expect(semana(8).actionable).toBe(true)
+    expect(semana(24).actionable).toBe(false)
+    // La fracción 5 tiene el calendario inactivo (D-31): se ve, no se toca.
+    expect(semana(1).actionable).toBe(false)
+    expect(semana(9).actionable).toBe(false)
+  })
+
+  it('una semana ya pasada se ve pero no admite acción', () => {
+    const { cells } = projectPropertyWeeks(entrada({ today: '2027-06-01' }))
+    expect(cells.find(c => c.week === 0)!.actionable).toBe(false)
+  })
+
+  it('el cupo por temporada se calcula para cada fracción con titular', () => {
+    const { quotaByFraction } = projectPropertyWeeks(entrada())
+
+    expect(quotaByFraction.get(3)?.alta).toMatchObject({ required: 1, confirmed: 1, elected: 0, released: 0 })
+    expect(quotaByFraction.get(3)?.baja).toMatchObject({ required: 3, elected: 2, released: 1 })
+    expect(quotaByFraction.get(5)?.alta).toMatchObject({ confirmed: 1 })
+    expect(quotaByFraction.has(7)).toBe(false)
+  })
+
+  it('las semanas rentadas se distinguen de las liberadas sin tercero', () => {
+    const { cells } = projectPropertyWeeks(entrada({ rentals: [{ week: 24, attributedFraction: 3, income: null }] }))
+    expect(cells.find(c => c.week === 24)!.type).toBe('rented')
   })
 })

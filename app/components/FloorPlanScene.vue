@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useLoop } from '@tresjs/core'
 import { Box3, TextureLoader, Vector3 } from 'three'
 import type { Group, Texture } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'

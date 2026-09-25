@@ -741,13 +741,13 @@ Respeta el orden de los 4 sprints y, dentro de cada uno, el orden de dependencia
 
 # Cierre del MVP
 
-- [ ] **T-268 · Informe de trazabilidad completo en verde** — principio 4
+- [x] **T-268 · Informe de trazabilidad completo en verde** — principio 4
   Hecho cuando: todos los `CA` de las 57 historias y los 3 transversales tienen test que los cita y la suite pasa.
 - [ ] **T-269 · Revisión de responsive y bitema de todas las vistas** — `RT-06`
   Hecho cuando: cada vista se valida en 320/768/1280 px y en ambos temas.
-- [ ] **T-270 · Auditoría de paridad i18n y ausencia de textos fijos** — `RT-05`
+- [x] **T-270 · Auditoría de paridad i18n y ausencia de textos fijos** — `RT-05`
   Hecho cuando: `en.json` y `es.json` tienen las mismas claves y ningún texto visible está escrito en el código.
-- [ ] **T-271 · Verificación del stack cerrado** — `RT-01` · principio 1
+- [x] **T-271 · Verificación del stack cerrado** — `RT-01` · principio 1
   Hecho cuando: `package.json` no contiene ninguna dependencia fuera de `stack.md`.
 - [ ] **T-272 · Despliegue en Netlify con variables de entorno** — `RT-01`
   Hecho cuando: el sitio queda publicado, con Supabase y el proveedor de correo configurados por variables.

@@ -35,13 +35,16 @@ useSeoMeta({
 
 <template>
   <div>
-    <UPageHeader
-      :headline="t('app.name')"
-      :title="t('nav.about')"
-      :description="t('app.tagline')"
-      :ui="{ title: 'font-display font-medium text-4xl sm:text-6xl' }"
-      class="border-b border-default"
-    />
+    <!-- RT-06 · UPageHeader no trae margen propio: sin contenedor, el texto toca el borde. -->
+    <UContainer>
+      <UPageHeader
+        :headline="t('app.name')"
+        :title="t('nav.about')"
+        :description="t('app.tagline')"
+        :ui="{ title: 'font-display font-medium text-4xl sm:text-6xl' }"
+        class="border-b border-default"
+      />
+    </UContainer>
     <component
       :is="COMPONENTE[seccion.id]"
       v-for="seccion in secciones"

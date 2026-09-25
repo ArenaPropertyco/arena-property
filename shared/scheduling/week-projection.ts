@@ -183,3 +183,74 @@ export function projectWeeks(input: WeekProjectionInput): WeekProjection {
     readOnly,
   }
 }
+
+/**
+ * El tablero de la propiedad para quien la gestiona (HU-13 · RF-13.3, HU-14 ·
+ * RF-14.1, RF-14.6, RF-14.7): las mismas celdas que ve un Propietario, pero
+ * ninguna es «propia». Cada semana con dueño lleva su fracción, su titular y su
+ * estado, y admite acción solo si esa fracción tiene el calendario activo (D-31)
+ * y la semana no pasó. La base repite estas reglas al confirmar, cancelar o
+ * liberar en nombre del titular.
+ */
+export interface PropertyProjectionInput {
+  today: Dia
+  rejilla: readonly SemanaDeRejilla[]
+  classification: readonly SemanaClasificada[]
+  allocations: readonly AllocationState[]
+  blocks: readonly { week: number, reason: string }[]
+  selectionComplete: boolean
+  /** Por fracción: nombre del titular y si su calendario está activo. */
+  coOwners: readonly { fraction: number, name: string | null, calendarActive: boolean }[]
+  rentals?: readonly RentedWeek[]
+}
+
+export interface PropertyProjection {
+  cells: WeekCell[]
+  /** El cupo por temporada de cada fracción con titular, para verlas lado a lado. */
+  quotaByFraction: Map<number, Record<Temporada, SeasonQuota>>
+}
+
+export function projectPropertyWeeks(input: PropertyProjectionInput): PropertyProjection {
+  const activeOf = new Map(input.coOwners.map(c => [c.fraction, c.calendarActive]))
+  const base = projectWeeks({
+    today: input.today,
+    ownFraction: null,
+    calendarActive: false,
+    rejilla: input.rejilla,
+    classification: input.classification,
+    allocations: input.allocations,
+    blocks: input.blocks,
+    selectionComplete: input.selectionComplete,
+    coOwners: input.coOwners,
+    rentals: input.rentals,
+  })
+
+  const cells = base.cells.map<WeekCell>((cell) => {
+    if (cell.type !== 'other' || cell.fraction === null) {
+      return cell
+    }
+    const activa = activeOf.get(cell.fraction) ?? false
+    const week: OwnedWeek = {
+      week: cell.week,
+      season: cell.season ?? 'baja',
+      startsOn: cell.startsOn,
+      endsOn: cell.endsOn,
+      confirmedAt: cell.state === 'confirmed' || cell.state === 'used' ? 'yes' : null,
+      releasedAt: null,
+      releaseReason: null,
+    }
+    return {
+      ...cell,
+      deadline: cell.state === 'elected' ? confirmationDeadline(week) : null,
+      actionable: activa && (cell.state === 'elected' || cell.state === 'confirmed') && cell.startsOn >= input.today,
+    }
+  })
+
+  const quotaByFraction = new Map<number, Record<Temporada, SeasonQuota>>()
+  for (const owner of input.coOwners) {
+    const weeks = ownWeeksOf({ ...input, ownFraction: owner.fraction, calendarActive: owner.calendarActive })
+    quotaByFraction.set(owner.fraction, quotaByState(weeks, input.today))
+  }
+
+  return { cells, quotaByFraction }
+}

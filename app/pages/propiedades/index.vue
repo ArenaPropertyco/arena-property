@@ -17,13 +17,16 @@ useSeoMeta({
 
 <template>
   <div>
-    <UPageHeader
-      :headline="t('app.name')"
-      :title="t('catalog.title')"
-      :description="t('catalog.subtitle')"
-      :ui="{ title: 'font-display font-medium text-4xl sm:text-5xl' }"
-      class="border-b border-default"
-    />
+    <!-- RT-06 · UPageHeader no trae margen propio: sin contenedor, el texto toca el borde. -->
+    <UContainer>
+      <UPageHeader
+        :headline="t('app.name')"
+        :title="t('catalog.title')"
+        :description="t('catalog.subtitle')"
+        :ui="{ title: 'font-display font-medium text-4xl sm:text-5xl' }"
+        class="border-b border-default"
+      />
+    </UContainer>
 
     <UContainer class="space-y-8 py-10 sm:py-14">
       <CatalogFilters

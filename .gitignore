@@ -1,6 +1,7 @@
 # Nuxt dev/build
 .nuxt
 .output
+.netlify
 .data
 dist
 

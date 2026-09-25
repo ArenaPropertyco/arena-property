@@ -20,6 +20,13 @@ import type { SwapProposal } from '#shared/scheduling/swaps'
  * individuales de la reubicación (el Administrador la ve y puede cerrarla).
  * Debajo, los bloqueos de la propiedad.
  *
+ * HU-13 · RF-13.3 · HU-14 · RF-14.1, RF-14.6, RF-14.7 — y el tablero de la
+ * propiedad: qué fracción tiene cada semana y en qué estado está, con la opción de
+ * confirmar, cancelar o liberar en nombre del titular.
+ *
+ * Cada bloque va en su tarjeta plegable (RT-06): en móvil se abre solo lo que se
+ * necesita y en escritorio la página se lee de un vistazo.
+ *
  * Llega con `?propiedad=` desde el tablero (HU-21): se abre en esa propiedad si
  * quien mira la gestiona; si no, en la primera de las suyas.
  */
@@ -62,8 +69,9 @@ watch(propiedades, (lista) => {
 const anio = ref(new Date().getFullYear() + 1)
 
 const { id: calendarId, rejilla, nochesEnBolsa, clasificacion, errorDeRejilla, publicadoEl, pendiente, guardar } = useCalendario(propertyId, anio)
-const { turnos, fracciones, asignaciones, lockedWeeks, releasedWeeks, rentedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, reasignar, resolver } = useSelectionOrder(calendarId, propertyId)
+const { turnos, fracciones, asignaciones, lockedWeeks, releasedWeeks, rentedWeeks, solicitudes, ordenSugerido, abrir, intercambiar, reasignar, resolver, recargar: recargarSeleccion } = useSelectionOrder(calendarId, propertyId)
 const { bloqueos, blockedWeeks, crear: crearBloqueo, levantar: levantarBloqueo } = useWeekBlocks(calendarId)
+const tablero = useSemanasDePropiedad(propertyId, calendarId, anio, clasificacion)
 const {
   ventana, individuales, ordenSugerido: ordenDeVentanaSugerido, configurar: configurarVentana, reabrir: reabrirVentana,
   eliminar: eliminarVentana, cerrar: cerrarVentana, abrirIndividual, cerrarIndividual,
@@ -101,6 +109,30 @@ watch(calendarId, (id) => {
 }, { immediate: true })
 
 const semanasLibres = computed(() => rejilla.value.length - asignaciones.value.length)
+const solicitudesPendientes = computed(() => solicitudes.value.filter(solicitud => solicitud.status === 'pending').length)
+
+/** HU-14 · confirmar, cancelar o liberar en nombre del titular; la base repite las reglas. */
+const semanaOcupada = ref<number | null>(null)
+// RF-14.7b · D-39 · liberar tiene consecuencia económica: se explica y luego se confirma.
+const liberando = ref<number | null>(null)
+
+async function operarSemana(accion: 'confirm' | 'cancel' | 'release', week: number, exito: string) {
+  semanaOcupada.value = week
+  const resultado = await tablero[accion](week)
+  semanaOcupada.value = null
+  if (!resultado.ok) {
+    toast.add({ title: t(resultado.clave), color: 'error' })
+    return
+  }
+  // Las semanas confirmadas o liberadas dejan de intercambiarse y reasignarse (D-33).
+  await recargarSeleccion()
+  toast.add({ title: t(exito), color: 'success' })
+}
+
+async function confirmarLiberacion(week: number) {
+  await operarSemana('release', week, 'calendar.weeks.released')
+  liberando.value = null
+}
 
 /** RF-59.2 · el orden que la ventana propone; el Superadmin lo ajusta antes de guardar. */
 const ordenDeVentana = ref<number[]>([])
@@ -237,7 +269,7 @@ async function levantar(id: string, motivo: string) {
 
     <div
       v-else
-      class="space-y-8"
+      class="space-y-4 sm:space-y-6"
     >
       <CalendarPicker
         v-model:property-id="propertyId"
@@ -245,16 +277,15 @@ async function levantar(id: string, motivo: string) {
         :propiedades="propiedades"
       />
 
-      <section class="space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <SectionHeading :titulo="t('calendar.grid', { year: anio })" />
-            <p class="text-sm text-muted">
-              {{ t('calendar.gridHint', { weeks: rejilla.length, pool: nochesEnBolsa.length }) }}
-            </p>
-          </div>
+      <PanelCollapsible
+        nombre="rejilla"
+        :titulo="t('calendar.grid', { year: anio })"
+        :descripcion="t('calendar.gridHint', { weeks: rejilla.length, pool: nochesEnBolsa.length })"
+        icono="i-lucide-grid-3x3"
+      >
+        <template #extra>
           <CalendarStatus :publicado-el="publicadoEl" />
-        </div>
+        </template>
 
         <SeasonClassifier
           v-model:clasificacion="clasificacion"
@@ -283,17 +314,14 @@ async function levantar(id: string, motivo: string) {
             @click="guardarClasificacion"
           />
         </div>
-      </section>
+      </PanelCollapsible>
 
-      <section
-        class="space-y-4"
-        data-test="seccion-seleccion"
+      <PanelCollapsible
+        nombre="seleccion"
+        :titulo="t('calendar.selection.title')"
+        :descripcion="t('calendar.selection.subtitle')"
+        icono="i-lucide-list-ordered"
       >
-        <SectionHeading :titulo="t('calendar.selection.title')" />
-        <p class="text-sm text-muted">
-          {{ t('calendar.selection.subtitle') }}
-        </p>
-
         <template v-if="!publicadoEl">
           <SelectionOrderEditor
             v-model:order="orden"
@@ -313,23 +341,57 @@ async function levantar(id: string, motivo: string) {
           </div>
         </template>
 
-        <template v-else>
-          <SelectionProgress
-            :turns="turnos"
-            :free-weeks="semanasLibres"
-          />
+        <SelectionProgress
+          v-else
+          :turns="turnos"
+          :free-weeks="semanasLibres"
+        />
+      </PanelCollapsible>
 
-          <SectionHeading :titulo="t('calendar.selection.chosenTitle')" />
+      <template v-if="publicadoEl">
+        <PanelCollapsible
+          nombre="elegidas"
+          :titulo="t('calendar.selection.chosenTitle')"
+          icono="i-lucide-calendar-check"
+        >
           <SelectedWeeksList
             :allocations="asignaciones"
             :rejilla="rejilla"
             :fractions="fracciones"
           />
+        </PanelCollapsible>
 
-          <SectionHeading :titulo="t('calendar.swaps.title')" />
-          <p class="text-sm text-muted">
-            {{ t('calendar.swaps.subtitle') }}
-          </p>
+        <PanelCollapsible
+          nombre="cupo"
+          :titulo="t('calendar.propertyBoard.title')"
+          :descripcion="t('calendar.propertyBoard.subtitle')"
+          icono="i-lucide-calendar-range"
+        >
+          <SectionHeading :titulo="t('calendar.propertyBoard.quotaTitle')" />
+          <FractionQuotaTable
+            :cupo="tablero.cupoPorFraccion.value"
+            :fracciones="tablero.fracciones.value"
+          />
+
+          <SectionHeading :titulo="t('calendar.propertyBoard.boardTitle')" />
+          <WeekLegend gestion />
+          <WeekCalendar
+            :cells="tablero.cells.value"
+            :context="tablero.context.value"
+            :busy-week="semanaOcupada"
+            gestion
+            @confirm="operarSemana('confirm', $event, 'calendar.weeks.confirmed')"
+            @cancel="operarSemana('cancel', $event, 'calendar.weeks.cancelled')"
+            @release="liberando = $event"
+          />
+        </PanelCollapsible>
+
+        <PanelCollapsible
+          nombre="intercambios"
+          :titulo="t('calendar.swaps.title')"
+          :descripcion="t('calendar.swaps.subtitle')"
+          icono="i-lucide-arrow-left-right"
+        >
           <WeekSwapForm
             :allocations="asignaciones"
             :locked-weeks="lockedWeeks"
@@ -337,8 +399,14 @@ async function levantar(id: string, motivo: string) {
             :enviando="intercambiando"
             @submit="aplicarIntercambio"
           />
+        </PanelCollapsible>
 
-          <SectionHeading :titulo="t('calendar.swaps.requestsTitle')" />
+        <PanelCollapsible
+          nombre="solicitudes"
+          :titulo="t('calendar.swaps.requestsTitle')"
+          icono="i-lucide-inbox"
+          :aviso="solicitudesPendientes > 0 ? t('calendar.propertyBoard.pendingRequests', { count: solicitudesPendientes }) : null"
+        >
           <SwapRequestsList
             :requests="solicitudes"
             can-resolve
@@ -346,84 +414,78 @@ async function levantar(id: string, motivo: string) {
             :ocupada-id="resolviendo"
             @resolver="resolverSolicitud"
           />
-        </template>
-      </section>
+        </PanelCollapsible>
 
-      <section
-        v-if="publicadoEl"
-        class="space-y-4"
-        data-test="seccion-reasignacion"
-      >
-        <SectionHeading :titulo="t('calendar.reassignment.title')" />
-        <p class="text-sm text-muted">
-          {{ t('calendar.reassignment.subtitle') }}
-        </p>
-        <WeekReassignmentForm
-          :allocations="asignaciones"
-          :released-weeks="releasedWeeks"
-          :blocked-weeks="blockedWeeks"
-          :rented-weeks="rentedWeeks"
-          :rejilla="rejilla"
-          :classification="clasificacion"
-          :today="hoy"
-          :enviando="reasignando"
-          @submit="aplicarReasignacion"
-        />
-      </section>
+        <PanelCollapsible
+          nombre="reasignacion"
+          :titulo="t('calendar.reassignment.title')"
+          :descripcion="t('calendar.reassignment.subtitle')"
+          icono="i-lucide-move-right"
+        >
+          <WeekReassignmentForm
+            :allocations="asignaciones"
+            :released-weeks="releasedWeeks"
+            :blocked-weeks="blockedWeeks"
+            :rented-weeks="rentedWeeks"
+            :rejilla="rejilla"
+            :classification="clasificacion"
+            :today="hoy"
+            :enviando="reasignando"
+            @submit="aplicarReasignacion"
+          />
+        </PanelCollapsible>
 
-      <section
-        v-if="publicadoEl"
-        class="space-y-4"
-        data-test="seccion-ventana"
-      >
-        <SectionHeading :titulo="t('calendar.relocation.title')" />
-        <p class="text-sm text-muted">
-          {{ t('calendar.relocation.subtitle') }}
-        </p>
-        <SelectionWindowForm
-          v-if="esSuperadmin"
-          :window="ventana"
-          :fractions="fracciones"
-          :suggested-order="ordenDeVentana"
-          :anio="anio"
-          :enviando="configurandoVentana"
-          @sugerir="sugerirOrdenDeVentana"
-          @submit="guardarVentana"
-          @eliminar="confirmandoEliminar = true"
-        />
-        <p
-          v-else-if="!ventana"
-          class="text-sm text-muted"
-          data-test="ventana-sin-configurar"
+        <PanelCollapsible
+          nombre="ventana"
+          :titulo="t('calendar.relocation.title')"
+          :descripcion="t('calendar.relocation.subtitle')"
+          icono="i-lucide-timer"
         >
-          {{ t('calendar.relocation.notConfigured', { year: anio }) }}
-        </p>
-        <p
-          v-else
-          class="text-sm text-muted"
-        >
-          {{ t('calendar.relocation.onlySuperadmin') }}
-        </p>
-        <SelectionWindowTurns
-          v-if="ventana"
-          :window="ventana"
-          :now="ahora"
-          can-close
-          :can-reopen="esSuperadmin"
-          :cerrando="cerrandoVentana"
-          @cerrar="cerrarLaVentana"
-          @reabrir="reabrirLaVentana"
-        />
-        <FractionWindowPanel
-          v-if="esSuperadmin"
-          :fractions="fracciones"
-          :windows="individuales"
-          :now="ahora"
-          :enviando="abriendoIndividual"
-          @abrir="abrirVentanaIndividual"
-          @cerrar="cerrarVentanaIndividual"
-        />
-      </section>
+          <SelectionWindowForm
+            v-if="esSuperadmin"
+            :window="ventana"
+            :fractions="fracciones"
+            :suggested-order="ordenDeVentana"
+            :anio="anio"
+            :enviando="configurandoVentana"
+            @sugerir="sugerirOrdenDeVentana"
+            @submit="guardarVentana"
+            @eliminar="confirmandoEliminar = true"
+          />
+          <p
+            v-else-if="!ventana"
+            class="text-sm text-muted"
+            data-test="ventana-sin-configurar"
+          >
+            {{ t('calendar.relocation.notConfigured', { year: anio }) }}
+          </p>
+          <p
+            v-else
+            class="text-sm text-muted"
+          >
+            {{ t('calendar.relocation.onlySuperadmin') }}
+          </p>
+          <SelectionWindowTurns
+            v-if="ventana"
+            :window="ventana"
+            :now="ahora"
+            can-close
+            :can-reopen="esSuperadmin"
+            :cerrando="cerrandoVentana"
+            @cerrar="cerrarLaVentana"
+            @reabrir="reabrirLaVentana"
+          />
+          <FractionWindowPanel
+            v-if="esSuperadmin"
+            :fractions="fracciones"
+            :windows="individuales"
+            :now="ahora"
+            :enviando="abriendoIndividual"
+            @abrir="abrirVentanaIndividual"
+            @cerrar="cerrarVentanaIndividual"
+          />
+        </PanelCollapsible>
+      </template>
 
       <UModal
         v-model:open="confirmandoEliminar"
@@ -441,14 +503,27 @@ async function levantar(id: string, motivo: string) {
         </template>
       </UModal>
 
-      <section
-        class="space-y-4"
-        data-test="seccion-bloqueos"
+      <UModal
+        :open="liberando !== null"
+        :title="t('calendar.weeks.releaseTitle')"
+        @update:open="liberando = null"
       >
-        <SectionHeading :titulo="t('calendar.blocks.title')" />
-        <p class="text-sm text-muted">
-          {{ t('calendar.blocks.subtitle') }}
-        </p>
+        <template #body>
+          <ReleaseWeekNotice
+            v-if="liberando !== null"
+            :week="liberando"
+            :enviando="semanaOcupada === liberando"
+            @confirmar="confirmarLiberacion"
+          />
+        </template>
+      </UModal>
+
+      <PanelCollapsible
+        nombre="bloqueos"
+        :titulo="t('calendar.blocks.title')"
+        :descripcion="t('calendar.blocks.subtitle')"
+        icono="i-lucide-lock"
+      >
         <template v-if="publicadoEl">
           <WeekBlockForm
             :rejilla="rejilla"
@@ -471,7 +546,7 @@ async function levantar(id: string, motivo: string) {
         >
           {{ t('calendar.blocks.empty') }}
         </p>
-      </section>
+      </PanelCollapsible>
     </div>
   </PanelPage>
 </template>

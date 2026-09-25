@@ -79,28 +79,29 @@ function importe(monto: Kpis['commissions']['pending']): string {
       >
         {{ generadas.texto }}
       </p>
-      <dl class="mt-3 grid grid-cols-3 gap-2 text-xs">
-        <div>
+      <!-- RT-06 · la tarjeta mide ~280 px en cualquier ancho: los importes van en filas. -->
+      <dl class="mt-3 space-y-1 text-xs">
+        <div class="flex items-baseline justify-between gap-3">
           <dt class="text-muted">
             {{ t('metrics.kpis.pending') }}
           </dt>
-          <dd class="font-mono text-default">
+          <dd class="text-end font-mono text-default">
             {{ importe(kpis.commissions.pending) }}
           </dd>
         </div>
-        <div>
+        <div class="flex items-baseline justify-between gap-3">
           <dt class="text-muted">
             {{ t('metrics.kpis.released') }}
           </dt>
-          <dd class="font-mono text-default">
+          <dd class="text-end font-mono text-default">
             {{ importe(kpis.commissions.released) }}
           </dd>
         </div>
-        <div>
+        <div class="flex items-baseline justify-between gap-3">
           <dt class="text-muted">
             {{ t('metrics.kpis.paid') }}
           </dt>
-          <dd class="font-mono text-default">
+          <dd class="text-end font-mono text-default">
             {{ importe(kpis.commissions.paid) }}
           </dd>
         </div>

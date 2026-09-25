@@ -1,13 +1,89 @@
--- HU-61 · RF-61.5, RF-61.6 — atribución de referido tras ingresar con Google.
+-- HU-61 · RF-61.2, RF-61.4, RF-61.5, RF-61.6, RF-61.7 — alta, vinculación,
+-- atribución de referido y datos de presentación al ingresar con Google.
 -- Nivel N2: la creación de cuenta y el ingreso reales solo se verifican con
 -- credenciales de Google en vivo (ver HU61-spec.md); aquí se prueba el mecanismo del
 -- que depende esa atribución, simulando la cuenta como ya lo hace hu07_roles.sql.
 begin;
-select plan(11);
+select plan(26);
 
 select has_function('public', 'aplicar_atribucion_referido', array['text'],
   'existe la función de atribución, expuesta por RPC');
 select has_function('private', 'proteger_referido', 'existe la guarda de escritura única');
+select has_column('public', 'profiles', 'avatar_url', 'RF-61.7 · el perfil guarda el avatar del proveedor');
+
+-- ── CA-61.1 · CA-61.6 · alta por Google: el mismo perfil que por correo ─────
+-- Así crea Supabase Auth la cuenta de Google: correo ya confirmado y los datos de
+-- la identidad en `raw_user_meta_data`.
+insert into auth.users (id, email, email_confirmed_at, raw_app_meta_data, raw_user_meta_data) values
+  ('90000000-0000-4000-8000-000000000061', 'google.nuevo@ejemplo.com', now(),
+   '{"provider": "google", "providers": ["google"]}',
+   '{"full_name": "Ana Google", "avatar_url": "https://lh3.googleusercontent.com/a/ana", "email_verified": true}');
+insert into auth.identities (provider_id, user_id, identity_data, provider) values
+  ('g-061', '90000000-0000-4000-8000-000000000061', '{"sub": "g-061", "email": "google.nuevo@ejemplo.com"}', 'google');
+
+select is(
+  (select array_agg(role::text order by role) from public.user_roles where user_id = '90000000-0000-4000-8000-000000000061'),
+  array['user'], 'CA-61.1 · el alta por Google nace con el rol Usuario y ninguno más');
+select is(
+  (select status::text from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  'active', 'CA-61.1 · el perfil nace activo');
+select is(
+  (select email_verified from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  true, 'CA-61.1 · D-34 · el correo llega verificado desde Google');
+select is(
+  (select full_name from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  'Ana Google', 'CA-61.6 · el alta guarda el nombre de Google');
+select is(
+  (select avatar_url from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  'https://lh3.googleusercontent.com/a/ana', 'CA-61.6 · el alta guarda el avatar de Google');
+select is(
+  (select count(*) from public.audit_log where action = 'profile.identidad_vinculada' and entity_id = '90000000-0000-4000-8000-000000000061'),
+  0::bigint, 'CA-61.1 · la primera identidad de una cuenta nueva no es una vinculación');
+
+-- Un ingreso posterior con el nombre cambiado en Google: Auth reescribe los metadatos.
+update auth.users
+   set raw_user_meta_data = '{"full_name": "Ana María Google", "avatar_url": "https://lh3.googleusercontent.com/a/ana2"}'
+ where id = '90000000-0000-4000-8000-000000000061';
+select is(
+  (select full_name from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  'Ana María Google', 'CA-61.6 · un ingreso posterior refleja el nombre nuevo');
+select is(
+  (select avatar_url from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  'https://lh3.googleusercontent.com/a/ana2', 'CA-61.6 · y el avatar nuevo');
+
+-- Metadatos sin nombre (u otro cambio cualquiera) no borran lo que había.
+update auth.users set raw_user_meta_data = '{"locale": "en"}' where id = '90000000-0000-4000-8000-000000000061';
+select is(
+  (select full_name from public.profiles where id = '90000000-0000-4000-8000-000000000061'),
+  'Ana María Google', 'RF-61.7 · sin nombre en los metadatos se conserva el anterior');
+
+-- RF-61.8 · un avatar que no es https no se guarda.
+insert into auth.users (id, email, raw_user_meta_data) values
+  ('90000000-0000-4000-8000-000000000062', 'avatar.raro@ejemplo.com', '{"name": "Beto", "picture": "javascript:alert(1)"}');
+select is(
+  (select avatar_url from public.profiles where id = '90000000-0000-4000-8000-000000000062'),
+  null, 'RF-61.8 · solo se aceptan avatares por https');
+select is(
+  (select full_name from public.profiles where id = '90000000-0000-4000-8000-000000000062'),
+  'Beto', 'RF-61.7 · el nombre también se lee de `name`');
+
+-- ── CA-61.2 · correo con cuenta de contraseña que entra con Google ──────────
+-- Auth no crea otro usuario: añade la identidad de Google al existente.
+insert into auth.users (id, email, email_confirmed_at) values
+  ('90000000-0000-4000-8000-000000000063', 'ya.tengo.cuenta@ejemplo.com', now());
+insert into auth.identities (provider_id, user_id, identity_data, provider) values
+  ('90000000-0000-4000-8000-000000000063', '90000000-0000-4000-8000-000000000063', '{"sub": "90000000-0000-4000-8000-000000000063", "email": "ya.tengo.cuenta@ejemplo.com"}', 'email');
+insert into auth.identities (provider_id, user_id, identity_data, provider) values
+  ('g-063', '90000000-0000-4000-8000-000000000063', '{"sub": "g-063", "email": "ya.tengo.cuenta@ejemplo.com"}', 'google');
+select is(
+  (select count(*) from public.profiles where email = 'ya.tengo.cuenta@ejemplo.com'),
+  1::bigint, 'CA-61.2 · la identidad de Google se vincula y no nace un segundo perfil');
+select is(
+  (select count(*) from public.user_roles where user_id = '90000000-0000-4000-8000-000000000063'),
+  1::bigint, 'CA-61.2 · ni un segundo juego de roles');
+select is(
+  (select reason from public.audit_log where action = 'profile.identidad_vinculada' and entity_id = '90000000-0000-4000-8000-000000000063'),
+  'Identidad de google vinculada a la cuenta existente', 'RF-61.4 · TR-01 · la vinculación queda auditada');
 
 -- ── Cuenta de prueba, sin atribución todavía ────────────────────────────────
 insert into auth.users (id, email) values
@@ -16,14 +92,16 @@ insert into auth.users (id, email) values
 set local role authenticated;
 set local request.jwt.claim.sub = '90000000-0000-4000-8000-000000000001';
 
--- ── CA-61.3 (mecanismo) · aplicar un código a un perfil sin atribución ──────
+-- ── CA-61.3 · el código guardado en la cookie se aplica al volver de Google ──
+-- La cuenta de Google nace sin código (el proveedor no lo transporta); al volver,
+-- la página de retorno lo aplica con la misma función que usa el formulario.
 select lives_ok(
   $$ select public.aplicar_atribucion_referido('arena-7k2q') $$,
   'RF-61.5 · aplicar la atribución no lanza error');
 
 select is(
   (select referred_by_code from public.profiles where id = '90000000-0000-4000-8000-000000000001'),
-  'ARENA-7K2Q', 'el código queda normalizado en mayúsculas');
+  'ARENA-7K2Q', 'CA-61.3 · el perfil queda con el código, normalizado como en el formulario');
 
 -- ── CA-61.4 · un perfil ya atribuido no cambia con un segundo código ────────
 select lives_ok(
