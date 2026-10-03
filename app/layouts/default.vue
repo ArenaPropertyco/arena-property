@@ -17,7 +17,7 @@ const { perfil, roles, sesion, cerrarSesion } = useCuenta()
 
 const inicio = computed(() => localePath('/'))
 
-/** Lo que agrupa «Modelo fraccionado»: cómo funciona la copropiedad y cómo se entra. */
+/** Lo que agrupa «Modelo de negocio»: cómo funciona la copropiedad y cómo se entra. */
 const modelo = computed<NavigationMenuItem[]>(() => [
   { label: t('nav.model'), icon: 'i-lucide-layers', to: localePath('/modelo') },
   { label: t('nav.benefits'), icon: 'i-lucide-sparkles', to: localePath('/beneficios') },
@@ -27,6 +27,7 @@ const modelo = computed<NavigationMenuItem[]>(() => [
 
 const enCabecera = computed<NavigationMenuItem[]>(() => [
   { label: t('nav.home'), to: localePath('/') },
+  { label: t('nav.propertiesLink'), to: localePath('/propiedades') },
   {
     label: t('nav.fractionalModel'),
     // El padre no navega: se marca activo cuando la página es una de sus secciones.
@@ -75,6 +76,8 @@ const cuenta = computed(() => {
     <UMain class="flex-1">
       <slot />
     </UMain>
+
+    <WhatsappFloatingButton />
 
     <PublicFooter
       :inicio="inicio"

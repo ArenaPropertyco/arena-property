@@ -3,6 +3,7 @@ import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import LayoutPublico from '~/layouts/default.vue'
 import PublicHeader from '~/components/PublicHeader.vue'
+import LayoutPanel from '~/layouts/dashboard.vue'
 
 /**
  * Cabecera del sitio institucional: el menú agrupa el modelo fraccionado y la
@@ -25,18 +26,18 @@ const props = {
 }
 
 describe('cabecera pública · menú', () => {
-  it('ordena el menú como Inicio, Modelo fraccionado, Nosotros y Contáctenos', async () => {
+  it('ordena el menú como Inicio, Propiedades, Modelo de negocio, Nosotros y Contáctenos', async () => {
     const envoltorio = await mountSuspended(LayoutPublico)
     const items = envoltorio.findComponent(PublicHeader).props('items') as NavigationMenuItem[]
 
-    expect(items.map(item => item.label)).toEqual(['Inicio', 'Modelo fraccionado', 'Nosotros', 'Contáctenos'])
-    expect(items.map(item => item.to)).toEqual(['/', undefined, '/nosotros', '/contacto'])
+    expect(items.map(item => item.label)).toEqual(['Inicio', 'Propiedades', 'Modelo de negocio', 'Nosotros', 'Contáctenos'])
+    expect(items.map(item => item.to)).toEqual(['/', '/propiedades', undefined, '/nosotros', '/contacto'])
   })
 
-  it('el modelo fraccionado despliega modelo, beneficios, agendamiento y referidos', async () => {
+  it('el modelo de negocio despliega modelo, beneficios, agendamiento y referidos', async () => {
     const envoltorio = await mountSuspended(LayoutPublico)
     const items = envoltorio.findComponent(PublicHeader).props('items') as NavigationMenuItem[]
-    const modelo = items[1]!
+    const modelo = items[2]!
 
     expect(modelo.children?.map(hijo => [hijo.label, hijo.to])).toEqual([
       ['Modelo de negocio', '/modelo'],
@@ -76,5 +77,28 @@ describe('cabecera pública · cuenta', () => {
     envoltorio.findComponent({ name: 'UserMenu' }).vm.$emit('salir')
 
     expect(envoltorio.emitted('salir')).toHaveLength(1)
+  })
+})
+
+describe('botón flotante de WhatsApp', () => {
+  it('RT-06 · el layout público lo lleva en oro Arena, solo con el icono y el mensaje ya escrito', async () => {
+    const envoltorio = await mountSuspended(LayoutPublico)
+    const boton = envoltorio.find('[data-test="whatsapp-flotante"]')
+
+    expect(boton.exists()).toBe(true)
+    expect(boton.classes()).toContain('bg-arena-500')
+    expect(boton.classes()).toContain('fixed')
+    // Solo el icono: el texto viaja como mensaje ya escrito y se anuncia por aria-label.
+    expect(boton.text()).toBe('')
+    expect(boton.find('[data-test="whatsapp-flotante-texto"]').exists()).toBe(false)
+    expect(boton.attributes('aria-label')).toBe('Escribir por WhatsApp')
+    expect(boton.attributes('href')).toBe('https://wa.me/573106854769?text=Quiero%20saber%20m%C3%A1s%20sobre%20las%20propiedades%20fraccionadas')
+    expect(boton.attributes('target')).toBe('_blank')
+  })
+
+  it('los paneles de los usuarios no lo llevan', async () => {
+    const envoltorio = await mountSuspended(LayoutPanel)
+
+    expect(envoltorio.find('[data-test="whatsapp-flotante"]').exists()).toBe(false)
   })
 })

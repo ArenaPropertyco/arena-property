@@ -2,12 +2,14 @@
 import { Motion } from 'motion-v'
 import type { SeccionDeLaHome } from '#shared/content/home'
 import { FONDO_DEL_HERO } from '#shared/content/home'
-import { RUTAS_PUBLICAS } from '#shared/content/rutas'
+import { MENSAJE_WHATSAPP_HERO, urlDeWhatsapp } from '#shared/content/contacto'
 
 /**
  * HU-00 · RF-00.1, RF-00.11 — hero con video de fondo y la jerarquía del texto
- * oficial sobre él: `h1` «Copropiedad Fraccionada», `h2` la frase, `h3` la
- * promesa de precio. El video es decorativo: silenciado, en bucle y sin
+ * sobre él: `h1` «Copropiedad Fraccionada» y `h2` la frase (la segunda casa en el
+ * Caribe, a tamaño de subtítulo y no de portada). El
+ * CTA principal escribe por WhatsApp; el catálogo queda como acción secundaria.
+ * El video es decorativo: silenciado, en bucle y sin
  * controles, con un fotograma fijo debajo que sostiene la sección mientras
  * carga y es el único fondo para quien pidió menos movimiento.
  *
@@ -21,10 +23,14 @@ const props = defineProps<{
   /** RF-00.7 · con `prefers-reduced-motion` se muestra solo el póster y sin revelados. */
   reducirMovimiento?: boolean
 }>()
-const emit = defineEmits<{ cta: [SeccionDeLaHome] }>()
+/** RF-00.8 · el destino va aparte cuando no es el de la sección (WhatsApp es externo). */
+const emit = defineEmits<{ cta: [SeccionDeLaHome, string?] }>()
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+
+/** El chat se abre con el mensaje ya escrito (el mismo destino se registra en analítica). */
+const urlWhatsapp = urlDeWhatsapp(MENSAJE_WHATSAPP_HERO)
 
 /** Clase y retraso del revelado de cada bloque, por posición; sin movimiento, nada. */
 function revelado(posicion: number) {
@@ -85,46 +91,47 @@ function revelado(posicion: number) {
 
         <h2
           v-bind="revelado(1)"
-          class="font-display text-4xl font-medium leading-[1.05] text-balance sm:text-6xl lg:text-7xl"
+          class="font-display text-3xl font-medium leading-[1.15] text-balance sm:text-4xl lg:text-5xl"
           data-test="hero-frase"
         >
           {{ t(seccion.tituloKey) }}
+          <span
+            class="mt-2 block text-xl font-normal text-ink-100/80 sm:text-2xl"
+            data-test="hero-continuacion"
+          >{{ t('home.hero.subtitle') }}</span>
         </h2>
 
-        <h3
-          v-bind="revelado(2)"
-          class="max-w-2xl text-base font-normal text-ink-100/85 sm:text-lg"
-          data-test="hero-promesa"
-        >
-          {{ t('home.hero.description') }}
-        </h3>
-
         <div
-          v-bind="revelado(3)"
+          v-bind="revelado(2)"
           class="flex flex-wrap items-center gap-3 pt-2"
         >
           <Motion
-            v-if="seccion.cta"
             :while-hover="reducirMovimiento ? undefined : { y: -2 }"
             :while-press="reducirMovimiento ? undefined : { scale: 0.98 }"
             class="inline-flex"
           >
             <UButton
               size="xl"
-              :to="localePath(seccion.cta.destino)"
-              :label="t(seccion.cta.labelKey)"
-              trailing-icon="i-lucide-arrow-right"
-              :data-test="`cta-${seccion.id}`"
-              @click="emit('cta', seccion)"
+              :to="urlWhatsapp"
+              target="_blank"
+              rel="noopener"
+              icon="i-lucide-message-circle"
+              :label="t('home.hero.whatsapp')"
+              data-test="hero-whatsapp"
+              @click="emit('cta', seccion, urlWhatsapp)"
             />
           </Motion>
           <UButton
+            v-if="seccion.cta"
             size="xl"
-            variant="link"
+            variant="outline"
             color="neutral"
-            class="text-ink-50 hover:text-arena-300"
-            :to="localePath(RUTAS_PUBLICAS.modelo)"
-            :label="t('home.hero.secondary')"
+            class="bg-transparent text-ink-50 ring-ink-50/50 hover:bg-ink-50/10"
+            :to="localePath(seccion.cta.destino)"
+            :label="t(seccion.cta.labelKey)"
+            trailing-icon="i-lucide-arrow-right"
+            :data-test="`cta-${seccion.id}`"
+            @click="emit('cta', seccion)"
           />
         </div>
       </div>

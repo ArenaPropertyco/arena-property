@@ -58,7 +58,7 @@ describe('HU-00 · secciones de la home desde el manifiesto', () => {
   it('RF-00.1 · el hero muestra el slogan y el video de fondo silenciado, en bucle y con póster', async () => {
     const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
 
-    expect(hero.text()).toContain('Tu vivienda vacacional no es un sueño')
+    expect(hero.text()).toContain('Una segunda casa en el Caribe Colombiano')
     const video = hero.find('video[data-test="hero-fondo"]')
     expect(video.exists()).toBe(true)
     expect(video.find('source').attributes('src')).toBe('/media/hero.mp4')
@@ -125,20 +125,36 @@ describe('HU-00 · secciones de la home desde el manifiesto', () => {
     expect(queHace.find('[data-test="cta-what_we_do"]').attributes('href')).toBe('/nosotros')
   })
 
-  it('RF-00.11 · el hero lleva sobre el video la jerarquía h1, h2 y h3 del texto oficial', async () => {
+  it('RF-00.11 · el hero lleva sobre el video la jerarquía h1 y h2', async () => {
     const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
 
     expect(hero.find('h1[data-test="hero-titulo"]').text()).toContain('Copropiedad Fraccionada')
-    expect(hero.find('h2[data-test="hero-frase"]').text()).toContain('Tu vivienda vacacional no es un sueño')
-    expect(hero.find('h3[data-test="hero-promesa"]').text()).toContain('COP $173M')
+    expect(hero.find('h2[data-test="hero-frase"]').text()).toContain('Una segunda casa en el Caribe Colombiano, para quien ya resolvió todo lo demás')
+    expect(hero.find('[data-test="hero-continuacion"]').text()).toBe('sin la carga de mantenerla ni la culpa de tenerla vacía cuando no estás')
+    // La promesa de precio salió del hero: la frase y los botones hablan solos.
+    expect(hero.find('[data-test="hero-promesa"]').exists()).toBe(false)
+    expect(hero.text()).not.toContain('COP $173M')
     // El revelado es CSS: ningún bloque nace con opacidad cero en el marcado.
     expect(hero.html()).not.toContain('opacity:0')
+  })
+
+  it('RF-00.5 · RF-00.8 · el CTA principal del hero escribe por WhatsApp y lo registra con su destino; el catálogo queda aparte', async () => {
+    const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero') } })
+    const whatsapp = hero.find('[data-test="hero-whatsapp"]')
+
+    expect(whatsapp.text()).toContain('Escríbenos por WhatsApp')
+    expect(whatsapp.attributes('href')).toBe('https://wa.me/573106854769?text=Hola%2C%20me%20interesa%20una%20fracci%C3%B3n%20en%20Arena%20Property')
+    expect(whatsapp.attributes('target')).toBe('_blank')
+    await whatsapp.trigger('click')
+    expect(hero.emitted('cta')?.[0]?.[1]).toBe(whatsapp.attributes('href'))
+    expect(hero.text()).not.toContain('Cómo funciona')
+    expect(hero.find('[data-test="cta-hero"]').attributes('href')).toBe('/propiedades')
   })
 
   it('RF-00.11 · CA-00.4 · con movimiento reducido el hero pinta sus textos sin clases de revelado', async () => {
     const hero = await mountSuspended(HomeHero, { props: { seccion: seccion('hero'), reducirMovimiento: true } })
 
-    expect(hero.text()).toContain('Tu vivienda vacacional no es un sueño')
+    expect(hero.text()).toContain('Una segunda casa en el Caribe Colombiano')
     expect(hero.find('[data-test="hero-animado"]').exists()).toBe(false)
     expect(hero.find('.hero-revelado').exists()).toBe(false)
   })

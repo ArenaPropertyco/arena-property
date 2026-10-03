@@ -57,8 +57,9 @@ export const SECCIONES_DE_LA_HOME: readonly SeccionDeLaHome[] = [
     tituloKey: 'home.hero.title',
     claves: [
       'home.hero.headline',
+      'home.hero.subtitle',
+      'home.hero.whatsapp',
       'home.hero.description',
-      'home.hero.secondary',
       'home.hero.videoLabel',
     ],
     cta: { labelKey: 'home.hero.cta', destino: RUTAS_PUBLICAS.catalogo },
