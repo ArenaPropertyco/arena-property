@@ -32,10 +32,11 @@
     "withdrawals": "Retiros",
     "ownerWallet": "Mi billetera",
     "collections": "Cobros",
-    "fractionalModel": "Modelo fraccionado",
+    "fractionalModel": "Modelo de negocio",
     "aboutShort": "Nosotros",
     "contactUs": "Contáctenos",
-    "signUp": "Registrarse"
+    "signUp": "Registrarse",
+    "propertiesLink": "Propiedades"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -558,11 +559,12 @@
     },
     "hero": {
       "headline": "Copropiedad Fraccionada",
-      "title": "“Tu vivienda vacacional no es un sueño. Es una decisión que aún no has tomado”",
+      "title": "Una segunda casa en el Caribe Colombiano, para quien ya resolvió todo lo demás",
+      "subtitle": "sin la carga de mantenerla ni la culpa de tenerla vacía cuando no estás",
       "description": "Sé dueño de un apartamento en el rascacielos más icónico de Bocagrande desde COP $173M.",
       "cta": "Ver propiedades",
-      "secondary": "Cómo funciona",
-      "videoLabel": "Video de Invictvs en primera línea de Bocagrande"
+      "videoLabel": "Video de Invictvs en primera línea de Bocagrande",
+      "whatsapp": "Escríbenos por WhatsApp"
     },
     "model": {
       "headline": "¿Qué es Arena Property?",
@@ -3069,5 +3071,8 @@
       },
       "adminHint": "Fija una contraseña nueva para esta cuenta. No hace falta la actual; queda auditado quién la cambió."
     }
+  },
+  "whatsappFloat": {
+    "aria": "Escribir por WhatsApp"
   }
 }

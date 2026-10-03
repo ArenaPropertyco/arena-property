@@ -15,7 +15,7 @@ Fuentes: el documento de negocio (VSM), el registro de decisiones (D-01…D-51),
 - **Frase del hero de la portada:** «Tu vivienda vacacional no es un sueño. Es una decisión que aún no has tomado».
 - **Promesa de precio publicada:** «Sé dueño de un apartamento en el rascacielos más icónico de Bocagrande desde COP $173M».
 - **Ciudad de la marca:** Cartagena de Indias, Colombia.
-- **Canal de contacto oficial:** WhatsApp +57 310 849 7119 (https://wa.me/573108497119). No hay correo público, dirección física ni redes sociales definidas en el sitio.
+- **Canal de contacto oficial:** WhatsApp +57 310 685 4769 (https://wa.me/573106854769). No hay correo público, dirección física ni redes sociales definidas en el sitio.
 
 ### 1.1 Posicionamiento: qué es y qué no es
 
@@ -351,7 +351,7 @@ Regla de oro (principio 9 de la constitución): **ninguna cifra estimada se pres
 | 1 | Comisión por referido: solo su primera compra |
 | 6 | Roles: Visitante, Usuario, Propietario, Embajador, Administrador, Superadmin |
 | es / en | Idiomas del sitio |
-| +57 310 849 7119 | WhatsApp oficial |
+| +57 310 685 4769 | WhatsApp oficial |
 
 ---
 

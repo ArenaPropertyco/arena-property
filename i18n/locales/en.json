@@ -32,10 +32,11 @@
     "withdrawals": "Withdrawals",
     "ownerWallet": "My wallet",
     "collections": "Collections",
-    "fractionalModel": "Fractional model",
+    "fractionalModel": "Business model",
     "aboutShort": "About us",
     "contactUs": "Contact us",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "propertiesLink": "Properties"
   },
   "actions": {
     "login": "Log in",
@@ -558,11 +559,12 @@
     },
     "hero": {
       "headline": "Fractional Co-ownership",
-      "title": "“Your holiday home is not a dream. It is a decision you have not made yet”",
+      "title": "A second home on the Colombian Caribbean, for those who have already sorted everything else",
+      "subtitle": "without the burden of maintaining it or the guilt of leaving it empty when you are away",
       "description": "Own an apartment in the most iconic tower in Bocagrande from COP $173M.",
       "cta": "View properties",
-      "secondary": "How it works",
-      "videoLabel": "Invictvs video on the Bocagrande beachfront"
+      "videoLabel": "Invictvs video on the Bocagrande beachfront",
+      "whatsapp": "Message us on WhatsApp"
     },
     "model": {
       "headline": "What is Arena Property?",
@@ -3069,5 +3071,8 @@
       },
       "adminHint": "Set a new password for this account. The current one is not needed; who changed it is audited."
     }
+  },
+  "whatsappFloat": {
+    "aria": "Message us on WhatsApp"
   }
 }
